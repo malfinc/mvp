@@ -16,6 +16,8 @@ require "sprockets/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+ENVied.require(*ENV["ENVIED_GROUPS"] || Rails.groups)
+
 module Poutineer
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
@@ -27,5 +29,12 @@ module Poutineer
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+    config.generators.assets = false
+    config.generators.helper = false
+    config.generators.orm :active_record, primary_key_type: :uuid
+
+    config.action_controller.include_all_helpers = false
+
+    config.active_record.schema_format = :sql
   end
 end
