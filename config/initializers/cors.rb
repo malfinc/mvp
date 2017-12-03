@@ -7,7 +7,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins ENV["WWW_LOCATION"].gsub(/https?::\/\//, '')
+    origins ENVied.WWW_LOCATION.gsub(/https?::\/\//, '')
 
     resource "*",
       headers: :any,

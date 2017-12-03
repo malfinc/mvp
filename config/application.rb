@@ -16,17 +16,7 @@ require "action_view/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-REQUIRED_ENVIRONMENT_VARIABLES = %w[
-  RAILS_ENV
-  ORIGIN_ENCRYPTION_PRIVATE
-  ORIGIN_ENCRYPTION_SALT
-  RAILS_SESSION_PRIVATE
-  ORIGIN_LOCATION
-  WWW_LOCATION
-]
-
-raise "You're missing #{REQUIRED_ENVIRONMENT_VARIABLES - ENV.keys} environment variables" if (REQUIRED_ENVIRONMENT_VARIABLES - ENV.keys).any?
-
+ENVied.require(*ENV["ENVIED_GROUPS"] || Rails.groups)
 
 module BlankApiRails
   class Application < Rails::Application
@@ -42,10 +32,10 @@ module BlankApiRails
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
 
-    config.generators do |let|
-      let.assets = false
-      let.helper = false
-    end
+    config.generators.system_tests = nil
+    config.generators.assets = false
+    config.generators.helper = false
+    config.generators.orm :active_record, primary_key_type: :uuid
 
     config.action_controller.include_all_helpers = false
 
