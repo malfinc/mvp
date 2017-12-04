@@ -22,7 +22,6 @@ group :production do
   variable :REDIS_URL, :string
   variable :DATABASE_URL, :string
   variable :PGBOUNCER_POOL, :integer
-  variable :SECRET_KEY_BASE, :string
-  variable :RAILS_SERVE_STATIC_FILES, :boolean
-  variable :RAILS_LOG_TO_STDOUT, :boolean
+  variable :RAILS_SERVE_STATIC_FILES, :string
+  variable :RAILS_LOG_TO_STDOUT, :string
 end
