@@ -8,8 +8,7 @@ variable :RAILS_MASTER_KEY, :string, default: "private"
 variable :ORIGIN_ENCRYPTION_PRIVATE, :string, default: "private"
 variable :ORIGIN_ENCRYPTION_SALT, :string, default: "salt"
 variable :RAILS_SESSION_PRIVATE, :string, default: "private"
-variable :SECRET_KEY_BASE, :string, default: "private"
-variable :APPLICAITON_EMAIL_FROM, :string, default: "noreply@localhost"
+variable :RAILS_EMAIL_FROM, :string, default: "noreply@localhost"
 
 group :development do
   variable :PORT, :integer, default: 3000
