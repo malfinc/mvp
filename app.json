@@ -25,6 +25,12 @@
     },
     "WEB_CONCURRENCY": {
       "required": true
+    },
+    "APPLICATION_EMAIL_FROM": {
+      "required": true
+    },
+    "PGBOUNCER_POOL": {
+      "required": true
     }
   },
   "formation": {
