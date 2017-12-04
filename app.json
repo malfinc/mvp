@@ -20,9 +20,6 @@
     "RAILS_SESSION_PRIVATE": {
       "generator": "secret"
     },
-    "SECRET_KEY_BASE": {
-      "generator": "secret"
-    },
     "WEB_CONCURRENCY": {
       "required": true
     },
