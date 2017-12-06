@@ -1,7 +1,9 @@
 {
   "name": "poutineer-mvp",
   "description": "The first pass at the Poutineer application",
-  "scripts": {},
+  "scripts": {
+    "postdeploy": "bin/rake db:migrate db:seed"
+  },
   "env": {
     "ORIGIN_ENCRYPTION_PRIVATE": {
       "generator": "secret"
