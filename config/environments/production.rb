@@ -30,7 +30,10 @@ Rails.application.configure do
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
-
+  config.action_dispatch.rack_cache = {
+    metastore: "#{ENVied.REDIS_URL}/metastore",
+    entitystore: "#{ENVied.REDIS_URL}/entitystore"
+  }
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   config.force_ssl = true
@@ -43,7 +46,7 @@ Rails.application.configure do
   config.log_tags = [ :request_id ]
 
   # Use a different cache store in production.
-  config.cache_store = :mem_cache_store
+  config.cache_store = :redis_store, ENVied.REDIS_URL, { expires_in: 30.minutes }
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque

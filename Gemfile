@@ -43,3 +43,5 @@ end
 group :development do
   gem 'bundler-audit', '0.6.0'
 end
+
+gem 'redis-rails', '5.0.2'
