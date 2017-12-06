@@ -11,6 +11,7 @@ gem 'rails', '5.1.4'
 gem 'pg', '0.21.0'
 gem 'puma', '3.11.0'
 gem 'redis', '4.0.1'
+gem 'redis-rails', '5.0.2'
 gem 'hiredis', '0.6.1'
 gem 'connection_pool', '2.2.1'
 gem 'webpacker', '3.0.2'
@@ -22,6 +23,7 @@ gem 'secure_headers', '5.0.3'
 gem 'rack-timeout', '0.4.2'
 gem 'rack-cors', '1.0.2'
 gem 'rack-attack', '5.0.1'
+gem 'rack-cache', '1.7.1'
 gem 'pry-rails', '0.3.6'
 gem 'pry-doc', '0.11.1'
 gem 'devise', '4.3.0'
@@ -43,5 +45,3 @@ end
 group :development do
   gem 'bundler-audit', '0.6.0'
 end
-
-gem 'redis-rails', '5.0.2'
