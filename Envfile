@@ -12,7 +12,7 @@ variable :RAILS_EMAIL_FROM, :string, default: "noreply@localhost"
 variable :RAILS_HOST, :string, default: "localhost"
 
 group :development do
-  variable :RAILS_PORT, :integer, default: 3000
+  variable :PORT, :integer, default: 3000
 end
 
 group :production do
