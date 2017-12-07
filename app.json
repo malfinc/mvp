@@ -5,6 +5,9 @@
     "postdeploy": "bin/rake db:migrate db:seed"
   },
   "env": {
+    "RAILS_HOST": {
+      "required": true
+    },
     "ORIGIN_ENCRYPTION_PRIVATE": {
       "generator": "secret"
     },
