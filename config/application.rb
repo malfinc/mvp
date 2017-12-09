@@ -39,5 +39,21 @@ module Poutineer
     config.active_record.schema_format = :sql
 
     config.cache_store = :redis_store, ENVied.REDIS_URL, { expires_in: 30.minutes }
+
+    case
+    when ENV["HEROKU_APP_NAME"]
+      Rails.application.config.action_mailer.default_url_options = {
+        host: "#{ENV["HEROKU_APP_NAME"]}.herokuapp.com"
+      }
+    when Rails.env.production?
+      Rails.application.config.action_mailer.default_url_options = {
+        host: ENVied.RAILS_HOST
+      }
+    else
+      Rails.application.config.action_mailer.default_url_options = {
+        host: ENVied.RAILS_HOST,
+        port: ENV["PORT"]
+      }
+    end
   end
 end
