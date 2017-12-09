@@ -9,11 +9,11 @@ case
 when ENV["MAILTRAP_API_TOKEN"]
   JSON.parse(open("https://mailtrap.io/api/v1/inboxes.json?api_token=#{ENV["MAILTRAP_API_TOKEN"]}").read).first.tap do |inbox|
     ActionMailer::Base.smtp_settings = {
-      user_name: first_inbox["username"],
-      password: first_inbox["password"],
-      address: first_inbox["domain"],
-      domain: first_inbox["domain"],
-      port: first_inbox["smtp_ports"].first,
+      user_name: inbox["username"],
+      password: inbox["password"],
+      address: inbox["domain"],
+      domain: inbox["domain"],
+      port: inbox["smtp_ports"].first,
       authentication: :plain
     }
   end
