@@ -37,5 +37,7 @@ module Poutineer
     config.action_controller.include_all_helpers = false
 
     config.active_record.schema_format = :sql
+
+    config.cache_store = :redis_store, ENVied.REDIS_URL, { expires_in: 30.minutes }
   end
 end
