@@ -40,7 +40,8 @@
     "logdna",
     "newrelic",
     "heroku-postgresql",
-    "heroku-redis"
+    "heroku-redis",
+    "mailtrap"
   ],
   "buildpacks": [
     {
