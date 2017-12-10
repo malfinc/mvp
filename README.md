@@ -10,7 +10,8 @@
   6. install heroku cli
   7. clone this repository
   8. run `bundle install`
-  9. run `bin/postdeploy`
+  9. run `bin/rake db:create`
+  10. run `bin/postdeploy`
 
 
 ## Using
