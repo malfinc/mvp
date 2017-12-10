@@ -2,7 +2,7 @@
   "name": "poutineer-mvp",
   "description": "The first pass at the Poutineer application",
   "scripts": {
-    "postdeploy": "bin/rake db:migrate db:seed"
+    "postdeploy": "bin/postdeploy"
   },
   "env": {
     "RAILS_HOST": {
