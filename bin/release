@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+newrelic deployments
+bin/rake db:migrate db:seed

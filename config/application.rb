@@ -1,5 +1,6 @@
 require_relative 'boot'
 
+require "open-uri"
 require "rails"
 # Pick the frameworks you want:
 require "active_model/railtie"
@@ -27,5 +28,30 @@ module Poutineer
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+    config.generators.assets = false
+    config.generators.helper = false
+    config.generators.orm :active_record, primary_key_type: :uuid
+
+    config.action_controller.include_all_helpers = false
+
+    config.active_record.schema_format = :sql
+
+    config.cache_store = :redis_store, ENV.fetch("REDIS_URL"), { expires_in: 30.minutes, pool_size: ENV.fetch("RAILS_CACHE_POOL_SIZE") }
+
+    case
+    when ENV.fetch("HEROKU_APP_NAME", nil)
+      Rails.application.config.action_mailer.default_url_options = {
+        host: "#{ENV.fetch("HEROKU_APP_NAME")}.herokuapp.com"
+      }
+    when Rails.env.production?
+      Rails.application.config.action_mailer.default_url_options = {
+        host: ENV.fetch("RAILS_HOST")
+      }
+    else
+      Rails.application.config.action_mailer.default_url_options = {
+        host: ENV.fetch("RAILS_HOST"),
+        port: ENV.fetch("PORT")
+      }
+    end
   end
 end

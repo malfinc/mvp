@@ -1,0 +1,28 @@
+#! /usr/bin/env ruby
+
+enable_defaults! { ENV["RACK_ENV"] != "production" }
+
+variable :RAILS_MAX_THREADS, :integer, default: 5
+variable :WEB_CONCURRENCY, :integer, default: 2
+variable :RAILS_MASTER_KEY, :string, default: "private"
+variable :ORIGIN_ENCRYPTION_PRIVATE, :string, default: "private"
+variable :ORIGIN_ENCRYPTION_SALT, :string, default: "salt"
+variable :RAILS_SESSION_PRIVATE, :string, default: "private"
+variable :RAILS_EMAIL_FROM, :string, default: "noreply@localhost"
+variable :RAILS_HOST, :string, default: "localhost"
+variable :REDIS_URL, :string, default: "redis://localhost:6379/0"
+variable :RAILS_CACHE_POOL_SIZE, :integer, default: 2
+variable :REDIS_POOL_SIZE, :integer, default: 2
+
+group :development do
+  variable :PORT, :integer, default: 3000
+end
+
+group :production do
+  variable :RACK_ENV, :string
+  variable :RAILS_ENV, :string
+  variable :DATABASE_URL, :string
+  variable :PGBOUNCER_POOL, :integer
+  variable :RAILS_SERVE_STATIC_FILES, :string
+  variable :RAILS_LOG_TO_STDOUT, :string
+end
