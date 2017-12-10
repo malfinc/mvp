@@ -18,18 +18,29 @@
       "generator": "secret"
     },
     "RAILS_MAX_THREADS": {
+      "value": "5",
       "required": true
     },
     "RAILS_SESSION_PRIVATE": {
       "generator": "secret"
     },
     "WEB_CONCURRENCY": {
+      "value": "2",
       "required": true
     },
     "RAILS_EMAIL_FROM": {
       "required": true
     },
     "PGBOUNCER_POOL": {
+      "value": "300",
+      "required": true
+    },
+    "RAILS_CACHE_POOL_SIZE": {
+      "value": "2",
+      "required": true
+    },
+    "REDIS_POOL_SIZE": {
+      "value": "2",
       "required": true
     },
     "HEROKU_APP_NAME": {

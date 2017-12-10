@@ -39,7 +39,7 @@ group :development, :test do
   gem 'web-console', '3.5.1'
   gem 'rspec-rails', '3.7.2'
   gem 'listen', '3.1.5'
-  gem 'brakeman', '4.0.1'
+  gem 'brakeman', '4.0.1', require: false
 end
 
 group :development do
