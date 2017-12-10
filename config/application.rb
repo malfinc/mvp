@@ -38,7 +38,7 @@ module Poutineer
 
     config.active_record.schema_format = :sql
 
-    config.cache_store = :redis_store, ENVied.REDIS_URL, { expires_in: 30.minutes }
+    config.cache_store = :redis_store, ENVied.REDIS_URL, { expires_in: 30.minutes, pool_size: ENVied.RAILS_CACHE_POOL_SIZE }
 
     case
     when ENV["HEROKU_APP_NAME"]
