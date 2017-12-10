@@ -6,12 +6,11 @@ require "dotenv/load" unless ENV["RAILS_ENV"] == "production"
 # the maximum value specified for Puma. Default is set to 5 threads for minimum
 # and maximum; this matches the default thread size of Active Record.
 #
-threads_count = ENV.fetch("RAILS_MAX_THREADS")
-threads threads_count, threads_count
+threads ENV.fetch("RAILS_MAX_THREADS"), ENV.fetch("RAILS_MAX_THREADS")
 
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
 #
-port        ENV.fetch("PORT")
+port ENV.fetch("PORT")
 
 # Specifies the `environment` that Puma will run in.
 #
