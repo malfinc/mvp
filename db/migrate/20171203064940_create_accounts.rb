@@ -1,6 +1,6 @@
 class CreateAccounts < ActiveRecord::Migration[5.1]
   def change
-    create_table :accounts do |table|
+    create_table :accounts, id: :uuid do |table|
       table.string :email, null: false, index: {unique: true}
       table.string :encrypted_password, null: false
       table.string :reset_password_token, index: {unique: true}
