@@ -45,3 +45,6 @@ end
 group :development do
   gem 'bundler-audit', '0.6.0'
 end
+
+gem 'high_voltage', '3.0.0'
+gem 'sitemap_generator', '6.0.0'
