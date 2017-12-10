@@ -1,3 +1,1 @@
-if Rails.env.production?
-  Rack::Timeout.service_timeout = 15
-end
+Rack::Timeout.service_timeout = ENV.fetch("RACK_SERVICE_TIMEOUT")
