@@ -1,5 +1,5 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: ENVied.RAILS_EMAIL_FROM
+  default from: ENV.fetch("RAILS_EMAIL_FROM")
 
   layout 'mailer'
 end

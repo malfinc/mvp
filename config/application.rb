@@ -17,8 +17,6 @@ require "sprockets/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-ENVied.require(*ENV["ENVIED_GROUPS"] || Rails.groups)
-
 module Poutineer
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
@@ -38,21 +36,21 @@ module Poutineer
 
     config.active_record.schema_format = :sql
 
-    config.cache_store = :redis_store, ENVied.REDIS_URL, { expires_in: 30.minutes, pool_size: ENVied.RAILS_CACHE_POOL_SIZE }
+    config.cache_store = :redis_store, ENV.fetch("REDIS_URL"), { expires_in: 30.minutes, pool_size: ENV.fetch("RAILS_CACHE_POOL_SIZE") }
 
     case
-    when ENV["HEROKU_APP_NAME"]
+    when ENV.fetch("HEROKU_APP_NAME", nil)
       Rails.application.config.action_mailer.default_url_options = {
-        host: "#{ENV["HEROKU_APP_NAME"]}.herokuapp.com"
+        host: "#{ENV.fetch("HEROKU_APP_NAME")}.herokuapp.com"
       }
     when Rails.env.production?
       Rails.application.config.action_mailer.default_url_options = {
-        host: ENVied.RAILS_HOST
+        host: ENV.fetch("RAILS_HOST")
       }
     else
       Rails.application.config.action_mailer.default_url_options = {
-        host: ENVied.RAILS_HOST,
-        port: ENV["PORT"]
+        host: ENV.fetch("RAILS_HOST"),
+        port: ENV.fetch("PORT")
       }
     end
   end
