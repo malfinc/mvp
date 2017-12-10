@@ -36,7 +36,7 @@ module Poutineer
 
     config.active_record.schema_format = :sql
 
-    config.cache_store = :redis_store, ENV.fetch("REDIS_URL"), { expires_in: 30.minutes, pool_size: ENV.fetch("RAILS_CACHE_POOL_SIZE") }
+    config.cache_store = :redis_store, ENV.fetch("REDIS_URL"), { expires_in: 30.minutes, pool_size: Integer(ENV.fetch("RAILS_CACHE_POOL_SIZE")) }
 
     if ENV.fetch("HEROKU_APP_NAME", nil)
       Rails.application.config.action_mailer.default_url_options = {
@@ -49,7 +49,7 @@ module Poutineer
     else
       Rails.application.config.action_mailer.default_url_options = {
         host: ENV.fetch("RAILS_HOST"),
-        port: ENV.fetch("PORT")
+        port: Integer(ENV.fetch("PORT"))
       }
     end
   end
