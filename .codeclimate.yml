@@ -1,0 +1,28 @@
+version: "2"
+plugins:
+  reek:
+    enabled: true
+    checks:
+      IrresponsibleModule:
+        enabled: false
+    checks:
+      Rubocop/Metrics/LineLength:
+        enabled: false
+    checks:
+      Rubocop/Style/ClassAndModuleChildren:
+        enabled: false
+    checks:
+      Rubocop/Style/StringLiterals:
+        enabled: false
+    checks:
+      Rubocop/Style/EmptyLines:
+        enabled: false
+    checks:
+      Rubocop/Style/HashSyntax:
+        enabled: false
+    checks:
+      Rubocop/Style/AlignParameters:
+        enabled: false
+    checks:
+      Rubocop/Style/StringLiteralsInInterpolation:
+        enabled: false
