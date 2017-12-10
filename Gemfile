@@ -31,6 +31,7 @@ gem 'groupdate', '3.2.0'
 gem 'state_machines-activerecord', '0.5.0'
 gem 'puma_worker_killer', '0.1.0'
 gem 'pundit', '1.1.0'
+gem 'newrelic_rpm', '4.6.0.338'
 
 group :development, :test do
   gem 'dotenv-rails', '2.2.1', require: 'dotenv/rails-now'
