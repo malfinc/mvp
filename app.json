@@ -43,6 +43,9 @@
       "value": "2",
       "required": true
     },
+    "RACK_SERVICE_TIMEOUT": {
+      "required": true
+    },
     "HEROKU_APP_NAME": {
       "required": true
     },

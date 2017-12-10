@@ -1,5 +1,4 @@
-case
-when ENV.fetch("MAILTRAP_API_TOKEN", nil)
+if ENV.fetch("MAILTRAP_API_TOKEN", nil)
   JSON.parse(open("https://mailtrap.io/api/v1/inboxes.json?api_token=#{ENV.fetch("MAILTRAP_API_TOKEN")}").read).first.tap do |inbox|
     ActionMailer::Base.smtp_settings = {
       user_name: inbox.fetch("username"),
@@ -10,7 +9,7 @@ when ENV.fetch("MAILTRAP_API_TOKEN", nil)
       authentication: :plain
     }
   end
-when ENV.fetch("MAILGUN_SMTP_PORT")
+else
   ActionMailer::Base.smtp_settings = {
     user_name: ENV.fetch("MAILGUN_SMTP_LOGIN"),
     password: ENV.fetch("MAILGUN_SMTP_PASSWORD"),
