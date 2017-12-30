@@ -9,7 +9,11 @@ if ENV.fetch("MAILTRAP_API_TOKEN", nil)
       authentication: :plain
     }
   end
-else
+
+  ActionMailer::Base.delivery_method = :smtp
+end
+
+if ENV.fetch("MAILGUN_SMTP_LOGIN", nil)
   ActionMailer::Base.smtp_settings = {
     user_name: ENV.fetch("MAILGUN_SMTP_LOGIN"),
     password: ENV.fetch("MAILGUN_SMTP_PASSWORD"),
@@ -18,6 +22,6 @@ else
     port: ENV.fetch("MAILGUN_SMTP_PORT"),
     authentication: :plain,
   }
-end
 
-ActionMailer::Base.delivery_method = :smtp
+  ActionMailer::Base.delivery_method = :smtp
+end
