@@ -62,6 +62,7 @@ SET default_with_oids = false;
 CREATE TABLE accounts (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     email character varying NOT NULL,
+    login character varying NOT NULL,
     encrypted_password character varying NOT NULL,
     reset_password_token character varying,
     reset_password_sent_at timestamp without time zone,
@@ -92,12 +93,46 @@ CREATE TABLE ar_internal_metadata (
 
 
 --
+-- Name: friendly_id_slugs; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE friendly_id_slugs (
+    id bigint NOT NULL,
+    slug character varying NOT NULL,
+    sluggable_id integer NOT NULL,
+    sluggable_type character varying NOT NULL,
+    scope character varying,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: friendly_id_slugs_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE friendly_id_slugs_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: friendly_id_slugs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE friendly_id_slugs_id_seq OWNED BY friendly_id_slugs.id;
+
+
+--
 -- Name: recipes; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE recipes (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     name text NOT NULL,
+    slug character varying NOT NULL,
     state character varying NOT NULL,
     description text NOT NULL,
     author_id uuid NOT NULL,
@@ -121,6 +156,13 @@ CREATE TABLE schema_migrations (
 
 
 --
+-- Name: friendly_id_slugs id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY friendly_id_slugs ALTER COLUMN id SET DEFAULT nextval('friendly_id_slugs_id_seq'::regclass);
+
+
+--
 -- Name: accounts accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -134,6 +176,14 @@ ALTER TABLE ONLY accounts
 
 ALTER TABLE ONLY ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: friendly_id_slugs friendly_id_slugs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY friendly_id_slugs
+    ADD CONSTRAINT friendly_id_slugs_pkey PRIMARY KEY (id);
 
 
 --
@@ -167,10 +217,10 @@ CREATE UNIQUE INDEX index_accounts_on_email ON accounts USING btree (email);
 
 
 --
--- Name: index_accounts_on_reset_password_token; Type: INDEX; Schema: public; Owner: -
+-- Name: index_accounts_on_login; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_accounts_on_reset_password_token ON accounts USING btree (reset_password_token);
+CREATE UNIQUE INDEX index_accounts_on_login ON accounts USING btree (login);
 
 
 --
@@ -178,6 +228,27 @@ CREATE UNIQUE INDEX index_accounts_on_reset_password_token ON accounts USING btr
 --
 
 CREATE UNIQUE INDEX index_accounts_on_unlock_token ON accounts USING btree (unlock_token);
+
+
+--
+-- Name: index_friendly_id_slugs_on_slug_and_sluggable_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_friendly_id_slugs_on_slug_and_sluggable_type ON friendly_id_slugs USING btree (slug, sluggable_type);
+
+
+--
+-- Name: index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope ON friendly_id_slugs USING btree (slug, sluggable_type, scope);
+
+
+--
+-- Name: index_friendly_id_slugs_on_sluggable_id_and_sluggable_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_friendly_id_slugs_on_sluggable_id_and_sluggable_type ON friendly_id_slugs USING btree (sluggable_id, sluggable_type);
 
 
 --
@@ -220,6 +291,13 @@ CREATE INDEX index_recipes_on_publisher_id ON recipes USING btree (publisher_id)
 --
 
 CREATE INDEX index_recipes_on_remover_id ON recipes USING btree (remover_id);
+
+
+--
+-- Name: index_recipes_on_slug; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_recipes_on_slug ON recipes USING btree (slug);
 
 
 --
@@ -286,6 +364,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171203045258'),
 ('20171203045306'),
 ('20171203064940'),
-('20171210085937');
+('20171210085937'),
+('20171230031126');
 
 

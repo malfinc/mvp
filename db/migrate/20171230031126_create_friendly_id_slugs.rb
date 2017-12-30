@@ -1,0 +1,15 @@
+class CreateFriendlyIdSlugs < ActiveRecord::Migration[5.1]
+  def change
+    create_table :friendly_id_slugs do |table|
+      table.string :slug, null: false
+      table.integer :sluggable_id, null: false
+      table.string :sluggable_type, null: false
+      table.string :scope
+      table.datetime :created_at, null: false
+
+      table.index [:sluggable_id, :sluggable_type]
+      table.index [:slug, :sluggable_type], length: { slug: 140, sluggable_type: 50 }
+      table.index [:slug, :sluggable_type, :scope], length: { slug: 70, sluggable_type: 50, scope: 70 }, unique: true
+    end
+  end
+end

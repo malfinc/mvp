@@ -1,5 +1,6 @@
 class Recipe < ApplicationRecord
   include Redis::Objects
+  include FriendlyId
 
   belongs_to :author, class_name: "User"
   belongs_to :approver, class_name: "User"
@@ -7,11 +8,14 @@ class Recipe < ApplicationRecord
   belongs_to :denier, class_name: "User"
   belongs_to :remover, class_name: "User"
 
+  validates_presence_of :slug
   validates_presence_of :ingredients
   validates_length_of :ingredients, minimum: 1
   validates_presence_of :author
   validates_presence_of :created_at
   validates_presence_of :updated_at
+
+  friendly_id :name, :use => [:slugged, :history]
 
   value :queued_at, marshal: true
   value :published_at, marshal: true
