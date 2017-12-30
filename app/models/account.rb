@@ -1,6 +1,9 @@
 class Account < ApplicationRecord
   include Redis::Objects
 
+  has_many :recipes, dependent: :destroy, autosave: true
+
+
   devise :database_authenticatable
   devise :registerable
   devise :recoverable
@@ -10,5 +13,4 @@ class Account < ApplicationRecord
   devise :lockable
   devise :timeoutable
 
-  has_many :recipes
 end
