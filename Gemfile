@@ -36,6 +36,7 @@ gem 'high_voltage', '3.0.0'
 gem 'sitemap_generator', '6.0.0'
 gem 'redis-objects', '1.4.0'
 gem 'administrate', '0.8.1'
+gem 'friendly_id', '5.2.3'
 
 group :development, :test do
   gem 'dotenv-rails', '2.2.1', require: 'dotenv/rails-now'
