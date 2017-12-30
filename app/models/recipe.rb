@@ -3,12 +3,13 @@ class Recipe < ApplicationRecord
 
   belongs_to :author, class_name: "User"
   belongs_to :approver, class_name: "User"
+  belongs_to :publisher, class_name: "User"
   belongs_to :denier, class_name: "User"
   belongs_to :remover, class_name: "User"
 
   validates_presence_of :ingredients
   validates_length_of :ingredients, minimum: 1
-  validates_presence_of :user
+  validates_presence_of :author
   validates_presence_of :created_at
   validates_presence_of :updated_at
 
@@ -51,10 +52,12 @@ class Recipe < ApplicationRecord
 
     state :removed do
       validates_presence_of :removed_at
+      validates_presence_of :remover
     end
 
     state :published do
       validates_presence_of :published_at
+      validates_presence_of :publisher
     end
   end
 

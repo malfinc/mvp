@@ -98,13 +98,14 @@ CREATE TABLE ar_internal_metadata (
 CREATE TABLE recipes (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     name text NOT NULL,
+    state character varying NOT NULL,
     description text NOT NULL,
     author_id uuid NOT NULL,
     approver_id uuid,
+    publisher_id uuid,
     denier_id uuid,
     remover_id uuid,
     ingredients text[] DEFAULT '{}'::text[] NOT NULL,
-    state character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -208,6 +209,13 @@ CREATE INDEX index_recipes_on_denier_id ON recipes USING btree (denier_id);
 
 
 --
+-- Name: index_recipes_on_publisher_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_recipes_on_publisher_id ON recipes USING btree (publisher_id);
+
+
+--
 -- Name: index_recipes_on_remover_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -234,6 +242,14 @@ CREATE INDEX index_recipes_on_updated_at ON recipes USING btree (updated_at);
 
 ALTER TABLE ONLY recipes
     ADD CONSTRAINT fk_rails_08ee84afe6 FOREIGN KEY (author_id) REFERENCES accounts(id);
+
+
+--
+-- Name: recipes fk_rails_2622a71154; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY recipes
+    ADD CONSTRAINT fk_rails_2622a71154 FOREIGN KEY (publisher_id) REFERENCES accounts(id);
 
 
 --
