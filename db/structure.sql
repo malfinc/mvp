@@ -98,7 +98,7 @@ CREATE TABLE ar_internal_metadata (
 CREATE TABLE friendly_id_slugs (
     id bigint NOT NULL,
     slug character varying NOT NULL,
-    sluggable_id integer NOT NULL,
+    sluggable_id uuid NOT NULL,
     sluggable_type character varying NOT NULL,
     scope character varying,
     created_at timestamp without time zone NOT NULL
