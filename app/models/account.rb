@@ -1,4 +1,6 @@
 class Account < ApplicationRecord
+  include Redis::Objects
+
   devise :database_authenticatable
   devise :registerable
   devise :recoverable
@@ -7,4 +9,6 @@ class Account < ApplicationRecord
   devise :confirmable
   devise :lockable
   devise :timeoutable
+
+  has_many :recipes
 end

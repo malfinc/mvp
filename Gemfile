@@ -34,6 +34,7 @@ gem 'pundit', '1.1.0'
 gem 'newrelic_rpm', '4.6.0.338'
 gem 'high_voltage', '3.0.0'
 gem 'sitemap_generator', '6.0.0'
+gem 'redis-objects', '1.4.0'
 
 group :development, :test do
   gem 'dotenv-rails', '2.2.1', require: 'dotenv/rails-now'
