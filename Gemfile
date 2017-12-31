@@ -37,6 +37,8 @@ gem 'redis-objects', '1.4.0'
 gem 'administrate', '0.8.1'
 gem 'friendly_id', '5.2.3'
 
+gem 'gutentag', '2.0.0'
+
 group :production do
   gem 'rack-timeout', '0.4.2'
 end

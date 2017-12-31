@@ -2,6 +2,8 @@ class Recipe < ApplicationRecord
   include Redis::Objects
   include FriendlyId
 
+  Gutentag::ActiveRecord.call self
+
   belongs_to :author, class_name: "Account"
   belongs_to :approver, class_name: "Account"
   belongs_to :publisher, class_name: "Account"
