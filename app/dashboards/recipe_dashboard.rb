@@ -1,6 +1,4 @@
-require "administrate/base_dashboard"
-
-class RecipeDashboard < Administrate::BaseDashboard
+class RecipeDashboard < ApplicationDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
