@@ -61,8 +61,9 @@ SET default_with_oids = false;
 
 CREATE TABLE accounts (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
-    email character varying NOT NULL,
-    login character varying NOT NULL,
+    email text NOT NULL,
+    username text NOT NULL,
+    state character varying NOT NULL,
     encrypted_password character varying NOT NULL,
     reset_password_token character varying,
     reset_password_sent_at timestamp without time zone,
@@ -216,10 +217,10 @@ CREATE UNIQUE INDEX index_accounts_on_email ON accounts USING btree (email);
 
 
 --
--- Name: index_accounts_on_login; Type: INDEX; Schema: public; Owner: -
+-- Name: index_accounts_on_state; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_accounts_on_login ON accounts USING btree (login);
+CREATE INDEX index_accounts_on_state ON accounts USING btree (state);
 
 
 --
@@ -227,6 +228,13 @@ CREATE UNIQUE INDEX index_accounts_on_login ON accounts USING btree (login);
 --
 
 CREATE UNIQUE INDEX index_accounts_on_unlock_token ON accounts USING btree (unlock_token);
+
+
+--
+-- Name: index_accounts_on_username; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_accounts_on_username ON accounts USING btree (username);
 
 
 --
