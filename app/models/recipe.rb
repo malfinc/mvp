@@ -2,11 +2,11 @@ class Recipe < ApplicationRecord
   include Redis::Objects
   include FriendlyId
 
-  belongs_to :author, class_name: "User"
-  belongs_to :approver, class_name: "User"
-  belongs_to :publisher, class_name: "User"
-  belongs_to :denier, class_name: "User"
-  belongs_to :remover, class_name: "User"
+  belongs_to :author, class_name: "Account"
+  belongs_to :approver, class_name: "Account"
+  belongs_to :publisher, class_name: "Account"
+  belongs_to :denier, class_name: "Account"
+  belongs_to :remover, class_name: "Account"
 
   validates_presence_of :slug
   validates_presence_of :ingredients
