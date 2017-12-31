@@ -20,7 +20,6 @@ gem 'draper', '3.0.1'
 gem 'strong_migrations', '0.1.9'
 gem 'goldiloader', '2.0.1'
 gem 'secure_headers', '5.0.3'
-gem 'rack-timeout', '0.4.2'
 gem 'rack-cors', '1.0.2'
 gem 'rack-attack', '5.0.1'
 gem 'redis-rack-cache', '2.0.1'
@@ -37,6 +36,10 @@ gem 'sitemap_generator', '6.0.0'
 gem 'redis-objects', '1.4.0'
 gem 'administrate', '0.8.1'
 gem 'friendly_id', '5.2.3'
+
+group :production do
+  gem 'rack-timeout', '0.4.2'
+end
 
 group :development, :test do
   gem 'dotenv-rails', '2.2.1', require: 'dotenv/rails-now'
