@@ -6,14 +6,11 @@
 # you're free to overwrite the RESTful controller actions.
 module Admin
   class ApplicationController < Administrate::ApplicationController
+    before_action :authenticate_account!
     before_action :authenticate_administrator!
 
     def authenticate_administrator!
-      authenticate_account!
-
-      if current_account.administrator?
-        raise Pundit::NotAuthorizedError
-      end
+      raise Pundit::NotAuthorizedError unless current_account.administrator?
     end
 
     # Override this value to specify the number of elements to display at a time
