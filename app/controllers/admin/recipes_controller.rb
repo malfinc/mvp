@@ -11,7 +11,7 @@ module Admin
     # end
 
     # Define a custom finder by overriding the `find_resource` method:
-    def find_resource(identifier)
+    private def find_resource(identifier)
       Recipe.friendly.find(identifier)
     end
 
