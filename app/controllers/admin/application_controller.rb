@@ -9,7 +9,7 @@ module Admin
     before_action :authenticate_administrator!
 
     def authenticate_administrator!
-      authenticate_account! && current_user.administrator?
+      authenticate_account! && current_account.administrator?
     end
 
     # Override this value to specify the number of elements to display at a time
