@@ -2,8 +2,8 @@ class CreateRecipes < ActiveRecord::Migration[5.1]
   def change
     create_table :recipes, id: :uuid do |table|
       table.text :name, null: false
-      table.string :slug, null: false
-      table.string :state, null: false
+      table.citext :slug, null: false
+      table.citext :state, null: false
       table.text :description, null: false
       table.uuid :author_id, null: false
       table.uuid :approver_id
@@ -20,6 +20,7 @@ class CreateRecipes < ActiveRecord::Migration[5.1]
       table.index :remover_id
       table.index :state
       table.index :slug, unique: true
+
       table.foreign_key :accounts, column: :author_id
       table.foreign_key :accounts, column: :approver_id
       table.foreign_key :accounts, column: :publisher_id

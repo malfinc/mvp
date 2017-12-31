@@ -1,9 +1,9 @@
 class CreateAccounts < ActiveRecord::Migration[5.1]
   def change
     create_table :accounts, id: :uuid do |table|
-      table.text :email, null: false
-      table.text :username, null: false
-      table.string :state, null: false
+      table.citext :email, null: false
+      table.citext :username, null: false
+      table.citext :state, null: false
       table.string :encrypted_password, null: false
       table.string :reset_password_token
       table.datetime :reset_password_sent_at
@@ -11,7 +11,7 @@ class CreateAccounts < ActiveRecord::Migration[5.1]
       table.string :confirmation_token
       table.datetime :confirmed_at
       table.datetime :confirmation_sent_at
-      table.string :unconfirmed_email
+      table.citext :unconfirmed_email
       table.integer :failed_attempts, default: 0, null: false
       table.string :unlock_token
       table.datetime :locked_at

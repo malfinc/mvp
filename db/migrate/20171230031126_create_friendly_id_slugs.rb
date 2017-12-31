@@ -1,7 +1,7 @@
 class CreateFriendlyIdSlugs < ActiveRecord::Migration[5.1]
   def change
     create_table :friendly_id_slugs do |table|
-      table.string :slug, null: false
+      table.citext :slug, null: false
       table.uuid :sluggable_id, null: false
       table.string :sluggable_type, null: false
       table.string :scope
