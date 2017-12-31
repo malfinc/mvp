@@ -70,8 +70,7 @@ class RecipeDashboard < ApplicationDashboard
 
   # Overwrite this method to customize how recipes are displayed
   # across all pages of the admin dashboard.
-  #
-  # def display_resource(recipe)
-  #   "Recipe ##{recipe.id}"
-  # end
+  def display_resource(recipe)
+    recipe.name
+  end
 end
