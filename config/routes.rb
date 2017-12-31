@@ -2,6 +2,9 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :accounts
     resources :recipes
+    namespace :friendly_id do
+      resources :slugs
+    end
 
     root to: "accounts#index"
   end
