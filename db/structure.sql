@@ -22,6 +22,20 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 
 
 --
+-- Name: citext; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS citext WITH SCHEMA public;
+
+
+--
+-- Name: EXTENSION citext; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION citext IS 'data type for case-insensitive character strings';
+
+
+--
 -- Name: hstore; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -61,9 +75,10 @@ SET default_with_oids = false;
 
 CREATE TABLE accounts (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
-    email text NOT NULL,
-    username text NOT NULL,
-    state character varying NOT NULL,
+    name text,
+    email citext NOT NULL,
+    username citext NOT NULL,
+    state citext NOT NULL,
     encrypted_password character varying NOT NULL,
     reset_password_token character varying,
     reset_password_sent_at timestamp without time zone,
@@ -71,7 +86,7 @@ CREATE TABLE accounts (
     confirmation_token character varying,
     confirmed_at timestamp without time zone,
     confirmation_sent_at timestamp without time zone,
-    unconfirmed_email character varying,
+    unconfirmed_email citext,
     failed_attempts integer DEFAULT 0 NOT NULL,
     unlock_token character varying,
     locked_at timestamp without time zone,
@@ -98,7 +113,7 @@ CREATE TABLE ar_internal_metadata (
 
 CREATE TABLE friendly_id_slugs (
     id bigint NOT NULL,
-    slug character varying NOT NULL,
+    slug citext NOT NULL,
     sluggable_id uuid NOT NULL,
     sluggable_type character varying NOT NULL,
     scope character varying,
@@ -126,14 +141,60 @@ ALTER SEQUENCE friendly_id_slugs_id_seq OWNED BY friendly_id_slugs.id;
 
 
 --
+-- Name: gutentag_taggings; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE gutentag_taggings (
+    id bigint NOT NULL,
+    tag_id uuid NOT NULL,
+    taggable_id uuid NOT NULL,
+    taggable_type character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: gutentag_taggings_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE gutentag_taggings_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: gutentag_taggings_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE gutentag_taggings_id_seq OWNED BY gutentag_taggings.id;
+
+
+--
+-- Name: gutentag_tags; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE gutentag_tags (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    name citext NOT NULL,
+    taggings_count integer DEFAULT 0 NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: recipes; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE recipes (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     name text NOT NULL,
-    slug character varying NOT NULL,
-    state character varying NOT NULL,
+    slug citext NOT NULL,
+    state citext NOT NULL,
     description text NOT NULL,
     author_id uuid NOT NULL,
     approver_id uuid,
@@ -163,6 +224,13 @@ ALTER TABLE ONLY friendly_id_slugs ALTER COLUMN id SET DEFAULT nextval('friendly
 
 
 --
+-- Name: gutentag_taggings id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY gutentag_taggings ALTER COLUMN id SET DEFAULT nextval('gutentag_taggings_id_seq'::regclass);
+
+
+--
 -- Name: accounts accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -184,6 +252,22 @@ ALTER TABLE ONLY ar_internal_metadata
 
 ALTER TABLE ONLY friendly_id_slugs
     ADD CONSTRAINT friendly_id_slugs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: gutentag_taggings gutentag_taggings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY gutentag_taggings
+    ADD CONSTRAINT gutentag_taggings_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: gutentag_tags gutentag_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY gutentag_tags
+    ADD CONSTRAINT gutentag_tags_pkey PRIMARY KEY (id);
 
 
 --
@@ -256,6 +340,48 @@ CREATE UNIQUE INDEX index_friendly_id_slugs_on_slug_and_sluggable_type_and_scope
 --
 
 CREATE INDEX index_friendly_id_slugs_on_sluggable_id_and_sluggable_type ON friendly_id_slugs USING btree (sluggable_id, sluggable_type);
+
+
+--
+-- Name: index_guten_taggings_on_unique_tagging; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_guten_taggings_on_unique_tagging ON gutentag_taggings USING btree (tag_id, taggable_id, taggable_type);
+
+
+--
+-- Name: index_gutentag_taggings_on_tag_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_gutentag_taggings_on_tag_id ON gutentag_taggings USING btree (tag_id);
+
+
+--
+-- Name: index_gutentag_taggings_on_taggable_id_and_taggable_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_gutentag_taggings_on_taggable_id_and_taggable_type ON gutentag_taggings USING btree (taggable_id, taggable_type);
+
+
+--
+-- Name: index_gutentag_tags_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_gutentag_tags_on_created_at ON gutentag_tags USING btree (created_at);
+
+
+--
+-- Name: index_gutentag_tags_on_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_gutentag_tags_on_name ON gutentag_tags USING btree (name);
+
+
+--
+-- Name: index_gutentag_tags_on_updated_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_gutentag_tags_on_updated_at ON gutentag_tags USING btree (updated_at);
 
 
 --
@@ -362,6 +488,14 @@ ALTER TABLE ONLY recipes
 
 
 --
+-- Name: gutentag_taggings fk_rails_cb73a18b77; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY gutentag_taggings
+    ADD CONSTRAINT fk_rails_cb73a18b77 FOREIGN KEY (tag_id) REFERENCES gutentag_tags(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -370,8 +504,10 @@ SET search_path TO "$user", public;
 INSERT INTO "schema_migrations" (version) VALUES
 ('20171203045258'),
 ('20171203045306'),
+('20171203045307'),
 ('20171203064940'),
 ('20171210085937'),
-('20171230031126');
+('20171230031126'),
+('20171231104815');
 
 

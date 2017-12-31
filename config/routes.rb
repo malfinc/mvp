@@ -5,6 +5,10 @@ Rails.application.routes.draw do
     namespace :friendly_id do
       resources :slugs
     end
+    namespace :gutentag do
+      resources :tags
+      resources :taggings
+    end
 
     root to: "accounts#index"
   end
