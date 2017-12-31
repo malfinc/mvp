@@ -7,8 +7,15 @@ class AccountDashboard < ApplicationDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     recipes: Field::HasMany,
+    approved_recipes: Field::HasMany.with_options(class_name: "Recipe"),
+    published_recipes: Field::HasMany.with_options(class_name: "Recipe"),
+    denied_recipes: Field::HasMany.with_options(class_name: "Recipe"),
+    removed_recipes: Field::HasMany.with_options(class_name: "Recipe"),
+    slugs: Field::HasMany.with_options(class_name: "FriendlyId::Slug"),
     id: Field::String.with_options(searchable: false),
-    email: Field::String,
+    email: Field::Text,
+    username: Field::Text,
+    state: Field::String,
     encrypted_password: Field::String,
     reset_password_token: Field::String,
     reset_password_sent_at: Field::DateTime,
@@ -20,7 +27,6 @@ class AccountDashboard < ApplicationDashboard
     failed_attempts: Field::Number,
     unlock_token: Field::String,
     locked_at: Field::DateTime,
-    metadata: Field::String.with_options(searchable: false),
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
@@ -31,52 +37,44 @@ class AccountDashboard < ApplicationDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :recipes,
-    :id,
     :email,
-    :encrypted_password,
+    :username,
+    :state,
+    :created_at,
+    :recipes,
   ].freeze
+
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
-    :recipes,
     :id,
     :email,
-    :encrypted_password,
-    :reset_password_token,
+    :username,
+    :state,
     :reset_password_sent_at,
     :remember_created_at,
-    :confirmation_token,
     :confirmed_at,
     :confirmation_sent_at,
-    :unconfirmed_email,
     :failed_attempts,
-    :unlock_token,
     :locked_at,
-    :metadata,
     :created_at,
     :updated_at,
+    :slugs,
+    :recipes,
+    :approved_recipes,
+    :published_recipes,
+    :denied_recipes,
+    :removed_recipes,
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-    :recipes,
     :email,
-    :encrypted_password,
-    :reset_password_token,
-    :reset_password_sent_at,
-    :remember_created_at,
-    :confirmation_token,
-    :confirmed_at,
-    :confirmation_sent_at,
-    :unconfirmed_email,
-    :failed_attempts,
-    :unlock_token,
-    :locked_at,
-    :metadata,
+    :username,
+    :state,
   ].freeze
 
   # Overwrite this method to customize how accounts are displayed

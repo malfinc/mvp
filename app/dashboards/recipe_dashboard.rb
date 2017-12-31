@@ -6,19 +6,23 @@ class RecipeDashboard < ApplicationDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    author: Field::BelongsTo.with_options(class_name: "User"),
-    approver: Field::BelongsTo.with_options(class_name: "User"),
-    denier: Field::BelongsTo.with_options(class_name: "User"),
-    remover: Field::BelongsTo.with_options(class_name: "User"),
+    author: Field::BelongsTo.with_options(class_name: "Account"),
+    approver: Field::BelongsTo.with_options(class_name: "Account"),
+    publisher: Field::BelongsTo.with_options(class_name: "Account"),
+    denier: Field::BelongsTo.with_options(class_name: "Account"),
+    remover: Field::BelongsTo.with_options(class_name: "Account"),
+    slugs: Field::HasMany.with_options(class_name: "FriendlyId::Slug"),
     id: Field::String.with_options(searchable: false),
     name: Field::Text,
+    slug: Field::String,
+    state: Field::String,
     description: Field::Text,
     author_id: Field::String.with_options(searchable: false),
     approver_id: Field::String.with_options(searchable: false),
+    publisher_id: Field::String.with_options(searchable: false),
     denier_id: Field::String.with_options(searchable: false),
     remover_id: Field::String.with_options(searchable: false),
     ingredients: Field::Text,
-    state: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
@@ -31,8 +35,8 @@ class RecipeDashboard < ApplicationDashboard
   COLLECTION_ATTRIBUTES = [
     :author,
     :approver,
+    :publisher,
     :denier,
-    :remover,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -40,17 +44,21 @@ class RecipeDashboard < ApplicationDashboard
   SHOW_PAGE_ATTRIBUTES = [
     :author,
     :approver,
+    :publisher,
     :denier,
     :remover,
+    :slugs,
     :id,
     :name,
+    :slug,
+    :state,
     :description,
     :author_id,
     :approver_id,
+    :publisher_id,
     :denier_id,
     :remover_id,
     :ingredients,
-    :state,
     :created_at,
     :updated_at,
   ].freeze
@@ -61,16 +69,20 @@ class RecipeDashboard < ApplicationDashboard
   FORM_ATTRIBUTES = [
     :author,
     :approver,
+    :publisher,
     :denier,
     :remover,
+    :slugs,
     :name,
+    :slug,
+    :state,
     :description,
     :author_id,
     :approver_id,
+    :publisher_id,
     :denier_id,
     :remover_id,
     :ingredients,
-    :state,
   ].freeze
 
   # Overwrite this method to customize how recipes are displayed
