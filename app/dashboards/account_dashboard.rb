@@ -52,12 +52,12 @@ class AccountDashboard < ApplicationDashboard
     :email,
     :username,
     :state,
+    :failed_attempts,
+    :locked_at,
     :reset_password_sent_at,
     :remember_created_at,
     :confirmed_at,
     :confirmation_sent_at,
-    :failed_attempts,
-    :locked_at,
     :created_at,
     :updated_at,
     :slugs,
@@ -74,7 +74,6 @@ class AccountDashboard < ApplicationDashboard
   FORM_ATTRIBUTES = [
     :email,
     :username,
-    :state,
   ].freeze
 
   # Overwrite this method to customize how accounts are displayed

@@ -42,46 +42,29 @@ class RecipeDashboard < ApplicationDashboard
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
+    :id,
+    :slug,
+    :state,
+    :slugs,
+    :name,
+    :description,
+    :created_at,
+    :updated_at,
+    :ingredients,
     :author,
     :approver,
     :publisher,
     :denier,
     :remover,
-    :slugs,
-    :id,
-    :name,
-    :slug,
-    :state,
-    :description,
-    :author_id,
-    :approver_id,
-    :publisher_id,
-    :denier_id,
-    :remover_id,
-    :ingredients,
-    :created_at,
-    :updated_at,
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-    :author,
-    :approver,
-    :publisher,
-    :denier,
-    :remover,
-    :slugs,
     :name,
-    :slug,
-    :state,
+    :author,
     :description,
-    :author_id,
-    :approver_id,
-    :publisher_id,
-    :denier_id,
-    :remover_id,
     :ingredients,
   ].freeze
 
