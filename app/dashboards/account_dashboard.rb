@@ -79,6 +79,6 @@ class AccountDashboard < ApplicationDashboard
   # Overwrite this method to customize how accounts are displayed
   # across all pages of the admin dashboard.
   def display_resource(account)
-    account.name
+    account.username
   end
 end
