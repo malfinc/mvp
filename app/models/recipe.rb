@@ -5,17 +5,17 @@ class Recipe < ApplicationRecord
   Gutentag::ActiveRecord.call self
 
   belongs_to :author, class_name: "Account"
-  belongs_to :approver, class_name: "Account"
-  belongs_to :publisher, class_name: "Account"
-  belongs_to :denier, class_name: "Account"
-  belongs_to :remover, class_name: "Account"
+  belongs_to :approver, class_name: "Account", optional: true
+  belongs_to :publisher, class_name: "Account", optional: true
+  belongs_to :denier, class_name: "Account", optional: true
+  belongs_to :remover, class_name: "Account", optional: true
 
   validates_presence_of :slug
   validates_presence_of :ingredients
   validates_length_of :ingredients, minimum: 1
   validates_presence_of :author
-  validates_presence_of :created_at
-  validates_presence_of :updated_at
+  validates_presence_of :created_at, on: :update
+  validates_presence_of :updated_at, on: :update
 
   friendly_id :name, :use => [:slugged, :history]
 
