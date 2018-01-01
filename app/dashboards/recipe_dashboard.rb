@@ -13,10 +13,10 @@ class RecipeDashboard < ApplicationDashboard
     remover: Field::BelongsTo.with_options(class_name: "Account"),
     slugs: Field::HasMany.with_options(class_name: "FriendlyId::Slug"),
     id: Field::String.with_options(searchable: false),
-    name: Field::Text,
+    name: Field::String,
     slug: Field::String,
-    state: Field::String,
     description: Field::Text,
+    state: Field::StateMachine,
     author_id: Field::String.with_options(searchable: false),
     approver_id: Field::String.with_options(searchable: false),
     publisher_id: Field::String.with_options(searchable: false),
@@ -63,9 +63,9 @@ class RecipeDashboard < ApplicationDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :name,
+    :state,
     :author,
     :description,
-    :ingredients,
   ].freeze
 
   # Overwrite this method to customize how recipes are displayed

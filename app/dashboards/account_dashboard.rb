@@ -13,7 +13,7 @@ class AccountDashboard < ApplicationDashboard
     removed_recipes: Field::HasMany.with_options(class_name: "Recipe"),
     slugs: Field::HasMany.with_options(class_name: "FriendlyId::Slug"),
     id: Field::String.with_options(searchable: false),
-    email: Field::Text,
+    email: Field::Email,
     username: Field::Text,
     state: Field::String,
     encrypted_password: Field::String,
