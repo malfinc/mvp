@@ -17,6 +17,12 @@ class Recipe < ApplicationRecord
   validates_presence_of :created_at, on: :update
   validates_presence_of :updated_at, on: :update
 
+  before_create do
+    self.author = current_account
+  end
+
+  attr_accessor :current_account
+
   friendly_id :name, :use => [:slugged, :history]
 
   value :queued_at, marshal: true
@@ -27,15 +33,19 @@ class Recipe < ApplicationRecord
     event :publish do
       transition :draft => :queued
     end
+
     event :publish do
       transition :draft => :published, if: :allowed_to_autopublish?
     end
+
     event :remove do
       transition :published => :draft, if: :allowed_to_remove?
     end
+
     event :deny do
       transition :queued => :draft, if: :allowed_to_deny?
     end
+
     event :approve do
       transition :queued => :published, if: :allowed_to_approve?
     end
@@ -67,19 +77,19 @@ class Recipe < ApplicationRecord
     end
   end
 
-  private def allowed_to_autopublish?(record)
-    record.author.verified? || record.author.moderator?
+  private def allowed_to_autopublish?
+    current_account.verified? || current_account.moderator?
   end
 
-  private def allowed_to_deny?(record)
-    record.denier.moderator?
+  private def allowed_to_deny?
+    current_account.administrator? || current_account.moderator?
   end
 
-  private def allowed_to_approve?(record)
-    record.approver.moderator?
+  private def allowed_to_approve?
+    current_account.administrator? || current_account.moderator?
   end
 
-  private def allowed_to_remove?(record)
-    record.remover.moderator?
+  private def allowed_to_remove?
+    current_account.administrator? || current_account.moderator?
   end
 end
