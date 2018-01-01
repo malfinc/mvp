@@ -53,6 +53,9 @@ GEM
       momentjs-rails (~> 2.8)
       sass-rails (~> 5.0)
       selectize-rails (~> 0.6)
+    administrate-field-state_machine (0.1.2)
+      administrate (< 1.0.0)
+      rails (>= 4.2)
     arel (8.0.0)
     autoprefixer-rails (7.2.3)
       execjs
@@ -298,6 +301,7 @@ PLATFORMS
 
 DEPENDENCIES
   administrate (= 0.8.1)
+  administrate-field-state_machine (= 0.1.2)
   brakeman (= 4.0.1)
   bundler-audit (= 0.6.0)
   byebug (= 9.1.0)

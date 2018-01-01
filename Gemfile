@@ -36,6 +36,7 @@ gem 'sitemap_generator', '6.0.0'
 gem 'redis-objects', '1.4.0'
 gem 'administrate', '0.8.1'
 gem 'friendly_id', '5.2.3'
+gem 'administrate-field-state_machine', '0.1.2'
 
 gem 'gutentag', '2.0.0'
 
