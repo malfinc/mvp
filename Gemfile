@@ -40,6 +40,7 @@ gem 'administrate-field-state_machine', '0.1.2'
 gem 'simple_form', '3.5.0'
 gem 'country_select', '3.1.1'
 gem 'gutentag', '2.0.0'
+gem 'kaminari', '1.1.1'
 
 group :production do
   gem 'rack-timeout', '0.4.2'
