@@ -1,16 +1,16 @@
-<%= form_with(model: recipe, local: true) do |form| %>
-  <% if recipe.errors.any? %>
-    <section id="error_explanation">
-      <h2><%= pluralize(recipe.errors.count, "error") %> prohibited this recipe from being saved:</h2>
-      <ul>
-        <% recipe.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </section>
-  <% end %>
+<%= simple_form_for(@record) do |f| %>
+  <%= f.error_notification %>
 
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+  <section class="form-inputs">
+    <%= f.input :name, as: :string %>
+    <%= f.input :description %>
+    <%= f.input :ingredients, as: :array, input_html: {fresh_item_text: "Add new ingredient"} %>
+  </section>
+
+  <section class="form-actions card">
+    <section class="card-body">
+      <%= f.button :submit, class: "btn-primary" %>
+      <%= f.button :button, "Clear data", type: :reset, class: "btn-link" %>
+    </section>
+  </section>
 <% end %>

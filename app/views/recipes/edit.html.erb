@@ -1,6 +1,12 @@
 <h1>Editing Recipe</h1>
 
-<%= render 'form', recipe: @record %>
+<%= render "form", recipe: @record %>
 
-<%= link_to 'Show', @record %> |
-<%= link_to 'Back', recipes_path %>
+<nav class="nav justify-content-end mt-2">
+  <li class="nav-item">
+    <%= link_to "Show", @record, class: "nav-link" %>
+  </li>
+  <li class="nav-item">
+    <%= link_to "Back", recipes_path, class: "nav-link" %>
+  </li>
+</nav>
