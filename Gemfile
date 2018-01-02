@@ -29,7 +29,6 @@ gem 'groupdate', '3.2.0'
 gem 'state_machines-activerecord', '0.5.0'
 gem 'puma_worker_killer', '0.1.0'
 gem 'pundit', '1.1.0'
-gem 'newrelic_rpm', '4.6.0.338'
 gem 'high_voltage', '3.0.0'
 gem 'sitemap_generator', '6.0.0'
 gem 'redis-objects', '1.4.0'
@@ -41,10 +40,11 @@ gem 'country_select', '3.1.1'
 gem 'gutentag', '2.0.0'
 gem 'kaminari', '1.1.1'
 gem 'sidekiq', '5.0.5'
-gem 'bugsnag', '6.4.0'
 
 group :production do
   gem 'rack-timeout', '0.4.2'
+  gem 'bugsnag', '6.4.0'
+  gem 'newrelic_rpm', '4.6.0.338'
 end
 
 group :development, :test do
