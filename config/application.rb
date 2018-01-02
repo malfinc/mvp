@@ -16,6 +16,7 @@ require "sprockets/railtie"
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
+require_relative "../lib/extensions/simple_form/array_input"
 
 module Poutineer
   class Application < Rails::Application

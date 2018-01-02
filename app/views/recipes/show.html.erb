@@ -1,0 +1,22 @@
+<p id="notice"><%= notice %></p>
+
+<h1><%= @record.name %></h1>
+
+<%= @record.description %>
+
+<h2>Ingredients</h2>
+
+<ul class="list-group">
+  <% @record.ingredients.each do |ingredient| %>
+    <li class="list-group-item"><%= ingredient %></li>
+  <% end %>
+</ol>
+
+<nav class="nav justify-content-end mt-2">
+  <li class="nav-item">
+    <%= link_to "Edit", edit_recipe_path(@record), class: "nav-link" %>
+  </li>
+  <li class="nav-item">
+    <%= link_to "Back", recipes_path, class: "nav-link" %>
+  </li>
+</nav>
