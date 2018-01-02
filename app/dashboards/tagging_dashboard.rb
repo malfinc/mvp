@@ -1,5 +1,3 @@
-require "administrate/base_dashboard"
-
 class Gutentag::TaggingDashboard < Administrate::BaseDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
