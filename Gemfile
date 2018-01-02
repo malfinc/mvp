@@ -37,7 +37,8 @@ gem 'redis-objects', '1.4.0'
 gem 'administrate', '0.8.1'
 gem 'friendly_id', '5.2.3'
 gem 'administrate-field-state_machine', '0.1.2'
-
+gem 'simple_form', '3.5.0'
+gem 'country_select', '3.1.1'
 gem 'gutentag', '2.0.0'
 
 group :production do
@@ -51,6 +52,10 @@ group :development, :test do
   gem 'rspec-rails', '3.7.2'
   gem 'listen', '3.1.5'
   gem 'brakeman', '4.0.1', require: false
+end
+
+group :test do
+  gem 'timecop', '0.9.1'
 end
 
 group :development do
