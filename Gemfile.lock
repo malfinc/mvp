@@ -362,7 +362,6 @@ DEPENDENCIES
   redis-rack-cache (= 2.0.1)
   redis-rails (= 5.0.2)
   rspec-rails (= 3.7.2)
-  sass-rails (= 5.0.7)
   secure_headers (= 5.0.3)
   sidekiq (= 5.0.5)
   simple_form (= 3.5.0)
