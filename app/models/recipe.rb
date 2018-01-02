@@ -77,6 +77,10 @@ class Recipe < ApplicationRecord
     end
   end
 
+  private def should_generate_new_friendly_id?
+    super || send("#{friendly_id_config.base}_changed?")
+  end
+
   private def allowed_to_autopublish?
     current_account.verified? || current_account.moderator?
   end
