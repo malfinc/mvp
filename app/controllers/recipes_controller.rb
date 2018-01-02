@@ -12,7 +12,7 @@ class RecipesController < ApplicationController
   # GET /recipes/new
   def new
     authenticate_account!
-    @record = Recipe.new
+    @record = Recipe.new(current_account: current_account)
   end
 
   # GET /recipes/1/edit
@@ -25,8 +25,8 @@ class RecipesController < ApplicationController
   # POST /recipes
   def create
     authenticate_account!
-    set_recipe
-    @record = Recipe.new(recipe_params)
+    @record = Recipe.new(recipe_params.merge(current_account: current_account))
+    authorize_account!
 
     if @record.save
       redirect_to @record, notice: 'Recipe was successfully created.'
@@ -40,8 +40,9 @@ class RecipesController < ApplicationController
     authenticate_account!
     set_recipe
     authorize_account!
-    if @recipe.update(recipe_params)
-      redirect_to @recipe, notice: 'Recipe was successfully updated.'
+
+    if @record.update(recipe_params)
+      redirect_to @record, notice: 'Recipe was successfully updated.'
     else
       render :edit
     end
@@ -64,6 +65,10 @@ class RecipesController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def recipe_params
-      params.fetch(:recipe, {})
+      {
+        name: params.fetch(:recipe, {}).fetch(:name, nil),
+        description: params.fetch(:recipe, {}).fetch(:description, nil),
+        ingredients: params.fetch(:recipe, {}).fetch(:ingredients, nil)
+      }
     end
 end
