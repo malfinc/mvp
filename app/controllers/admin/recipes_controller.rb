@@ -12,12 +12,18 @@ module Admin
 
     def new
       render locals: {
-        page: Administrate::Page::Form.new(dashboard, resource_class.new.tap { |record| record.current_account = current_account }),
+        page: Administrate::Page::Form.new(dashboard, resource_class.new(current_account: current_account)),
+      }
+    end
+
+    def edit
+      render locals: {
+        page: Administrate::Page::Form.new(dashboard, requested_resource.tap { |record| record.assign_attributes(current_account: current_account) }),
       }
     end
 
     def create
-      resource = resource_class.new(resource_params).tap { |record| record.current_account = current_account }
+      resource = resource_class.new(resource_params.merge(current_account: current_account))
 
       if resource.save
         redirect_to(
@@ -27,6 +33,19 @@ module Admin
       else
         render :new, locals: {
           page: Administrate::Page::Form.new(dashboard, resource),
+        }
+      end
+    end
+
+    def update
+      if requested_resource.update(resource_params.merge(current_account: current_account))
+        redirect_to(
+          [namespace, requested_resource],
+          notice: translate_with_resource("update.success"),
+        )
+      else
+        render :edit, locals: {
+          page: Administrate::Page::Form.new(dashboard, requested_resource),
         }
       end
     end
