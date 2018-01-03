@@ -40,6 +40,7 @@ gem 'country_select', '3.1.1'
 gem 'gutentag', '2.0.0'
 gem 'kaminari', '1.1.1'
 gem 'sidekiq', '5.0.5'
+gem 'devise-async', '1.0.0'
 
 group :production do
   gem 'rack-timeout', '0.4.2'
