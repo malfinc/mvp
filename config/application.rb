@@ -34,9 +34,8 @@ module Poutineer
     config.generators.orm :active_record, primary_key_type: :uuid
 
     config.action_controller.include_all_helpers = false
-
     config.active_record.schema_format = :sql
-
+    config.active_job.queue_adapter = :sidekiq
     config.cache_store = :redis_store, ENV.fetch("REDIS_URL"), { expires_in: 30.minutes, pool_size: Integer(ENV.fetch("RAILS_CACHE_POOL_SIZE")) }
 
     if ENV.fetch("HEROKU_APP_NAME", nil)

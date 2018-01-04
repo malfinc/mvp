@@ -1,1 +1,3 @@
-Devise::Async.backend = :sidekiq
+Devise::Async.setup do |let|
+  let.enabled = true
+end
