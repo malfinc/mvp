@@ -20,6 +20,7 @@ class Account < ApplicationRecord
   devise :rememberable
   devise :timeoutable
   devise :validatable
+  devise :async
 
   state_machine :state, initial: :user do
     event :empower do

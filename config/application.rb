@@ -16,7 +16,9 @@ require "sprockets/railtie"
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
+require 'sidekiq/web'
 require_relative "../lib/extensions/simple_form/array_input"
+require_relative "../lib/poutineer/configuration"
 
 module Poutineer
   class Application < Rails::Application
@@ -34,10 +36,9 @@ module Poutineer
     config.generators.orm :active_record, primary_key_type: :uuid
 
     config.action_controller.include_all_helpers = false
-
     config.active_record.schema_format = :sql
-
-    config.cache_store = :redis_store, ENV.fetch("REDIS_URL"), { expires_in: 30.minutes, pool_size: Integer(ENV.fetch("RAILS_CACHE_POOL_SIZE")) }
+    config.active_job.queue_adapter = :sidekiq
+    config.cache_store = :redis_store, { expires_in: 30.minutes, pool: Poutineer::REDIS_CACHE_CONNECTION_POOL }
 
     if ENV.fetch("HEROKU_APP_NAME", nil)
       Rails.application.config.action_mailer.default_url_options = {

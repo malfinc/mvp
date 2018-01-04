@@ -31,8 +31,8 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
   # config.action_dispatch.x_sendfile_header = 'X-Accel-Redirect' # for NGINX
   config.action_dispatch.rack_cache = {
-    metastore: "#{ENV.fetch("REDIS_URL")}/metastore",
-    entitystore: "#{ENV.fetch("REDIS_URL")}/entitystore"
+    metastore: "#{ENV.fetch("REDIS_CACHE_URL")}/metastore",
+    entitystore: "#{ENV.fetch("REDIS_CACHE_URL")}/entitystore"
   }
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.

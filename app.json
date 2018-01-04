@@ -35,12 +35,18 @@
       "value": "300",
       "required": true
     },
-    "RAILS_CACHE_POOL_SIZE": {
+    "REDIS_CACHE_POOL_SIZE": {
       "value": "2",
       "required": true
     },
-    "REDIS_POOL_SIZE": {
+    "REDIS_STORE_POOL_SIZE": {
       "value": "2",
+      "required": true
+    },
+    "REDIS_CACHE_URL": {
+      "required": true
+    },
+    "REDIS_STORE_URL": {
       "required": true
     },
     "RACK_SERVICE_TIMEOUT": {
@@ -60,7 +66,20 @@
     "logdna",
     "newrelic",
     "heroku-postgresql",
-    "heroku-redis",
+    {
+      "plan": "heroku-redis:hobby-dev",
+      "as": "REDIS_STORE",
+      "options": {
+        "maxmemory_policy": "noeviction"
+      }
+    },
+    {
+      "plan": "heroku-redis:hobby-dev",
+      "as": "REDIS_CACHE",
+      "options": {
+        "maxmemory_policy": "volatile-lru"
+      }
+    },
     "mailtrap"
   ],
   "buildpacks": [

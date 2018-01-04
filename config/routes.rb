@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  authenticate :account, -> (account) { account.administrator?} do
+    mount Sidekiq::Web => '/admin/workers'
+  end
 
   resources :recipes
   devise_for :accounts
