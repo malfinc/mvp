@@ -16,6 +16,7 @@ require "sprockets/railtie"
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
+require 'sidekiq/web'
 require_relative "../lib/extensions/simple_form/array_input"
 require_relative "../lib/poutineer/configuration"
 
