@@ -18,7 +18,7 @@ class Recipe < ApplicationRecord
   validates_presence_of :updated_at, on: :update
 
   before_validation on: :create do
-    self.author = current_account
+    self.author ||= current_account
   end
 
   attr_accessor :current_account
