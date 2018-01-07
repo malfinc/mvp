@@ -9,7 +9,7 @@ class CreateRecipeStateTransitions < ActiveRecord::Migration[5.1]
       table.timestamp :created_at, null: false
 
       table.index :recipe_id
-      table.foreign_key :recipes, :recipe_id
+      table.foreign_key :recipes, column: :recipe_id
     end
   end
 end

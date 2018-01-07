@@ -9,7 +9,7 @@ class CreateAccountStateTransitions < ActiveRecord::Migration[5.1]
       table.timestamp :created_at, null: false
 
       table.index :account_id
-      table.foreign_key :accounts, :account_id
+      table.foreign_key :accounts, column: :account_id
     end
   end
 end
