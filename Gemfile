@@ -7,6 +7,29 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+group :production do
+  gem 'rack-timeout', '0.4.2'
+  gem 'bugsnag', '6.4.0'
+  gem 'newrelic_rpm', '4.6.0.338'
+end
+
+group :development, :test do
+  gem 'dotenv-rails', '2.2.1', require: 'dotenv/rails-now'
+  gem 'byebug', '9.1.0'
+  gem 'web-console', '3.5.1'
+  gem 'rspec-rails', '3.7.2'
+  gem 'listen', '3.1.5'
+  gem 'brakeman', '4.0.1', require: false
+end
+
+group :test do
+  gem 'timecop', '0.9.1'
+end
+
+group :development do
+  gem 'bundler-audit', '0.6.0'
+end
+
 gem 'rails', '5.1.4'
 gem 'pg', '0.21.0'
 gem 'puma', '3.11.0'
@@ -41,28 +64,4 @@ gem 'gutentag', '2.0.0'
 gem 'kaminari', '1.1.1'
 gem 'sidekiq', '5.0.5'
 gem 'devise-async', '1.0.0'
-
-group :production do
-  gem 'rack-timeout', '0.4.2'
-  gem 'bugsnag', '6.4.0'
-  gem 'newrelic_rpm', '4.6.0.338'
-end
-
-group :development, :test do
-  gem 'dotenv-rails', '2.2.1', require: 'dotenv/rails-now'
-  gem 'byebug', '9.1.0'
-  gem 'web-console', '3.5.1'
-  gem 'rspec-rails', '3.7.2'
-  gem 'listen', '3.1.5'
-  gem 'brakeman', '4.0.1', require: false
-end
-
-group :test do
-  gem 'timecop', '0.9.1'
-end
-
-group :development do
-  gem 'bundler-audit', '0.6.0'
-end
-
 gem 'state_machines-audit_trail', '2.0.1'
