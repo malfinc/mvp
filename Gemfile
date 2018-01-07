@@ -64,3 +64,5 @@ end
 group :development do
   gem 'bundler-audit', '0.6.0'
 end
+
+gem 'state_machines-audit_trail', '2.0.1'
