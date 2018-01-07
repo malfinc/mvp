@@ -9,6 +9,7 @@ class Recipe < ApplicationRecord
   belongs_to :publisher, class_name: "Account", optional: true
   belongs_to :denier, class_name: "Account", optional: true
   belongs_to :remover, class_name: "Account", optional: true
+  has_many :recipe_state_transitions, dependent: :destroy
 
   validates_presence_of :slug
   validates_presence_of :ingredients
@@ -25,11 +26,9 @@ class Recipe < ApplicationRecord
 
   friendly_id :name, :use => [:slugged, :history]
 
-  value :queued_at, marshal: true
-  value :published_at, marshal: true
-  value :removed_at, marshal: true
-
   state_machine :state, initial: :draft do
+    audit_trail
+
     event :publish do
       transition :draft => :queued
     end
@@ -50,29 +49,11 @@ class Recipe < ApplicationRecord
       transition :queued => :published, if: :allowed_to_approve?
     end
 
-    before_transition any => :queued do |record|
-      record.queued_at = Time.zone.now
-    end
-
-    before_transition any => :published do |record|
-      record.published_at = Time.zone.now
-    end
-
-    before_transition any => :removed do |record|
-      record.removed_at = Time.zone.now
-    end
-
-    state :queued do
-      validates_presence_of :queued_at
-    end
-
     state :removed do
-      validates_presence_of :removed_at
       validates_presence_of :remover
     end
 
     state :published do
-      validates_presence_of :published_at
       validates_presence_of :publisher
     end
   end

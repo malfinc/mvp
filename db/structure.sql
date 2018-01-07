@@ -70,6 +70,21 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: account_state_transitions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE account_state_transitions (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    account_id uuid NOT NULL,
+    namespace character varying NOT NULL,
+    event character varying NOT NULL,
+    "from" character varying NOT NULL,
+    "to" character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: accounts; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -187,6 +202,21 @@ CREATE TABLE gutentag_tags (
 
 
 --
+-- Name: recipe_state_transitions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE recipe_state_transitions (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    recipe_id uuid NOT NULL,
+    namespace character varying NOT NULL,
+    event character varying NOT NULL,
+    "from" character varying NOT NULL,
+    "to" character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: recipes; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -231,6 +261,14 @@ ALTER TABLE ONLY gutentag_taggings ALTER COLUMN id SET DEFAULT nextval('gutentag
 
 
 --
+-- Name: account_state_transitions account_state_transitions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY account_state_transitions
+    ADD CONSTRAINT account_state_transitions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: accounts accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -271,6 +309,14 @@ ALTER TABLE ONLY gutentag_tags
 
 
 --
+-- Name: recipe_state_transitions recipe_state_transitions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY recipe_state_transitions
+    ADD CONSTRAINT recipe_state_transitions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: recipes recipes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -284,6 +330,13 @@ ALTER TABLE ONLY recipes
 
 ALTER TABLE ONLY schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
+
+
+--
+-- Name: index_account_state_transitions_on_account_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_account_state_transitions_on_account_id ON account_state_transitions USING btree (account_id);
 
 
 --
@@ -382,6 +435,13 @@ CREATE UNIQUE INDEX index_gutentag_tags_on_name ON gutentag_tags USING btree (na
 --
 
 CREATE INDEX index_gutentag_tags_on_updated_at ON gutentag_tags USING btree (updated_at);
+
+
+--
+-- Name: index_recipe_state_transitions_on_recipe_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_recipe_state_transitions_on_recipe_id ON recipe_state_transitions USING btree (recipe_id);
 
 
 --
@@ -488,6 +548,22 @@ ALTER TABLE ONLY recipes
 
 
 --
+-- Name: account_state_transitions fk_rails_69f80da2a7; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY account_state_transitions
+    ADD CONSTRAINT fk_rails_69f80da2a7 FOREIGN KEY (account_id) REFERENCES accounts(id);
+
+
+--
+-- Name: recipe_state_transitions fk_rails_70b77816ec; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY recipe_state_transitions
+    ADD CONSTRAINT fk_rails_70b77816ec FOREIGN KEY (recipe_id) REFERENCES recipes(id);
+
+
+--
 -- Name: gutentag_taggings fk_rails_cb73a18b77; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -508,6 +584,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171203064940'),
 ('20171210085937'),
 ('20171230031126'),
-('20171231104815');
+('20171231104815'),
+('20180106211740'),
+('20180106211741');
 
 
