@@ -1,0 +1,96 @@
+{
+  "name": "blank-api-rails",
+  "description": "A blank rails api",
+  "scripts": {
+    "postdeploy": "bin/postdeploy"
+  },
+  "env": {
+    "RAILS_HOST": {
+      "required": true
+    },
+    "ORIGIN_ENCRYPTION_PRIVATE": {
+      "generator": "secret"
+    },
+    "ORIGIN_ENCRYPTION_SALT": {
+      "generator": "secret"
+    },
+    "RAILS_MASTER_KEY": {
+      "generator": "secret"
+    },
+    "RAILS_MAX_THREADS": {
+      "value": "5",
+      "required": true
+    },
+    "RAILS_SESSION_PRIVATE": {
+      "generator": "secret"
+    },
+    "WEB_CONCURRENCY": {
+      "value": "2",
+      "required": true
+    },
+    "RAILS_EMAIL_FROM": {
+      "required": true
+    },
+    "PGBOUNCER_POOL": {
+      "value": "300",
+      "required": true
+    },
+    "REDIS_CACHE_POOL_SIZE": {
+      "value": "2",
+      "required": true
+    },
+    "REDIS_STORE_POOL_SIZE": {
+      "value": "2",
+      "required": true
+    },
+    "REDIS_CACHE_URL": {
+      "required": true
+    },
+    "REDIS_STORE_URL": {
+      "required": true
+    },
+    "RACK_SERVICE_TIMEOUT": {
+      "required": true
+    },
+    "HEROKU_APP_NAME": {
+      "required": true
+    },
+    "HEROKU_PARENT_APP_NAME": {
+      "required": true
+    }
+  },
+  "formation": {
+  },
+  "addons": [
+    "librato",
+    "logdna",
+    "newrelic",
+    "heroku-postgresql",
+    {
+      "plan": "heroku-redis:hobby-dev",
+      "as": "REDIS_STORE",
+      "options": {
+        "maxmemory_policy": "noeviction"
+      }
+    },
+    {
+      "plan": "heroku-redis:hobby-dev",
+      "as": "REDIS_CACHE",
+      "options": {
+        "maxmemory_policy": "volatile-lru"
+      }
+    },
+    "mailtrap"
+  ],
+  "buildpacks": [
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-pgbouncer"
+    },
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "heroku/ruby"
+    }
+  ]
+}
