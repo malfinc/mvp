@@ -40,5 +40,19 @@ module BlankApiRails
     config.active_record.schema_format = :sql
     config.cache_store = :redis_store, { expires_in: 30.minutes, pool: Poutineer::REDIS_CACHE_CONNECTION_POOL }
 
+    if ENV.fetch("HEROKU_APP_NAME", nil)
+      Rails.application.config.action_mailer.default_url_options = {
+        host: "#{ENV.fetch("HEROKU_APP_NAME")}.herokuapp.com"
+      }
+    elsif Rails.env.production?
+      Rails.application.config.action_mailer.default_url_options = {
+        host: ENV.fetch("RAILS_HOST")
+      }
+    else
+      Rails.application.config.action_mailer.default_url_options = {
+        host: ENV.fetch("RAILS_HOST"),
+        port: ENV.fetch("PORT")
+      }
+    end
   end
 end
