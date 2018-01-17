@@ -37,7 +37,8 @@ module BlankApiRails
     config.generators.orm :active_record, primary_key_type: :uuid
 
     config.action_controller.include_all_helpers = false
-
     config.active_record.schema_format = :sql
+    config.cache_store = :redis_store, { expires_in: 30.minutes, pool: Poutineer::REDIS_CACHE_CONNECTION_POOL }
+
   end
 end
