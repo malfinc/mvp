@@ -39,7 +39,7 @@ module BlankApiRails
     config.action_controller.include_all_helpers = false
     config.active_record.schema_format = :sql
     config.active_job.queue_adapter = :sidekiq
-    config.cache_store = :redis_store, { expires_in: 30.minutes, pool: Poutineer::REDIS_CACHE_CONNECTION_POOL }
+    config.cache_store = :redis_store, { expires_in: 30.minutes, pool: BlankApiRails::REDIS_CACHE_CONNECTION_POOL }
 
     if ENV.fetch("HEROKU_APP_NAME", nil)
       Rails.application.config.action_mailer.default_url_options = {
