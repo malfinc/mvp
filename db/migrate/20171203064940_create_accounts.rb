@@ -1,6 +1,6 @@
 class CreateAccounts < ActiveRecord::Migration[5.1]
   def change
-    create_table :accounts do |table|
+    create_table :accounts, id: :uuid do |table|
       table.text :name, null: false
       table.citext :email, null: false
       table.citext :username, null: false
