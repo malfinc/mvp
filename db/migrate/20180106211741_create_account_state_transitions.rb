@@ -1,6 +1,6 @@
 class CreateAccountStateTransitions < ActiveRecord::Migration[5.1]
   def change
-    create_table :account_state_transitions, id: :uuid do |table|
+    create_table :account_role_state_transitions, id: :uuid do |table|
       table.uuid :account_id, null: false
       table.string :namespace, null: false
       table.string :event, null: false
