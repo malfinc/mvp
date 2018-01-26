@@ -1,6 +1,6 @@
 class GutentagTables < ActiveRecord::Migration[5.1]
   def change
-    create_table :gutentag_tags, id: :uuid do |table|
+    create_table :gutentag_tags do |table|
       table.citext :name, null: false
       table.integer :taggings_count, null: false, default: 0
       table.timestamps null: false
@@ -11,7 +11,7 @@ class GutentagTables < ActiveRecord::Migration[5.1]
     end
 
     create_table :gutentag_taggings do |table|
-      table.uuid :tag_id, null: false
+      table.integer :tag_id, null: false
       table.uuid :taggable_id, null: false
       table.string :taggable_type, null: false
       table.timestamps null: false
