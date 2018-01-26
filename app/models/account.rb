@@ -18,7 +18,7 @@ class Account < ApplicationRecord
   devise :validatable
   devise :async
 
-  state_machine :state, initial: :user do
+  state_machine :role_state, initial: :user do
     event :empower do
       transition user: :moderator
     end

@@ -4,7 +4,7 @@ class CreateAccounts < ActiveRecord::Migration[5.1]
       table.text :name, null: false
       table.citext :email, null: false
       table.citext :username, null: false
-      table.citext :state, null: false
+      table.citext :role_state, null: false
       table.string :encrypted_password, null: false
       table.string :reset_password_token
       table.datetime :reset_password_sent_at
@@ -20,7 +20,7 @@ class CreateAccounts < ActiveRecord::Migration[5.1]
 
       table.index :email, unique: true
       table.index :username, unique: true
-      table.index :state
+      table.index :role_state
       table.index :confirmation_token, unique: true
       table.index :unlock_token, unique: true
     end
