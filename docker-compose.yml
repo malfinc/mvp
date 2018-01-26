@@ -2,9 +2,10 @@ version: '2'
 services:
   origin:
     build:
-      context: ./origin
+      context: ./
+      dockerfile: Dockerfile.origin
     volumes:
-      - ./origin:/usr/lib/origin
+      - ./:/usr/lib/origin
     depends_on:
       - postgres
       - redis
