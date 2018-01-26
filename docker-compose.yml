@@ -1,0 +1,43 @@
+version: '2'
+services:
+  origin:
+    build:
+      context: ./origin
+    volumes:
+      - ./origin:/usr/lib/origin
+    depends_on:
+      - postgres
+      - redis
+      - proxy
+    environment:
+      - RAILS_ENV=development
+      - DATABASE_HOST=postgres
+      - REDIS_CACHE_URL=redis://redis:6379/0
+      - REDIS_STORE_URL=redis://redis:6379/1
+      - ORIGIN_ENCRYPTION_PRIVATE
+      - ORIGIN_ENCRYPTION_SALT
+      - RAILS_SESSION_PRIVATE
+      - REDIS_STORE_POOL_SIZE=5
+      - REDIS_CACHE_POOL_SIZE=5
+      - RAILS_MAX_THREADS=5
+      - RAILS_EMAIL_FROM=noreply@blank-api-rails.local
+      - ORIGIN_LOCATION=http://origin.blank-api-rails.local
+      - WWW_LOCATION=http://www.blank-api-rails.local
+      - RAILS_HOST=origin.blank-api-rails.local
+      - VIRTUAL_HOST=origin.blank-api-rails.local
+      - BUGSNAG_API_PRIVATE
+  postgres:
+    image: postgres:10.1.0-alpine
+    environment:
+      - VIRTUAL_HOST=postgres.shelf.local
+  redis:
+    image: redis:3.2.11-alpine
+    environment:
+      - VIRTUAL_HOST=redis.shelf.local
+  proxy:
+    image: jwilder/nginx-proxy:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./proxy/:/etc/nginx/conf.d/

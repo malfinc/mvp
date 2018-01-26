@@ -1,0 +1,30 @@
+FROM ruby:2.4.3-stretch
+
+ENV APPLICATION /usr/lib/shelf
+ENV RAILS_ENV production
+ENV PORT 3001
+
+WORKDIR $APPLICATION
+
+RUN apt-get install -y --no-install-recommends postgresql-client-10.1
+RUN gem install bundler
+
+COPY Gemfile $APPLICATION/
+COPY Gemfile.lock $APPLICATION/
+
+RUN bundle install --jobs 20 --retry 5
+
+COPY app/ $APPLICATION/app/
+COPY bin/ $APPLICATION/bin/
+COPY config/ $APPLICATION/config/
+COPY db/ $APPLICATION/db/
+COPY lib/ $APPLICATION/lib/
+COPY public/ $APPLICATION/public/
+COPY config.ru $APPLICATION/config.ru
+COPY Rakefile $APPLICATION/Rakefile
+
+RUN bin/release
+
+EXPOSE $PORT
+
+CMD ["bin/rails", "server", "--binding", "0.0.0.0"]
