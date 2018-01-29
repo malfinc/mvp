@@ -1,5 +1,5 @@
-class AccountStateTransition < ApplicationRecord
-  belongs_to :account
+class PaymentPurchaseStateTransition < ApplicationRecord
+  belongs_to :payment
 
   validate_presence_of :namespace
   validate_presence_of :from
