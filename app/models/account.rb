@@ -21,6 +21,9 @@ class Account < ApplicationRecord
   devise :validatable
   devise :async
 
+  before_validation :generate_password, unless: :encrypted_password?
+  before_validation :generate_authentication_secret, unless: :authentication_secret?
+
   state_machine :role_state, initial: :user do
     event :empower do
       transition user: :moderator
@@ -58,4 +61,11 @@ class Account < ApplicationRecord
     @current_cart ||= carts.find_or_create_by(checkout_state: :fresh)
   end
 
+  private def generate_password
+    assign_attributes(password: SecureRandom.hex(120))
+  end
+
+  private def generate_authentication_secret
+    assign_attributes(authentication_secret: SecureRandom.hex(120))
+  end
 end
