@@ -14,27 +14,28 @@ services:
       - RAILS_ENV=development
       - DATABASE_HOST=postgres
       - REDIS_CACHE_URL=redis://redis:6379/0
-      - REDIS_STORE_URL=redis://redis:6379/1
-      - ORIGIN_ENCRYPTION_PRIVATE
-      - ORIGIN_ENCRYPTION_SALT
-      - RAILS_SESSION_PRIVATE
-      - REDIS_STORE_POOL_SIZE=5
       - REDIS_CACHE_POOL_SIZE=5
-      - RAILS_MAX_THREADS=5
+      - REDIS_STORE_URL=redis://redis:6379/1
+      - REDIS_STORE_POOL_SIZE=5
+      - RAILS_MAX_THREADS=4
+      - WEB_CONCURRENCY=2
       - RAILS_EMAIL_FROM=noreply@blank-api-rails.local
       - ORIGIN_LOCATION=http://origin.blank-api-rails.local
       - WWW_LOCATION=http://www.blank-api-rails.local
       - RAILS_HOST=origin.blank-api-rails.local
       - VIRTUAL_HOST=origin.blank-api-rails.local
       - BUGSNAG_API_PRIVATE
+      - ORIGIN_ENCRYPTION_PRIVATE
+      - ORIGIN_ENCRYPTION_SALT
+      - RAILS_SESSION_PRIVATE
   postgres:
-    image: postgres:10.1-alpine
+    image: postgres:9.6-alpine
     environment:
-      - VIRTUAL_HOST=postgres.shelf.local
+      - VIRTUAL_HOST=postgres.blank-api-rails.local
   redis:
     image: redis:3.2.11-alpine
     environment:
-      - VIRTUAL_HOST=redis.shelf.local
+      - VIRTUAL_HOST=redis.blank-api-rails.local
   proxy:
     image: jwilder/nginx-proxy:alpine
     ports:

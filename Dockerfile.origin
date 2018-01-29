@@ -1,12 +1,13 @@
-FROM ruby:2.4.3-stretch
+FROM ruby:2.5.0-stretch
 
-ENV APPLICATION /usr/lib/shelf
+ENV APPLICATION /usr/lib/origin
 ENV RAILS_ENV production
 ENV PORT 3001
 
 WORKDIR $APPLICATION
 
-RUN apt-get install -y --no-install-recommends postgresql-client-10.1
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends postgresql-client-9.6
 RUN gem install bundler
 
 COPY Gemfile $APPLICATION/
@@ -22,8 +23,6 @@ COPY lib/ $APPLICATION/lib/
 COPY public/ $APPLICATION/public/
 COPY config.ru $APPLICATION/config.ru
 COPY Rakefile $APPLICATION/Rakefile
-
-RUN bin/release
 
 EXPOSE $PORT
 
