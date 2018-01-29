@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo "- Executing on origin container" &&
+docker-compose exec origin "$@"

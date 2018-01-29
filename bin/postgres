@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo "- Executing on postgres container" &&
+docker-compose exec postgres "$@"

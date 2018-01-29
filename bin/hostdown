@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+echo "- Setting hostnames" &&
+sudo npm run hostile -- remove redis.blank-api-rails.local &&
+sudo npm run hostile -- remove postgres.blank-api-rails.local &&
+sudo npm run hostile -- remove origin.blank-api-rails.local

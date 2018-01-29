@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo "- Building the container(s)" &&
+docker-compose build $1

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+echo "- Booting containers" &&
+rm -rf ./tmp/pids/server.pid &&
+docker-compose up -d --remove-orphans $1

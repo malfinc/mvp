@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo "- Returning stats for container" &&
+docker stats $(docker ps --format={{.Names}})

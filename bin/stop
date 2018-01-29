@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo "- Stoping instance" &&
+docker-compose stop $1

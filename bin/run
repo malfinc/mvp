@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo "- Creating an instance to run a command" &&
+docker-compose run --rm $@

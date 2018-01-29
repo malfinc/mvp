@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+echo "- Cleaning up orphans and temporary files" &&
+docker-compose rm --force
+docker system prune --force
+bin/run origin bin/rake tmp:clear log:clear LOGS=all
