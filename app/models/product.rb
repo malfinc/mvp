@@ -11,7 +11,7 @@ class Product < ApplicationRecord
   validates_presence_of :price
   validates_presence_of :price_cents
   validates_presence_of :price_currency
-  validates_presence_of :metadata
+  validates_presence_of :metadata, on: :update
   validates_presence_of :slug
   validates_presence_of :visibility_state
   validates_presence_of :checksum
