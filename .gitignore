@@ -15,3 +15,4 @@
 
 .byebug_history
 .env
+proxy/default.conf
