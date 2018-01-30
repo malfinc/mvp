@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :accounts
   mount JSONAPI::Resources::Home::Engine, at: "/"
 
   namespace :v1 do
