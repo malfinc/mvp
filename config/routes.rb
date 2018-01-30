@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount JSONAPI::Resources::Home::Engine, at: "/"
+
   namespace :v1 do
     jsonapi_resources :accounts
     jsonapi_resources :carts
