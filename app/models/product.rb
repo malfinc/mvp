@@ -1,4 +1,6 @@
 class Product < ApplicationRecord
+  include FriendlyId
+
   has_many :cart_items
   has_many :product_visibility_state_transitions
 
