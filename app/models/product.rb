@@ -16,7 +16,8 @@ class Product < ApplicationRecord
   validates_presence_of :visibility_state
   validates_presence_of :checksum
 
-  before_validations :generate_checksum
+  before_validation :generate_checksum
+
 
   private def generate_checksum
     assign_attributes(checksum: metadata.hash)
