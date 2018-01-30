@@ -3,6 +3,8 @@ class CartItem < ApplicationRecord
   belongs_to :account
   belongs_to :product
 
+  monetize :price_cents
+
   validates_presence_of :price
   validates_presence_of :price_cents
   validates_presence_of :price_currency
