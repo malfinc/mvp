@@ -20,6 +20,15 @@ class Product < ApplicationRecord
 
   before_validation :generate_checksum
 
+  state_machine :visibility_state, initial: :hidden do
+    event :hide do
+      transition :visible => :hidden
+    end
+
+    event :show do
+      transition :hidden => :visible
+    end
+  end
 
   private def generate_checksum
     assign_attributes(checksum: metadata.hash)
