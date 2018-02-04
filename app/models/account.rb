@@ -1,5 +1,4 @@
 class Account < ApplicationRecord
-  include Redis::Objects
   include FriendlyId
 
   USERNAME_PATTERN = /\A[a-zA-Z0-9_-]+\z/i
