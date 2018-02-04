@@ -23,8 +23,8 @@ class Cart < ApplicationRecord
       transition to: :payment, unless: :payment?
     end
 
-    event :complete do
-      transition from: all - [:fresh], to: :completed, if: :has_all_information?
+    event :purchase do
+      transition to: :purchased, if: :has_all_information?
     end
   end
 
