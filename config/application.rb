@@ -18,7 +18,7 @@ require "sprockets/railtie"
 Bundler.require(*Rails.groups)
 require 'sidekiq/web'
 require_relative "../lib/extensions/simple_form/array_input"
-require_relative "../lib/poutineer/configuration"
+require_relative "../lib/source/configuration"
 
 module Poutineer
   class Application < Rails::Application
