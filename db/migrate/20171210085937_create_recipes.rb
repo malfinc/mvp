@@ -3,7 +3,7 @@ class CreateRecipes < ActiveRecord::Migration[5.1]
     create_table :recipes, id: :uuid do |table|
       table.text :name, null: false
       table.citext :slug, null: false
-      table.citext :state, null: false
+      table.citext :queue_state, null: false
       table.text :description, null: false
       table.uuid :author_id, null: false
       table.uuid :approver_id
@@ -18,7 +18,7 @@ class CreateRecipes < ActiveRecord::Migration[5.1]
       table.index :publisher_id
       table.index :denier_id
       table.index :remover_id
-      table.index :state
+      table.index :queue_state
       table.index :slug, unique: true
 
       table.foreign_key :accounts, column: :author_id

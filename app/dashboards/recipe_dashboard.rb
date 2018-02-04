@@ -16,7 +16,7 @@ class RecipeDashboard < ApplicationDashboard
     name: Field::String,
     slug: Field::String,
     description: Field::Text,
-    state: Field::StateMachine,
+    queue_state: Field::StateMachine,
     author_id: Field::String.with_options(searchable: false),
     approver_id: Field::String.with_options(searchable: false),
     publisher_id: Field::String.with_options(searchable: false),
@@ -44,7 +44,7 @@ class RecipeDashboard < ApplicationDashboard
   SHOW_PAGE_ATTRIBUTES = [
     :id,
     :slug,
-    :state,
+    :queue_state,
     :slugs,
     :name,
     :description,
@@ -63,7 +63,7 @@ class RecipeDashboard < ApplicationDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :name,
-    :state,
+    :queue_state,
     :author,
     :description,
   ].freeze

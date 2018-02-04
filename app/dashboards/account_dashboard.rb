@@ -15,7 +15,7 @@ class AccountDashboard < ApplicationDashboard
     id: Field::String.with_options(searchable: false),
     email: Field::Email,
     username: Field::Text,
-    state: Field::String,
+    role_state: Field::String,
     encrypted_password: Field::String,
     reset_password_token: Field::String,
     reset_password_sent_at: Field::DateTime,
@@ -39,7 +39,7 @@ class AccountDashboard < ApplicationDashboard
   COLLECTION_ATTRIBUTES = [
     :email,
     :username,
-    :state,
+    :role_state,
     :created_at,
     :recipes,
   ].freeze
@@ -51,7 +51,7 @@ class AccountDashboard < ApplicationDashboard
     :id,
     :email,
     :username,
-    :state,
+    :role_state,
     :failed_attempts,
     :locked_at,
     :reset_password_sent_at,

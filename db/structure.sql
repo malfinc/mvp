@@ -70,10 +70,10 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: account_state_transitions; Type: TABLE; Schema: public; Owner: -
+-- Name: account_role_state_transitions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE account_state_transitions (
+CREATE TABLE account_role_state_transitions (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     account_id uuid NOT NULL,
     namespace character varying NOT NULL,
@@ -93,7 +93,7 @@ CREATE TABLE accounts (
     name text,
     email citext NOT NULL,
     username citext NOT NULL,
-    state citext NOT NULL,
+    role_state citext NOT NULL,
     encrypted_password character varying NOT NULL,
     reset_password_token character varying,
     reset_password_sent_at timestamp without time zone,
@@ -202,10 +202,10 @@ CREATE TABLE gutentag_tags (
 
 
 --
--- Name: recipe_state_transitions; Type: TABLE; Schema: public; Owner: -
+-- Name: recipe_queue_state_transitions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE recipe_state_transitions (
+CREATE TABLE recipe_queue_state_transitions (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     recipe_id uuid NOT NULL,
     namespace character varying NOT NULL,
@@ -224,7 +224,7 @@ CREATE TABLE recipes (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     name text NOT NULL,
     slug citext NOT NULL,
-    state citext NOT NULL,
+    queue_state citext NOT NULL,
     description text NOT NULL,
     author_id uuid NOT NULL,
     approver_id uuid,
@@ -261,11 +261,11 @@ ALTER TABLE ONLY gutentag_taggings ALTER COLUMN id SET DEFAULT nextval('gutentag
 
 
 --
--- Name: account_state_transitions account_state_transitions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: account_role_state_transitions account_role_state_transitions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY account_state_transitions
-    ADD CONSTRAINT account_state_transitions_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY account_role_state_transitions
+    ADD CONSTRAINT account_role_state_transitions_pkey PRIMARY KEY (id);
 
 
 --
@@ -309,11 +309,11 @@ ALTER TABLE ONLY gutentag_tags
 
 
 --
--- Name: recipe_state_transitions recipe_state_transitions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: recipe_queue_state_transitions recipe_queue_state_transitions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY recipe_state_transitions
-    ADD CONSTRAINT recipe_state_transitions_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY recipe_queue_state_transitions
+    ADD CONSTRAINT recipe_queue_state_transitions_pkey PRIMARY KEY (id);
 
 
 --
@@ -333,10 +333,10 @@ ALTER TABLE ONLY schema_migrations
 
 
 --
--- Name: index_account_state_transitions_on_account_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_account_role_state_transitions_on_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_account_state_transitions_on_account_id ON account_state_transitions USING btree (account_id);
+CREATE INDEX index_account_role_state_transitions_on_account_id ON account_role_state_transitions USING btree (account_id);
 
 
 --
@@ -354,10 +354,10 @@ CREATE UNIQUE INDEX index_accounts_on_email ON accounts USING btree (email);
 
 
 --
--- Name: index_accounts_on_state; Type: INDEX; Schema: public; Owner: -
+-- Name: index_accounts_on_role_state; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_accounts_on_state ON accounts USING btree (state);
+CREATE INDEX index_accounts_on_role_state ON accounts USING btree (role_state);
 
 
 --
@@ -438,10 +438,10 @@ CREATE INDEX index_gutentag_tags_on_updated_at ON gutentag_tags USING btree (upd
 
 
 --
--- Name: index_recipe_state_transitions_on_recipe_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_recipe_queue_state_transitions_on_recipe_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_recipe_state_transitions_on_recipe_id ON recipe_state_transitions USING btree (recipe_id);
+CREATE INDEX index_recipe_queue_state_transitions_on_recipe_id ON recipe_queue_state_transitions USING btree (recipe_id);
 
 
 --
@@ -480,6 +480,13 @@ CREATE INDEX index_recipes_on_publisher_id ON recipes USING btree (publisher_id)
 
 
 --
+-- Name: index_recipes_on_queue_state; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_recipes_on_queue_state ON recipes USING btree (queue_state);
+
+
+--
 -- Name: index_recipes_on_remover_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -491,13 +498,6 @@ CREATE INDEX index_recipes_on_remover_id ON recipes USING btree (remover_id);
 --
 
 CREATE UNIQUE INDEX index_recipes_on_slug ON recipes USING btree (slug);
-
-
---
--- Name: index_recipes_on_state; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_recipes_on_state ON recipes USING btree (state);
 
 
 --
@@ -513,6 +513,14 @@ CREATE INDEX index_recipes_on_updated_at ON recipes USING btree (updated_at);
 
 ALTER TABLE ONLY recipes
     ADD CONSTRAINT fk_rails_08ee84afe6 FOREIGN KEY (author_id) REFERENCES accounts(id);
+
+
+--
+-- Name: account_role_state_transitions fk_rails_0c30cd3475; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY account_role_state_transitions
+    ADD CONSTRAINT fk_rails_0c30cd3475 FOREIGN KEY (account_id) REFERENCES accounts(id);
 
 
 --
@@ -532,6 +540,14 @@ ALTER TABLE ONLY recipes
 
 
 --
+-- Name: recipe_queue_state_transitions fk_rails_43d582b07f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY recipe_queue_state_transitions
+    ADD CONSTRAINT fk_rails_43d582b07f FOREIGN KEY (recipe_id) REFERENCES recipes(id);
+
+
+--
 -- Name: recipes fk_rails_4453ed7f7d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -545,22 +561,6 @@ ALTER TABLE ONLY recipes
 
 ALTER TABLE ONLY recipes
     ADD CONSTRAINT fk_rails_486627d510 FOREIGN KEY (remover_id) REFERENCES accounts(id);
-
-
---
--- Name: account_state_transitions fk_rails_69f80da2a7; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY account_state_transitions
-    ADD CONSTRAINT fk_rails_69f80da2a7 FOREIGN KEY (account_id) REFERENCES accounts(id);
-
-
---
--- Name: recipe_state_transitions fk_rails_70b77816ec; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY recipe_state_transitions
-    ADD CONSTRAINT fk_rails_70b77816ec FOREIGN KEY (recipe_id) REFERENCES recipes(id);
 
 
 --

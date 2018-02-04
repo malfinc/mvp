@@ -9,7 +9,7 @@ class Account < ApplicationRecord
   has_many :published_recipes, class_name: "Recipe", foreign_key: :publisher_id
   has_many :denied_recipes, class_name: "Recipe", foreign_key: :denier_id
   has_many :removed_recipes, class_name: "Recipe", foreign_key: :remover_id
-  has_many :account_state_transitions
+  has_many :account_role_state_transitions
 
   friendly_id :email, use: [:slugged, :history], slug_column: :username
 
@@ -23,7 +23,7 @@ class Account < ApplicationRecord
   devise :validatable
   devise :async
 
-  state_machine :state, initial: :user do
+  state_machine :role_state, initial: :user do
     event :empower do
       transition user: :moderator
     end

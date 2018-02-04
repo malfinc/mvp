@@ -9,7 +9,7 @@ class Recipe < ApplicationRecord
   belongs_to :publisher, class_name: "Account", optional: true
   belongs_to :denier, class_name: "Account", optional: true
   belongs_to :remover, class_name: "Account", optional: true
-  has_many :recipe_state_transitions, dependent: :destroy
+  has_many :recipe_queue_state_transitions, dependent: :destroy
 
   validates_presence_of :slug
   validates_presence_of :ingredients
@@ -26,7 +26,7 @@ class Recipe < ApplicationRecord
 
   friendly_id :name, :use => [:slugged, :history]
 
-  state_machine :state, initial: :draft do
+  state_machine :queue_state, initial: :draft do
     audit_trail
 
     event :publish do
