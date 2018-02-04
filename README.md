@@ -14,6 +14,8 @@ The following assumes you've installed `homebrew` or know another way to install
   0. `cd mvp`
   0. `bundle install`
   0. `cp sample_env .env`
+  0. `brew services start postgresql`
+  0. `brew services start redis`
   0. `bin/rake db:create`
   0. `bin/postdeploy`
 
