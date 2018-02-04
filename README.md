@@ -2,16 +2,19 @@
 
 ## Setup
 
-  1. install git
-  2. install ruby
-  3. install postgresql
-  4. install redis
-  5. install imagemagick
-  6. install heroku cli
-  7. clone this repository
-  8. run `bundle install`
-  9. run `bin/rake db:create`
-  10. run `bin/postdeploy`
+The following assumes you've installed `homebrew` or know another way to install these:
+
+  0. `brew install git`
+  0. `brew install ruby`
+  0. `brew install postgresql`
+  0. `brew install redis`
+  0. `brew install imagemagick`
+  0. `brew install heroku cli`
+  0. `git clone https://github.com/Poutineer/mvp.git` (Or use the ssh version)
+  0. `cd mvp`
+  0. `bundle install`
+  0. `bin/rake db:create`
+  0. `bin/postdeploy`
 
 
 ## Using
