@@ -13,6 +13,7 @@ The following assumes you've installed `homebrew` or know another way to install
   0. `git clone https://github.com/Poutineer/mvp.git` (Or use the ssh version)
   0. `cd mvp`
   0. `bundle install`
+  0. `cp sample_env .env`
   0. `bin/rake db:create`
   0. `bin/postdeploy`
 
