@@ -76,7 +76,7 @@ SET default_with_oids = false;
 CREATE TABLE account_role_state_transitions (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     account_id uuid NOT NULL,
-    namespace character varying NOT NULL,
+    namespace character varying,
     event character varying NOT NULL,
     "from" character varying NOT NULL,
     "to" character varying NOT NULL,
@@ -208,7 +208,7 @@ CREATE TABLE gutentag_tags (
 CREATE TABLE recipe_queue_state_transitions (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     recipe_id uuid NOT NULL,
-    namespace character varying NOT NULL,
+    namespace character varying,
     event character varying NOT NULL,
     "from" character varying NOT NULL,
     "to" character varying NOT NULL,
