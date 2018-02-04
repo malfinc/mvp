@@ -3,8 +3,8 @@ class CreateRecipeQueueStateTransitions < ActiveRecord::Migration[5.1]
     create_table :recipe_queue_state_transitions, id: :uuid do |table|
       table.uuid :recipe_id, null: false
       table.string :namespace
-      table.string :event, null: false
-      table.string :from, null: false
+      table.string :event
+      table.string :from
       table.string :to, null: false
       table.timestamp :created_at, null: false
 

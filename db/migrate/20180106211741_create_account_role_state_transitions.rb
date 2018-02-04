@@ -3,8 +3,8 @@ class CreateAccountRoleStateTransitions < ActiveRecord::Migration[5.1]
     create_table :account_role_state_transitions, id: :uuid do |table|
       table.uuid :account_id, null: false
       table.string :namespace
-      table.string :event, null: false
-      table.string :from, null: false
+      table.string :event
+      table.string :from
       table.string :to, null: false
       table.timestamp :created_at, null: false
 
