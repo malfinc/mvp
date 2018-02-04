@@ -54,4 +54,21 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  config.include Devise::TestHelpers, type: :controller
+  config.include Warden::Test::Helpers, type: :controller
+  config.include Warden::Test::Helpers, type: :request
+
+  config.before(:suite) do
+    Warden.test_mode!
+  end
+
+  config.after(:each) do
+    Warden.test_reset!
+  end
+
+  config.before(:each) do
+    BlankApiRails::REDIS_STORE_CONNECTION_POOL.with(&:flushdb)
+    BlankApiRails::REDIS_CACHE_CONNECTION_POOL.with(&:flushdb)
+  end
 end
