@@ -1,4 +1,6 @@
 class Cart < ApplicationRecord
+  include AuditActor
+
   belongs_to :account
   belongs_to :payment
   belongs_to :shipping_information
@@ -7,6 +9,8 @@ class Cart < ApplicationRecord
   validates_presence_of :checkout_state
 
   state_machine :checkout_state, initial: :fresh do
+    audit_trail initial: false, context: :audit_actor_id
+
     event :ask_for_shipping do
       transition to: :shipping, unless: :shipping_information?
     end

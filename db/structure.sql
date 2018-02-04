@@ -76,7 +76,7 @@ SET default_with_oids = false;
 CREATE TABLE account_role_state_transitions (
     id bigint NOT NULL,
     account_id uuid NOT NULL,
-    namespace character varying NOT NULL,
+    namespace character varying,
     event character varying NOT NULL,
     "from" character varying NOT NULL,
     "to" character varying NOT NULL,
@@ -165,7 +165,7 @@ CREATE TABLE billing_informations (
 CREATE TABLE cart_checkout_state_transitions (
     id bigint NOT NULL,
     cart_id uuid NOT NULL,
-    namespace character varying NOT NULL,
+    namespace character varying,
     event character varying NOT NULL,
     "from" character varying NOT NULL,
     "to" character varying NOT NULL,
@@ -199,7 +199,7 @@ ALTER SEQUENCE cart_checkout_state_transitions_id_seq OWNED BY cart_checkout_sta
 CREATE TABLE cart_item_purchase_state_transitions (
     id bigint NOT NULL,
     cart_item_id uuid NOT NULL,
-    namespace character varying NOT NULL,
+    namespace character varying,
     event character varying NOT NULL,
     "from" character varying NOT NULL,
     "to" character varying NOT NULL,
@@ -364,7 +364,7 @@ ALTER SEQUENCE gutentag_tags_id_seq OWNED BY gutentag_tags.id;
 CREATE TABLE payment_purchase_state_transitions (
     id bigint NOT NULL,
     payment_id uuid NOT NULL,
-    namespace character varying NOT NULL,
+    namespace character varying,
     event character varying NOT NULL,
     "from" character varying NOT NULL,
     "to" character varying NOT NULL,
@@ -411,7 +411,7 @@ CREATE TABLE payments (
 CREATE TABLE product_visibility_state_transitions (
     id bigint NOT NULL,
     product_id uuid NOT NULL,
-    namespace character varying NOT NULL,
+    namespace character varying,
     event character varying NOT NULL,
     "from" character varying NOT NULL,
     "to" character varying NOT NULL,

@@ -1,9 +1,10 @@
 class Account < ApplicationRecord
   include FriendlyId
+  include AuditActor
 
   USERNAME_PATTERN = /\A[a-zA-Z0-9_-]+\z/i
 
-  has_many :account_state_transitions
+  has_many :account_role_state_transitions
   has_many :carts
   has_many :billing_informations
   has_many :shipping_informations
@@ -25,6 +26,8 @@ class Account < ApplicationRecord
   before_validation :generate_authentication_secret, unless: :authentication_secret?
 
   state_machine :role_state, initial: :user do
+    audit_trail initial: false, context: :audit_actor_id
+
     event :empower do
       transition user: :moderator
     end
