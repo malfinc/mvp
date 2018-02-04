@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+echo "- Testing on origin container" &&
+docker-compose run --rm -e RAILS_ENV=test origin bin/rspec "$@"
