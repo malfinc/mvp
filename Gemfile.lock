@@ -40,6 +40,8 @@ GEM
       activemodel (= 5.1.4)
       activesupport (= 5.1.4)
       arel (~> 8.0)
+    activerecord-like (2.1)
+      activerecord (>= 5.0.0)
     activesupport (5.1.4)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (~> 0.7)
@@ -339,6 +341,7 @@ PLATFORMS
 DEPENDENCIES
   active_record-pool (= 2.0.0)
   active_record_query_trace (= 1.5.4)
+  activerecord-like (= 2.1)
   brakeman (= 4.1.1)
   bugsnag (= 6.6.3)
   bullet (= 5.7.2)
