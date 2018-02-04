@@ -1,7 +1,7 @@
 Sidekiq.configure_server do |config|
-  config.redis = BlankApiRails::REDIS_STORE_CONNECTION_POOL
+  config.redis = BlankApiRails::REDIS_SIDEKIQ_CONNECTION_POOL
 end
 
 Sidekiq.configure_client do |config|
-  config.redis = BlankApiRails::REDIS_STORE_CONNECTION_POOL
+  config.redis = BlankApiRails::REDIS_SIDEKIQ_CONNECTION_POOL
 end
