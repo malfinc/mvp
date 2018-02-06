@@ -1,20 +1,27 @@
 class ApplicationResource < JSONAPI::Resource
   abstract
 
+  cattr_accessor :_controller_contexts do
+    []
+  end
+  cattr_accessor :_additional_primary_keys do
+    []
+  end
+
   def self.record_context(key)
-    define_singleton_method(:create) do |context|
-      super(context).tap do |resource|
+    _controller_contexts << key
+  end
+
+  def self.create(context = {})
+    super(context).tap do |resource|
+      _controller_contexts.each do |key|
         resource._model.public_send("#{key}=", context[key])
       end
     end
   end
 
-  def self.additional_primary_keys(*keys)
-    @_additional_primary_keys = keys
-  end
-
-  def self._additional_primary_keys
-    @_additional_primary_keys || []
+  def self.additional_primary_key(key)
+    _additional_primary_keys << key
   end
 
   def self.find_by_key(key, options = {})
