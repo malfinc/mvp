@@ -1,12 +1,13 @@
 class CreateAccounts < ActiveRecord::Migration[5.1]
   def change
     create_table :accounts, id: :uuid do |table|
-      table.text :name, null: false
-      table.citext :email, null: false
-      table.citext :username, null: false
+      table.text :name
+      table.citext :email
+      table.citext :username
+      table.citext :onboarding_state, null: false
       table.citext :role_state, null: false
-      table.string :encrypted_password, null: false
-      table.string :authentication_secret, null: false
+      table.string :encrypted_password
+      table.string :authentication_secret
       table.string :reset_password_token
       table.datetime :reset_password_sent_at
       table.datetime :remember_created_at
@@ -19,12 +20,23 @@ class CreateAccounts < ActiveRecord::Migration[5.1]
       table.datetime :locked_at
       table.timestamps null: false
 
-      table.index :email, unique: true
-      table.index :username, unique: true
+      table.index :email
+      table.index :username
+      table.index :onboarding_state
       table.index :role_state
       table.index :confirmation_token, unique: true
       table.index :unlock_token, unique: true
       table.index :authentication_secret, unique: true
+    end
+
+    safety_assured do
+      add_null_constraint :accounts, :name, if: %("accounts"."onboarding_state" = 'completed')
+      add_null_constraint :accounts, :email, if: %("accounts"."onboarding_state" = 'converted' OR "accounts"."onboarding_state" = 'completed')
+      add_null_constraint :accounts, :username, if: %("accounts"."onboarding_state" = 'converted' OR "accounts"."onboarding_state" = 'completed')
+      add_null_constraint :accounts, :encrypted_password, if: %("accounts"."onboarding_state" = 'converted' OR "accounts"."onboarding_state" = 'completed')
+      add_null_constraint :accounts, :authentication_secret, if: %("accounts"."onboarding_state" = 'converted' OR "accounts"."onboarding_state" = 'completed')
+      add_unique_constraint :accounts, :email, if: %("accounts"."onboarding_state" = 'converted' OR "accounts"."onboarding_state" = 'completed')
+      add_unique_constraint :accounts, :username, if: %("accounts"."onboarding_state" = 'converted' OR "accounts"."onboarding_state" = 'completed')
     end
   end
 end

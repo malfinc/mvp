@@ -2,11 +2,15 @@ class Cart < ApplicationRecord
   include AuditActor
 
   belongs_to :account
-  belongs_to :payment
-  belongs_to :shipping_information
-  belongs_to :billing_information
+  belongs_to :payment, optional: true
+  belongs_to :shipping_information, optional: true
+  belongs_to :billing_information, optional: true
 
   validates_presence_of :checkout_state
+  validates_presence_of :shipping_information, if: ->(record) { record.checkout_state?(:purchased) }
+  validates_presence_of :shipping_information_id, if: ->(record) { record.checkout_state?(:purchased) }
+  validates_presence_of :billing_information, if: ->(record) { record.checkout_state?(:purchased) }
+  validates_presence_of :billing_information_id, if: ->(record) { record.checkout_state?(:purchased) }
 
   state_machine :checkout_state, initial: :fresh do
     audit_trail initial: false, context: :audit_actor_id

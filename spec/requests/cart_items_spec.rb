@@ -132,10 +132,10 @@ RSpec.describe "cart-items" do
         }
       end
       let(:product) { Product.create!(product_attributes) }
+      let(:account) { Account.last }
 
       it "returns CREATED" do
         jsonapi_create
-        binding.pry
 
         expect(response).to have_http_status(:created)
       end
@@ -143,7 +143,7 @@ RSpec.describe "cart-items" do
       it "sets the guest account id on the session" do
         jsonapi_create
 
-        expect(session).to include("guest_id" => a_kind_of(String))
+        expect(session).to have_pairing("guest_id", account.id)
       end
 
       it "contains a cart item" do
@@ -155,31 +155,31 @@ RSpec.describe "cart-items" do
       it "has the price_cents of the related product" do
         jsonapi_create
 
-        expect(response).to have_jsonapi_attributes(price_cents: product.price_cents)
+        expect(response).to have_jsonapi_attributes("price-cents" => product.price_cents)
       end
 
       it "has the price_currency of the related product" do
         jsonapi_create
 
-        expect(response).to have_jsonapi_attributes(price_currency: product.price_currency)
+        expect(response).to have_jsonapi_attributes("price-currency" => product.price_currency)
       end
 
       it "has the price of the related product" do
         jsonapi_create
 
-        expect(response).to have_jsonapi_attributes(price: product.price)
+        expect(response).to have_jsonapi_attributes("price" => product.price.format)
       end
 
       it "contains a related product" do
         jsonapi_create
 
-        expect(response).to have_jsonapi_related(:product, id: product.id, type: "products")
+        expect(response).to have_jsonapi_related("product", "id" => product.id, "type" => "products")
       end
 
       it "contains a related account" do
         jsonapi_create
 
-        expect(response).to have_jsonapi_related(:account, id: guest.id, type: "accounts")
+        expect(response).to have_jsonapi_related("account", "id" => account.id, "type" => "accounts")
       end
     end
   end
