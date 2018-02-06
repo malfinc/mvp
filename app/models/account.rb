@@ -58,11 +58,12 @@ class Account < ApplicationRecord
   alias_method :build_fresh_cart, :fresh_cart
 
   private def generate_password
-    assign_attributes(password: SecureRandom.hex(120))
+    assign_attributes(password: SecureRandom.hex(60))
   end
 
   private def generate_authentication_secret
-    assign_attributes(authentication_secret: SecureRandom.hex(120))
+    assign_attributes(authentication_secret: SecureRandom.hex(60))
+  end
 
   private def email_required?
     onboarding_state?(:converted) || onboarding_state?(:completed)
