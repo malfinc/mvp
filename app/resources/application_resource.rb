@@ -55,4 +55,14 @@ class ApplicationResource < JSONAPI::Resource
       end
     end
   end
+
+  def self.monetize(name)
+    attribute name
+    attribute "#{name}_cents".to_sym
+    attribute "#{name}_currency".to_sym
+
+    define_method(name) do
+      @model.public_send(name).format
+    end
+  end
 end

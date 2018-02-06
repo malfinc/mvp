@@ -3,5 +3,7 @@ module V1
     has_one :account
     has_one :cart
     has_one :product
+
+    monetize :price
   end
 end
