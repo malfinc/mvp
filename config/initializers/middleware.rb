@@ -1,5 +1,5 @@
 BlankApiRails::Application.config.middleware.tap do |middleware|
-  middleware.use Rack::AuthenticationBearer
+  middleware.use Rack::AuthenticationBearer, &Base64.method(:urlsafe_decode64)
   middleware.use Rack::Deflater
   middleware.use Rack::Attack
   middleware.use ActionDispatch::Cookies
