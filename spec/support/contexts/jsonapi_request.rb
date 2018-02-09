@@ -1,4 +1,4 @@
-RSpec.shared_context "json:api requests" do
+RSpec.shared_context "JSON:API request" do
   let(:default_headers) do
     {
       "Accept" => "application/vnd.api+json",

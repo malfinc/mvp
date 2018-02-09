@@ -15,7 +15,7 @@
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
 require_relative "support/matchers/jsonapi_response"
-require_relative "support/contexts/jsonapi_requests"
+require_relative "support/contexts/jsonapi_request"
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
