@@ -46,6 +46,7 @@ gem "dry-struct", "0.4.0"
 gem "money-rails", "1.10.0"
 gem "activerecord-like", "2.1"
 gem "rein", "3.3.0"
+gem "ar_transaction_changes", "1.1.3"
 
 group :production do
   gem "rack-timeout", "0.4.2"
