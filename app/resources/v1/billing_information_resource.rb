@@ -5,5 +5,11 @@ module V1
 
     has_one :account
     has_one :cart
+
+    attribute :name
+    attribute :address
+    attribute :city
+    attribute :state
+    attribute :postal
   end
 end
