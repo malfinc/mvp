@@ -1,11 +1,8 @@
 class ApplicationResource < JSONAPI::Resource
   abstract
 
-  cattr_accessor :_controller_contexts do
-    []
-  end
-  cattr_accessor :_additional_primary_keys do
-    []
+  def self._controller_contexts
+    @_controller_contexts ||= []
   end
 
   def self.record_context(key)
@@ -18,6 +15,10 @@ class ApplicationResource < JSONAPI::Resource
         resource._model.public_send("#{key}=", context[key])
       end
     end
+  end
+
+  def self._additional_primary_keys
+    @_additional_primary_keys ||= []
   end
 
   def self.additional_primary_key(key)
