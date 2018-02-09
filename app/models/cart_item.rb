@@ -7,6 +7,9 @@ class CartItem < ApplicationRecord
 
   monetize :price_cents
 
+  attr_accessor :current_account
+  attr_accessor :current_cart
+
   before_validation :copy_price_cents
   before_validation :copy_price_currency
   before_validation :associate_current_cart
@@ -24,9 +27,6 @@ class CartItem < ApplicationRecord
     end
   end
 
-  attr_accessor :current_account
-  attr_accessor :current_cart
-
   private def copy_price_cents
     assign_attributes(price_cents: product.price_cents)
   end
@@ -36,10 +36,10 @@ class CartItem < ApplicationRecord
   end
 
   private def associate_current_cart
-    assign_attributes(cart: current_cart)
+    assign_attributes(cart: cart || current_cart)
   end
 
   private def associate_current_account
-    assign_attributes(account: current_account)
+    assign_attributes(account: account || current_account)
   end
 end
