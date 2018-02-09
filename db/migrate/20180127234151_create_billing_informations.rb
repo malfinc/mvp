@@ -6,7 +6,10 @@ class CreateBillingInformations < ActiveRecord::Migration[5.1]
       table.string :postal, null: false
       table.string :city, null: false
       table.string :state, null: false
+      table.uuid :account_id, null: false
       table.timestamps null: false
+
+      table.foreign_key :accounts, column: :account_id
     end
   end
 end

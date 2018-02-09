@@ -193,6 +193,7 @@ CREATE TABLE billing_informations (
     postal character varying NOT NULL,
     city character varying NOT NULL,
     state character varying NOT NULL,
+    account_id uuid NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -517,6 +518,7 @@ CREATE TABLE shipping_informations (
     postal character varying NOT NULL,
     city character varying NOT NULL,
     state character varying NOT NULL,
+    account_id uuid NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -998,6 +1000,14 @@ CREATE INDEX index_products_on_visibility_state ON products USING btree (visibil
 
 
 --
+-- Name: billing_informations fk_rails_0ae4f22b90; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY billing_informations
+    ADD CONSTRAINT fk_rails_0ae4f22b90 FOREIGN KEY (account_id) REFERENCES accounts(id);
+
+
+--
 -- Name: account_role_state_transitions fk_rails_0c30cd3475; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1035,6 +1045,14 @@ ALTER TABLE ONLY carts
 
 ALTER TABLE ONLY product_visibility_state_transitions
     ADD CONSTRAINT fk_rails_53abab5280 FOREIGN KEY (product_id) REFERENCES products(id);
+
+
+--
+-- Name: shipping_informations fk_rails_597ebf7fd0; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY shipping_informations
+    ADD CONSTRAINT fk_rails_597ebf7fd0 FOREIGN KEY (account_id) REFERENCES accounts(id);
 
 
 --
