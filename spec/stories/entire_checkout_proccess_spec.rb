@@ -124,6 +124,6 @@ RSpec.describe "Entire checkout process", type: :request do
   end
 
   it "completes the cart" do
-    expect(Cart.last).to be_completed?
+    expect(Cart.last).to have_attributes(checkout_state: "completed")
   end
 end
