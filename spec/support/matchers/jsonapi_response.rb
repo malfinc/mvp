@@ -66,7 +66,7 @@ end
 
 RSpec::Matchers.define :have_jsonapi_related do |expected_name, expected_related_data|
   match do |actual|
-    values_match?(expected_related_data, Oj.load(actual.try(:body) || "{}").fetch("data", {}).fetch("relationships", {}).fetch(expected_name, {}).fetch("data"))
+    values_match?(expected_related_data, Oj.load(actual.try(:body) || "{}").fetch("data", {}).fetch("relationships", {}).fetch(expected_name, {}).fetch("data", nil))
   end
 
   failure_message do |actual|
