@@ -32,11 +32,19 @@ class ApplicationResource < JSONAPI::Resource
   end
 
   def self.find_by_key(key, options = {})
-    records = apply_includes(records(options), options)
+    identifier = if key == "me" && options[:context][:current_account]
+      options[:context][:current_account].id
+    else
+      key
+    end
 
-    model = _additional_primary_keys.reduce(records.where(_primary_key => key)) {|scope, column| scope.or(records.where(column => key))}.first
+    query = apply_includes(records(options), options)
 
-    raise JSONAPI::Exceptions::RecordNotFound.new(key) unless model
+    model = _additional_primary_keys.reduce(query.where(_primary_key => identifier)) do |scope, column|
+      scope.or(records.where(column => identifier))
+    end.first
+
+    raise JSONAPI::Exceptions::RecordNotFound.new(identifier) unless model
 
     self.resource_for_model(model).new(model, options[:context])
   end
