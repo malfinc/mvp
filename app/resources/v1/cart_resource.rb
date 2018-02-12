@@ -4,6 +4,6 @@ module V1
     has_one :billing_information
     has_one :shipping_information
     has_one :payment
-    has_many :cart_items
+    has_many :cart_items, always_include_linkage_data: true
   end
 end

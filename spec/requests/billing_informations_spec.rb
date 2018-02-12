@@ -1,11 +1,11 @@
 require "rails_helper"
 
-RSpec.describe "shipping-informations" do
+RSpec.describe "billing-informations" do
   include_context "JSON:API request"
 
-  describe "POST /v1/shipping-informations" do
-    let(:path) { "/v1/shipping-informations" }
-    let(:type) { "shipping-informations" }
+  describe "POST /v1/billing-informations" do
+    let(:path) { "/v1/billing-informations" }
+    let(:type) { "billing-informations" }
     let(:attributes) do
       {
         name: "Kurtis Rainbolt-Greene",
@@ -32,10 +32,10 @@ RSpec.describe "shipping-informations" do
         expect(response).to have_http_status(:created)
       end
 
-      it "contains a shipping-items" do
+      it "contains a billing-items" do
         jsonapi_create
 
-        expect(response).to have_jsonapi_type("shipping-informations")
+        expect(response).to have_jsonapi_type("billing-informations")
       end
 
       it "contains a related account" do

@@ -4,7 +4,7 @@ module V1
     record_context :current_cart
 
     has_one :account
-    has_one :cart
+    has_many :carts, always_include_linkage_data: true
 
     attribute :name
     attribute :address
