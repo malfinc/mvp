@@ -2,17 +2,23 @@ class ApplicationResource < JSONAPI::Resource
   abstract
 
   def self._controller_contexts
-    @_controller_contexts ||= []
+    @_controller_contexts ||= Set.new
   end
 
   def self.record_context(key)
     _controller_contexts << key
   end
 
+  def self.resource_context(key)
+    _controller_contexts << key
+    attr_accessor key
+  end
+
   def self.create(context = {})
     super(context).tap do |resource|
       _controller_contexts.each do |key|
         resource._model.public_send("#{key}=", context[key])
+        resource.public_send("#{key}=", context[key]) if respond_to?("#{key}=")
       end
     end
   end
