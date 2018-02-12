@@ -3,7 +3,7 @@ RSpec.shared_context "JSON:API request" do
     {
       "Accept" => "application/vnd.api+json",
       "Content-Type" => if try(:payload).present? then "application/vnd.api+json" end,
-      "Authorization" => if try(:authentication).present? then "Bearer #{Base64.encode64(authentication)}" end
+      "Authentication" => if try(:authentication).present? then "Bearer #{Base64.urlsafe_encode64(authentication)}" end
     }.compact
   end
 
