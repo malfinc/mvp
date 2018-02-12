@@ -438,8 +438,9 @@ ALTER SEQUENCE payment_purchase_state_transitions_id_seq OWNED BY payment_purcha
 
 CREATE TABLE payments (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
-    type character varying NOT NULL,
-    external_id text NOT NULL,
+    subtype character varying NOT NULL,
+    service_eid text NOT NULL,
+    account_id uuid NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -958,17 +959,24 @@ CREATE INDEX index_payment_purchase_state_transitions_on_payment_id ON payment_p
 
 
 --
--- Name: index_payments_on_external_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_payments_on_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_payments_on_external_id ON payments USING btree (external_id);
+CREATE INDEX index_payments_on_account_id ON payments USING btree (account_id);
 
 
 --
--- Name: index_payments_on_type; Type: INDEX; Schema: public; Owner: -
+-- Name: index_payments_on_service_eid; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_payments_on_type ON payments USING btree (type);
+CREATE INDEX index_payments_on_service_eid ON payments USING btree (service_eid);
+
+
+--
+-- Name: index_payments_on_subtype; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_payments_on_subtype ON payments USING btree (subtype);
 
 
 --
@@ -1077,6 +1085,14 @@ ALTER TABLE ONLY cart_items
 
 ALTER TABLE ONLY carts
     ADD CONSTRAINT fk_rails_772f954818 FOREIGN KEY (billing_information_id) REFERENCES billing_informations(id);
+
+
+--
+-- Name: payments fk_rails_81b2605d2a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY payments
+    ADD CONSTRAINT fk_rails_81b2605d2a FOREIGN KEY (account_id) REFERENCES accounts(id);
 
 
 --
