@@ -2,7 +2,15 @@ module V1
   class ApplicationController < ::ApplicationController
     include JSONAPI::ActsAsResourceController
 
-    before_action :authenticate_account!
+    private def ensure_account_exists
+      unless account_signed_in?
+        sign_in(Account.create!)
+      end
+    end
+
+    private def ensure_cart_exists
+      cart_loaded_up?
+    end
 
     def cart_is_fresh?
       current_cart.present? && current_cart.fresh?
