@@ -19,6 +19,7 @@ require "action_view/railtie"
 Bundler.require(*Rails.groups)
 
 require_relative "../lib/source/configuration"
+require_relative "../lib/source/token_strategy"
 
 module BlankApiRails
   class Application < Rails::Application
