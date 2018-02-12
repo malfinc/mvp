@@ -6,8 +6,7 @@ module V1
 
     private def ensure_account_exists
       unless account_signed_in?
-        sign_in(Account.create!(id: session["guest_id"]))
-        session["guest_id"] ||= current_account.id
+        sign_in(Account.create!)
       end
     end
 

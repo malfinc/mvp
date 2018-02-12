@@ -36,12 +36,6 @@ RSpec.describe "cart-items" do
         expect(response).to have_http_status(:created)
       end
 
-      it "sets the guest account id on the session" do
-        jsonapi_create
-
-        expect(session).to have_pairing("guest_id", account.id)
-      end
-
       it "contains a cart item" do
         jsonapi_create
 
