@@ -18,7 +18,6 @@ class Account < ApplicationRecord
   devise :recoverable
   devise :registerable
   devise :rememberable
-  devise :timeoutable
   devise :validatable
   devise :async
 
