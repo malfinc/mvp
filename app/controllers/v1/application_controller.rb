@@ -2,6 +2,8 @@ module V1
   class ApplicationController < ::ApplicationController
     include JSONAPI::ActsAsResourceController
 
+    before_action :authenticate_account!
+
     def cart_is_fresh?
       current_cart.present? && current_cart.fresh?
     end
