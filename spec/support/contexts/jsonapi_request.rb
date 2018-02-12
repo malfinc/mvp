@@ -10,7 +10,7 @@ RSpec.shared_context "JSON:API request" do
   def jsonapi_create
     post(
       path,
-      headers: default_headers.merge(headers || {}),
+      headers: default_headers.merge(try(:custom_headers) || {}),
       params: payload
     )
   end
