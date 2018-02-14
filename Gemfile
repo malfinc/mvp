@@ -76,3 +76,5 @@ group :development do
   gem "rails-callback_log", "0.2.2", require: false
   gem "bundler-audit", "0.6.0"
 end
+
+gem 'jsonapi-serializers', '1.0.0'

@@ -54,7 +54,7 @@ class Account < ApplicationRecord
   def fresh_cart
     @fresh_cart ||= carts.find_or_create_by!(checkout_state: :fresh)
   end
-  alias_method :build_fresh_cart, :fresh_cart
+  alias_method :create_fresh_cart, :fresh_cart
 
   private def generate_password
     assign_attributes(password: SecureRandom.hex(60))

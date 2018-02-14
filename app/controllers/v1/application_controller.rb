@@ -1,6 +1,14 @@
 module V1
   class ApplicationController < ::ApplicationController
-    include JSONAPI::ActsAsResourceController
+    # include JSONAPI::ActsAsResourceController
+
+    private def serialize(payload)
+      JSONAPI::Serializer.serialize(payload.as_serialize)
+    end
+
+    def deserialize
+      JSONAPI::
+    end
 
     private def ensure_account_exists
       unless account_signed_in?
