@@ -1,6 +1,5 @@
 SET statement_timeout = 0;
 SET lock_timeout = 0;
-SET idle_in_transaction_session_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
@@ -247,21 +246,21 @@ CREATE TABLE schema_migrations (
 
 
 --
--- Name: friendly_id_slugs id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY friendly_id_slugs ALTER COLUMN id SET DEFAULT nextval('friendly_id_slugs_id_seq'::regclass);
 
 
 --
--- Name: gutentag_taggings id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY gutentag_taggings ALTER COLUMN id SET DEFAULT nextval('gutentag_taggings_id_seq'::regclass);
 
 
 --
--- Name: account_role_state_transitions account_role_state_transitions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: account_role_state_transitions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY account_role_state_transitions
@@ -269,7 +268,7 @@ ALTER TABLE ONLY account_role_state_transitions
 
 
 --
--- Name: accounts accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY accounts
@@ -277,7 +276,7 @@ ALTER TABLE ONLY accounts
 
 
 --
--- Name: ar_internal_metadata ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY ar_internal_metadata
@@ -285,7 +284,7 @@ ALTER TABLE ONLY ar_internal_metadata
 
 
 --
--- Name: friendly_id_slugs friendly_id_slugs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: friendly_id_slugs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY friendly_id_slugs
@@ -293,7 +292,7 @@ ALTER TABLE ONLY friendly_id_slugs
 
 
 --
--- Name: gutentag_taggings gutentag_taggings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: gutentag_taggings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY gutentag_taggings
@@ -301,7 +300,7 @@ ALTER TABLE ONLY gutentag_taggings
 
 
 --
--- Name: gutentag_tags gutentag_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: gutentag_tags_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY gutentag_tags
@@ -309,7 +308,7 @@ ALTER TABLE ONLY gutentag_tags
 
 
 --
--- Name: recipe_queue_state_transitions recipe_queue_state_transitions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: recipe_queue_state_transitions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY recipe_queue_state_transitions
@@ -317,7 +316,7 @@ ALTER TABLE ONLY recipe_queue_state_transitions
 
 
 --
--- Name: recipes recipes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: recipes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY recipes
@@ -325,7 +324,7 @@ ALTER TABLE ONLY recipes
 
 
 --
--- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY schema_migrations
@@ -508,7 +507,7 @@ CREATE INDEX index_recipes_on_updated_at ON recipes USING btree (updated_at);
 
 
 --
--- Name: recipes fk_rails_08ee84afe6; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_08ee84afe6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY recipes
@@ -516,7 +515,7 @@ ALTER TABLE ONLY recipes
 
 
 --
--- Name: account_role_state_transitions fk_rails_0c30cd3475; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_0c30cd3475; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY account_role_state_transitions
@@ -524,7 +523,7 @@ ALTER TABLE ONLY account_role_state_transitions
 
 
 --
--- Name: recipes fk_rails_2622a71154; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_2622a71154; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY recipes
@@ -532,7 +531,7 @@ ALTER TABLE ONLY recipes
 
 
 --
--- Name: recipes fk_rails_31dbc9f309; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_31dbc9f309; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY recipes
@@ -540,7 +539,7 @@ ALTER TABLE ONLY recipes
 
 
 --
--- Name: recipe_queue_state_transitions fk_rails_43d582b07f; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_43d582b07f; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY recipe_queue_state_transitions
@@ -548,7 +547,7 @@ ALTER TABLE ONLY recipe_queue_state_transitions
 
 
 --
--- Name: recipes fk_rails_4453ed7f7d; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_4453ed7f7d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY recipes
@@ -556,7 +555,7 @@ ALTER TABLE ONLY recipes
 
 
 --
--- Name: recipes fk_rails_486627d510; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_486627d510; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY recipes
@@ -564,7 +563,7 @@ ALTER TABLE ONLY recipes
 
 
 --
--- Name: gutentag_taggings fk_rails_cb73a18b77; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: fk_rails_cb73a18b77; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY gutentag_taggings
