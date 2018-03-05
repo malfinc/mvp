@@ -1,4 +1,2 @@
-module V1
-  class AccountsController < ::V1::ApplicationController
-  end
+class AccountsController < ApplicationController
 end
