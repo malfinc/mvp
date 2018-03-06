@@ -70,18 +70,71 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: account_onboarding_state_transitions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE account_onboarding_state_transitions (
+    id bigint NOT NULL,
+    account_id uuid NOT NULL,
+    namespace character varying,
+    event character varying NOT NULL,
+    "from" character varying NOT NULL,
+    "to" character varying NOT NULL,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: account_onboarding_state_transitions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE account_onboarding_state_transitions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: account_onboarding_state_transitions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE account_onboarding_state_transitions_id_seq OWNED BY account_onboarding_state_transitions.id;
+
+
+--
 -- Name: account_role_state_transitions; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE account_role_state_transitions (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    id bigint NOT NULL,
     account_id uuid NOT NULL,
     namespace character varying,
     event character varying,
-    "from" character varying,
+    "from" character varying NOT NULL,
     "to" character varying NOT NULL,
     created_at timestamp without time zone NOT NULL
 );
+
+
+--
+-- Name: account_role_state_transitions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE account_role_state_transitions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: account_role_state_transitions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE account_role_state_transitions_id_seq OWNED BY account_role_state_transitions.id;
 
 
 --
@@ -91,22 +144,29 @@ CREATE TABLE account_role_state_transitions (
 CREATE TABLE accounts (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     name text,
-    email citext NOT NULL,
-    username citext NOT NULL,
+    email citext,
+    username citext,
+    onboarding_state citext NOT NULL,
     role_state citext NOT NULL,
-    encrypted_password character varying NOT NULL,
+    encrypted_password character varying,
+    authentication_secret character varying,
     reset_password_token character varying,
     reset_password_sent_at timestamp without time zone,
     remember_created_at timestamp without time zone,
     confirmation_token character varying,
     confirmed_at timestamp without time zone,
     confirmation_sent_at timestamp without time zone,
-    unconfirmed_email citext,
+    unconfirmed_email character varying,
     failed_attempts integer DEFAULT 0 NOT NULL,
     unlock_token character varying,
     locked_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    CONSTRAINT accounts_authentication_secret_null CHECK (((NOT ((onboarding_state = 'converted'::citext) OR (onboarding_state = 'completed'::citext))) OR (authentication_secret IS NOT NULL))),
+    CONSTRAINT accounts_email_null CHECK (((NOT ((onboarding_state = 'converted'::citext) OR (onboarding_state = 'completed'::citext))) OR (email IS NOT NULL))),
+    CONSTRAINT accounts_encrypted_password_null CHECK (((NOT ((onboarding_state = 'converted'::citext) OR (onboarding_state = 'completed'::citext))) OR (encrypted_password IS NOT NULL))),
+    CONSTRAINT accounts_name_null CHECK (((NOT (onboarding_state = 'completed'::citext)) OR (name IS NOT NULL))),
+    CONSTRAINT accounts_username_null CHECK (((NOT ((onboarding_state = 'converted'::citext) OR (onboarding_state = 'completed'::citext))) OR (username IS NOT NULL)))
 );
 
 
@@ -247,6 +307,20 @@ CREATE TABLE schema_migrations (
 
 
 --
+-- Name: account_onboarding_state_transitions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY account_onboarding_state_transitions ALTER COLUMN id SET DEFAULT nextval('account_onboarding_state_transitions_id_seq'::regclass);
+
+
+--
+-- Name: account_role_state_transitions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY account_role_state_transitions ALTER COLUMN id SET DEFAULT nextval('account_role_state_transitions_id_seq'::regclass);
+
+
+--
 -- Name: friendly_id_slugs id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -261,6 +335,14 @@ ALTER TABLE ONLY gutentag_taggings ALTER COLUMN id SET DEFAULT nextval('gutentag
 
 
 --
+-- Name: account_onboarding_state_transitions account_onboarding_state_transitions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY account_onboarding_state_transitions
+    ADD CONSTRAINT account_onboarding_state_transitions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: account_role_state_transitions account_role_state_transitions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -269,11 +351,27 @@ ALTER TABLE ONLY account_role_state_transitions
 
 
 --
+-- Name: accounts accounts_email_unique; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY accounts
+    ADD CONSTRAINT accounts_email_unique UNIQUE (email) DEFERRABLE;
+
+
+--
 -- Name: accounts accounts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY accounts
     ADD CONSTRAINT accounts_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: accounts accounts_username_unique; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY accounts
+    ADD CONSTRAINT accounts_username_unique UNIQUE (username) DEFERRABLE;
 
 
 --
@@ -333,10 +431,24 @@ ALTER TABLE ONLY schema_migrations
 
 
 --
+-- Name: index_account_onboarding_state_transitions_on_account_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_account_onboarding_state_transitions_on_account_id ON account_onboarding_state_transitions USING btree (account_id);
+
+
+--
 -- Name: index_account_role_state_transitions_on_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_account_role_state_transitions_on_account_id ON account_role_state_transitions USING btree (account_id);
+
+
+--
+-- Name: index_accounts_on_authentication_secret; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_accounts_on_authentication_secret ON accounts USING btree (authentication_secret);
 
 
 --
@@ -350,7 +462,14 @@ CREATE UNIQUE INDEX index_accounts_on_confirmation_token ON accounts USING btree
 -- Name: index_accounts_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_accounts_on_email ON accounts USING btree (email);
+CREATE INDEX index_accounts_on_email ON accounts USING btree (email);
+
+
+--
+-- Name: index_accounts_on_onboarding_state; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_accounts_on_onboarding_state ON accounts USING btree (onboarding_state);
 
 
 --
@@ -371,7 +490,7 @@ CREATE UNIQUE INDEX index_accounts_on_unlock_token ON accounts USING btree (unlo
 -- Name: index_accounts_on_username; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_accounts_on_username ON accounts USING btree (username);
+CREATE INDEX index_accounts_on_username ON accounts USING btree (username);
 
 
 --
@@ -540,6 +659,14 @@ ALTER TABLE ONLY recipes
 
 
 --
+-- Name: account_onboarding_state_transitions fk_rails_3e06f27695; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY account_onboarding_state_transitions
+    ADD CONSTRAINT fk_rails_3e06f27695 FOREIGN KEY (account_id) REFERENCES accounts(id);
+
+
+--
 -- Name: recipe_queue_state_transitions fk_rails_43d582b07f; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -586,6 +713,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171230031126'),
 ('20171231104815'),
 ('20180106211740'),
-('20180106211741');
+('20180106211741'),
+('20180106211742');
 
 
