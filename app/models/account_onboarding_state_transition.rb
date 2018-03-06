@@ -1,4 +1,4 @@
-class AccountRoleStateTransition < ApplicationRecord
+class AccountOnboardingStateTransition < ApplicationRecord
   belongs_to :account
 
   validates_presence_of :event
