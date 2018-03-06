@@ -16,6 +16,7 @@ class AccountDashboard < ApplicationDashboard
     email: Field::Email,
     username: Field::Text,
     role_state: Field::String,
+    onboarding_state: Field::String,
     encrypted_password: Field::String,
     reset_password_token: Field::String,
     reset_password_sent_at: Field::DateTime,

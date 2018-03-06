@@ -76,6 +76,7 @@ SET default_with_oids = false;
 CREATE TABLE account_onboarding_state_transitions (
     id bigint NOT NULL,
     account_id uuid NOT NULL,
+    audit_actor_id uuid NOT NULL,
     namespace character varying,
     event character varying NOT NULL,
     "from" character varying NOT NULL,
@@ -110,6 +111,7 @@ ALTER SEQUENCE account_onboarding_state_transitions_id_seq OWNED BY account_onbo
 CREATE TABLE account_role_state_transitions (
     id bigint NOT NULL,
     account_id uuid NOT NULL,
+    audit_actor_id uuid NOT NULL,
     namespace character varying,
     event character varying,
     "from" character varying NOT NULL,
@@ -268,6 +270,7 @@ CREATE TABLE gutentag_tags (
 CREATE TABLE recipe_queue_state_transitions (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     recipe_id uuid NOT NULL,
+    audit_actor_id uuid NOT NULL,
     namespace character varying,
     event character varying,
     "from" character varying,

@@ -16,7 +16,7 @@ class RecipeDashboard < ApplicationDashboard
     name: Field::String,
     slug: Field::String,
     description: Field::Text,
-    queue_state: Field::StateMachine,
+    queue_state: Field::String,
     author_id: Field::String.with_options(searchable: false),
     approver_id: Field::String.with_options(searchable: false),
     publisher_id: Field::String.with_options(searchable: false),

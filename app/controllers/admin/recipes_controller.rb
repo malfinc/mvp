@@ -12,18 +12,18 @@ module Admin
 
     def new
       render locals: {
-        page: Administrate::Page::Form.new(dashboard, resource_class.new(current_account: current_account)),
+        page: Administrate::Page::Form.new(dashboard, resource_class.new(audit_actor: current_account)),
       }
     end
 
     def edit
       render locals: {
-        page: Administrate::Page::Form.new(dashboard, requested_resource.tap { |record| record.assign_attributes(current_account: current_account) }),
+        page: Administrate::Page::Form.new(dashboard, requested_resource.tap { |record| record.assign_attributes(audit_actor: current_account) }),
       }
     end
 
     def create
-      resource = resource_class.new(resource_params.merge(current_account: current_account))
+      resource = resource_class.new(resource_params.merge(audit_actor: current_account))
 
       if resource.save
         redirect_to(
@@ -38,7 +38,7 @@ module Admin
     end
 
     def update
-      if requested_resource.update(resource_params.merge(current_account: current_account))
+      if requested_resource.update(resource_params.merge(audit_actor: current_account))
         redirect_to(
           [namespace, requested_resource],
           notice: translate_with_resource("update.success"),

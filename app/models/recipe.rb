@@ -1,6 +1,7 @@
 class Recipe < ApplicationRecord
   include Redis::Objects
   include FriendlyId
+  include AuditActor
 
   Gutentag::ActiveRecord.call self
 
@@ -19,15 +20,13 @@ class Recipe < ApplicationRecord
   validates_presence_of :updated_at, on: :update
 
   before_validation on: :create do
-    self.author ||= current_account
+    self.author ||= audit_actor
   end
-
-  attr_accessor :current_account
 
   friendly_id :name, :use => [:slugged, :history]
 
   state_machine :queue_state, initial: :draft do
-    audit_trail
+    audit_trail initial: false, context: :audit_actor_id
 
     event :publish do
       transition :draft => :queued
@@ -63,18 +62,18 @@ class Recipe < ApplicationRecord
   end
 
   private def allowed_to_autopublish?
-    current_account.verified? || current_account.moderator?
+    audit_actor.verified? || audit_actor.moderator?
   end
 
   private def allowed_to_deny?
-    current_account.administrator? || current_account.moderator?
+    audit_actor.administrator? || audit_actor.moderator?
   end
 
   private def allowed_to_approve?
-    current_account.administrator? || current_account.moderator?
+    audit_actor.administrator? || audit_actor.moderator?
   end
 
   private def allowed_to_remove?
-    current_account.administrator? || current_account.moderator?
+    audit_actor.administrator? || audit_actor.moderator?
   end
 end

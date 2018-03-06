@@ -5,3 +5,9 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+if Rails.env.development?
+  account = Account.create(email: "kurtis@rainbolt-greene.online", password: "password")
+  account.audit_actor = account
+  account.spark!
+end
