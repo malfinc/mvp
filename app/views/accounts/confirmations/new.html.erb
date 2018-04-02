@@ -1,16 +1,21 @@
-<h2>Resend confirmation instructions</h2>
+<% content_for :page_title, "Poutineer - Login" %>
+<% content_for :page_class, "splash" %>
 
-<%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
-  <%= devise_error_messages! %>
+<section id="email-confirmation" class="page">
+  <h1 class="page-title">Email Confirmation</h1>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email) %>
-  </div>
+  <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
+    <% resource.errors.full_messages.each do |message| %>
+      <section class="alert alert-danger" role="alert">
+        <%= message %>!
+      </section>
+    <% end %>
 
-  <div class="actions">
-    <%= f.submit "Resend confirmation instructions" %>
-  </div>
-<% end %>
+    <section class="form-group">
+      <%= f.label :email %>
+      <%= f.email_field :email, autofocus: true, value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), class: "form-control" %>
+    </section>
 
-<%= render "accounts/shared/links" %>
+    <%= f.submit "Resend instructions", class: "btn btn-primary" %>
+  <% end %>
+</section>

@@ -1,26 +1,34 @@
-<h2>Log in</h2>
+<% content_for :page_title, "Poutineer - Login" %>
+<% content_for :page_class, "splash" %>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true %>
-  </div>
+<section id="login" class="page">
+  <h1 class="page-title">Login</h1>
 
-  <div class="field">
-    <%= f.label :password %><br />
-    <%= f.password_field :password, autocomplete: "off" %>
-  </div>
+  <% if flash.key?("alert") %>
+    <section class="alert alert-danger" role="alert">
+      <%= flash["alert"] %>
+    </section>
+  <% end %>
 
-  <% if devise_mapping.rememberable? -%>
-    <div class="field">
-      <%= f.check_box :remember_me %>
-      <%= f.label :remember_me %>
-    </div>
-  <% end -%>
+  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+    <section class="form-group">
+      <%= f.label :email %>
+      <%= f.email_field :email, autofocus: true, class: "form-control" %>
+    </section>
 
-  <div class="actions">
-    <%= f.submit "Log in" %>
-  </div>
-<% end %>
+    <section class="form-group">
+      <%= f.label :password %>
+      <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
+    </section>
 
-<%= render "accounts/shared/links" %>
+    <% if devise_mapping.rememberable? -%>
+      <section class="form-group form-check">
+        <%= f.check_box :remember_me, class: "form-check-input" %>
+        <%= f.label :remember_me, class: "form-check-label" %>
+      </section>
+    <% end -%>
+
+    <%= f.submit "Login", class: "btn btn-primary" %>
+  <% end %>
+  <%= render "accounts/shared/links" %>
+</section>
