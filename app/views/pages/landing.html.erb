@@ -1,7 +1,14 @@
 <% content_for :page_title, "Poutineer" %>
+<% content_for :page_class, "splash" %>
 
-<h1>Poutineer</h1>
+<section id="landing" class="page">
+  <h1 class="page-title">Poutineer</h1>
+  <blockquote class="blockquote text-center">
+    <p>
+      Find the best poutine near you, reviewed by people who can't stop eating it.
+    </p>
+  </blockquote>
 
-<ul>
-  <li><%= link_to "New Recipe", new_recipe_url %></li>
-</ul>
+  <%= link_to "Sign up", new_account_registration_url(), class: "btn btn-primary btn-lg btn-block" %>
+  <%= link_to "Login", new_account_session_url(), class: "btn btn-light btn-lg btn-block" %>
+</section>
