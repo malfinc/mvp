@@ -18,3 +18,7 @@
   --primary: #f85c8b;
 }
 
+html, body {
+  height: 100%;
+}
+
