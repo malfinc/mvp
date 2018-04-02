@@ -46,7 +46,11 @@
       "value": "2",
       "required": true
     },
-    "REDIS_SIDEKIQ_POOL_SIZE": {
+    "REDIS_SIDEKIQ_SERVER_POOL_SIZE": {
+      "value": "10",
+      "required": true
+    },
+    "REDIS_SIDEKIQ_CLIENT_POOL_SIZE": {
       "value": "2",
       "required": true
     },
