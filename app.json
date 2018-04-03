@@ -31,7 +31,10 @@
       "value": "2",
       "required": true
     },
-    "RAILS_EMAIL_FROM": {
+    "RAILS_EMAIL_USER": {
+      "required": true
+    },
+    "RAILS_EMAIL_HOST": {
       "required": true
     },
     "PGBOUNCER_POOL": {
