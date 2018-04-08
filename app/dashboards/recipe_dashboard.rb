@@ -6,12 +6,15 @@ class RecipeDashboard < ApplicationDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
+    taggings: Field::HasMany.with_options(class_name: "Gutentag::Tagging"),
+    tags: Field::HasMany.with_options(class_name: "Gutentag::Tag"),
+    versions: Field::HasMany.with_options(class_name: "PaperTrail::Version"),
     slugs: Field::HasMany.with_options(class_name: "FriendlyId::Slug"),
-    id: Field::String.with_options(searchable: false),
     author: Field::BelongsTo.with_options(class_name: "Account"),
     name: Field::String,
     slug: Field::String,
     description: Field::Text,
+    moderation_state: Field::String,
     ingredients: Field::Text,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
@@ -25,19 +28,19 @@ class RecipeDashboard < ApplicationDashboard
   COLLECTION_ATTRIBUTES = [
     :name,
     :author,
+    :moderation_state,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
-    :id,
     :slug,
-    :queue_state,
-    :slugs,
+    :moderation_state,
     :name,
     :description,
     :created_at,
     :updated_at,
+    :slugs,
     :ingredients,
     :author,
   ].freeze

@@ -1,4 +1,4 @@
-class Gutentag::TagDashboard < Administrate::BaseDashboard
+class Gutentag::TagDashboard < ApplicationDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -7,7 +7,6 @@ class Gutentag::TagDashboard < Administrate::BaseDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     taggings: Field::HasMany.with_options(class_name: "Gutentag::Tagging"),
-    id: Field::String.with_options(searchable: false),
     name: Field::String,
     taggings_count: Field::Number,
     created_at: Field::DateTime,
@@ -20,7 +19,6 @@ class Gutentag::TagDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :id,
     :name,
     :taggings_count,
     :taggings,
@@ -29,7 +27,6 @@ class Gutentag::TagDashboard < Administrate::BaseDashboard
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
-    :id,
     :name,
     :taggings_count,
     :created_at,
