@@ -4,4 +4,12 @@ class ApplicationRecord < ActiveRecord::Base
 
   self.abstract_class = true
   self.inheritance_column = "subtype"
+
+  private def actor
+    PaperTrail.whodunnit
+  end
+
+  def actor_id
+    actor.id if actor.kind_of?(Account)
+  end
 end

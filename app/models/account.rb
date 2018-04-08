@@ -1,6 +1,6 @@
 class Account < ApplicationRecord
   include FriendlyId
-  include AuditActor
+  include AuditedTransitions
 
   USERNAME_PATTERN = /\A[a-zA-Z0-9_-]+\z/i
 
@@ -9,7 +9,6 @@ class Account < ApplicationRecord
   has_many :published_recipes, class_name: "Recipe", foreign_key: :publisher_id
   has_many :denied_recipes, class_name: "Recipe", foreign_key: :denier_id
   has_many :removed_recipes, class_name: "Recipe", foreign_key: :remover_id
-  has_many :account_role_state_transitions
 
   friendly_id :email, use: [:slugged, :history], slug_column: :username
 
@@ -29,8 +28,6 @@ class Account < ApplicationRecord
   validates_format_of :username, with: USERNAME_PATTERN, if: :email_required?
 
   state_machine :onboarding_state, initial: :fresh do
-    audit_trail initial: false, context: :audit_actor_id
-
     event :convert do
       transition from: :fresh, to: :converted
     end
@@ -38,11 +35,11 @@ class Account < ApplicationRecord
     event :complete do
       transition from: :converted, to: :completed
     end
+
+    before_transition do: :version_transition
   end
 
   state_machine :role_state, initial: :user do
-    audit_trail initial: false, context: :audit_actor_id
-
     event :empower do
       transition user: :moderator
     end
@@ -50,6 +47,8 @@ class Account < ApplicationRecord
     event :spark do
       transition user: :administrator
     end
+
+    before_transition do: :version_transition
   end
 
   private def generate_password

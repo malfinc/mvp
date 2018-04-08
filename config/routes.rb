@@ -1,16 +1,20 @@
 Rails.application.routes.draw do
+  devise_for :accounts
+
   authenticate :account, -> (account) { account.administrator?} do
     mount Sidekiq::Web => '/admin/workers'
   end
 
   resources :recipes
-  devise_for :accounts
 
   namespace :admin do
     resources :accounts
     resources :recipes
     namespace :friendly_id do
       resources :slugs
+    end
+    namespace :paper_trail do
+      resources :versions
     end
     namespace :gutentag do
       resources :tags

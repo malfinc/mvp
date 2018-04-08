@@ -7,10 +7,7 @@ class AccountDashboard < ApplicationDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     recipes: Field::HasMany,
-    approved_recipes: Field::HasMany.with_options(class_name: "Recipe"),
-    published_recipes: Field::HasMany.with_options(class_name: "Recipe"),
-    denied_recipes: Field::HasMany.with_options(class_name: "Recipe"),
-    removed_recipes: Field::HasMany.with_options(class_name: "Recipe"),
+    versions: Field::HasMany.with_options(class_name: "PaperTrail::Version"),
     slugs: Field::HasMany.with_options(class_name: "FriendlyId::Slug"),
     id: Field::String.with_options(searchable: false),
     email: Field::Email,

@@ -12,7 +12,7 @@ class RecipesController < ApplicationController
   # GET /recipes/new
   def new
     authenticate_account!
-    @record = Recipe.new(audit_actor: current_account)
+    @record = Recipe.new
   end
 
   # GET /recipes/1/edit
@@ -25,7 +25,7 @@ class RecipesController < ApplicationController
   # POST /recipes
   def create
     authenticate_account!
-    @record = Recipe.new(recipe_params.merge(audit_actor: current_account))
+    @record = Recipe.new(recipe_params)
     authorize_account!
 
     if @record.save
