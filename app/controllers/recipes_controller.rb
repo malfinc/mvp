@@ -61,12 +61,12 @@ class RecipesController < ApplicationController
     @record = Recipe.friendly.find(params[:id])
   end
 
-    # Only allow a trusted parameter "white list" through.
-    def recipe_params
-      {
-        name: params.fetch(:recipe, {}).fetch(:name, nil),
-        description: params.fetch(:recipe, {}).fetch(:description, nil),
-        ingredients: params.fetch(:recipe, {}).fetch(:ingredients, nil)
-      }
-    end
+  # Only allow a trusted parameter "white list" through.
+  private def recipe_params
+    {
+      name: params.fetch(:recipe, {}).fetch(:name, nil),
+      description: params.fetch(:recipe, {}).fetch(:description, nil),
+      ingredients: params.fetch(:recipe, {}).fetch(:ingredients, nil)
+    }
+  end
 end
