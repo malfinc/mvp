@@ -6,10 +6,17 @@ Rails.application.routes.draw do
   end
 
   resources :recipes
+  resources :menu_items
+  resources :establishments
 
   namespace :admin do
     resources :accounts
     resources :recipes
+    resources :menu_items
+    resources :establishments
+    resources :payment_types
+    resources :diets
+    resources :allergies
     namespace :friendly_id do
       resources :slugs
     end
