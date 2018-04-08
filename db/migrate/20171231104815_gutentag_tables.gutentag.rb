@@ -10,7 +10,7 @@ class GutentagTables < ActiveRecord::Migration[5.1]
       table.index :name, unique: true
     end
 
-    create_table :gutentag_taggings do |table|
+    create_table :gutentag_taggings, id: :bigint do |table|
       table.uuid :tag_id, null: false
       table.uuid :taggable_id, null: false
       table.string :taggable_type, null: false

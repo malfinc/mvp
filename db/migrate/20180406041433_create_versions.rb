@@ -2,7 +2,7 @@
 # All other migrations PT provides are optional.
 class CreateVersions < ActiveRecord::Migration[5.1]
   def change
-    create_table :versions do |table|
+    create_table :versions, id: :bigint do |table|
       table.string :item_type, null: false
       table.string :item_id, null: false
       table.string :event, null: false
