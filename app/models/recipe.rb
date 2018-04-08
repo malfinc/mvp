@@ -7,6 +7,7 @@ class Recipe < ApplicationRecord
 
   Gutentag::ActiveRecord.call self
 
+  friendly_id :name, :use => [:slugged, :history]
 
   validates_presence_of :author
   validates_presence_of :slug
@@ -15,7 +16,6 @@ class Recipe < ApplicationRecord
   validates_presence_of :created_at, on: :update
   validates_presence_of :updated_at, on: :update
 
-  friendly_id :name, :use => [:slugged, :history]
   private def should_generate_new_friendly_id?
     super || send("#{friendly_id_config.base}_changed?")
   end
