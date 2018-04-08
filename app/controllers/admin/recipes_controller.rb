@@ -15,10 +15,6 @@ module Admin
       Recipe.friendly.find(identifier)
     end
 
-    private def permitted_attributes
-      super + [:state_event]
-    end
-
     # See https://administrate-prototype.herokuapp.com/customizing_controller_actions
     # for more information
   end
