@@ -34,9 +34,9 @@ class RecipeDashboard < ApplicationDashboard
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
     :slug,
-    :moderation_state,
     :name,
     :description,
+    :moderation_state,
     :created_at,
     :updated_at,
     :ingredients,
