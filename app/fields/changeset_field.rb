@@ -1,6 +1,6 @@
 class ChangesetField < Administrate::Field::Base
   def object
-    data.without(*@options[:without_headers])
+    data.without(*options[:without_headers])
   end
 
   def headers
