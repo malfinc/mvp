@@ -17,9 +17,11 @@ require "sprockets/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-require 'sidekiq/web'
+require "sidekiq/web"
+require "administrate/field/base"
 require_relative "../lib/poutineer"
 require_relative "../lib/extensions/simple_form/array_input"
+require_relative "../lib/extensions/paper_trail/version"
 
 module Poutineer
   class Application < Rails::Application

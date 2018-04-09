@@ -1,0 +1,34 @@
+<%#
+  # ChangeSet Show Partial
+  This partial renders a ChangeSet attribute,
+  to be displayed on a resource's show page.
+  By default, the attribute is rendered as a text tag.
+  ## Local variables:
+  - `field`:
+    An instance of [ChangeSetField][1].
+    A wrapper around the JSON Object attributes pulled from the model.
+%>
+<% if field.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th class="cell-label cell-label--false">Field</th>
+        <th class="cell-label cell-label--false">Previous</th>
+        <th class="cell-label cell-label--false">Current</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% field.object.each do |field, (previous, current)| %>
+        <tr class="js-table-row" tabindex="0">
+          <th class="cell-label cell-label--true"><%= field %></th>
+          <td class="cell-data cell-data--string"><%= if previous.blank? then "-" else previous.to_s.truncate(48) end %></td>
+          <td class="cell-data cell-data--string"><%= if current.blank? then "-" else current.to_s.truncate(48) end %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>
+    -
+  </p>
+<% end %>

@@ -8,11 +8,10 @@ class PaperTrail::VersionDashboard < ApplicationDashboard
   ATTRIBUTE_TYPES = {
     item: Field::Polymorphic,
     event: Field::String,
-    whodunnit: Field::String,
-    actor_id: Field::String,
-    transitions: Field::String.with_options(searchable: false),
-    object: Field::String.with_options(searchable: false),
-    object_changes: Field::String.with_options(searchable: false),
+    actor: Field::BelongsTo.with_options(class_name: "Account"),
+    transitions: TransitionField,
+    object: ChangeField,
+    object_changes: ChangesetField,
     created_at: Field::DateTime,
   }.freeze
 
@@ -23,19 +22,19 @@ class PaperTrail::VersionDashboard < ApplicationDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
     :event,
-    :whodunnit,
+    :actor,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
     :event,
-    :whodunnit,
     :transitions,
-    :object,
     :object_changes,
     :created_at,
+    :actor,
     :item,
+    :object,
   ].freeze
 
   # FORM_ATTRIBUTES
