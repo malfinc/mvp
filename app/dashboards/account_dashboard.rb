@@ -13,6 +13,8 @@ class AccountDashboard < ApplicationDashboard
     username: Field::Text,
     role_state: Field::String,
     onboarding_state: Field::String,
+    role_state_event: StateMachineField,
+    onboarding_state_event: StateMachineField,
     reset_password_token: Field::String,
     reset_password_sent_at: Field::DateTime,
     remember_created_at: Field::DateTime,
@@ -64,6 +66,8 @@ class AccountDashboard < ApplicationDashboard
   FORM_ATTRIBUTES = [
     :email,
     :username,
+    :role_state_event,
+    :onboarding_state_event,
   ].freeze
 
   # Overwrite this method to customize how accounts are displayed

@@ -14,6 +14,7 @@ class RecipeDashboard < ApplicationDashboard
     slug: Field::String,
     description: Field::Text,
     moderation_state: Field::String,
+    moderation_state_event: StateMachineField,
     ingredients: ArrayOfTextField,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
@@ -52,6 +53,7 @@ class RecipeDashboard < ApplicationDashboard
   FORM_ATTRIBUTES = [
     :name,
     :description,
+    :moderation_state_event,
   ].freeze
 
   # Overwrite this method to customize how recipes are displayed

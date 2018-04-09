@@ -38,6 +38,14 @@ class Account < ApplicationRecord
       transition user: :administrator
     end
 
+    event :depower do
+      transition from: :moderator, to: :user
+    end
+
+    event :despark do
+      transition from: :administrator, to: :user
+    end
+
     before_transition do: :version_transition
   end
 

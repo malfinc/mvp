@@ -16,6 +16,7 @@ class MenuItemDashboard < ApplicationDashboard
     slug: Field::String,
     description: Field::String,
     moderation_state: Field::String,
+    moderation_state_event: StateMachineField,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
