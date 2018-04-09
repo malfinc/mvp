@@ -6,7 +6,7 @@ class ApplicationRecord < ActiveRecord::Base
   self.inheritance_column = "subtype"
 
   private def actor
-    PaperTrail.whodunnit
+    PaperTrail.request.whodunnit
   end
 
   def actor_id
