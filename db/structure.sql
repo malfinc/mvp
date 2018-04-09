@@ -358,7 +358,6 @@ CREATE TABLE public.recipes (
     moderation_state public.citext NOT NULL,
     description text NOT NULL,
     author_id uuid NOT NULL,
-    publisher_id uuid,
     ingredients text[] DEFAULT '{}'::text[] NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -833,13 +832,6 @@ CREATE INDEX index_recipes_on_moderation_state ON public.recipes USING btree (mo
 
 
 --
--- Name: index_recipes_on_publisher_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_recipes_on_publisher_id ON public.recipes USING btree (publisher_id);
-
-
---
 -- Name: index_recipes_on_slug; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -896,14 +888,6 @@ ALTER TABLE ONLY public.establishments_payment_types
 
 ALTER TABLE ONLY public.menu_items
     ADD CONSTRAINT fk_rails_20953bddc9 FOREIGN KEY (establishment_id) REFERENCES public.establishments(id);
-
-
---
--- Name: recipes fk_rails_2622a71154; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.recipes
-    ADD CONSTRAINT fk_rails_2622a71154 FOREIGN KEY (publisher_id) REFERENCES public.accounts(id);
 
 
 --
@@ -986,6 +970,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180408055642'),
 ('20180408055646'),
 ('20180408203926'),
-('20180408203957');
+('20180408203957'),
+('20180409023409');
 
 
