@@ -28,7 +28,7 @@ class RecipesController < ApplicationController
     @record = current_account.recipes.new(recipe_params)
     authorize_account!
 
-    if @record.save
+    if @record.save!
       redirect_to @record, notice: 'Recipe was successfully created.'
     else
       render :new
@@ -41,7 +41,7 @@ class RecipesController < ApplicationController
     find_recipe
     authorize_account!
 
-    if @record.update(recipe_params)
+    if @record.update!(recipe_params)
       redirect_to @record, notice: 'Recipe was successfully updated.'
     else
       render :edit
