@@ -4,7 +4,7 @@ if ENV.fetch("MAILTRAP_API_TOKEN", nil)
       user_name: inbox.fetch("username"),
       password: inbox.fetch("password"),
       address: inbox.fetch("domain"),
-      domain: ENV.fetch("RAILS_HOST"),
+      domain: ENV.fetch("RAILS_EMAIL_HOST"),
       port: inbox.fetch("smtp_ports").first,
       authentication: :plain
     }
@@ -18,7 +18,7 @@ if ENV.fetch("MAILGUN_SMTP_LOGIN", nil)
     user_name: ENV.fetch("MAILGUN_SMTP_LOGIN"),
     password: ENV.fetch("MAILGUN_SMTP_PASSWORD"),
     address: ENV.fetch("MAILGUN_SMTP_SERVER"),
-    domain: ENV.fetch("RAILS_HOST"),
+    domain: ENV.fetch("RAILS_EMAIL_HOST"),
     port: ENV.fetch("MAILGUN_SMTP_PORT"),
     authentication: :plain,
   }
