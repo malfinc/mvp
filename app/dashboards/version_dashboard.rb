@@ -6,6 +6,7 @@ class PaperTrail::VersionDashboard < ApplicationDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
+    item_type: Field::String,
     item: Field::Polymorphic,
     event: Field::String,
     actor: Field::BelongsTo.with_options(class_name: "Account"),
@@ -21,8 +22,10 @@ class PaperTrail::VersionDashboard < ApplicationDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :event,
     :actor,
+    :event,
+    :item_type,
+    :item,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
