@@ -14,7 +14,7 @@ class RecipeDashboard < ApplicationDashboard
     slug: Field::String,
     description: Field::Text,
     moderation_state: Field::String,
-    ingredients: Field::Text,
+    ingredients: ArrayOfTextField,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
