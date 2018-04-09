@@ -10,7 +10,7 @@ class AccountDashboard < ApplicationDashboard
     slugs: Field::HasMany.with_options(class_name: "FriendlyId::Slug"),
     recipes: Field::HasMany,
     email: Field::Email,
-    username: Field::Text,
+    username: Field::String,
     role_state: Field::String,
     onboarding_state: Field::String,
     role_state_event: StateMachineField,
