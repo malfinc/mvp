@@ -53,8 +53,9 @@ class AccountDashboard < ApplicationDashboard
     :remember_created_at,
     :confirmed_at,
     :confirmation_sent_at,
-    :slugs,
     :recipes,
+    :slugs,
+    :versions,
   ].freeze
 
   # FORM_ATTRIBUTES

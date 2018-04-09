@@ -6,7 +6,6 @@ class MenuItemDashboard < ApplicationDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    taggings: Field::HasMany.with_options(class_name: "Gutentag::Tagging"),
     tags: Field::HasMany.with_options(class_name: "Gutentag::Tag"),
     versions: Field::HasMany.with_options(class_name: "PaperTrail::Version"),
     slugs: Field::HasMany.with_options(class_name: "FriendlyId::Slug"),
@@ -44,8 +43,9 @@ class MenuItemDashboard < ApplicationDashboard
     :diets,
     :allergies,
     :establishment,
-    :versions,
+    :tags,
     :slugs,
+    :versions,
   ].freeze
 
   # FORM_ATTRIBUTES

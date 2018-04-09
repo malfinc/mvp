@@ -6,6 +6,7 @@ class EstablishmentDashboard < ApplicationDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
+    tags: Field::HasMany.with_options(class_name: "Gutentag::Tag"),
     versions: Field::HasMany.with_options(class_name: "PaperTrail::Version"),
     slugs: Field::HasMany.with_options(class_name: "FriendlyId::Slug"),
     menu_items: Field::HasMany,
@@ -41,8 +42,9 @@ class EstablishmentDashboard < ApplicationDashboard
     :updated_at,
     :payment_types,
     :menu_items,
-    :versions,
+    :tags,
     :slugs,
+    :versions,
   ].freeze
 
   # FORM_ATTRIBUTES

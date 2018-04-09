@@ -6,7 +6,6 @@ class RecipeDashboard < ApplicationDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    taggings: Field::HasMany.with_options(class_name: "Gutentag::Tagging"),
     tags: Field::HasMany.with_options(class_name: "Gutentag::Tag"),
     versions: Field::HasMany.with_options(class_name: "PaperTrail::Version"),
     slugs: Field::HasMany.with_options(class_name: "FriendlyId::Slug"),
@@ -40,9 +39,11 @@ class RecipeDashboard < ApplicationDashboard
     :description,
     :created_at,
     :updated_at,
-    :slugs,
     :ingredients,
+    :slugs,
     :author,
+    :versions,
+    :tags,
   ].freeze
 
   # FORM_ATTRIBUTES
