@@ -3,7 +3,7 @@ class Recipe < ApplicationRecord
   include FriendlyId
   include Moderated
 
-  belongs_to :author, class_name: "Author"
+  belongs_to :author, class_name: "Account"
 
   Gutentag::ActiveRecord.call self
 
