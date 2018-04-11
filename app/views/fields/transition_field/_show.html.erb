@@ -1,0 +1,32 @@
+<%#
+  # Transition Show Partial
+  This partial renders a Transition attribute,
+  to be displayed on a resource's show page.
+  By default, the attribute is rendered as a text tag.
+  ## Local variables:
+  - `field`:
+    An instance of [TransitionField][1].
+    A wrapper around the JSON Object attributes pulled from the model.
+%>
+<% if field.any? %>
+  <table>
+    <thead>
+      <tr>
+        <th class="cell-label cell-label--false">State Machine</th>
+        <th class="cell-label cell-label--false">Path</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% field.object.each do |key, value| %>
+        <tr class="js-table-row" tabindex="0">
+          <th class="cell-label cell-label--true"><%= key %></th>
+          <td class="cell-data cell-data--string"><%= if value.blank? then "-" else value.join(" → ") end %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p>
+    -
+  </p>
+<% end %>

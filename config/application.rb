@@ -17,8 +17,9 @@ require "sprockets/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-require 'sidekiq/web'
-require_relative "../lib/source/configuration"
+require "sidekiq/web"
+require "administrate/field/base"
+require_relative "../lib/poutineer"
 require_relative "../lib/extensions/simple_form/array_input"
 
 module Poutineer
@@ -34,8 +35,9 @@ module Poutineer
     config.generators.system_tests = nil
     config.generators.assets = false
     config.generators.helper = false
-    config.generators.orm :active_record, primary_key_type: :uuid
-
+    config.generators do |generator|
+      generator.orm :active_record, primary_key_type: :uuid
+    end
     config.action_controller.include_all_helpers = false
     config.active_record.schema_format = :sql
     config.active_job.queue_adapter = :sidekiq

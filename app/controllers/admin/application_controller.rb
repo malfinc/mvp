@@ -7,10 +7,15 @@
 module Admin
   class ApplicationController < Administrate::ApplicationController
     before_action :authenticate_account!
-    before_action :authenticate_administrator!
+    before_action :authorize_administrator!
+    before_action :set_paper_trail_whodunnit
 
-    def authenticate_administrator!
+    def authorize_administrator!
       raise Pundit::NotAuthorizedError unless current_account.administrator?
+    end
+
+    private def user_for_paper_trail
+      current_account
     end
 
     # Override this value to specify the number of elements to display at a time

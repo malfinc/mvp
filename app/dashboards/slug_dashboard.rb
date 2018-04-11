@@ -6,7 +6,6 @@ class FriendlyId::SlugDashboard < ApplicationDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    id: Field::Number,
     sluggable: Field::Polymorphic,
     slug: Field::String,
     scope: Field::String,
@@ -19,7 +18,6 @@ class FriendlyId::SlugDashboard < ApplicationDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :id,
     :slug,
     :scope,
   ].freeze
@@ -27,7 +25,6 @@ class FriendlyId::SlugDashboard < ApplicationDashboard
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
-    :id,
     :slug,
     :scope,
     :created_at,

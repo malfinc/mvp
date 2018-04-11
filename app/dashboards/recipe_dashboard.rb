@@ -6,23 +6,16 @@ class RecipeDashboard < ApplicationDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    author: Field::BelongsTo.with_options(class_name: "Account"),
-    approver: Field::BelongsTo.with_options(class_name: "Account"),
-    publisher: Field::BelongsTo.with_options(class_name: "Account"),
-    denier: Field::BelongsTo.with_options(class_name: "Account"),
-    remover: Field::BelongsTo.with_options(class_name: "Account"),
+    tags: Field::HasMany.with_options(class_name: "Gutentag::Tag"),
+    versions: Field::HasMany.with_options(class_name: "PaperTrail::Version"),
     slugs: Field::HasMany.with_options(class_name: "FriendlyId::Slug"),
-    id: Field::String.with_options(searchable: false),
+    author: Field::BelongsTo.with_options(class_name: "Account"),
     name: Field::String,
     slug: Field::String,
     description: Field::Text,
-    queue_state: Field::String,
-    author_id: Field::String.with_options(searchable: false),
-    approver_id: Field::String.with_options(searchable: false),
-    publisher_id: Field::String.with_options(searchable: false),
-    denier_id: Field::String.with_options(searchable: false),
-    remover_id: Field::String.with_options(searchable: false),
-    ingredients: Field::Text,
+    moderation_state: Field::String,
+    moderation_state_event: StateMachineField,
+    ingredients: ArrayOfTextField,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
@@ -33,29 +26,25 @@ class RecipeDashboard < ApplicationDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
+    :name,
     :author,
-    :approver,
-    :publisher,
-    :denier,
+    :moderation_state,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
-    :id,
     :slug,
-    :queue_state,
-    :slugs,
     :name,
     :description,
+    :moderation_state,
     :created_at,
     :updated_at,
     :ingredients,
+    :slugs,
     :author,
-    :approver,
-    :publisher,
-    :denier,
-    :remover,
+    :versions,
+    :tags,
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -63,9 +52,8 @@ class RecipeDashboard < ApplicationDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :name,
-    :queue_state,
-    :author,
     :description,
+    :moderation_state_event,
   ].freeze
 
   # Overwrite this method to customize how recipes are displayed
