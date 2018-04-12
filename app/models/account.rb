@@ -68,9 +68,9 @@ class Account < ApplicationRecord
   end
 
   def valid_for_authentication?(*)
-    PaperTrail.request(whodunnit: "The Machine") do
-      super
-    end
+    PaperTrail.request.whodunnit = "The Machine"
+
+    super
   end
 
   private def generate_password
