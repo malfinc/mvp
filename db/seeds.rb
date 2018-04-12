@@ -8,7 +8,7 @@
 
 PaperTrail.request(whodunnit: "The Machine") do
   ActiveRecord::Base.transaction do
-    Diet.create!([
+    Diet.create([
       {name: "Diabetic"},
       {name: "GlutenFree"},
       {name: "Halal"},
@@ -21,7 +21,7 @@ PaperTrail.request(whodunnit: "The Machine") do
       {name: "Vegan"},
       {name: "Vegetarian"}
     ])
-    Allergy.create!([
+    Allergy.create([
       {name: "Cow's Milk"},
       {name: "Peanuts"},
       {name: "Eggs"},
@@ -33,7 +33,7 @@ PaperTrail.request(whodunnit: "The Machine") do
       {name: "Rice"},
       {name: "Fruit"}
     ])
-    PaymentType.create!([
+    PaymentType.create([
       {name: "Cash"},
       {name: "Check"},
       {name: "Visa"},
