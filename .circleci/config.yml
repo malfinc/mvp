@@ -1,0 +1,192 @@
+version: 2
+shared:
+  dockers:
+    ruby: &ruby_docker
+      image: "circleci/ruby:2.5.0"
+      environment:
+        BUNDLE_JOBS: 8
+        BUNDLE_RETRY: 10
+        BUNDLE_PATH: "./vendor/bundle"
+        RAILS_ENV: "test"
+    node: &node_docker
+      image: "circleci/node:8.10.0"
+    postgres: &postgres_docker
+      image: "circleci/postgres:10.3-alpine"
+      environment:
+        POSTGRES_DB: "poutineer_test"
+        POSTGRES_USER: "poutineer"
+        POSTGRES_PASSWORD: ""
+    redis: &redis_docker
+      image: "redis:4.0.8"
+  caches:
+    git: &git_restore
+      restore_cache:
+        keys:
+          - "poutineer-1.0-{{ .Branch }}-{{ .Revision }}"
+    bundler: &bundler_restore
+      restore_cache:
+        keys:
+          - "poutineer-1.0-{{ .Branch }}-{{ checksum \"Gemfile.lock\" }}"
+    npm: &npm_restore
+      restore_cache:
+        keys:
+          - "poutineer-1.0-{{ .Branch }}-{{ checksum \"./client/package-lock.json\" }}"
+workflows:
+  version: 2
+  core:
+    jobs:
+      - "browser_setup"
+      - "server_setup"
+      -
+        auditing:
+          requires:
+            - "browser_setup"
+            - "server_setup"
+      -
+        rspec:
+          requires:
+            - "browser_setup"
+            - "server_setup"
+jobs:
+  browser_setup:
+    docker:
+      - *node_docker
+      - *redis_docker
+    steps:
+      - *git_restore
+      - "checkout"
+      -
+        save_cache:
+          key: "poutineer-1.0-{{ .Branch }}-{{ .Revision }}"
+          paths:
+            - ".git/"
+      - *npm_restore
+      -
+        run:
+          name: "Install npm dependencies"
+          command: "npm install"
+      -
+        save_cache:
+          key: "poutineer-1.0-{{ .Branch }}-{{ checksum \"package-lock.json\" }}"
+          paths:
+            - "./node_modules/"
+  server_setup:
+    docker:
+      - *ruby_docker
+      - *postgres_docker
+      - *redis_docker
+    steps:
+      - *git_restore
+      - "checkout"
+      -
+        save_cache:
+          key: "poutineer-1.0-{{ .Branch }}-{{ .Revision }}"
+          paths:
+            - ".git/"
+      - *bundler_restore
+      -
+        save_cache:
+          key: "poutineer-1.0-{{ .Branch }}-{{ checksum \"Gemfile.lock\" }}"
+          paths:
+            - "./vendor/bundle"
+            - "/usr/local/bundle/config"
+      -
+        run:
+          name: "Install bundler dependencies"
+          command: "bundle install --path=./vendor/bundle"
+      -
+        run:
+          name: "Database Healthcheck"
+          command: "dockerize -wait tcp://localhost:5432 -timeout 1m"
+      -
+        run:
+          name: "Installing postgres-client"
+          command: "sudo apt-get install postgresql-client-10.3"
+      -
+        run:
+          name: "Create database"
+          command: "bin/rake db:create --trace"
+      -
+        run:
+          name: "Load databsase schema"
+          command: "bin/rake db:structure:load --trace"
+
+  auditing:
+    docker:
+      - *ruby_docker
+      - *node_docker
+      - *postgres_docker
+      - *redis_docker
+    steps:
+      - *git_restore
+      - "checkout"
+      - *bundler_restore
+      - *npm_restore
+      -
+        run:
+          name: "Auditing Bundler"
+          command: "bundle exec bundler-audit check --update"
+      -
+        run:
+          name: "Auditing Routes"
+          command: "FAIL_ON_ERROR=1 bin/rake traceroute"
+      -
+        run:
+          name: "Audit Ruby Security"
+          command: "bundle exec brakeman --config=.brakeman/config.yml"
+      -
+        run:
+          name: "Auditing Javascript"
+          command: "npm run lint"
+      -
+        run:
+          name: "Auditing Ruby"
+          command: "bundle exec rubocop"
+  rspec:
+    docker:
+      - *ruby_docker
+      - *postgres_docker
+      - *redis_docker
+    steps:
+      - *git_restore
+      - "checkout"
+      - *bundler_restore
+      - *npm_restore
+      -
+        run:
+          name: "Installing Postgres Client"
+          command: "sudo apt-get install postgresql-client-10.3"
+      -
+        name: "Running RSpec"
+        command: "bin/rspec --format RspecJunitFormatter --out ./tmp/rspec/rspec.xml --format progress $(circleci tests glob \"spec/**/*_spec.rb\" | circleci tests split --split-by=timings)\n"
+        type: "shell"
+      -
+        store_test_results:
+          path: "tmp/rspec/"
+      -
+        store_artifacts:
+          path: "tmp/rspec/"
+      -
+        store_artifacts:
+          path: "logs/"
+  jest:
+    docker:
+      - *node_docker
+      - *redis_docker
+    steps:
+      - *git_restore
+      - "checkout"
+      - *npm_restore
+      -
+        name: "Running Jest"
+        command: "npm run test --format RspecJunitFormatter --out ./tmp/rspec/rspec.xml --format progress $(circleci tests glob \"spec/**/*_spec.rb\" | circleci tests split --split-by=timings)\n"
+        type: "shell"
+      -
+        store_test_results:
+          path: "tmp/rspec/"
+      -
+        store_artifacts:
+          path: "tmp/rspec/"
+      -
+        store_artifacts:
+          path: "logs/"
