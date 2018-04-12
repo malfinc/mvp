@@ -21,6 +21,7 @@ require "sidekiq/web"
 require "administrate/field/base"
 require_relative "../lib/poutineer"
 require_relative "../lib/extensions/simple_form/array_input"
+require_relative "../lib/extensions/rails/console"
 
 module Poutineer
   class Application < Rails::Application
