@@ -56,19 +56,19 @@ class Account < ApplicationRecord
   validates_format_of :username, with: USERNAME_PATTERN, if: :email_required?
 
   def lock_access!(*)
-    PaperTrail.requet(whodunnit: "The Machine") do
+    PaperTrail.request(whodunnit: "The Machine") do
       super
     end
   end
 
   def unlock_access!(*)
-    PaperTrail.requet(whodunnit: "The Machine") do
+    PaperTrail.request(whodunnit: "The Machine") do
       super
     end
   end
 
   def valid_for_authentication?(*)
-    PaperTrail.requet(whodunnit: "The Machine") do
+    PaperTrail.request(whodunnit: "The Machine") do
       super
     end
   end
