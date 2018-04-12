@@ -55,6 +55,32 @@ class Account < ApplicationRecord
   validates_presence_of :username, if: :email_required?
   validates_format_of :username, with: USERNAME_PATTERN, if: :email_required?
 
+  # Lock a user setting its locked_at to actual time.
+  # * +opts+: Hash options if you don't want to send email
+  #   when you lock access, you could pass the next hash
+  #   `{ send_instructions: false } as option`.
+  def lock_access!(opts = { })
+    self.locked_at = Time.now.utc
+
+    if unlock_strategy_enabled?(:email) && opts.fetch(:send_instructions, true)
+      send_unlock_instructions
+    else
+      PaperTrail.requet(whodunnit: "The Machine") do
+        save(validate: false)
+      end
+    end
+  end
+
+  # Unlock a user by cleaning locked_at and failed_attempts.
+  def unlock_access!
+    self.locked_at = nil
+    self.failed_attempts = 0 if respond_to?(:failed_attempts=)
+    self.unlock_token = nil  if respond_to?(:unlock_token=)
+    PaperTrail.requet(whodunnit: "The Machine") do
+      save(validate: false)
+    end
+  end
+
   private def generate_password
     assign_attributes(password: SecureRandom.hex(60))
   end
