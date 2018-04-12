@@ -12,6 +12,8 @@ class ApplicationController < ActionController::Base
   end
 
   private def user_for_paper_trail
+    Rails.logger.info("account_signed_in?: #{account_signed_in?}")
+    Rails.logger.info("current_account: #{current_account}")
     if account_signed_in? then current_account else "Anonymous" end
   end
 
