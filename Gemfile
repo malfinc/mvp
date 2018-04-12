@@ -55,33 +55,33 @@ gem("webpacker", "3.5.3")
 gem("redcarpet", "3.4.0")
 gem("bootsnap", "1.3.0", :require => false)
 
-group :production do
-  gem "newrelic_rpm", "5.2.0.345"
-  gem "rack-timeout", "0.5.1"
+group(:production) do
+  gem("newrelic_rpm", "5.2.0.345")
+  gem("rack-timeout", "0.5.1")
 end
 
-group :development, :test do
-  gem "byebug", "10.0.2"
-  gem "dotenv-rails", "2.5.0", :require => "dotenv/rails-now"
-  gem "listen", "3.1.5"
-  gem "rspec-rails", "3.7.2"
+group(:development, :test) do
+  gem("byebug", "10.0.2")
+  gem("dotenv-rails", "2.5.0", :require => "dotenv/rails-now")
+  gem("listen", "3.1.5")
+  gem("rspec-rails", "3.7.2")
 end
 
-group :test do
-  gem "timecop", "0.9.1"
-  gem "rspec_junit_formatter", "0.4.1"
+group(:test) do
+  gem("timecop", "0.9.1")
+  gem("rspec_junit_formatter", "0.4.1")
 end
 
-group :development do
-  gem "active_record_query_trace", "1.5.4", :require => false
-  gem "brakeman", "4.3.1", :require => false
-  gem "bullet", "5.7.5", :require => false
-  gem "bundler-audit", "0.6.0", :require => false
-  gem "flamegraph", "0.9.5", :require => false
-  gem "memory_profiler", "0.9.10", :require => false
-  gem "rack-mini-profiler", "1.0.0", :require => false
-  gem "rails-callback_log", "0.2.2", :require => false
-  gem "rubocop", "0.57.2", :require => false
-  gem "ruby-prof", "0.17.0", :require => false
-  gem "stackprof", "0.2.11", :require => false
+group(:development) do
+  gem("active_record_query_trace", "1.5.4", :require => false)
+  gem("brakeman", "4.3.1", :require => false)
+  gem("bullet", "5.7.5", :require => false)
+  gem("bundler-audit", "0.6.0", :require => false)
+  gem("flamegraph", "0.9.5", :require => false)
+  gem("memory_profiler", "0.9.10", :require => false)
+  gem("rack-mini-profiler", "1.0.0", :require => false)
+  gem("rails-callback_log", "0.2.2", :require => false)
+  gem("rubocop", "0.57.2", :require => false)
+  gem("ruby-prof", "0.17.0", :require => false)
+  gem("stackprof", "0.2.11", :require => false)
 end
