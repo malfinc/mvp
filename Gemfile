@@ -51,6 +51,8 @@ gem "simple_form", "3.5.0"
 gem "country_select", "3.1.1"
 gem "pry-rails", "0.3.6"
 gem "pry-doc", "0.12.0"
+gem "bootsnap", "1.3.0", require: false
+
 
 group :production do
   gem "rack-timeout", "0.4.2"
