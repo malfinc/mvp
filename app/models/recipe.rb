@@ -4,6 +4,8 @@ class Recipe < ApplicationRecord
   include Moderated
 
   belongs_to :author, class_name: "Account"
+  has_and_belongs_to_many :diets
+  has_and_belongs_to_many :allergies
 
   Gutentag::ActiveRecord.call self
 
