@@ -1,6 +1,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception, prepend: true
   before_action :set_paper_trail_whodunnit
+  before_bugsnag_notify :set_bugsnag_context
+
   # before_action :set_locale
 
   # private def set_locale
@@ -19,5 +21,22 @@ class ApplicationController < ActionController::Base
       session_id: session.id,
       user_agent: request.user_agent
     }
+  end
+
+  private def set_bugsnag_context(report)
+    if account_signed_in?
+      report.user = {
+        email: current_account.email,
+        name: current_account.name,
+        username: current_account.username,
+        slug: current_account.slug,
+        id: current_account.id,
+      }
+    end
+
+    report.add_tab(:session, {
+      actor: PaperTrail.request.whodunnit,
+      session_id: session.id,
+    })
   end
 end
