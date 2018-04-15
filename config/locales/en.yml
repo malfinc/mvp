@@ -30,4 +30,17 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  activerecord:
+    models:
+      paper_trail/version:
+        one: Changelog
+        other: Changelogs
+      gutentag/tag:
+        one: Tag
+        other: Tags
+      gutentag/tagging:
+        one: Tagging
+        other: Taggings
+      friendly_id/slug:
+        one: Slug
+        other: Slugs
