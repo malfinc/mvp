@@ -1,6 +1,9 @@
 class RecipesController < ApplicationController
+  include Authorization
+
   # GET /recipes
   def index
+    authorize Recipe
     @records = Recipe.all
   end
 
@@ -19,14 +22,14 @@ class RecipesController < ApplicationController
   def edit
     authenticate_account!
     find_recipe
-    authorize_account!
+    authorize_record!
   end
 
   # POST /recipes
   def create
     authenticate_account!
     @record = current_account.recipes.new(recipe_params)
-    authorize_account!
+    authorize_record!
 
     if @record.save!
       redirect_to @record, notice: 'Recipe was successfully created.'
@@ -39,7 +42,7 @@ class RecipesController < ApplicationController
   def update
     authenticate_account!
     find_recipe
-    authorize_account!
+    authorize_record!
 
     if @record.update!(recipe_params)
       redirect_to @record, notice: 'Recipe was successfully updated.'
@@ -52,7 +55,7 @@ class RecipesController < ApplicationController
   def destroy
     authenticate_account!
     find_recipe
-    authorize_account!
+    authorize_record!
     @record.destroy
     redirect_to recipes_url, notice: 'Recipe was successfully destroyed.'
   end

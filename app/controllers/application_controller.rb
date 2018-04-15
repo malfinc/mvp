@@ -7,10 +7,6 @@ class ApplicationController < ActionController::Base
   #   I18n.locale = params[:locale] || I18n.default_locale
   # end
 
-  private def authorize_account!
-    true
-  end
-
   private def user_for_paper_trail
     if account_signed_in? then current_account else "Anonymous" end
   end
