@@ -10,4 +10,18 @@ class RecipeDecorator < ApplicationDecorator
   #     end
   #   end
 
+  def description
+    Redcarpet::Render::SmartyPants.render(
+      Redcarpet::Markdown.new(
+        Redcarpet::Render::HTML.new(
+          no_links: true,
+          no_styles: true,
+          no_images: true,
+          hard_warp: true,
+        )
+      ).render(
+        object.description
+      )
+    ).html_safe
+  end
 end

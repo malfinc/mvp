@@ -52,6 +52,7 @@ gem "country_select", "3.1.1"
 gem "pry-rails", "0.3.6"
 gem "pry-doc", "0.12.0"
 gem "bugsnag", "6.6.3"
+gem "redcarpet", "3.4.0"
 
 group :production do
   gem "rack-timeout", "0.4.2"
@@ -79,6 +80,6 @@ group :development do
   gem "bullet", "5.7.2", require: false
   gem "brakeman", "4.1.1", require: false
   gem "active_record_query_trace", "1.5.4", require: false
-  gem "rails-callback_log", "0.2.2", require: false
+  gem "rails-callback_log", "0.2.2"
   gem "bundler-audit", "0.6.0"
 end

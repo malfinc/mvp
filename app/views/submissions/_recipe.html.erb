@@ -1,20 +1,18 @@
-<p>
-  <%= recipe.diets.map do |diet| %>
+<p class="card-text">
+  <% recipe.diets.each do |diet| %>
     <span class="badge badge-info"><%= diet.name %></span>
   <% end %>
 
-  <%= recipe.allergies.map do |allergy| %>
+  <% recipe.allergies.each do |allergy| %>
     <span class="badge badge-warning"><%= allergy.name %></span>
   <% end %>
 
-  <%= recipe.tags.map do |tag| %>
+  <% recipe.tags.each do |tag| %>
     <span class="badge badge-light"><%= tag.name %></span>
   <% end %>
 </p>
 
-<p class="card-text">
-  <%= recipe.description %>
-</p>
+<%= recipe.description %>
 
 <ul class="list-group">
   <% recipe.ingredients.each do |ingredient| %>
@@ -22,9 +20,7 @@
       <%= ingredient %>
     </li>
   <% end %>
-</ul><p class="card-text">
-  <%= recipe.description %>
-</p>
+</ul>
 
 <ul class="list-group">
   <% recipe.instructions.each do |instruction| %>
@@ -33,4 +29,3 @@
     </li>
   <% end %>
 </ul>
-</section>

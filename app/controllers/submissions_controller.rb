@@ -4,9 +4,8 @@ class SubmissionsController < ApplicationController
   # GET /submissions
   def index
     authenticate_account!
-    binding.pry
     authorize Submission
-    @records = policy_scope(Submission)
+    find_submissions
   end
 
   # GET /submissions/1/edit
@@ -30,7 +29,11 @@ class SubmissionsController < ApplicationController
   end
 
   private def find_submission
-    @record = Submission.find(params[:id])
+    @record = SubmissionDecorator.decorate(pundit_scoped.find(params[:id]))
+  end
+
+  private def find_submissions
+    @records = SubmissionDecorator.decorate_collection(pundit_scoped)
   end
 
   # Only allow a trusted parameter "white list" through.
@@ -38,5 +41,9 @@ class SubmissionsController < ApplicationController
     {
 
     }
+  end
+
+  private def pundit_scoped
+    policy_scope(Submission)
   end
 end

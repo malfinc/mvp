@@ -4,12 +4,10 @@
   <% @records.each do |record| %>
     <section class="card">
       <header class="card-header">
-        <%= record.category.human %>
+        <h5 class="card-title">
+          "<%= record.name %>" <%= record.category.singular %> by <%= record.submitter.name %>'s
+        </h5>
       </header>
-
-      <h5 class="card-title">
-        <%= record.submitter.name %>'s <%= record.name %> <%= record.category.singular %>
-      </h5>
 
       <%= render partial: record.category.element, object: record.subject %>
 
