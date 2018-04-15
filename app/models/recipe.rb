@@ -1,5 +1,4 @@
 class Recipe < ApplicationRecord
-  include Redis::Objects
   include FriendlyId
   include Moderated
 
