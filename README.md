@@ -30,11 +30,28 @@ To go to the website visit `http://localhost:3000`.
 
 ## Notes
 
+### New Content Pages
+
+  0. Click "New File" on Github
+  1. Paste this path into the name field: `app/views/pages/about.html.erb` (replace `about` with the name of your page)
+  2. Add this to the top of the file:
+  
+  ``` erb
+  <% content_for :page_title, "Poutineer - About" %>
+  <% content_for :page_types, :information %>
+  ```
+  3. Write the HTML you need (Replace `About` with the title of your page)
+  4. Scroll to the bottom and click "Create a new branch for this commit and start a pull request."
+  5. Name your branch (Try `page-information-about`, replace `about` with the name of your page)
+  5. Save the file
+  6. Make a pull request
+
 ### Dashboards
 
-Don't allow the user to see primary keys, it's not helpful and confuses things when they should be using slugs.
+  - Don't allow the user to see primary keys, it's not helpful and confuses things when they should be using slugs.
 
 
 ### Database Models
 
-Public models (things that can be accessed from the outside) should have primary key of an UUIDs and slugs. Anything internal should have a bigint primary key
+  - Public models (things that can be accessed from the outside) should have primary key of an UUIDs and slugs. Anything internal should have a bigint primary key
+  - Prefer to put business logic into services instead of controllers or models
