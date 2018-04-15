@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :recipes
   resources :menu_items
   resources :establishments
+  resources :submissions
 
   namespace :admin do
     resources :accounts

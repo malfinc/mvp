@@ -1,0 +1,36 @@
+<p>
+  <%= recipe.diets.map do |diet| %>
+    <span class="badge badge-info"><%= diet.name %></span>
+  <% end %>
+
+  <%= recipe.allergies.map do |allergy| %>
+    <span class="badge badge-warning"><%= allergy.name %></span>
+  <% end %>
+
+  <%= recipe.tags.map do |tag| %>
+    <span class="badge badge-light"><%= tag.name %></span>
+  <% end %>
+</p>
+
+<p class="card-text">
+  <%= recipe.description %>
+</p>
+
+<ul class="list-group">
+  <% recipe.ingredients.each do |ingredient| %>
+    <li class="list-group-item">
+      <%= ingredient %>
+    </li>
+  <% end %>
+</ul><p class="card-text">
+  <%= recipe.description %>
+</p>
+
+<ul class="list-group">
+  <% recipe.instructions.each do |instruction| %>
+    <li class="list-group-item">
+      <%= instruction %>
+    </li>
+  <% end %>
+</ul>
+</section>

@@ -1,0 +1,23 @@
+<h1>Submissions</h1>
+
+<section class="card-group">
+  <% @records.each do |record| %>
+    <section class="card">
+      <header class="card-header">
+        <%= record.category.human %>
+      </header>
+
+      <h5 class="card-title">
+        <%= record.submitter.name %>'s <%= record.name %> <%= record.category.singular %>
+      </h5>
+
+      <%= render partial: record.category.element, object: record.subject %>
+
+      <footer class="card-footer">
+        <small class="text-muted">
+          Last updated <%= time_ago_in_words(record.updated_at) %> ago
+        </small>
+      </footer>
+    </section>
+  <% end %>
+</section>
