@@ -15,12 +15,12 @@ class ApplicationController < ActionController::Base
     if account_signed_in? then current_account else "Anonymous" end
   end
 
-  private def def info_for_paper_trail
+  private def info_for_paper_trail
     {
       actor_id: if account_signed_in? then current_account.id end,
       ip: request.remote_ip,
       request_id: request.request_id,
-      session_id: session_id,
+      session_id: session.id,
       user_agent: request.user_agent
     }
   end
