@@ -49,7 +49,7 @@ class PaperTrail::VersionDashboard < ApplicationDashboard
   # Overwrite this method to customize how versions are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(version)
-  #   "PaperTrail::Version ##{version.id}"
-  # end
+  def display_resource(version)
+    "Change to #{version.item_type} by #{version.actor.name}"
+  end
 end
