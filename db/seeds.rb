@@ -117,14 +117,15 @@ PaperTrail.request(whodunnit: "The Machine") do
         smokes_poutinerie.approve!
 
         vegan_recipe_description = <<~DESCRIPTION
-          Vegan poutine with crispy potatoes, savory mushroom gravy, and melty vegan cheese curds! The perfect plant-based alternative to this Canadian classic.
+        Vegan poutine with crispy potatoes, savory mushroom gravy, and melty vegan cheese curds! The perfect plant-based alternative to this Canadian classic.
 
-          Notes:
-            * FRIES: If avoiding oil, first steam your potatoes in a large steamer basket (covered) until almost tender - about 10 minutes. Then arrange on parchment-lined baking sheets and season with salt. Bake at 400 degrees F (204 C) until slightly golden brown - about 15 minutes. The fries won’t be as crispy, but they'll still be delicious.
-            * GRAVY: For more flavor, other additions might include a little nutritional yeast and/or maple syrup.
-            * Based on my research, ketchup seemed to be a fairly common addition to poutine gravy. However, the idea of ketchup in gravy weirded me out. I tried it and didn’t like it. I found balsamic vinegar, coconut aminos, and a touch of Worcestershire to strike a good flavor balance.
-            * CHEESE: If you have leftover cheese, it can be used on things like sandwiches, caprese salads, pasta bakes, breadsticks, or pizza!
-            * Nutrition information is a rough estimate for 1 of 6 servings with all of the suggested oil, all of the gravy, and all of the vegan cheese.
+        Notes:
+
+          * FRIES: If avoiding oil, first steam your potatoes in a large steamer basket (covered) until almost tender - about 10 minutes. Then arrange on parchment-lined baking sheets and season with salt. Bake at 400 degrees F (204 C) until slightly golden brown - about 15 minutes. The fries won’t be as crispy, but they'll still be delicious.
+          * GRAVY: For more flavor, other additions might include a little nutritional yeast and/or maple syrup.
+          * Based on my research, ketchup seemed to be a fairly common addition to poutine gravy. However, the idea of ketchup in gravy weirded me out. I tried it and didn’t like it. I found balsamic vinegar, coconut aminos, and a touch of Worcestershire to strike a good flavor balance.
+          * CHEESE: If you have leftover cheese, it can be used on things like sandwiches, caprese salads, pasta bakes, breadsticks, or pizza!
+          * Nutrition information is a rough estimate for 1 of 6 servings with all of the suggested oil, all of the gravy, and all of the vegan cheese.
         DESCRIPTION
         vegan_recipe = author.recipes.create!(
           name: "An amazing vegan poutine",
