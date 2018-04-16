@@ -10,7 +10,7 @@ class RecipeDecorator < ApplicationDecorator
   #     end
   #   end
 
-  def description
+  def rendered_description
     Redcarpet::Render::SmartyPants.render(
       Redcarpet::Markdown.new(
         Redcarpet::Render::HTML.new(
