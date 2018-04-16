@@ -4,12 +4,13 @@ class RecipesController < ApplicationController
   # GET /recipes
   def index
     authorize Recipe
-    @records = Recipe.all
+    find_records
   end
 
   # GET /recipes/1
   def show
-    find_recipe
+    find_record
+    authorize_record!
   end
 
   # GET /recipes/new
@@ -21,7 +22,7 @@ class RecipesController < ApplicationController
   # GET /recipes/1/edit
   def edit
     authenticate_account!
-    find_recipe
+    find_record
     authorize_record!
   end
 
@@ -41,11 +42,11 @@ class RecipesController < ApplicationController
   # PATCH/PUT /recipes/1
   def update
     authenticate_account!
-    find_recipe
+    find_record
     authorize_record!
 
-    if @record.update!(recipe_params)
-      redirect_to @record, notice: 'Recipe was successfully updated.'
+    if @record.update!(submission_params)
+      redirect_to @record, notice: 'Submission was successfully updated.'
     else
       render :edit
     end
@@ -54,14 +55,11 @@ class RecipesController < ApplicationController
   # DELETE /recipes/1
   def destroy
     authenticate_account!
-    find_recipe
+    find_record
     authorize_record!
     @record.destroy
-    redirect_to recipes_url, notice: 'Recipe was successfully destroyed.'
-  end
 
-  private def find_recipe
-    @record = Recipe.friendly.find(params[:id])
+    redirect_to recipes_url, notice: 'Recipe was successfully destroyed.'
   end
 
   # Only allow a trusted parameter "white list" through.
@@ -69,7 +67,22 @@ class RecipesController < ApplicationController
     {
       name: params.fetch(:recipe, {}).fetch(:name, nil),
       description: params.fetch(:recipe, {}).fetch(:description, nil),
-      ingredients: params.fetch(:recipe, {}).fetch(:ingredients, nil)
+      ingredients: params.fetch(:recipe, {}).fetch(:ingredients, nil),
+      instructions: params.fetch(:recipe, {}).fetch(:instructions, nil),
+      diets: params.fetch(:recipe, {}).fetch(:diets, nil),
+      allergies: params.fetch(:recipe, {}).fetch(:allergies, nil),
     }
+  end
+
+  private def find_record
+    @record = RecipeDecorator.decorate(pundit_scoped.friendly.find(params[:id]))
+  end
+
+  private def find_records
+    @records = RecipeDecorator.decorate_collection(pundit_scoped)
+  end
+
+  private def pundit_scoped
+    policy_scope(Recipe)
   end
 end

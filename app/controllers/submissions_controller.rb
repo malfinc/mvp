@@ -5,21 +5,21 @@ class SubmissionsController < ApplicationController
   def index
     authenticate_account!
     authorize Submission
-    find_submissions
+    find_records
   end
 
   # GET /submissions/1/edit
   def edit
     authenticate_account!
-    find_submission
+    find_record
     authorize_record!
   end
 
   # PATCH/PUT /submissions/1
   def update
     authenticate_account!
-    find_submission
-    authorize_account!
+    find_record
+    authorize_record!
 
     if @record.update!(submission_params)
       redirect_to @record, notice: 'Submission was successfully updated.'
@@ -28,11 +28,11 @@ class SubmissionsController < ApplicationController
     end
   end
 
-  private def find_submission
+  private def find_record
     @record = SubmissionDecorator.decorate(pundit_scoped.find(params[:id]))
   end
 
-  private def find_submissions
+  private def find_records
     @records = SubmissionDecorator.decorate_collection(pundit_scoped)
   end
 
