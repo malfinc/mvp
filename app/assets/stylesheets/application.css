@@ -38,9 +38,6 @@ main#application #landing_page .page-title {
   text-align: center;
 }
 
-main#application.page .content {
-  width: var(--breakpoint-md);
-}
 
 .page-title {
   color: white;
