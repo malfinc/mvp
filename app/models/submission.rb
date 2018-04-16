@@ -6,8 +6,8 @@ class Submission < ApplicationComputed
       *Recipe.with_moderation_state(:draft),
       *Establishment.with_moderation_state(:draft),
       *MenuItem.with_moderation_state(:draft)
-    ].map do |subject|
-      new(subject: subject)
+    ].compact.map do |subject|
+      new(id: "#{subject.class.name}-#{subject.id}", subject: subject)
     end
   end
 
