@@ -380,7 +380,10 @@ CREATE TABLE public.recipes (
     author_id uuid NOT NULL,
     ingredients text[] DEFAULT '{}'::text[] NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    instructions character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+    cook_time integer NOT NULL,
+    prep_time integer NOT NULL
 );
 
 
@@ -1067,6 +1070,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180408203957'),
 ('20180409023409'),
 ('20180414222011'),
-('20180414222016');
+('20180414222016'),
+('20180415205612'),
+('20180415210200'),
+('20180415210205');
 
 
