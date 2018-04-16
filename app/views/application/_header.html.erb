@@ -1,0 +1,29 @@
+<header>
+  <nav class="navbar navbar-expand-md navbar-light fixed-top bg-gravy">
+    <div class="container">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <%= link_to "Find", "#", class: "nav-link" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to "Make", "#", class: "nav-link" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to "Recipes", recipes_url, class: "nav-link" %>
+        </li>
+        <li class="nav-item">
+          <%= link_to "History", "#", class: "nav-link" %>
+        </li>
+      </ul>
+      <section class="btn-group btn-gravy-group" role="group" aria-label="Basic example">
+        <%= link_to "Sign up", new_account_registration_url(), class: "btn btn-sm btn-gravy" %>
+        <%= link_to "Login", new_account_session_url(), class: "btn btn-sm btn-gravy" %>
+      </section>
+    </div>
+    </div>
+  </nav>
+</header>

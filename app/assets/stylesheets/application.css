@@ -12,7 +12,7 @@
  *
  *= require_tree .
  *= require_self
- */
+*/
 
 :root {
   --primary: #f85c8b;
@@ -22,28 +22,12 @@ html, body {
   height: 100%;
 }
 
-main#application {
-  height: 100%;
-  background-color: #f8c95c;
+#application {
+  margin-top: 65px;
 }
 
-main#application.page.splash {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
-
-main#application #landing_page .page-title {
-  text-align: center;
-}
-
-
-.page-title {
-  color: white;
-  text-transform: uppercase;
-  font-size: 78px;
-  font-family: 'Six Caps', sans-serif;
+#content {
+  min-height: 100vh;
 }
 
 .btn-primary {
@@ -54,4 +38,224 @@ main#application #landing_page .page-title {
 .btn-primary:hover {
   background-color: var(--pink);
   border-color: var(--pink);
+}
+
+.bg-gravy {
+  background-color: #f8c95c;
+  -webkit-box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+  padding: 0px;
+}
+
+.navbar-light .navbar-nav .nav-link {
+  font-size: 0.85em;
+  font-weight: 500;
+  text-transform: uppercase;
+  padding: 15px 15px 12px 15px;
+  color: #FFFFFF;
+  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+  background-color: #f7c144;
+  color: #FFFFFF;
+  text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+
+.footer {
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  line-height: 60px;
+  /* Vertically center the text there */
+}
+
+.footer .container {
+  color: #888888;
+  font-size: 0.9em;
+  border-top: 2px solid #EEEEEE;
+  padding-left: 0px;
+  padding-right: 0px;
+}
+
+.footer .container a {
+  margin-left: 15px;
+  color: #f85c8b;
+}
+
+/* Main content styles
+-------------------------------------------------- */
+
+.pages.about h1 {
+  color: #111111;
+  font-family: 'Teko', sans-serif;
+  margin-top: 30px;
+}
+
+.pages.about h2 {
+  color: #111111;
+  font-family: 'Teko', sans-serif;
+}
+
+.pages.about h3 {
+  color: #111111;
+  font-size: 1.6em;
+  font-family: 'Teko', sans-serif;
+}
+
+.pages.about h4 {
+  color: #111111;
+  font-family: 'Teko', sans-serif;
+}
+
+.pages.about p {
+  color: #333333;
+  text-align: justify;
+  font-weight: 300;
+}
+
+.pages.about hr {
+  border: none;
+  height: 2px;
+  /* Set the hr color */
+  color: #EEE;
+  /* old IE */
+  background-color: #EEEEEE;
+  /* Modern Browsers */
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.jumbotron-about {
+  background: #5c8bf8;
+  background: -webkit-linear-gradient(to top, #749cf9, #5c8bf8);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to top, #749cf9, #5c8bf8);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background-image: image-url("poutine.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  color: #ffffff;
+  font-weight: 100;
+  margin-bottom: 0px;
+}
+
+.jumbotron-about h1 {
+  color: #FFFFFF;
+  font-family: 'Teko', sans-serif;
+}
+
+.jumbotron-about h2 {
+  color: #FFFFFF;
+  font-family: 'Teko', sans-serif;
+}
+
+.jumbotron-about h3 {
+  color: #FFFFFF;
+  font-size: 1.6em;
+  font-family: 'Teko', sans-serif;
+}
+
+.jumbotron-about h4 {
+  color: #FFFFFF;
+  font-family: 'Teko', sans-serif;
+}
+
+.about {
+  font-size: 18px;
+  margin-bottom: 0;
+}
+
+.container-made {
+  padding-top: 0px;
+}
+
+.card {
+  border: none;
+  border-radius: 0px;
+  -webkit-box-shadow: 0px 0px 4px 1px rgba(187, 187, 187, 0.3);
+  -moz-box-shadow: 0px 0px 4px 1px rgba(187, 187, 187, 0.3);
+  box-shadow: 0px 0px 4px 1px rgba(187, 187, 187, 0.3);
+  -webkit-transition: box-shadow 0.5s, color 1s, margin-top 0.5s;
+  transition: box-shadow 0.5s, color 1s, margin-top 0.5s;
+}
+
+.card-title {
+  color: #f85c8b;
+  font-family: 'Teko', sans-serif;
+  margin-bottom: 0px;
+  text-transform: uppercase;
+  -webkit-transition: color 1.5s;
+  transition: color 1.5s;
+}
+
+.card-text {
+  color: #666666;
+  -webkit-transition: color 1.5s;
+  transition: color 1.5s;
+}
+
+.card-about:hover {
+  margin-top: -1px;
+  -webkit-box-shadow: 0px 0px 7px 2px rgba(187, 187, 187, 0.4);
+  -moz-box-shadow: 0px 0px 7px 2px rgba(187, 187, 187, 0.4);
+  box-shadow: 0px 0px 7px 2px rgba(187, 187, 187, 0.4);
+}
+
+.card-about:hover .card-title {
+  color: #f7447a;
+}
+
+.btn-gravy-group {
+  border-radius: 4px;
+  -webkit-box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.2);
+}
+
+.btn-gravy {
+  background-color: #f85c8b;
+  color: #FAFAFA;
+  text-shadow: -1px -1px 0px #f7447a;
+  font-size: 0.75em;
+  font-weight: 400;
+  padding-top: 5px;
+  padding-bottom: 4px;
+}
+
+.btn-gravy:hover {
+  background-color: #f7447a;
+  text-shadow: -1px -1px 0px #f62b68;
+  color: #FFFFFF;
+}
+
+.btn-gravy:focus, .btn-gravy.focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+}
+
+.btn-gravy.disabled, .btn-gravy:disabled {
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-gravy:not(:disabled):not(.disabled):active, .btn-gravy:not(:disabled):not(.disabled).active, .show>.btn-gravy.dropdown-toggle {
+  color: #fff;
+  background-color: #0062cc;
+  border-color: #005cbf;
+}
+
+.btn-gravy:not(:disabled):not(.disabled):active:focus, .btn-gravy:not(:disabled):not(.disabled).active:focus, .show>.btn-gravy.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+}
+
+.special-icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 15px;
 }
