@@ -16,6 +16,8 @@ class RecipeDashboard < ApplicationDashboard
     slug: Field::String,
     description: Field::Text,
     moderation_state: Field::String,
+    prep_time: Field::Integer,
+    cook_time: Field::Integer,
     moderation_state_event: StateMachineField,
     ingredients: ArrayOfTextField,
     instructions: ArrayOfTextField,
@@ -42,6 +44,8 @@ class RecipeDashboard < ApplicationDashboard
     :description,
     :ingredients,
     :instructions,
+    :cook_time,
+    :prep_time,
     :diets,
     :allergies,
     :moderation_state,
@@ -59,6 +63,8 @@ class RecipeDashboard < ApplicationDashboard
   FORM_ATTRIBUTES = [
     :name,
     :description,
+    :cook_time,
+    :prep_time,
     :diets,
     :allergies,
     :moderation_state_event,
@@ -67,6 +73,6 @@ class RecipeDashboard < ApplicationDashboard
   # Overwrite this method to customize how recipes are displayed
   # across all pages of the admin dashboard.
   def display_resource(recipe)
-    recipe.name
+    recipe.name.inspect
   end
 end
