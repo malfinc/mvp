@@ -4,7 +4,7 @@
   <% @records.each do |record| %>
     <section class="card">
       <h5 class="card-header">
-        "<%= record.name %>" <%= record.category.singular %> by <%= record.submitter.name %>'s
+        "<%= record.name %>" <%= record.category.singular %> by <%= record.submitter.name %>
       </h5>
 
       <%= render partial: "#{record.category.element}_card", as: :recipe, object: record.subject %>
