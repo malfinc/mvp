@@ -20,16 +20,12 @@ class DietDashboard < ApplicationDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
     :name,
-    :created_at,
-    :updated_at,
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
     :name,
-    :created_at,
-    :updated_at,
     :menu_items,
     :versions,
   ].freeze
