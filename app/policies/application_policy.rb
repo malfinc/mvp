@@ -55,4 +55,20 @@ class ApplicationPolicy
   def scope
     Pundit.policy_scope!(account, record.class)
   end
+
+  private def converted?
+    record.onboarding_state?(:converted)
+  end
+
+  private def completed?
+    account.onboarding_state?(:completed)
+  end
+
+  private def owner?
+    account == record.author
+  end
+
+  private def administrator?
+    account.role_state?(:administrator)
+  end
 end
