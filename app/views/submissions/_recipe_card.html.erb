@@ -1,5 +1,7 @@
 <section class="card-body">
-  <%= recipe.description %>
+  <p class="card-text">
+    <%= recipe.summary %>
+  </p>
 </section>
 
 <table class="table">
@@ -50,25 +52,3 @@
     </tr>
   </tbody>
 </table>
-
-<ul class="list-group list-group-flush">
-  <li class="list-group-item list-group-item-secondary">
-    Ingredients
-  </li>
-  <% recipe.ingredients.each do |ingredient| %>
-    <li class="list-group-item">
-      <%= ingredient %>
-    </li>
-  <% end %>
-</ul>
-
-<ul class="list-group list-group-flush">
-  <li class="list-group-item list-group-item-secondary">
-    Instructions
-  </li>
-  <% recipe.instructions.each do |instruction| %>
-    <li class="list-group-item">
-      <%= instruction %>
-    </li>
-  <% end %>
-</ul>

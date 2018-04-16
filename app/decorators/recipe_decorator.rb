@@ -24,4 +24,8 @@ class RecipeDecorator < ApplicationDecorator
       )
     ).html_safe
   end
+
+  def summary
+    object.description.truncate(69)
+  end
 end
