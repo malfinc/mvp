@@ -4,11 +4,11 @@
 #
 # To use the locales, use `I18n.t`:
 #
-#     I18n.t 'hello'
+#     I18n.t "hello"
 #
 # In views, this is aliased to just `t`:
 #
-#     <%= t('hello') %>
+#     <%= t("hello") %>
 #
 # To use a different locale, set it with `I18n.locale`:
 #
@@ -24,10 +24,31 @@
 # Instead, surround them with single quotes.
 #
 # en:
-#   'true': 'foo'
+#   "true": "foo"
 #
 # To learn more, please read the Rails Internationalization guide
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  activerecord:
+    models:
+      paper_trail/version:
+        one: "Changelog"
+        other: "Changelogs"
+      paper_trail/attributes:
+        object: "Previous Record"
+        object_changes: "Difference"
+      gutentag/tag:
+        one: "Tag"
+        other: "Tags"
+      gutentag/tagging:
+        one: "Tagging"
+        other: "Taggings"
+      friendly_id/slug:
+        one: "Slug"
+        other: "Slugs"
+  pundit:
+    default: "You cannot perform this action."
+    recipe_policy:
+      update?: "You cannot edit this recipe!"
+      create?: "You cannot create recipes!"

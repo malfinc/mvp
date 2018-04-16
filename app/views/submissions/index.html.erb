@@ -1,0 +1,23 @@
+<h1>Submissions</h1>
+
+<section class="card-group">
+  <% @records.each do |record| %>
+    <section class="card">
+      <h5 class="card-header">
+        "<%= record.name %>" <%= record.category.singular %> by <%= record.submitter.name %>
+      </h5>
+
+      <%= render partial: "#{record.category.element}_card", as: :recipe, object: record.subject %>
+
+      <section class="card-body">
+        <%= link_to "Moderate", edit_submission_path(record.id), class: "card-link" %>
+      </section>
+
+      <footer class="card-footer">
+        <small class="text-muted">
+          Last updated <%= time_ago_in_words(record.updated_at) %> ago
+        </small>
+      </footer>
+    </section>
+  <% end %>
+</section>

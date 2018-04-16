@@ -143,6 +143,16 @@ CREATE TABLE public.allergies_menu_items (
 
 
 --
+-- Name: allergies_recipes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.allergies_recipes (
+    allergy_id bigint NOT NULL,
+    recipe_id uuid NOT NULL
+);
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -192,6 +202,16 @@ ALTER SEQUENCE public.diets_id_seq OWNED BY public.diets.id;
 CREATE TABLE public.diets_menu_items (
     diet_id bigint NOT NULL,
     menu_item_id uuid NOT NULL
+);
+
+
+--
+-- Name: diets_recipes; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.diets_recipes (
+    diet_id bigint NOT NULL,
+    recipe_id uuid NOT NULL
 );
 
 
@@ -360,7 +380,10 @@ CREATE TABLE public.recipes (
     author_id uuid NOT NULL,
     ingredients text[] DEFAULT '{}'::text[] NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    instructions character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+    cook_time integer NOT NULL,
+    prep_time integer NOT NULL
 );
 
 
@@ -650,6 +673,27 @@ CREATE UNIQUE INDEX index_allergies_on_name ON public.allergies USING btree (nam
 
 
 --
+-- Name: index_allergies_recipes_on_allergy_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_allergies_recipes_on_allergy_id ON public.allergies_recipes USING btree (allergy_id);
+
+
+--
+-- Name: index_allergies_recipes_on_recipe_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_allergies_recipes_on_recipe_id ON public.allergies_recipes USING btree (recipe_id);
+
+
+--
+-- Name: index_allergies_recipes_on_recipe_id_and_allergy_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_allergies_recipes_on_recipe_id_and_allergy_id ON public.allergies_recipes USING btree (recipe_id, allergy_id);
+
+
+--
 -- Name: index_diets_menu_items_on_diet_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -675,6 +719,27 @@ CREATE INDEX index_diets_menu_items_on_menu_item_id ON public.diets_menu_items U
 --
 
 CREATE UNIQUE INDEX index_diets_on_name ON public.diets USING btree (name);
+
+
+--
+-- Name: index_diets_recipes_on_diet_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_diets_recipes_on_diet_id ON public.diets_recipes USING btree (diet_id);
+
+
+--
+-- Name: index_diets_recipes_on_recipe_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_diets_recipes_on_recipe_id ON public.diets_recipes USING btree (recipe_id);
+
+
+--
+-- Name: index_diets_recipes_on_recipe_id_and_diet_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_diets_recipes_on_recipe_id_and_diet_id ON public.diets_recipes USING btree (recipe_id, diet_id);
 
 
 --
@@ -891,11 +956,35 @@ ALTER TABLE ONLY public.menu_items
 
 
 --
+-- Name: diets_recipes fk_rails_462dabbc1c; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.diets_recipes
+    ADD CONSTRAINT fk_rails_462dabbc1c FOREIGN KEY (recipe_id) REFERENCES public.recipes(id);
+
+
+--
 -- Name: establishments_payment_types fk_rails_629197ac5c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.establishments_payment_types
     ADD CONSTRAINT fk_rails_629197ac5c FOREIGN KEY (establishment_id) REFERENCES public.establishments(id);
+
+
+--
+-- Name: allergies_recipes fk_rails_6590fe6caf; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.allergies_recipes
+    ADD CONSTRAINT fk_rails_6590fe6caf FOREIGN KEY (recipe_id) REFERENCES public.recipes(id);
+
+
+--
+-- Name: allergies_recipes fk_rails_6ab7304ced; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.allergies_recipes
+    ADD CONSTRAINT fk_rails_6ab7304ced FOREIGN KEY (allergy_id) REFERENCES public.allergies(id);
 
 
 --
@@ -920,6 +1009,14 @@ ALTER TABLE ONLY public.gutentag_taggings
 
 ALTER TABLE ONLY public.allergies_menu_items
     ADD CONSTRAINT fk_rails_ce1a3efb88 FOREIGN KEY (menu_item_id) REFERENCES public.menu_items(id);
+
+
+--
+-- Name: diets_recipes fk_rails_d6b7ea753b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.diets_recipes
+    ADD CONSTRAINT fk_rails_d6b7ea753b FOREIGN KEY (diet_id) REFERENCES public.diets(id);
 
 
 --
@@ -971,6 +1068,11 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180408055646'),
 ('20180408203926'),
 ('20180408203957'),
-('20180409023409');
+('20180409023409'),
+('20180414222011'),
+('20180414222016'),
+('20180415205612'),
+('20180415210200'),
+('20180415210205');
 
 

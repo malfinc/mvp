@@ -27,20 +27,17 @@ main#application {
   background-color: #f8c95c;
 }
 
-main#application.splash {
+main#application.page.splash {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
 }
 
-main#application.splash .page-title {
+main#application #landing_page .page-title {
   text-align: center;
 }
 
-section#landing.page {
-  width: var(--breakpoint-md);
-}
 
 .page-title {
   color: white;
@@ -53,6 +50,7 @@ section#landing.page {
   background-color: var(--primary);
   border-color: var(--primary);
 }
+
 .btn-primary:hover {
   background-color: var(--pink);
   border-color: var(--pink);
