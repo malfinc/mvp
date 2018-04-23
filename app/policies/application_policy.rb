@@ -51,11 +51,11 @@ class ApplicationPolicy
     requester.onboarding_state?(:completed)
   end
 
-  private def owner(field)
+  private def owner_by(field)
     requester == record.public_send(field)
   end
 
-  private def administrator
+  private def administrators
     requester.role_state?(:administrator)
   end
 
@@ -67,7 +67,11 @@ class ApplicationPolicy
     false
   end
 
-  private def only_logged_out
-    requester.nil?
+  private def guests
+    requester.role_state(:user) && requester.onboarding_state?(:fresh)
+  end
+
+  private def users
+    requester.role_state?(:user) && !requester.onboarding_state?(:fresh)
   end
 end

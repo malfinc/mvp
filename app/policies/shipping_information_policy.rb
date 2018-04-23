@@ -4,4 +4,8 @@ class ShippingInformationPolicy < ApplicationPolicy
       relation.none
     end
   end
+
+  def create?
+    guests || users || administrators
+  end
 end

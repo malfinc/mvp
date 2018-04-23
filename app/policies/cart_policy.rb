@@ -6,14 +6,14 @@ class CartPolicy < ApplicationPolicy
   end
 
   def show?
-    owner(:account)
+    owner_by(:account) || administrators
   end
 
   def create?
-    everyone
+    users || administrators
   end
 
   def index?
-    administrator
+    administrators
   end
 end
