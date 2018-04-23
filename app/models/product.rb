@@ -1,9 +1,8 @@
 class Product < ApplicationRecord
   include FriendlyId
-  include AuditActor
+    include AuditedTransitions
 
   has_many :cart_items
-  has_many :product_visibility_state_transitions
 
   friendly_id :name, use: [:slugged, :history], slug_column: :slug
 
@@ -22,8 +21,6 @@ class Product < ApplicationRecord
   before_validation :generate_checksum
 
   state_machine :visibility_state, initial: :hidden do
-    audit_trail initial: false, context: :audit_actor_id
-
     event :hide do
       transition :visible => :hidden
     end
@@ -31,6 +28,8 @@ class Product < ApplicationRecord
     event :show do
       transition :hidden => :visible
     end
+
+    before_transition do: :version_transition
   end
 
   private def generate_checksum

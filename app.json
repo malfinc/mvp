@@ -5,6 +5,9 @@
     "postdeploy": "bin/postdeploy"
   },
   "env": {
+    "WWW_LOCATION": {
+      "required": true
+    },
     "RAILS_HOST": {
       "required": true
     },
@@ -28,7 +31,10 @@
       "value": "2",
       "required": true
     },
-    "RAILS_EMAIL_FROM": {
+    "RAILS_EMAIL_USER": {
+      "required": true
+    },
+    "RAILS_EMAIL_HOST": {
       "required": true
     },
     "PGBOUNCER_POOL": {
@@ -39,14 +45,25 @@
       "value": "2",
       "required": true
     },
-    "REDIS_STORE_POOL_SIZE": {
+    "REDIS_OBJECTS_POOL_SIZE": {
+      "value": "2",
+      "required": true
+    },
+    "REDIS_SIDEKIQ_SERVER_POOL_SIZE": {
+      "value": "10",
+      "required": true
+    },
+    "REDIS_SIDEKIQ_CLIENT_POOL_SIZE": {
       "value": "2",
       "required": true
     },
     "REDIS_CACHE_URL": {
       "required": true
     },
-    "REDIS_STORE_URL": {
+    "REDIS_OBJECTS_URL": {
+      "required": true
+    },
+    "REDIS_SIDEKIQ_URL": {
       "required": true
     },
     "RACK_SERVICE_TIMEOUT": {
@@ -68,7 +85,14 @@
     "heroku-postgresql",
     {
       "plan": "heroku-redis:hobby-dev",
-      "as": "REDIS_STORE",
+      "as": "REDIS_OBJECTS",
+      "options": {
+        "maxmemory_policy": "noeviction"
+      }
+    },
+    {
+      "plan": "heroku-redis:hobby-dev",
+      "as": "REDIS_SIDEKIQ",
       "options": {
         "maxmemory_policy": "noeviction"
       }
@@ -85,9 +109,6 @@
   "buildpacks": [
     {
       "url": "https://github.com/heroku/heroku-buildpack-pgbouncer"
-    },
-    {
-      "url": "heroku/nodejs"
     },
     {
       "url": "heroku/ruby"

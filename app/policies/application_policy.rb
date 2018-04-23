@@ -1,53 +1,73 @@
 class ApplicationPolicy
-  attr_reader :user, :record
+  class ApplicationScope
+    attr_reader :requester, :relation
 
-  def initialize(user, record)
-    @user = user
+    def initialize(requester, relation)
+      @requester = requester || RequesterNull.new
+      @relation = relation
+    end
+
+    def resolve
+      relation.none
+    end
+  end
+
+  attr_reader :requester, :record
+
+  def initialize(requester, record)
+    @requester = requester || RequesterNull.new
     @record = record
   end
 
   def index?
-    false
+    noone
   end
 
   def show?
-    scope.where(:id => record.id).exists?
+    noone
   end
 
   def create?
-    false
-  end
-
-  def new?
-    create?
+    noone
   end
 
   def update?
-    false
-  end
-
-  def edit?
-    update?
+    noone
   end
 
   def destroy?
-    false
+    noone
   end
 
   def scope
-    Pundit.policy_scope!(user, record.class)
+    Pundit.policy_scope!(requester, record.class)
   end
 
-  class Scope
-    attr_reader :user, :scope
+  private def converted
+    record.onboarding_state?(:converted)
+  end
 
-    def initialize(user, scope)
-      @user = user
-      @scope = scope
-    end
+  private def completed
+    requester.onboarding_state?(:completed)
+  end
 
-    def resolve
-      scope
-    end
+  private def owner(field)
+    requester == record.public_send(field)
+  end
+
+  private def administrator
+    requester.role_state?(:administrator)
+  end
+
+  private def everyone
+    true
+  end
+
+  private def noone
+    false
+  end
+
+  private def only_logged_out
+    requester.nil?
   end
 end

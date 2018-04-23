@@ -18,8 +18,8 @@ require "action_view/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-require_relative "../lib/source/configuration"
-require_relative "../lib/source/token_strategy"
+require_relative "../lib/source"
+require_relative "../lib/extensions/rails/console"
 
 module BlankApiRails
   class Application < Rails::Application
@@ -38,8 +38,9 @@ module BlankApiRails
     config.generators.system_tests = nil
     config.generators.assets = false
     config.generators.helper = false
-    config.generators.orm :active_record, primary_key_type: :uuid
-
+    config.generators do |generator|
+      generator.orm :active_record, primary_key_type: :uuid
+    end
     config.action_controller.include_all_helpers = false
     config.active_record.schema_format = :sql
     config.active_job.queue_adapter = :sidekiq

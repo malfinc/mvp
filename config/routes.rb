@@ -1,16 +1,16 @@
 Rails.application.routes.draw do
   devise_for :accounts
 
-  mount JSONAPI::Resources::Home::Engine, at: "/"
+  mount JSONAPI::Home::Engine, at: "/"
 
   namespace :v1 do
-    jsonapi_resources :accounts
-    jsonapi_resources :carts
-    jsonapi_resources :cart_items
-    jsonapi_resources :billing_informations
-    jsonapi_resources :shipping_informations
-    jsonapi_resources :payments
-    jsonapi_resources :products
+    resources :accounts
+    resources :billing_informations, path: "billing-informations"
+    resources :shipping_informations, path: "shipping-informations"
+    resources :cart_items, path: "cart-items"
+    resources :carts
+    resources :products
+    resources :payments
   end
 
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html

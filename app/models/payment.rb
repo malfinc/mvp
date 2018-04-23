@@ -1,4 +1,5 @@
 class Payment < ApplicationRecord
+  include AuditedTransitions
   belongs_to :account
   has_one :cart
 
@@ -10,5 +11,7 @@ class Payment < ApplicationRecord
     event :complete do
       transition from: :pending, to: :completed
     end
+
+    before_transition do: :version_transition
   end
 end

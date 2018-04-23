@@ -1,5 +1,5 @@
 class CartItem < ApplicationRecord
-  include AuditActor
+  include AuditedTransitions
 
   belongs_to :cart
   belongs_to :account
@@ -12,10 +12,10 @@ class CartItem < ApplicationRecord
   validates_presence_of :price_currency
 
   state_machine :purchase_state, initial: :pending do
-    audit_trail initial: false, context: :audit_actor_id
-
     event :purchase do
       transition :pending => :purchased
     end
+
+    before_transition do: :version_transition
   end
 end
