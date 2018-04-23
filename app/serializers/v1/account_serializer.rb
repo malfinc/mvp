@@ -7,5 +7,6 @@ module V1
     has_many :payments, include_data: true
 
     attribute :email
+    attribute :unconfirmed_email
   end
 end
