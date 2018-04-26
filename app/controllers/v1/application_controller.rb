@@ -2,12 +2,19 @@ module V1
   class ApplicationController < ::ApplicationController
     include JSONAPI::Home
 
+    rescue_from StandardError, with: :generic_error_handling
     rescue_from JSONAPI::Realizer::Error::MissingAcceptHeader, with: :missing_accept_header
     rescue_from JSONAPI::Realizer::Error::InvalidAcceptHeader, with: :invalid_accept_header
     rescue_from JSONAPI::Realizer::Error::MalformedDataRootProperty, with: :malformed_data_root_property
     rescue_from Pundit::NotAuthorizedError, with: :access_not_authorized
     rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
-    rescue_from CartItemWithoutProductError, with: :malformed_request
+    rescue_from ApplicationError, with: :malformed_request
+
+    private def generic_error_handling(exception)
+      Rails.logger.info("exception=#{exception.class.name.inspect} message=#{exception.message.inspect}")
+      Rails.logger.debug(exception.full_message)
+      raise exception
+    end
 
     private def missing_accept_header
       head :not_acceptable
