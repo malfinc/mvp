@@ -58,7 +58,6 @@ module V1
 
       Account.transaction do
         realization.model.save!
-        binding.pry
 
         render json: serialize(realization)
       end
