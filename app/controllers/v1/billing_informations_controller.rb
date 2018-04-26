@@ -4,9 +4,6 @@ module V1
       version: "v1",
       namespace: "billing-informations"
     )
-    before_action :ensure_account_exists, on: :create
-    before_action :ensure_cart_exists, on: :create
-    before_action :authenticate_account!
 
     def index
       realization = JSONAPI::Realizer.index(
@@ -35,6 +32,9 @@ module V1
     end
 
     def create
+      ensure_account_exists
+      authenticate_account!
+      ensure_cart_exists
 
       realization = JSONAPI::Realizer.create(
         BillingInformationsCreateSchema.new(request.parameters).as_json,
@@ -50,6 +50,9 @@ module V1
     end
 
     def update
+      ensure_account_exists
+      authenticate_account!
+      ensure_cart_exists
 
       realization = JSONAPI::Realizer.update(
         BillingInformationsUpdateSchema.new(request.parameters).as_json,

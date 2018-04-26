@@ -32,6 +32,9 @@ module V1
     end
 
     def create
+      ensure_account_exists
+      authenticate_account!
+      ensure_cart_exists
 
       realization = JSONAPI::Realizer.create(
         PaymentsCreateSchema.new(request.parameters).as_json,

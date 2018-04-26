@@ -5,10 +5,6 @@ module V1
       namespace: "shipping-informations"
     )
 
-    before_action :ensure_account_exists, on: :create
-    before_action :ensure_cart_exists, on: :create
-    before_action :authenticate_account!
-
     def index
       realization = JSONAPI::Realizer.index(
         ShippingInformationsIndexSchema.new(request.parameters).as_json,
@@ -36,6 +32,9 @@ module V1
     end
 
     def create
+      ensure_account_exists
+      authenticate_account!
+      ensure_cart_exists
 
       realization = JSONAPI::Realizer.create(
         ShippingInformationsCreateSchema.new(request.parameters).as_json,
