@@ -44,9 +44,14 @@ module V1
 
       authorize realization.model
 
-        realization.model.save!
+      PurchaseCartOperation.new.call(payments: [realization.model]) do |operation|
+        operation.success do
+          render json: serialize(realization)
+        end
 
-        render json: serialize(realization)
+        operation.failure do |failure|
+          raise failure
+        end
       end
     end
   end
