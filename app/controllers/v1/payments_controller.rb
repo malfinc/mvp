@@ -5,10 +5,6 @@ module V1
       namespace: "payments"
     )
 
-    before_action :ensure_account_exists, on: :create
-    before_action :ensure_cart_exists, on: :create
-    before_action :authenticate_account!
-
     def index
       realization = JSONAPI::Realizer.index(
         PaymentsIndexSchema.new(request.parameters).as_json,
@@ -36,14 +32,14 @@ module V1
     end
 
     def create
-      Payment.transaction do
-        realization = JSONAPI::Realizer.create(
-          PaymentsCreateSchema.new(request.parameters).as_json,
-          scope: policy_scope(Payment),
-          headers: request.headers,
-        )
 
-        authorize realization.model
+      realization = JSONAPI::Realizer.create(
+        PaymentsCreateSchema.new(request.parameters).as_json,
+        scope: policy_scope(Payment),
+        headers: request.headers,
+      )
+
+      authorize realization.model
 
         realization.model.save!
 

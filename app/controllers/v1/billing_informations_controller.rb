@@ -35,35 +35,33 @@ module V1
     end
 
     def create
-      BillingInformation.transaction do
-        realization = JSONAPI::Realizer.create(
-          BillingInformationsCreateSchema.new(request.parameters).as_json,
-          scope: policy_scope(BillingInformation),
-          headers: request.headers,
-        )
 
-        realization.model.save!
+      realization = JSONAPI::Realizer.create(
+        BillingInformationsCreateSchema.new(request.parameters).as_json,
+        scope: policy_scope(BillingInformation),
+        headers: request.headers,
+      )
 
-        authorize realization.model
+      realization.model.save!
 
-        render json: serialize(realization)
-      end
+      authorize realization.model
+
+      render json: serialize(realization)
     end
 
     def update
-      BillingInformation.transaction do
-        realization = JSONAPI::Realizer.update(
-          BillingInformationsUpdateSchema.new(request.parameters).as_json,
-          scope: policy_scope(BillingInformation),
-          headers: request.headers,
-        )
 
-        realization.model.save!
+      realization = JSONAPI::Realizer.update(
+        BillingInformationsUpdateSchema.new(request.parameters).as_json,
+        scope: policy_scope(BillingInformation),
+        headers: request.headers,
+      )
 
-        authorize realization.model
+      realization.model.save!
 
-        render json: serialize(realization)
-      end
+      authorize realization.model
+
+      render json: serialize(realization)
     end
   end
 end

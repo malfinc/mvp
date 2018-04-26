@@ -36,35 +36,32 @@ module V1
     end
 
     def create
-      ShippingInformation.transaction do
-        realization = JSONAPI::Realizer.create(
-          ShippingInformationsCreateSchema.new(request.parameters).as_json,
-          scope: policy_scope(ShippingInformation),
-          headers: request.headers,
-        )
 
-        authorize realization.model
+      realization = JSONAPI::Realizer.create(
+        ShippingInformationsCreateSchema.new(request.parameters).as_json,
+        scope: policy_scope(ShippingInformation),
+        headers: request.headers,
+      )
 
-        realization.model.save!
+      authorize realization.model
 
-        render json: serialize(realization)
-      end
+      realization.model.save!
+
+      render json: serialize(realization)
     end
 
     def update
-      ShippingInformation.transaction do
-        realization = JSONAPI::Realizer.update(
-          ShippingInformationsUpdateSchema.new(request.parameters).as_json,
-          scope: policy_scope(ShippingInformation),
-          headers: request.headers,
-        )
+      realization = JSONAPI::Realizer.update(
+        ShippingInformationsUpdateSchema.new(request.parameters).as_json,
+        scope: policy_scope(ShippingInformation),
+        headers: request.headers,
+      )
 
-        authorize realization.model
+      authorize realization.model
 
-        realization.model.save!
+      realization.model.save!
 
-        render json: serialize(realization)
-      end
+      render json: serialize(realization)
     end
   end
 end
