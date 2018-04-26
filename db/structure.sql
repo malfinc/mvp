@@ -131,6 +131,18 @@ CREATE TABLE public.billing_informations (
 
 
 --
+-- Name: billing_informations_carts; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.billing_informations_carts (
+    billing_information_id uuid NOT NULL,
+    cart_id uuid NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
 -- Name: cart_items; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -139,9 +151,11 @@ CREATE TABLE public.cart_items (
     cart_id uuid NOT NULL,
     product_id uuid NOT NULL,
     price_cents integer NOT NULL,
+    price_currency character varying NOT NULL,
+    discount_cents integer DEFAULT 0 NOT NULL,
+    discount_currency character varying DEFAULT 'usd'::character varying NOT NULL,
     account_id uuid NOT NULL,
     purchase_state character varying NOT NULL,
-    price_currency character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -154,10 +168,39 @@ CREATE TABLE public.cart_items (
 CREATE TABLE public.carts (
     id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     account_id uuid NOT NULL,
-    billing_information_id uuid,
-    shipping_information_id uuid,
-    payment_id uuid,
     checkout_state character varying NOT NULL,
+    total_cents integer,
+    total_currency character varying,
+    subtotal_cents integer,
+    subtotal_currency character varying,
+    discount_cents integer,
+    discount_currency character varying,
+    tax_cents integer,
+    tax_currency character varying,
+    shipping_cents integer,
+    shipping_currency character varying,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL,
+    CONSTRAINT carts_discount_cents_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (discount_cents IS NOT NULL))),
+    CONSTRAINT carts_discount_currency_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (discount_currency IS NOT NULL))),
+    CONSTRAINT carts_shipping_cents_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (shipping_cents IS NOT NULL))),
+    CONSTRAINT carts_shipping_currency_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (shipping_currency IS NOT NULL))),
+    CONSTRAINT carts_subtotal_cents_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (subtotal_cents IS NOT NULL))),
+    CONSTRAINT carts_subtotal_currency_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (subtotal_currency IS NOT NULL))),
+    CONSTRAINT carts_tax_cents_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (tax_cents IS NOT NULL))),
+    CONSTRAINT carts_tax_currency_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (tax_currency IS NOT NULL))),
+    CONSTRAINT carts_total_cents_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (total_cents IS NOT NULL))),
+    CONSTRAINT carts_total_currency_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (total_currency IS NOT NULL)))
+);
+
+
+--
+-- Name: carts_shipping_informations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.carts_shipping_informations (
+    cart_id uuid NOT NULL,
+    shipping_information_id uuid NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -249,10 +292,18 @@ CREATE TABLE public.gutentag_tags (
 CREATE TABLE public.payments (
     id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     subtype character varying NOT NULL,
-    service_eid text NOT NULL,
+    source_id text NOT NULL,
     account_id uuid NOT NULL,
+    cart_id uuid NOT NULL,
+    paid_cents integer NOT NULL,
+    paid_currency integer NOT NULL,
+    refund_cents integer,
+    refund_currency character varying,
+    processing_state public.citext NOT NULL,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    CONSTRAINT payments_refund_cents_null CHECK (((NOT (processing_state OPERATOR(public.=) 'refunded'::public.citext)) OR (refund_cents IS NOT NULL))),
+    CONSTRAINT payments_refund_currency_null CHECK (((NOT (processing_state OPERATOR(public.=) 'refunded'::public.citext)) OR (refund_currency IS NOT NULL)))
 );
 
 
@@ -410,6 +461,14 @@ ALTER TABLE ONLY public.cart_items
 
 
 --
+-- Name: carts carts_account_id_unique; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.carts
+    ADD CONSTRAINT carts_account_id_unique UNIQUE (account_id) DEFERRABLE;
+
+
+--
 -- Name: carts carts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -531,6 +590,27 @@ CREATE INDEX index_accounts_on_username ON public.accounts USING btree (username
 
 
 --
+-- Name: index_billing_information_carts_on_join_columns; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_billing_information_carts_on_join_columns ON public.billing_informations_carts USING btree (billing_information_id, cart_id);
+
+
+--
+-- Name: index_billing_informations_carts_on_billing_information_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_billing_informations_carts_on_billing_information_id ON public.billing_informations_carts USING btree (billing_information_id);
+
+
+--
+-- Name: index_billing_informations_carts_on_cart_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_billing_informations_carts_on_cart_id ON public.billing_informations_carts USING btree (cart_id);
+
+
+--
 -- Name: index_cart_items_on_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -562,14 +642,7 @@ CREATE INDEX index_cart_items_on_purchase_state ON public.cart_items USING btree
 -- Name: index_carts_on_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE UNIQUE INDEX index_carts_on_account_id ON public.carts USING btree (account_id);
-
-
---
--- Name: index_carts_on_billing_information_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_carts_on_billing_information_id ON public.carts USING btree (billing_information_id);
+CREATE INDEX index_carts_on_account_id ON public.carts USING btree (account_id);
 
 
 --
@@ -580,17 +653,17 @@ CREATE INDEX index_carts_on_checkout_state ON public.carts USING btree (checkout
 
 
 --
--- Name: index_carts_on_payment_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_carts_shipping_informations_on_cart_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_carts_on_payment_id ON public.carts USING btree (payment_id);
+CREATE INDEX index_carts_shipping_informations_on_cart_id ON public.carts_shipping_informations USING btree (cart_id);
 
 
 --
--- Name: index_carts_on_shipping_information_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_carts_shipping_informations_on_shipping_information_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_carts_on_shipping_information_id ON public.carts USING btree (shipping_information_id);
+CREATE INDEX index_carts_shipping_informations_on_shipping_information_id ON public.carts_shipping_informations USING btree (shipping_information_id);
 
 
 --
@@ -664,10 +737,24 @@ CREATE INDEX index_payments_on_account_id ON public.payments USING btree (accoun
 
 
 --
--- Name: index_payments_on_service_eid; Type: INDEX; Schema: public; Owner: -
+-- Name: index_payments_on_cart_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_payments_on_service_eid ON public.payments USING btree (service_eid);
+CREATE INDEX index_payments_on_cart_id ON public.payments USING btree (cart_id);
+
+
+--
+-- Name: index_payments_on_processing_state; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_payments_on_processing_state ON public.payments USING btree (processing_state);
+
+
+--
+-- Name: index_payments_on_source_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_payments_on_source_id ON public.payments USING btree (source_id);
 
 
 --
@@ -696,6 +783,13 @@ CREATE UNIQUE INDEX index_products_on_slug ON public.products USING btree (slug)
 --
 
 CREATE INDEX index_products_on_visibility_state ON public.products USING btree (visibility_state);
+
+
+--
+-- Name: index_shipping_information_carts_on_join_columns; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_shipping_information_carts_on_join_columns ON public.carts_shipping_informations USING btree (shipping_information_id, cart_id);
 
 
 --
@@ -728,11 +822,19 @@ ALTER TABLE ONLY public.billing_informations
 
 
 --
--- Name: carts fk_rails_4b615673ca; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: payments fk_rails_2bc1cfea36; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.carts
-    ADD CONSTRAINT fk_rails_4b615673ca FOREIGN KEY (payment_id) REFERENCES public.payments(id);
+ALTER TABLE ONLY public.payments
+    ADD CONSTRAINT fk_rails_2bc1cfea36 FOREIGN KEY (cart_id) REFERENCES public.carts(id);
+
+
+--
+-- Name: billing_informations_carts fk_rails_314ea0ecbc; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.billing_informations_carts
+    ADD CONSTRAINT fk_rails_314ea0ecbc FOREIGN KEY (cart_id) REFERENCES public.carts(id);
 
 
 --
@@ -760,14 +862,6 @@ ALTER TABLE ONLY public.cart_items
 
 
 --
--- Name: carts fk_rails_772f954818; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.carts
-    ADD CONSTRAINT fk_rails_772f954818 FOREIGN KEY (billing_information_id) REFERENCES public.billing_informations(id);
-
-
---
 -- Name: payments fk_rails_81b2605d2a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -776,11 +870,11 @@ ALTER TABLE ONLY public.payments
 
 
 --
--- Name: carts fk_rails_955c878d40; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: carts_shipping_informations fk_rails_8ab40912b2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.carts
-    ADD CONSTRAINT fk_rails_955c878d40 FOREIGN KEY (shipping_information_id) REFERENCES public.shipping_informations(id);
+ALTER TABLE ONLY public.carts_shipping_informations
+    ADD CONSTRAINT fk_rails_8ab40912b2 FOREIGN KEY (cart_id) REFERENCES public.carts(id);
 
 
 --
@@ -789,6 +883,14 @@ ALTER TABLE ONLY public.carts
 
 ALTER TABLE ONLY public.cart_items
     ADD CONSTRAINT fk_rails_c0ea132c68 FOREIGN KEY (account_id) REFERENCES public.accounts(id);
+
+
+--
+-- Name: carts_shipping_informations fk_rails_c7b27e45c1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.carts_shipping_informations
+    ADD CONSTRAINT fk_rails_c7b27e45c1 FOREIGN KEY (shipping_information_id) REFERENCES public.shipping_informations(id);
 
 
 --
@@ -808,6 +910,14 @@ ALTER TABLE ONLY public.carts
 
 
 --
+-- Name: billing_informations_carts fk_rails_fc1ca91f0a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.billing_informations_carts
+    ADD CONSTRAINT fk_rails_fc1ca91f0a FOREIGN KEY (billing_information_id) REFERENCES public.billing_informations(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -823,8 +933,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171231104816'),
 ('20180127234151'),
 ('20180127234212'),
-('20180127234414'),
 ('20180127234443'),
+('20180127234444'),
+('20180127234445'),
+('20180127234446'),
 ('20180128190453'),
 ('20180128190504'),
 ('20180422070216');

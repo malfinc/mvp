@@ -83,11 +83,8 @@ RSpec.describe "Entire checkout process", type: :request do
     add_product_to_cart("a")
     add_product_to_cart("b")
     provide_email_address
-    binding.pry
     enter_shipping_information
-    binding.pry
     enter_billing_information
-    binding.pry
     make_payment
     binding.pry
   end

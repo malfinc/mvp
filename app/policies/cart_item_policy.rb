@@ -1,14 +1,14 @@
 class CartItemPolicy < ApplicationPolicy
   class Scope < ApplicationScope
     def resolve
-      return relation.where(account: requester) if requester.present?
+      return relation.where(account: requester, cart: requester.fresh_cart) unless administrator?
 
       relation.none
     end
   end
 
   def show?
-    owner(:account)
+    guests || users || administrator
   end
 
   def create?

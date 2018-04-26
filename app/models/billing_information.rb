@@ -1,5 +1,5 @@
 class BillingInformation < ApplicationRecord
-  has_many :carts
+  has_and_belongs_to_many :carts
   belongs_to :account
 
   validates_presence_of :name

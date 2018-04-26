@@ -16,6 +16,6 @@ class AccountPolicy < ApplicationPolicy
   end
 
   def update?
-    owner(:itself)
+    guests || users || administrators
   end
 end

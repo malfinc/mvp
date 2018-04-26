@@ -2,16 +2,17 @@ class Cart < ApplicationRecord
   include AuditedTransitions
 
   belongs_to :account
-  belongs_to :payment, optional: true
-  belongs_to :shipping_information, optional: true
-  belongs_to :billing_information, optional: true
+  has_one :shipping_information
+  has_one :billing_information
+  has_many :payments
   has_many :cart_items
 
+  monetize :total_cents
+  monetize :tax_cents
+  monetize :shipping_cents
+  monetize :discount_cents
+
   validates_presence_of :checkout_state
-  validates_presence_of :shipping_information, if: ->(record) { record.checkout_state?(:purchased) }
-  validates_presence_of :shipping_information_id, if: ->(record) { record.checkout_state?(:purchased) }
-  validates_presence_of :billing_information, if: ->(record) { record.checkout_state?(:purchased) }
-  validates_presence_of :billing_information_id, if: ->(record) { record.checkout_state?(:purchased) }
 
   state_machine :checkout_state, initial: :fresh do
     event :ask_for_shipping do
@@ -23,17 +24,71 @@ class Cart < ApplicationRecord
     end
 
     event :ask_for_payment do
-      transition to: :payment, unless: :payment?
+      transition to: :payment, unless: -> (record) { record.payments.any? }
     end
 
     event :purchase do
       transition to: :purchased, if: :has_all_information?
     end
 
+    state :purchased do
+      validates_presence_of :shipping_information
+      validates_presence_of :shipping_information_id
+      validates_presence_of :billing_information
+      validates_presence_of :billing_information_id
+      validates_presence_of :payments
+    end
+
     before_transition do: :version_transition
   end
 
+  def subtotal_cents
+    return super if checkout_state?(:purchased)
+
+    if cart_items.any?
+      cart_items.sum(:price_cents) + cart_items.sum(:discount_cents)
+    else
+      0
+    end
+  end
+
+  def discount_cents
+    return super if checkout_state?(:purchased)
+
+    read_attribute(:discount_cents) || 0
+  end
+
+  def tax_cents
+    return super if checkout_state?(:purchased)
+
+    if shipping_information.present?
+      subtotal_cents * TaxRate.new(address: shipping_information).percent
+    else
+      0
+    end
+  end
+
+  def shipping_cents
+    return super if checkout_state?(:purchased)
+
+    if shipping_information.present?
+      ShippingRate.new(address: shipping_information).amount_cents
+    else
+      0
+    end
+  end
+
+  def total_cents
+    return super if checkout_state?(:purchased)
+
+    if cart_items.any?
+      subtotal_cents + discount_cents + tax_cents + shipping_cents
+    else
+      0
+    end
+  end
+
   private def has_all_information?
-    billing_information? && shipping_information? && payment?
+    billing_information? && shipping_information? && payments.any?
   end
 end

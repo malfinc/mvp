@@ -3,12 +3,9 @@ module V1
     has_one :account, include_data: true
     has_one :billing_information, include_data: true
     has_one :shipping_information, include_data: true
-    has_one :payment, include_data: true
+    has_many :payments, include_data: true
     has_many :cart_items, include_data: true
 
-    attribute :total_cents
-    attribute :total_currency
-    attribute :total
     attribute :subtotal_cents
     attribute :subtotal_currency
     attribute :subtotal
@@ -21,5 +18,8 @@ module V1
     attribute :shipping_cents
     attribute :shipping_currency
     attribute :shipping
+    attribute :total_cents
+    attribute :total_currency
+    attribute :total
   end
 end

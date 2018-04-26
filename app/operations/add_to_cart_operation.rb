@@ -1,23 +1,16 @@
 class AddToCartOperation < ApplicationOperation
-  step :validate
+  try :validate, catch: StandardError
   step :associate
-  check :persist
+  try :persist, catch: StandardError
 
-  def validate(cart_item:, cart:, account:)
-    return Failure(CartItemWithoutProductError) unless cart_item.product.present?
+  def validate(cart_item:)
+    raise ProductMissingFromCartItemError unless cart_item.product.present?
 
-    Success(cart_item: cart_item, cart: cart, account: account)
+    Success(cart_item: cart_item)
   end
 
-  def associate(cart_item:, cart:, account:)
-    cart_item.assign_attributes(
-      cart: cart,
-      account: account
-    )
-
-    cart_item.assign_attributes(
-      price: cart_item.product.price
-    )
+  def associate(cart_item:)
+    cart_item.assign_attributes(price: cart_item.product.price)
 
     Success(cart_item: cart_item)
   end

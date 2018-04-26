@@ -10,6 +10,26 @@ class ApplicationPolicy
     def resolve
       relation.none
     end
+
+    private def converted?
+      record.onboarding_state?(:converted)
+    end
+
+    private def completed?
+      requester.onboarding_state?(:completed)
+    end
+
+    private def administrator?
+      requester.role_state?(:administrator)
+    end
+
+    private def guest?
+      requester.role_state?(:user) && requester.onboarding_state?(:fresh)
+    end
+
+    private def user?
+      requester.role_state?(:user) && !requester.onboarding_state?(:fresh)
+    end
   end
 
   attr_reader :requester, :record
@@ -51,10 +71,6 @@ class ApplicationPolicy
     requester.onboarding_state?(:completed)
   end
 
-  private def owner_by(field)
-    requester == record.public_send(field)
-  end
-
   private def administrators
     requester.role_state?(:administrator)
   end
@@ -68,7 +84,7 @@ class ApplicationPolicy
   end
 
   private def guests
-    requester.role_state(:user) && requester.onboarding_state?(:fresh)
+    requester.role_state?(:user) && requester.onboarding_state?(:fresh)
   end
 
   private def users

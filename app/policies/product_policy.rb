@@ -4,4 +4,16 @@ class ProductPolicy < ApplicationPolicy
       relation.none
     end
   end
+
+  def index?
+    guests || users || administrators
+  end
+
+  def show?
+    guests || users || administrators
+  end
+
+  def update?
+    administrators
+  end
 end

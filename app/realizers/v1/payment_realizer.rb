@@ -8,21 +8,13 @@ module V1
     has_one :cart, as: :carts
 
     has :subtype
-    has :service_eid
-    has :total_cents
-    has :total_currency
-    has :total
-    has :subtotal_cents
-    has :subtotal_currency
-    has :subtotal
-    has :discount_cents
-    has :discount_currency
-    has :discount
-    has :tax_cents
-    has :tax_currency
-    has :tax
-    has :shipping_cents
-    has :shipping_currency
-    has :shipping
+    has :source_id
+    has :paid_cents
+    has :paid_currency
+    has :paid
+    has :refund_cents
+    has :refund_currency
+    has :refund
+    has :processing_state_event
   end
 end
