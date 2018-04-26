@@ -1,4 +1,4 @@
-class CartItemWithoutProductError < ApplicationError
+class ProductMissingFromCartItemError < ApplicationError
   def status
     422
   end
