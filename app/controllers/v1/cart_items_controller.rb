@@ -45,16 +45,15 @@ module V1
         scope: policy_scope(CartItem),
         headers: request.headers,
       )
-      operation = AddToCartOperation.new
 
       authorize realization.model
 
-      operation.call(cart_item: realization.model, cart: current_cart, account: current_account) do |transaction|
-        transaction.success do
+      AddToCartOperation.new.call(cart_item: realization.model) do |operation|
+        operation.success do
           render json: serialize(realization)
         end
 
-        transaction.failure do |failure|
+        operation.failure do |failure|
           raise failure
         end
       end
