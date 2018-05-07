@@ -3,12 +3,7 @@ class NoPaymentsProvidedError < ApplicationError
     422
   end
 
-  def as_errors
-    [
-      {
-        "title" => "No Payments Provided",
-        "detail" => "All purchases must be made with proper payments."
-      }
-    ]
+  def detail
+    "all purchases must be made with some form of payment method"
   end
 end

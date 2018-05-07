@@ -46,7 +46,7 @@ module V1
 
       realization.model.save!
 
-      render json: serialize(realization)
+      render json: serialize(realization), status: :created
     end
 
     def update
@@ -60,7 +60,7 @@ module V1
 
       realization.model.save!
 
-      render json: serialize(realization)
+      render json: serialize(realizationmodel)
     end
   end
 end

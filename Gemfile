@@ -51,7 +51,7 @@ gem "jsonapi-home", "1.0.0"
 gem "smart_params", "2.0.4"
 gem "bugsnag", "6.7.1"
 gem "paper_trail", "9.0.0"
-gem "dry-transaction", "0.11.1"
+gem "action_operation", "1.1.0"
 
 group :production do
   gem "rack-timeout", "0.4.2"

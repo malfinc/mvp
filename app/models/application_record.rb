@@ -8,6 +8,10 @@ class ApplicationRecord < ActiveRecord::Base
   validates_presence_of :created_at, on: :update
   validates_presence_of :updated_at, on: :update
 
+  def morph
+    becomes(public_send(self.class.inheritance_column).constantize)
+  end
+
   private def actor
     PaperTrail.request.whodunnit
   end

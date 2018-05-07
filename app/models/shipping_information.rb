@@ -1,5 +1,5 @@
 class ShippingInformation < ApplicationRecord
-  has_and_belongs_to_many :carts
+  has_many :carts
   belongs_to :account
 
   validates_presence_of :name

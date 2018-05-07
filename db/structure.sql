@@ -79,8 +79,8 @@ CREATE TABLE public.accounts (
     username public.citext,
     onboarding_state public.citext NOT NULL,
     role_state public.citext NOT NULL,
-    encrypted_password character varying,
-    authentication_secret character varying,
+    encrypted_password character varying NOT NULL,
+    authentication_secret character varying NOT NULL,
     reset_password_token character varying,
     reset_password_sent_at timestamp without time zone,
     remember_created_at timestamp without time zone,
@@ -93,11 +93,9 @@ CREATE TABLE public.accounts (
     locked_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    CONSTRAINT accounts_authentication_secret_null CHECK (((NOT ((onboarding_state OPERATOR(public.=) 'converted'::public.citext) OR (onboarding_state OPERATOR(public.=) 'completed'::public.citext))) OR (authentication_secret IS NOT NULL))),
-    CONSTRAINT accounts_email_null CHECK (((NOT ((onboarding_state OPERATOR(public.=) 'converted'::public.citext) OR (onboarding_state OPERATOR(public.=) 'completed'::public.citext))) OR (email IS NOT NULL))),
-    CONSTRAINT accounts_encrypted_password_null CHECK (((NOT ((onboarding_state OPERATOR(public.=) 'converted'::public.citext) OR (onboarding_state OPERATOR(public.=) 'completed'::public.citext))) OR (encrypted_password IS NOT NULL))),
+    CONSTRAINT accounts_email_null CHECK (((NOT (onboarding_state OPERATOR(public.=) 'completed'::public.citext)) OR (email IS NOT NULL))),
     CONSTRAINT accounts_name_null CHECK (((NOT (onboarding_state OPERATOR(public.=) 'completed'::public.citext)) OR (name IS NOT NULL))),
-    CONSTRAINT accounts_username_null CHECK (((NOT ((onboarding_state OPERATOR(public.=) 'converted'::public.citext) OR (onboarding_state OPERATOR(public.=) 'completed'::public.citext))) OR (username IS NOT NULL)))
+    CONSTRAINT accounts_username_null CHECK (((NOT (onboarding_state OPERATOR(public.=) 'completed'::public.citext)) OR (username IS NOT NULL)))
 );
 
 
@@ -151,7 +149,7 @@ CREATE TABLE public.cart_items (
     cart_id uuid NOT NULL,
     product_id uuid NOT NULL,
     price_cents integer NOT NULL,
-    price_currency character varying NOT NULL,
+    price_currency character varying DEFAULT 'usd'::character varying NOT NULL,
     discount_cents integer DEFAULT 0 NOT NULL,
     discount_currency character varying DEFAULT 'usd'::character varying NOT NULL,
     account_id uuid NOT NULL,
@@ -168,23 +166,27 @@ CREATE TABLE public.cart_items (
 CREATE TABLE public.carts (
     id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     account_id uuid NOT NULL,
+    shipping_information_id uuid,
+    billing_information_id uuid,
     checkout_state character varying NOT NULL,
     total_cents integer,
-    total_currency character varying,
+    total_currency character varying DEFAULT 'usd'::character varying,
     subtotal_cents integer,
-    subtotal_currency character varying,
+    subtotal_currency character varying DEFAULT 'usd'::character varying,
     discount_cents integer,
-    discount_currency character varying,
+    discount_currency character varying DEFAULT 'usd'::character varying,
     tax_cents integer,
-    tax_currency character varying,
+    tax_currency character varying DEFAULT 'usd'::character varying,
     shipping_cents integer,
-    shipping_currency character varying,
+    shipping_currency character varying DEFAULT 'usd'::character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
+    CONSTRAINT carts_billing_information_id_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (billing_information_id IS NOT NULL))),
     CONSTRAINT carts_discount_cents_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (discount_cents IS NOT NULL))),
     CONSTRAINT carts_discount_currency_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (discount_currency IS NOT NULL))),
     CONSTRAINT carts_shipping_cents_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (shipping_cents IS NOT NULL))),
     CONSTRAINT carts_shipping_currency_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (shipping_currency IS NOT NULL))),
+    CONSTRAINT carts_shipping_information_id_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (shipping_information_id IS NOT NULL))),
     CONSTRAINT carts_subtotal_cents_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (subtotal_cents IS NOT NULL))),
     CONSTRAINT carts_subtotal_currency_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (subtotal_currency IS NOT NULL))),
     CONSTRAINT carts_tax_cents_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (tax_cents IS NOT NULL))),
@@ -296,14 +298,14 @@ CREATE TABLE public.payments (
     account_id uuid NOT NULL,
     cart_id uuid NOT NULL,
     paid_cents integer NOT NULL,
-    paid_currency integer NOT NULL,
-    refund_cents integer,
-    refund_currency character varying,
+    paid_currency character varying DEFAULT 'usd'::character varying NOT NULL,
+    restitution_cents integer,
+    restitution_currency character varying DEFAULT 'usd'::character varying,
     processing_state public.citext NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    CONSTRAINT payments_refund_cents_null CHECK (((NOT (processing_state OPERATOR(public.=) 'refunded'::public.citext)) OR (refund_cents IS NOT NULL))),
-    CONSTRAINT payments_refund_currency_null CHECK (((NOT (processing_state OPERATOR(public.=) 'refunded'::public.citext)) OR (refund_currency IS NOT NULL)))
+    CONSTRAINT payments_restitution_cents_null CHECK (((NOT (processing_state OPERATOR(public.=) 'refunded'::public.citext)) OR (restitution_cents IS NOT NULL))),
+    CONSTRAINT payments_restitution_currency_null CHECK (((NOT (processing_state OPERATOR(public.=) 'refunded'::public.citext)) OR (restitution_currency IS NOT NULL)))
 );
 
 
@@ -319,7 +321,7 @@ CREATE TABLE public.products (
     metadata jsonb DEFAULT '{}'::jsonb NOT NULL,
     checksum character varying NOT NULL,
     price_cents integer NOT NULL,
-    price_currency character varying NOT NULL,
+    price_currency character varying DEFAULT 'usd'::character varying NOT NULL,
     visibility_state character varying NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -558,7 +560,7 @@ CREATE UNIQUE INDEX index_accounts_on_confirmation_token ON public.accounts USIN
 -- Name: index_accounts_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_accounts_on_email ON public.accounts USING btree (email);
+CREATE INDEX index_accounts_on_email ON public.accounts USING btree (email) WHERE (email IS NOT NULL);
 
 
 --
@@ -586,7 +588,7 @@ CREATE UNIQUE INDEX index_accounts_on_unlock_token ON public.accounts USING btre
 -- Name: index_accounts_on_username; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_accounts_on_username ON public.accounts USING btree (username);
+CREATE INDEX index_accounts_on_username ON public.accounts USING btree (username) WHERE (email IS NOT NULL);
 
 
 --
@@ -608,6 +610,13 @@ CREATE INDEX index_billing_informations_carts_on_billing_information_id ON publi
 --
 
 CREATE INDEX index_billing_informations_carts_on_cart_id ON public.billing_informations_carts USING btree (cart_id);
+
+
+--
+-- Name: index_billing_informations_on_account_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_billing_informations_on_account_id ON public.billing_informations USING btree (account_id);
 
 
 --
@@ -646,10 +655,24 @@ CREATE INDEX index_carts_on_account_id ON public.carts USING btree (account_id);
 
 
 --
+-- Name: index_carts_on_billing_information_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_carts_on_billing_information_id ON public.carts USING btree (billing_information_id) WHERE (billing_information_id IS NOT NULL);
+
+
+--
 -- Name: index_carts_on_checkout_state; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_carts_on_checkout_state ON public.carts USING btree (checkout_state);
+
+
+--
+-- Name: index_carts_on_shipping_information_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_carts_on_shipping_information_id ON public.carts USING btree (shipping_information_id) WHERE (shipping_information_id IS NOT NULL);
 
 
 --
@@ -793,10 +816,17 @@ CREATE UNIQUE INDEX index_shipping_information_carts_on_join_columns ON public.c
 
 
 --
+-- Name: index_shipping_informations_on_account_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_shipping_informations_on_account_id ON public.shipping_informations USING btree (account_id);
+
+
+--
 -- Name: index_versions_on_actor_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_versions_on_actor_id ON public.versions USING btree (actor_id);
+CREATE INDEX index_versions_on_actor_id ON public.versions USING btree (actor_id) WHERE (actor_id IS NOT NULL);
 
 
 --
@@ -862,6 +892,14 @@ ALTER TABLE ONLY public.cart_items
 
 
 --
+-- Name: carts fk_rails_772f954818; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.carts
+    ADD CONSTRAINT fk_rails_772f954818 FOREIGN KEY (billing_information_id) REFERENCES public.billing_informations(id);
+
+
+--
 -- Name: payments fk_rails_81b2605d2a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -875,6 +913,14 @@ ALTER TABLE ONLY public.payments
 
 ALTER TABLE ONLY public.carts_shipping_informations
     ADD CONSTRAINT fk_rails_8ab40912b2 FOREIGN KEY (cart_id) REFERENCES public.carts(id);
+
+
+--
+-- Name: carts fk_rails_955c878d40; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.carts
+    ADD CONSTRAINT fk_rails_955c878d40 FOREIGN KEY (shipping_information_id) REFERENCES public.shipping_informations(id);
 
 
 --

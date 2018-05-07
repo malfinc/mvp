@@ -28,7 +28,7 @@ module V1
 
       authorize realization.model
 
-      render json: serialize(realizer.model)
+      render json: serialize(realization)
     end
 
     def create
@@ -44,15 +44,9 @@ module V1
 
       authorize realization.model
 
-      PurchaseCartOperation.new.call(payments: [realization.model]) do |operation|
-        operation.success do
-          render json: serialize(realization)
-        end
+      PurchaseCartOperation.(payments: [realization.model], cart: current_cart)
 
-        operation.failure do |failure|
-          raise failure
-        end
-      end
+      render json: serialize(realization), status: :created
     end
   end
 end

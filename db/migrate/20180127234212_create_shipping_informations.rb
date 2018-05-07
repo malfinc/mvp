@@ -9,6 +9,7 @@ class CreateShippingInformations < ActiveRecord::Migration[5.1]
       table.uuid :account_id, null: false
       table.timestamps null: false
 
+      table.index :account_id
       table.foreign_key :accounts, column: :account_id
     end
   end

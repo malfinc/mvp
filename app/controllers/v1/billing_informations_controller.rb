@@ -28,7 +28,7 @@ module V1
 
       authorize realization.model
 
-      render json: serialize(realizer.model)
+      render json: serialize(realization)
     end
 
     def create
@@ -46,7 +46,7 @@ module V1
 
       authorize realization.model
 
-      render json: serialize(realization)
+      render json: serialize(realization), status: :created
     end
 
     def update

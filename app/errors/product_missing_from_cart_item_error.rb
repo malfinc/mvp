@@ -3,12 +3,7 @@ class ProductMissingFromCartItemError < ApplicationError
     422
   end
 
-  def as_errors
-    [
-      {
-        "title" => "Cart Items Need Products",
-        "detail" => "You can't add nothing to your cart."
-      }
-    ]
+  def detail
+    "a cart item must have a product"
   end
 end

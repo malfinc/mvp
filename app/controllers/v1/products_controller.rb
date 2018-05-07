@@ -28,7 +28,7 @@ module V1
 
       authorize realization.model
 
-      render json: serialize(realizer.model)
+      render json: serialize(realization)
     end
   end
 end

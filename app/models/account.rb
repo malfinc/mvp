@@ -24,18 +24,18 @@ class Account < ApplicationRecord
   before_validation :generate_authentication_secret, unless: :authentication_secret?
 
   state_machine :onboarding_state, initial: :fresh do
-    event :convert do
-      transition from: :fresh, to: :converted
-    end
-
     event :complete do
-      transition from: :converted, to: :completed
+      transition from: :fresh, to: :completed, if: :completable?
     end
 
     before_transition do: :version_transition
   end
 
-  state_machine :role_state, initial: :user do
+  state_machine :role_state, initial: :guest do
+    event :convert do
+      transition from: :guest, to: :user
+    end
+
     event :empower do
       transition user: :moderator
     end
@@ -68,10 +68,10 @@ class Account < ApplicationRecord
     super
   end
 
-  def fresh_cart
-    @fresh_cart ||= carts.find_or_create_by!(checkout_state: :fresh)
+  def unfinished_cart
+    @unfinished_cart ||= carts.where.not(checkout_state: :completed).first || carts.create!
   end
-  alias_method :create_fresh_cart, :fresh_cart
+  alias_method :create_unfinished_cart, :unfinished_cart
 
   private def generate_password
     assign_attributes(password: SecureRandom.hex(60))
@@ -82,6 +82,10 @@ class Account < ApplicationRecord
   end
 
   private def email_required?
-    onboarding_state?(:converted) || onboarding_state?(:completed)
+    onboarding_state?(:completed)
+  end
+
+  private def completable?
+    email.present? && name.present?
   end
 end

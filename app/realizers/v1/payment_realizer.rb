@@ -12,9 +12,9 @@ module V1
     has :paid_cents
     has :paid_currency
     has :paid
-    has :refund_cents
-    has :refund_currency
-    has :refund
+    has :restitution_cents
+    has :restitution_currency
+    has :restitution
     has :processing_state_event
   end
 end

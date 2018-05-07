@@ -6,9 +6,9 @@ class CreatePayments < ActiveRecord::Migration[5.1]
       table.uuid :account_id, null: false
       table.uuid :cart_id, null: false
       table.integer :paid_cents, null: false
-      table.integer :paid_currency, null: false
-      table.integer :refund_cents
-      table.string :refund_currency
+      table.string :paid_currency, null: false, default: "usd"
+      table.integer :restitution_cents
+      table.string :restitution_currency, default: "usd"
       table.citext :processing_state, null: false
       table.timestamps null: false
 
@@ -22,8 +22,8 @@ class CreatePayments < ActiveRecord::Migration[5.1]
     end
 
     safety_assured do
-      add_null_constraint :payments, :refund_cents, if: %("payments"."processing_state" = 'refunded')
-      add_null_constraint :payments, :refund_currency, if: %("payments"."processing_state" = 'refunded')
+      add_null_constraint :payments, :restitution_cents, if: %("payments"."processing_state" = 'refunded')
+      add_null_constraint :payments, :restitution_currency, if: %("payments"."processing_state" = 'refunded')
     end
   end
 end

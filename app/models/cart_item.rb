@@ -19,4 +19,10 @@ class CartItem < ApplicationRecord
 
     before_transition do: :version_transition
   end
+
+  def carbon_copy
+    raise CartItemAlreadyFinalized, self unless purchase_state?(:pending)
+
+    assign_attributes(price: product.price)
+  end
 end

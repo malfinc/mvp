@@ -2,13 +2,16 @@ module V1
   class ApplicationController < ::ApplicationController
     include JSONAPI::Home
 
+    RECURSIVE_TREE = ->(accumulated, key) {accumulated[key] = Hash.new(&RECURSIVE_TREE)}
+
     rescue_from StandardError, with: :generic_error_handling
     rescue_from JSONAPI::Realizer::Error::MissingAcceptHeader, with: :missing_accept_header
     rescue_from JSONAPI::Realizer::Error::InvalidAcceptHeader, with: :invalid_accept_header
     rescue_from JSONAPI::Realizer::Error::MalformedDataRootProperty, with: :malformed_data_root_property
     rescue_from Pundit::NotAuthorizedError, with: :access_not_authorized
     rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
-    rescue_from ApplicationError, with: :malformed_request
+    rescue_from StateMachines::InvalidTransition, with: :invalid_transition
+    rescue_from ApplicationError, with: :application_exception
 
     private def generic_error_handling(exception)
       Rails.logger.info("exception=#{exception.class.name.inspect} message=#{exception.message.inspect}")
@@ -16,30 +19,43 @@ module V1
       raise exception
     end
 
+    # TODO: Wrap these in an error wrapper so they have the same properties as others and reraise
     private def missing_accept_header
       head :not_acceptable
     end
 
+    # TODO: Wrap these in an error wrapper so they have the same properties as others and reraise
     private def invalid_accept_header
       head :not_acceptable
     end
 
+    # TODO: Wrap these in an error wrapper so they have the same properties as others and reraise
     private def access_not_authorized(exception)
       Rails.logger.debug("Pundit #{exception.policy.class.name} did not authorize #{exception.query}")
 
       head :unauthorized
     end
 
+    # TODO: Wrap these in an error wrapper so they have the same properties as others and reraise
     private def malformed_data_root_property
       head :unprocessable_entity
     end
 
+    # TODO: Wrap these in an error wrapper so they have the same properties as others and reraise
+    private def invalid_transition(exception)
+      Rails.logger.debug("#{exception.object.class.name} failed to save: #{exception.object.errors.full_messages.to_sentence}")
+      render json: JSONAPI::Serializer.serialize_errors(exception.object.errors), status: :unprocessable_entity
+    end
+
+    # TODO: Wrap these in an error wrapper so they have the same properties as others and reraise
     private def record_invalid(exception)
+      Rails.logger.debug("#{exception.record.class.name} failed to save: #{exception.record.errors.full_messages.to_sentence}")
       render json: JSONAPI::Serializer.serialize_errors(exception.record.errors), status: :unprocessable_entity
     end
 
-    private def malformed_request(exception)
-      render json: JSONAPI::Serializer.serialize_errors(exception.as_errors), status: :unprocessable_entity
+    private def application_exception(exception)
+      binding.pry
+      render json: JSONAPI::Serializer.serialize_errors(exception.as_jsonapi_errors), status: :unprocessable_entity
     end
 
     private def serialize(realization)
@@ -65,8 +81,8 @@ module V1
       cart_loaded_up?
     end
 
-    private def cart_is_fresh?
-      current_cart.present? && current_cart.fresh?
+    private def cart_is_unfinished?
+      current_cart.present? && current_cart.unfinished?
     end
 
     private def cart_loaded_up?
@@ -74,7 +90,7 @@ module V1
     end
 
     private def current_cart
-      @current_cart ||= current_account.fresh_cart if account_signed_in?
+      @current_cart ||= current_account.unfinished_cart if account_signed_in?
     end
 
     private def serialized_metadata
@@ -99,14 +115,17 @@ module V1
       }
     end
 
-    private def replacing_myself(keychain, parameters)
-      case
-      when parameters.dig(*keychain) == "me" && account_signed_in?
-        current_account.id
-      when parameters.dig(*keychain) == "me"
-        raise MissingAuthenticationError
-      else
-        parameters.dig(*keychain)
+    private def upsert_parameter(keychains, before, after, parameters)
+      keychains.reduce(parameters) do |accumulated, keychain|
+        if accumulated.dig(*keychain) == before
+          accumulated.deep_merge(
+            keychain.reverse.reduce(after) do |accumulated, key|
+              { key => accumulated }
+            end
+          )
+        else
+          accumulated
+        end
       end
     end
   end

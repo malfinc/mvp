@@ -32,7 +32,7 @@ module V1
 
       authorize realization.model
 
-      render json: serialize(realizer.model)
+      render json: serialize(realization)
     end
 
     def create
@@ -48,15 +48,9 @@ module V1
 
       authorize realization.model
 
-      AddToCartOperation.new.call(cart_item: realization.model) do |operation|
-        operation.success do
-          render json: serialize(realization)
-        end
+      AddToCartOperation.(cart_item: realization.model)
 
-        operation.failure do |failure|
-          raise failure
-        end
-      end
+      render json: serialize(realization), status: :created
     end
   end
 end

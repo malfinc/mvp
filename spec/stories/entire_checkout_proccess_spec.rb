@@ -5,6 +5,17 @@ RSpec.describe "Entire checkout process", type: :request do
 
   let(:email) { "kurtis@rainbolt-greene.online" }
 
+  def transition_cart(event)
+    jsonapi_update(
+      path: "/v1/carts/mine",
+      id: "mine",
+      type: "carts",
+      attributes: {
+        checkout_state_event: event
+      }
+    )
+  end
+
   def create_product(signature)
     @products[signature] = Product.create({
       name: "Mona Lisa ##{SecureRandom.hex()}",
@@ -64,13 +75,35 @@ RSpec.describe "Entire checkout process", type: :request do
     )
   end
 
+  def associate_shipping_information_to_cart
+    jsonapi_update(
+      path: "/v1/carts/mine",
+      id: "mine",
+      type: "carts",
+      relationships: {
+        "shipping-information" => relationship(id: @shipping_information_id, type: "shipping-informations")
+      }
+    )
+  end
+
+  def associate_billing_information_to_cart
+    jsonapi_update(
+      path: "/v1/carts/mine",
+      id: "mine",
+      type: "carts",
+      relationships: {
+        "billing-information" => relationship(id: @billing_information_id, type: "billing-informations")
+      }
+    )
+  end
+
   def make_payment
     jsonapi_create(
       path: "/v1/payments",
       type: "payments",
       attributes: {
         "subtype" => "StripePayment",
-        "service-eid" => "tok_visa"
+        "source-id" => "tok_visa"
       }
     )
   end
@@ -79,25 +112,51 @@ RSpec.describe "Entire checkout process", type: :request do
     @products = {}
     create_product("a")
     create_product("b")
+  end
+
+  it "works" do
     add_product_to_cart("a")
+    expect(response).to have_http_status(:created)
+
     add_product_to_cart("a")
+    expect(response).to have_http_status(:created)
+
     add_product_to_cart("b")
+    expect(response).to have_http_status(:created)
+
     provide_email_address
+    expect(response).to have_http_status(:ok)
+
     enter_shipping_information
+    expect(response).to have_http_status(:created)
+
+    @shipping_information_id = json_data.fetch("id")
+
+    associate_shipping_information_to_cart
+    expect(response).to have_http_status(:ok)
+
+    transition_cart("ready_for_billing")
+    expect(response).to have_http_status(:ok)
+
     enter_billing_information
+    expect(response).to have_http_status(:created)
+
+    @billing_information_id = json_data.fetch("id")
+
+    associate_billing_information_to_cart
+    expect(response).to have_http_status(:ok)
+
+    transition_cart("ready_for_payments")
+    expect(response).to have_http_status(:ok)
+
     make_payment
     binding.pry
-  end
+    expect(response).to have_http_status(:created)
 
-  it "creates a cart" do
-    expect(Cart.count).to eq(1)
-  end
+    expect(Cart.count).to be(1)
 
-  it "creates two cart items" do
-    expect(CartItem.count).to eq(3)
-  end
+    expect(CartItem.count).to be(3)
 
-  it "completes the cart" do
     expect(Cart.last).to have_attributes(checkout_state: "completed")
   end
 end

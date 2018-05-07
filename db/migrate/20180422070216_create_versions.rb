@@ -14,7 +14,7 @@ class CreateVersions < ActiveRecord::Migration[5.1]
       table.timestamp :created_at, null: false
 
       table.index [:item_id, :item_type]
-      table.index :actor_id
+      table.index :actor_id, where: %("versions"."actor_id" IS NOT NULL)
       table.index :event
     end
   end

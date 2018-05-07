@@ -25,5 +25,6 @@ module V1
     has :shipping_cents
     has :shipping_currency
     has :shipping
+    has :checkout_state_event, selectable: false
   end
 end

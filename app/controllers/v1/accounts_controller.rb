@@ -20,7 +20,7 @@ module V1
 
     def show
       realization = JSONAPI::Realizer.show(
-        AccountsShowSchema.new(merge_myself(request.parameters)).as_json,
+        AccountsShowSchema.new(modified_parameters).as_json,
         headers: request.headers,
         scope: policy_scope(Account),
         type: :accounts
@@ -28,48 +28,39 @@ module V1
 
       authorize realization.model
 
-      render json: serialize(realizer.model)
+      render json: serialize(realization)
     end
 
     def create
       realization = JSONAPI::Realizer.create(
-        AccountsCreateSchema.new(merge_myself(request.parameters)).as_json,
+        AccountsCreateSchema.new(modified_parameters).as_json,
         scope: policy_scope(Account),
         headers: request.headers,
       )
 
       authorize realization.model
 
-      Account.transaction do
-        realization.model.save!
+      realization.model.save!
 
-        render json: serialize(realization)
-      end
+      render json: serialize(realization), status: :created
     end
 
     def update
       realization = JSONAPI::Realizer.update(
-        AccountsUpdateSchema.new(merge_myself(request.parameters)).as_json,
+        AccountsUpdateSchema.new(modified_parameters).as_json,
         scope: policy_scope(Account),
         headers: request.headers,
       )
 
       authorize realization.model
 
-      Account.transaction do
-        realization.model.save!
+      realization.model.save!
 
-        render json: serialize(realization)
-      end
+      render json: serialize(realization)
     end
 
-    private def merge_myself(parameters)
-      parameters.deep_merge({
-        "id" => replacing_myself(["id"], parameters),
-        "data" => {
-          "id" => replacing_myself(["data", "id"], parameters),
-        },
-      })
+    private def modified_parameters
+      upsert_parameter([["id"], ["data", "id"]], "me", current_account.id, request.parameters)
     end
   end
 end

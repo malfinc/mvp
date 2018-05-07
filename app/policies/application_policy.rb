@@ -11,8 +11,8 @@ class ApplicationPolicy
       relation.none
     end
 
-    private def converted?
-      record.onboarding_state?(:converted)
+    private def fresh?
+      requester.onboarding_state?(:fresh)
     end
 
     private def completed?
@@ -24,11 +24,11 @@ class ApplicationPolicy
     end
 
     private def guest?
-      requester.role_state?(:user) && requester.onboarding_state?(:fresh)
+      requester.role_state?(:guest)
     end
 
     private def user?
-      requester.role_state?(:user) && !requester.onboarding_state?(:fresh)
+      requester.role_state?(:user)
     end
   end
 
@@ -63,8 +63,8 @@ class ApplicationPolicy
     Pundit.policy_scope!(requester, record.class)
   end
 
-  private def converted
-    record.onboarding_state?(:converted)
+  private def fresh
+    requester.onboarding_state?(:fresh)
   end
 
   private def completed
@@ -84,10 +84,10 @@ class ApplicationPolicy
   end
 
   private def guests
-    requester.role_state?(:user) && requester.onboarding_state?(:fresh)
+    requester.role_state?(:guest)
   end
 
   private def users
-    requester.role_state?(:user) && !requester.onboarding_state?(:fresh)
+    requester.role_state?(:user)
   end
 end

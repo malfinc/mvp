@@ -8,8 +8,8 @@ module V1
     attribute :paid_cents
     attribute :paid_currency
     attribute :paid
-    attribute :refund_cents
-    attribute :refund_currency
-    attribute :refund
+    attribute :restitution_cents
+    attribute :restitution_currency
+    attribute :restitution
   end
 end

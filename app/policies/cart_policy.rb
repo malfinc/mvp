@@ -14,4 +14,8 @@ class CartPolicy < ApplicationPolicy
   def index?
     administrators
   end
+
+  def update?
+    guests || users || administrators
+  end
 end

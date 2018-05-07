@@ -1,4 +1,4 @@
 class ApplicationOperation
-  include Dry::Transaction
+  include ActionOperation
 
 end

@@ -1,9 +1,9 @@
 class StripePayment < Payment
   def maximum_allowed_cents
-    Float::Infinite
+    Float::INFINITY
   end
 
   def source
-    nil
+    false
   end
 end
