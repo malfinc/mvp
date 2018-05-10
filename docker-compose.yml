@@ -13,13 +13,15 @@ services:
     environment:
       - RAILS_ENV=development
       - DATABASE_HOST=postgres
-      - REDIS_CACHE_URL=redis://redis:6379/0
+      - REDIS_CACHE_URL=redis://redis-cache:6379/0
       - REDIS_CACHE_POOL_SIZE=20
-      - REDIS_SIDEKIQ_URL=redis://redis:6379/1
+      - REDIS_SIDEKIQ_URL=redis://redis-sidekiq:6379/1
       - REDIS_SIDEKIQ_SERVER_POOL_SIZE=10
       - REDIS_SIDEKIQ_CLIENT_POOL_SIZE=10
-      - REDIS_OBJECTS_URL=redis://redis:6379/1
+      - REDIS_OBJECTS_URL=redis://redis-objects:6379/1
       - REDIS_OBJECTS_POOL_SIZE=20
+      - REDIS_REDLOCK_URL=redis://redlock-redis:6379/2
+      - REDIS_REDLOCK_POOL_SIZE=20
       - RAILS_MAX_THREADS=4
       - WEB_CONCURRENCY=2
       - RAILS_EMAIL_HOST=localhost
@@ -36,10 +38,22 @@ services:
     image: postgres:9.6-alpine
     environment:
       - VIRTUAL_HOST=postgres.blank-api-rails.local
-  redis:
+  redis-sidekiq:
     image: redis:3.2.11-alpine
     environment:
-      - VIRTUAL_HOST=redis.blank-api-rails.local
+      - VIRTUAL_HOST=redis-sidekiq.blank-api-rails.local
+  redis-objects:
+    image: redis:3.2.11-alpine
+    environment:
+      - VIRTUAL_HOST=redis-objects.blank-api-rails.local
+  redis-cache:
+    image: redis:3.2.11-alpine
+    environment:
+      - VIRTUAL_HOST=redis-cache.blank-api-rails.local
+  redlock-redis:
+    image: redis:3.2.11-alpine
+    environment:
+      - VIRTUAL_HOST=redlock-redis.blank-api-rails.local
   proxy:
     image: jwilder/nginx-proxy:alpine
     ports:

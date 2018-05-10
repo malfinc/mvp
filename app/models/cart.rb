@@ -41,7 +41,7 @@ class Cart < ApplicationRecord
       )
     end
 
-    schema :purchased do
+    state :purchased do
       validates_presence_of :shipping_information
       validates_presence_of :shipping_information_id
       validates_presence_of :billing_information

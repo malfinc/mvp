@@ -4,8 +4,8 @@ class AddToCartOperation < ApplicationOperation
   task :lock
   task :persist
   task :publish
-  error :notify, catch: ProductMissingFromCartItemError
-  error :reraise
+  catch :notify, exception: ProductMissingFromCartItemError
+  catch :reraise
 
   schema :check_for_missing_product do
     field :cart_item, type: Types.Instance(CartItem)
@@ -25,7 +25,7 @@ class AddToCartOperation < ApplicationOperation
     field :cart_item, type: Types.Instance(CartItem)
   end
   def lock(state:)
-    GlobalLock.(resource: state.cart_item, type: :row, name: :checking_out, expires_in: 5.minutes)
+    database_lock!(resource: state.cart_item)
   end
 
   schema :persist do
@@ -36,7 +36,7 @@ class AddToCartOperation < ApplicationOperation
       state.cart_item.save!
     end
 
-    fresh(current_account: state.cart_item.account, cart_item: state.cart_item)
+    fresh(state: {current_account: state.cart_item.account, cart_item: state.cart_item})
   end
 
   schema :publish do
@@ -44,7 +44,12 @@ class AddToCartOperation < ApplicationOperation
     field :current_account, type: Types.Instance(Account)
   end
   def publish(state:)
-    CartItemPickedMessage.(subject: state.cart_item, to: state.current_account).via_pubsub.deliver_later!
+    CartItemAddedRealtimeMessage.(
+      to: state.current_account,
+      message: {
+        cart_item: state.cart_item
+      }
+    )
   end
 
   def notify(exception:, **)

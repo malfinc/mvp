@@ -48,10 +48,11 @@ gem "pry-doc", "0.13.4"
 gem "jsonapi-serializers", "1.0.0"
 gem "jsonapi-realizer", "4.1.0"
 gem "jsonapi-home", "1.0.0"
-gem "smart_params", "2.0.4"
+gem "smart_params", "2.0.7"
 gem "bugsnag", "6.7.1"
 gem "paper_trail", "9.0.0"
-gem "action_operation", "1.1.0"
+gem "action_operation", "2.1.2"
+gem "redlock", "0.2.2"
 
 group :production do
   gem "rack-timeout", "0.4.2"

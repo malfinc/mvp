@@ -5,10 +5,9 @@ class PurchaseCartOperation < ApplicationOperation
   task :allocate_funds
   task :lock
   task :purchase
-  task :persist
   task :charge
   task :unlock
-  error :reraise
+  catch :reraise
 
   schema :check_for_payments do
     field :payments, type: Types::Strict::Array.of(Types.Instance(Payment))
@@ -22,7 +21,7 @@ class PurchaseCartOperation < ApplicationOperation
     field :cart, type: Types.Instance(Cart)
   end
   def switch_to_subtypes(state:)
-    fresh(payments: state.payments.map(&:morph), cart: state.cart)
+    fresh(state: {payments: state.payments.map(&:morph), cart: state.cart})
   end
 
   schema :associate_to_cart do
@@ -31,7 +30,7 @@ class PurchaseCartOperation < ApplicationOperation
   end
   def associate_to_cart(state:)
     state.payments.each do |payment|
-      payment.update_attributes!(cart: state.cart)
+      payment.assign_attributes(cart: state.cart)
     end
   end
 
@@ -62,14 +61,14 @@ class PurchaseCartOperation < ApplicationOperation
     field :payments, type: Types::Strict::Array.of(Types.Instance(Payment))
   end
   def lock(state:)
-    GlobalLockOperation.(resource: state.cart, type: :row)
+    database_lock!(resource: state.cart)
 
-    payments.each do |payment|
-      GlobalLockOperation.(resource: payment, type: :row)
+    state.payments.each do |payment|
+      database_lock!(resource: payment)
     end
 
-    state.cart.cart_items.map(&:product).each do |product|
-      GlobalLockOperation.(resource: product, type: :soft, name: "purchasing", expires_in: 1.minute)
+    state.cart.cart_items.map(&:product).uniq.each do |product|
+      global_lock!(resource: product, name: :purchasing, expires_in: 1.minute)
     end
   end
 
@@ -77,7 +76,6 @@ class PurchaseCartOperation < ApplicationOperation
     field :cart, type: Types.Instance(Cart)
   end
   def purchase(state:)
-    binding.pry
     state.cart.transaction do
       state.cart.purchase!
       CartItem.transaction requires_new: true do
@@ -99,6 +97,8 @@ class PurchaseCartOperation < ApplicationOperation
     field :cart, type: Types.Instance(Cart)
   end
   def unlock(state:)
-    GlobalUnlockOperation.(resource: state.cart)
+    state.cart.cart_items.map(&:product).uniq.each do |product|
+      global_unlock!(resource: product, name: :purchasing)
+    end
   end
 end

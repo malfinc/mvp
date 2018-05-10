@@ -150,13 +150,16 @@ RSpec.describe "Entire checkout process", type: :request do
     expect(response).to have_http_status(:ok)
 
     make_payment
-    binding.pry
     expect(response).to have_http_status(:created)
 
     expect(Cart.count).to be(1)
 
+    expect(Cart.last).to have_attributes(checkout_state: "purchased")
+
     expect(CartItem.count).to be(3)
 
-    expect(Cart.last).to have_attributes(checkout_state: "completed")
+    CartItem.all.each do |cart_item|
+      expect(cart_item).to have_attributes(purchase_state: "purchased")
+    end
   end
 end

@@ -5,11 +5,15 @@ module V1
 
     attribute :subtype
     attribute :source_id
+    attribute :paid do
+      object.paid.try!(:format)
+    end
     attribute :paid_cents
     attribute :paid_currency
-    attribute :paid
+    attribute :restitution do
+      object.restitution.try!(:format)
+    end
     attribute :restitution_cents
     attribute :restitution_currency
-    attribute :restitution
   end
 end
