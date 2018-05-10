@@ -49,6 +49,10 @@
       "value": "2",
       "required": true
     },
+    "REDIS_REDLOCK_POOL_SIZE": {
+      "value": "2",
+      "required": true
+    },
     "REDIS_SIDEKIQ_SERVER_POOL_SIZE": {
       "value": "10",
       "required": true
@@ -61,6 +65,9 @@
       "required": true
     },
     "REDIS_OBJECTS_URL": {
+      "required": true
+    },
+    "REDIS_REDLOCK_URL": {
       "required": true
     },
     "REDIS_SIDEKIQ_URL": {
@@ -86,6 +93,13 @@
     {
       "plan": "heroku-redis:hobby-dev",
       "as": "REDIS_OBJECTS",
+      "options": {
+        "maxmemory_policy": "noeviction"
+      }
+    },
+    {
+      "plan": "heroku-redis:hobby-dev",
+      "as": "REDIS_REDLOCK",
       "options": {
         "maxmemory_policy": "noeviction"
       }
