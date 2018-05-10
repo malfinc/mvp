@@ -1,4 +1,0 @@
-  - NotEnoughMoneyProvidedError raised with no round causes non logging exception
-  - Make operations do methods with binding
-  - Allow for "around" functions
-  - StripePayment failed to save: Paid cents is not a number and Paid is not a numberx
