@@ -1,10 +1,9 @@
 class Account < ApplicationRecord
   include FriendlyId
-  include AuditActor
+  include AuditedTransitions
 
   USERNAME_PATTERN = /\A[a-zA-Z0-9_-]+\z/i
 
-  has_many :account_role_state_transitions
   has_many :carts
   has_many :billing_informations
   has_many :shipping_informations
@@ -24,23 +23,18 @@ class Account < ApplicationRecord
   before_validation :generate_password, unless: :encrypted_password?
   before_validation :generate_authentication_secret, unless: :authentication_secret?
 
-  validates_presence_of :username, if: :email_required?
-  validates_format_of :username, with: USERNAME_PATTERN, if: :email_required?
-
   state_machine :onboarding_state, initial: :fresh do
-    audit_trail initial: false, context: :audit_actor_id
-
-    event :convert do
-      transition from: :fresh, to: :converted
-    end
-
     event :complete do
-      transition from: :converted, to: :completed
+      transition from: :fresh, to: :completed, if: :completable?
     end
+
+    before_transition do: :version_transition
   end
 
-  state_machine :role_state, initial: :user do
-    audit_trail initial: false, context: :audit_actor_id
+  state_machine :role_state, initial: :guest do
+    event :convert do
+      transition from: :guest, to: :user
+    end
 
     event :empower do
       transition user: :moderator
@@ -49,12 +43,35 @@ class Account < ApplicationRecord
     event :spark do
       transition user: :administrator
     end
+
+    before_transition do: :version_transition
   end
 
-  def fresh_cart
-    @fresh_cart ||= carts.find_or_create_by!(checkout_state: :fresh)
+  validates_presence_of :username, if: :email_required?
+  validates_format_of :username, with: USERNAME_PATTERN, if: :email_required?
+
+  def lock_access!(*)
+    PaperTrail.request(whodunnit: "The Machine") do
+      super
+    end
   end
-  alias_method :build_fresh_cart, :fresh_cart
+
+  def unlock_access!(*)
+    PaperTrail.request(whodunnit: "The Machine") do
+      super
+    end
+  end
+
+  def valid_for_authentication?(*)
+    PaperTrail.request.whodunnit = "The Machine"
+
+    super
+  end
+
+  def unfinished_cart
+    @unfinished_cart ||= carts.where.not(checkout_state: :completed).first || carts.create!
+  end
+  alias_method :create_unfinished_cart, :unfinished_cart
 
   private def generate_password
     assign_attributes(password: SecureRandom.hex(60))
@@ -65,6 +82,10 @@ class Account < ApplicationRecord
   end
 
   private def email_required?
-    onboarding_state?(:converted) || onboarding_state?(:completed)
+    onboarding_state?(:completed)
+  end
+
+  private def completable?
+    email.present? && name.present?
   end
 end

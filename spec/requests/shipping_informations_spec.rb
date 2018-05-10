@@ -16,9 +16,9 @@ RSpec.describe "shipping-informations" do
       }
     end
 
-    context "with a fresh cart and a signed-in account" do
+    context "with a unfinished cart and a signed-in account" do
       let(:account) { Account.new }
-      let(:cart) { Cart.new(checkout_state: "fresh", account: account) }
+      let(:cart) { Cart.new(checkout_state: "ready_for_shipping", account: account) }
       let(:authentication) { account.authentication_secret }
 
       before do

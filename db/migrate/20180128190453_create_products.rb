@@ -7,7 +7,7 @@ class CreateProducts < ActiveRecord::Migration[5.1]
       table.jsonb :metadata, null: false, default: {}
       table.string :checksum, null: false
       table.integer :price_cents, null: false
-      table.string :price_currency, null: false
+      table.string :price_currency, null: false, default: "usd"
       table.string :visibility_state, null: false
       table.timestamps null: false
 

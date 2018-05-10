@@ -46,4 +46,16 @@ RSpec.shared_context "JSON:API requests" do
       }
     }
   end
+
+  def json
+    Oj.load(response.body)
+  end
+
+  def json_data
+    json.fetch("data")
+  end
+
+  def json_data_attributes
+    json_data.fetch("attributes")
+  end
 end

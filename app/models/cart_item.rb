@@ -1,45 +1,28 @@
 class CartItem < ApplicationRecord
-  include AuditActor
+  include AuditedTransitions
 
   belongs_to :cart
   belongs_to :account
   belongs_to :product
 
   monetize :price_cents
-
-  attr_accessor :current_account
-  attr_accessor :current_cart
-
-  before_validation :copy_price_cents
-  before_validation :copy_price_currency
-  before_validation :associate_current_cart
-  before_validation :associate_current_account
-
-  validates_presence_of :price
-  validates_presence_of :price_cents
-  validates_presence_of :price_currency
+  monetize :discount_cents
 
   state_machine :purchase_state, initial: :pending do
-    audit_trail initial: false, context: :audit_actor_id
-
     event :purchase do
       transition :pending => :purchased
     end
+
+    event :returned do
+      transition :purchased => :returned
+    end
+
+    before_transition do: :version_transition
   end
 
-  private def copy_price_cents
-    assign_attributes(price_cents: product.price_cents)
-  end
+  def carbon_copy
+    raise CartItemAlreadyFinalized, self unless purchase_state?(:pending)
 
-  private def copy_price_currency
-    assign_attributes(price_currency: product.price_currency)
-  end
-
-  private def associate_current_cart
-    assign_attributes(cart: cart || current_cart)
-  end
-
-  private def associate_current_account
-    assign_attributes(account: account || current_account)
+    assign_attributes(price: product.price)
   end
 end

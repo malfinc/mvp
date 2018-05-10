@@ -18,8 +18,8 @@ require "action_view/railtie"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-require_relative "../lib/source/configuration"
-require_relative "../lib/source/token_strategy"
+require_relative "../lib/source"
+require_relative "../lib/extensions/rails/console"
 
 module BlankApiRails
   class Application < Rails::Application
@@ -38,12 +38,20 @@ module BlankApiRails
     config.generators.system_tests = nil
     config.generators.assets = false
     config.generators.helper = false
-    config.generators.orm :active_record, primary_key_type: :uuid
-
+    config.generators do |generator|
+      generator.orm :active_record, primary_key_type: :uuid
+    end
     config.action_controller.include_all_helpers = false
     config.active_record.schema_format = :sql
     config.active_job.queue_adapter = :sidekiq
     config.cache_store = :redis_store, { expires_in: 30.minutes, pool: BlankApiRails::REDIS_CACHE_CONNECTION_POOL }
+    config.log_tags = [
+      :remote_ip,
+      lambda do |request|
+        request.cookie_jar.encrypted.try!(:[], config.session_options[:key]).try!(:[], "session_id")
+      end,
+      :request_id
+    ]
 
     if ENV.fetch("HEROKU_APP_NAME", nil)
       Rails.application.config.action_mailer.default_url_options = {
