@@ -70,8 +70,8 @@ module V1
     private def modified_parameters
       upsert_parameter(
         {
-          ["id"] => {"current" => current_cart.billing_address_id},
-          ["data", "id"] => {"current" => current_cart.billing_address_id}
+          ["id"] => {"current" => current_cart.billing_information_id},
+          ["data", "id"] => {"current" => current_cart.billing_information_id}
         },
         request.parameters
       )

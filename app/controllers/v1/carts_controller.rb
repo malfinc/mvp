@@ -38,10 +38,12 @@ module V1
           ["id"] => {"mine" => current_cart.id},
           ["data", "id"] => {"mine" => current_cart.id},
           ["data", "relationships", "billing-information", "data", "id"] => {
-            "current" => current_cart.billing_information_id
+            "current" => current_cart.billing_information_id,
+            "latest" => current_account.billing_informations.try!(:last).try!(:id)
           },
           ["data", "relationships", "delivery-information", "data", "id"] => {
-            "current" => current_cart.delivery_information_id
+            "current" => current_cart.delivery_information_id,
+            "latest" => current_account.delivery_informations.try!(:last).try!(:id)
           },
         },
         request.parameters

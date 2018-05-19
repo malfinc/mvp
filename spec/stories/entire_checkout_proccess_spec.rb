@@ -81,7 +81,7 @@ RSpec.describe "Entire checkout process", type: :request do
       id: "mine",
       type: "carts",
       relationships: {
-        "delivery-information" => relationship(id: "current", type: "delivery-informations")
+        "delivery-information" => relationship(id: "latest", type: "delivery-informations")
       }
     )
   end
@@ -92,7 +92,7 @@ RSpec.describe "Entire checkout process", type: :request do
       id: "mine",
       type: "carts",
       relationships: {
-        "billing-information" => relationship(id: "current", type: "billing-informations")
+        "billing-information" => relationship(id: "latest", type: "billing-informations")
       }
     )
   end
@@ -148,18 +148,19 @@ RSpec.describe "Entire checkout process", type: :request do
     make_payment
     expect(response).to have_http_status(:created)
 
-    cart =
 
     expect(Cart.count).to be(1)
 
-    expect(Cart.last).to have_attributes(checkout_state: "purchased")
+    current_cart = Cart.last
+
+    expect(current_cart).to have_attributes(checkout_state: "purchased")
 
     expect(CartItem.count).to be(3)
 
-    CartItem.all.each do |cart_item|
+    current_cart.cart_items.each do |cart_item|
       expect(cart_item).to have_attributes(purchase_state: "purchased")
     end
 
-    expect
+    expect(current_cart.payment).to have_attributes(processing_state: "paid")
   end
 end
