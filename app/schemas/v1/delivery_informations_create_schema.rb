@@ -4,7 +4,13 @@ module V1
       field :data, type: Strict::Hash do
         field :id, type: Coercible::String.optional
         field :type, type: Strict::String
-        field :attributes, type: Strict::Hash.optional
+        field :attributes, type: Strict::Hash do
+          field :name, type: Strict::String
+          field :address, type: Strict::String
+          field :city, type: Strict::String
+          field :state, type: Strict::String
+          field :postal, type: Strict::String
+        end
       end
       field :meta, type: Strict::Hash.optional
       field :included, type: Strict::Array.optional

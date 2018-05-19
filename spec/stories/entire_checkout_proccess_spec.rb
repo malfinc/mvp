@@ -161,6 +161,8 @@ RSpec.describe "Entire checkout process", type: :request do
       expect(cart_item).to have_attributes(purchase_state: "purchased")
     end
 
-    expect(current_cart.payment).to have_attributes(processing_state: "paid")
+    current_cart.payments.each do |payment|
+      expect(payment).to have_attributes(processing_state: "paid")
+    end
   end
 end

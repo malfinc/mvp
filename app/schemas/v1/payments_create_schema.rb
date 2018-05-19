@@ -4,7 +4,10 @@ module V1
       field :data, type: Strict::Hash do
         field :id, type: Coercible::String.optional
         field :type, type: Strict::String
-        field :attributes, type: Strict::Hash.optional
+        field :attributes, type: Strict::Hash do
+          field :subtype, type: Strict::String
+          field "source-id", type: Strict::String
+        end
       end
       field :meta, type: Strict::Hash.optional
       field :included, type: Strict::Array.optional
