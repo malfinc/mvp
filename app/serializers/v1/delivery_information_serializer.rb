@@ -1,5 +1,5 @@
 module V1
-  class ShippingInformationSerializer < ApplicationSerializer
+  class DeliveryInformationSerializer < ApplicationSerializer
     has_one :account, include_data: true
     has_many :carts, include_data: true
 

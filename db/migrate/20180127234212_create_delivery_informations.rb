@@ -1,6 +1,6 @@
-class CreateShippingInformations < ActiveRecord::Migration[5.1]
+class CreateDeliveryInformations < ActiveRecord::Migration[5.1]
   def change
-    create_table :shipping_informations, id: :uuid do |table|
+    create_table :delivery_informations, id: :uuid do |table|
       table.text :name, null: false
       table.text :address, null: false
       table.string :postal, null: false

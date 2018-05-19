@@ -4,25 +4,27 @@ ENV APPLICATION /usr/lib/origin
 ENV RAILS_ENV production
 ENV PORT 3001
 
+WORKDIR /app
+
+COPY app/ app/
+COPY bin/ bin/
+COPY config/ config/
+COPY db/ db/
+COPY lib/ lib/
+COPY public/ public/
+COPY config.ru config.ru
+COPY Rakefile Rakefile
+COPY Gemfile Gemfile
+COPY Gemfile.lock Gemfile.lock
+
+RUN wget -q -O /tmp/heroku-buildpack-ruby-master.zip https://github.com/heroku/heroku-buildpack-ruby/archive/master.zip
+RUN unzip -q /tmp/heroku-buildpack-ruby-master.zip -d /tmp/
+RUN /tmp/heroku-buildpack-ruby-master/bin/detect $APPLICATION && /tmp/heroku-buildpack-ruby-master/bin/compile $APPLICATION/ /tmp
+RUN mv -r /app $APPLICATION
+
 WORKDIR $APPLICATION
 
-RUN apt-get update
-RUN apt-get install -y --no-install-recommends postgresql-client-9.6
-RUN gem install bundler
-
-COPY Gemfile $APPLICATION/
-COPY Gemfile.lock $APPLICATION/
-
-RUN bundle install --jobs 20 --retry 5
-
-COPY app/ $APPLICATION/app/
-COPY bin/ $APPLICATION/bin/
-COPY config/ $APPLICATION/config/
-COPY db/ $APPLICATION/db/
-COPY lib/ $APPLICATION/lib/
-COPY public/ $APPLICATION/public/
-COPY config.ru $APPLICATION/config.ru
-COPY Rakefile $APPLICATION/Rakefile
+ENTRYPOINT ["source", "ruby.sh"]
 
 EXPOSE $PORT
 

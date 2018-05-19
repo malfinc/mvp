@@ -6,7 +6,7 @@ module V1
 
     has_one :account, as: :accounts
     has_one :billing_information, as: :billing_informations
-    has_one :shipping_information, as: :shipping_informations
+    has_one :delivery_information, as: :delivery_informations
     has_many :payments, as: :payments
     has_many :cart_items, as: :cart_items
 

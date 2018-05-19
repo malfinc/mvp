@@ -6,7 +6,7 @@ module V1
         field :type, type: Strict::String
         field :attributes, type: Strict::Hash.optional
         field :relationships, type: Strict::Hash.optional do
-          field "shipping-information", type: Strict::Hash.optional do
+          field "delivery-information", type: Strict::Hash.optional do
             field :data, type: Strict::Hash.optional do
               field :id, type: Strict::String.optional
               field :type, type: Strict::String.optional

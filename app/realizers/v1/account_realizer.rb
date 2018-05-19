@@ -7,7 +7,7 @@ module V1
 
     has_many :carts, as: :carts
     has_many :billing_informations, as: :billing_informations
-    has_many :shipping_informations, as: :shipping_informations
+    has_many :delivery_informations, as: :delivery_informations
     has_many :payments, as: :payments
 
     has :email

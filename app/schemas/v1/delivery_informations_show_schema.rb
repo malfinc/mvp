@@ -1,5 +1,5 @@
 module V1
-  class ShippingInformationsShowSchema < V1::ApplicationSchema
+  class DeliveryInformationsShowSchema < V1::ApplicationSchema
     schema type: Strict::Hash do
       field :fields, type: Strict::Array.of(Strict::String).optional
       field :include, type: Strict::Array.of(Strict::String).optional

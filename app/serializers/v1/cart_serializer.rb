@@ -2,7 +2,7 @@ module V1
   class CartSerializer < ApplicationSerializer
     has_one :account, include_data: true
     has_one :billing_information, include_data: true
-    has_one :shipping_information, include_data: true
+    has_one :delivery_information, include_data: true
     has_many :payments, include_data: true
     has_many :cart_items, include_data: true
 

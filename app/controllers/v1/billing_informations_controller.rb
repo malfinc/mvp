@@ -7,7 +7,7 @@ module V1
 
     def index
       realization = JSONAPI::Realizer.index(
-        BillingInformationsIndexSchema.new(request.parameters).as_json,
+        BillingInformationsIndexSchema.new(modified_parameters).as_json,
         headers: request.headers,
         scope: policy_scope(BillingInformation),
         type: :billing_information
@@ -20,7 +20,7 @@ module V1
 
     def show
       realization = JSONAPI::Realizer.show(
-        BillingInformationsShowSchema.new(request.parameters).as_json,
+        BillingInformationsShowSchema.new(modified_parameters).as_json,
         headers: request.headers,
         scope: policy_scope(BillingInformation),
         type: :billing_informations
@@ -37,7 +37,7 @@ module V1
       ensure_cart_exists
 
       realization = JSONAPI::Realizer.create(
-        BillingInformationsCreateSchema.new(request.parameters).as_json,
+        BillingInformationsCreateSchema.new(modified_parameters).as_json,
         scope: policy_scope(BillingInformation),
         headers: request.headers,
       )
@@ -55,7 +55,7 @@ module V1
       ensure_cart_exists
 
       realization = JSONAPI::Realizer.update(
-        BillingInformationsUpdateSchema.new(request.parameters).as_json,
+        BillingInformationsUpdateSchema.new(modified_parameters).as_json,
         scope: policy_scope(BillingInformation),
         headers: request.headers,
       )
@@ -65,6 +65,16 @@ module V1
       authorize realization.model
 
       render json: serialize(realization)
+    end
+
+    private def modified_parameters
+      upsert_parameter(
+        {
+          ["id"] => {"current" => current_cart.billing_address_id},
+          ["data", "id"] => {"current" => current_cart.billing_address_id}
+        },
+        request.parameters
+      )
     end
   end
 end

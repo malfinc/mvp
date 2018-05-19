@@ -6,7 +6,7 @@ class Account < ApplicationRecord
 
   has_many :carts
   has_many :billing_informations
-  has_many :shipping_informations
+  has_many :delivery_informations
   has_many :payments
 
   friendly_id :email, use: [:slugged, :history], slug_column: :username

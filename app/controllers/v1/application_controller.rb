@@ -115,16 +115,36 @@ module V1
       }
     end
 
-    private def upsert_parameter(keychains, before, after, parameters)
-      keychains.reduce(parameters) do |accumulated, keychain|
-        if accumulated.dig(*keychain) == before
-          accumulated.deep_merge(
-            keychain.reverse.reduce(after) do |accumulated, key|
-              { key => accumulated }
-            end
-          )
-        else
-          accumulated
+    # upsert_parameter(
+    #   {
+    #     ["id"] => {"me" => current_cart.id},
+    #     ["data", "id"] => {"me" => current_cart.id}
+    #   }
+    #   request.parameters
+    # )
+    # keychains.reduce(parameters) do |accumulated, keychain|
+    #   if accumulated.dig(*keychain) == before
+    #     accumulated.deep_merge(
+    #       keychain.reverse.reduce(after) do |accumulated, key|
+    #         { key => accumulated }
+    #       end
+    #     )
+    #   else
+    #     accumulated
+    #   end
+    # end
+    private def upsert_parameter(tree, parameters)
+      tree.reduce(parameters) do |accumulated_parameters, (keychain, mapping)|
+        mapping.reduce(accumulated_parameters) do |accumulated_mapping, (before, after)|
+          if accumulated_mapping.dig(*keychain) == before
+            accumulated_mapping.deep_merge(
+              keychain.reverse.reduce(after) do |accumulated, key|
+                { key => accumulated }
+              end
+            )
+          else
+            accumulated_mapping
+          end
         end
       end
     end

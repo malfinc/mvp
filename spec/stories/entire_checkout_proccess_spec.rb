@@ -31,7 +31,7 @@ RSpec.describe "Entire checkout process", type: :request do
       path: "/v1/cart-items",
       type: "cart-items",
       relationships: {
-        "product" => relationship(id: @products[signature].id, type: "products")
+        "product" => relationship(id: @products.fetch(signature).id, type: "products")
       }
     )
   end
@@ -47,10 +47,10 @@ RSpec.describe "Entire checkout process", type: :request do
     )
   end
 
-  def enter_shipping_information
+  def enter_delivery_information
     jsonapi_create(
-      path: "/v1/shipping-informations",
-      type: "shipping-informations",
+      path: "/v1/delivery-informations",
+      type: "delivery-informations",
       attributes: {
         "name" => "Kurtis Rainbolt-Greene",
         "address" => "2985 San Marino St.\nAPT 11",
@@ -75,13 +75,13 @@ RSpec.describe "Entire checkout process", type: :request do
     )
   end
 
-  def associate_shipping_information_to_cart
+  def associate_delivery_information_to_cart
     jsonapi_update(
       path: "/v1/carts/mine",
       id: "mine",
       type: "carts",
       relationships: {
-        "shipping-information" => relationship(id: @shipping_information_id, type: "shipping-informations")
+        "delivery-information" => relationship(id: "current", type: "delivery-informations")
       }
     )
   end
@@ -92,7 +92,7 @@ RSpec.describe "Entire checkout process", type: :request do
       id: "mine",
       type: "carts",
       relationships: {
-        "billing-information" => relationship(id: @billing_information_id, type: "billing-informations")
+        "billing-information" => relationship(id: "current", type: "billing-informations")
       }
     )
   end
@@ -127,12 +127,10 @@ RSpec.describe "Entire checkout process", type: :request do
     provide_email_address
     expect(response).to have_http_status(:ok)
 
-    enter_shipping_information
+    enter_delivery_information
     expect(response).to have_http_status(:created)
 
-    @shipping_information_id = json_data.fetch("id")
-
-    associate_shipping_information_to_cart
+    associate_delivery_information_to_cart
     expect(response).to have_http_status(:ok)
 
     transition_cart("ready_for_billing")
@@ -140,8 +138,6 @@ RSpec.describe "Entire checkout process", type: :request do
 
     enter_billing_information
     expect(response).to have_http_status(:created)
-
-    @billing_information_id = json_data.fetch("id")
 
     associate_billing_information_to_cart
     expect(response).to have_http_status(:ok)
@@ -152,6 +148,8 @@ RSpec.describe "Entire checkout process", type: :request do
     make_payment
     expect(response).to have_http_status(:created)
 
+    cart =
+
     expect(Cart.count).to be(1)
 
     expect(Cart.last).to have_attributes(checkout_state: "purchased")
@@ -161,5 +159,7 @@ RSpec.describe "Entire checkout process", type: :request do
     CartItem.all.each do |cart_item|
       expect(cart_item).to have_attributes(purchase_state: "purchased")
     end
+
+    expect
   end
 end

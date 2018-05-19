@@ -8,7 +8,10 @@ services:
       - ./:/usr/lib/origin
     depends_on:
       - postgres
-      - redis
+      - redis-sidekiq
+      - redis-objects
+      - redis-cache
+      - redis-redlock
       - proxy
     environment:
       - RAILS_ENV=development
@@ -20,7 +23,7 @@ services:
       - REDIS_SIDEKIQ_CLIENT_POOL_SIZE=10
       - REDIS_OBJECTS_URL=redis://redis-objects:6379/1
       - REDIS_OBJECTS_POOL_SIZE=20
-      - REDIS_REDLOCK_URL=redis://redlock-redis:6379/2
+      - REDIS_REDLOCK_URL=redis://redis-redlock:6379/2
       - REDIS_REDLOCK_POOL_SIZE=20
       - RAILS_MAX_THREADS=4
       - WEB_CONCURRENCY=2
@@ -50,10 +53,10 @@ services:
     image: redis:3.2.11-alpine
     environment:
       - VIRTUAL_HOST=redis-cache.blank-api-rails.local
-  redlock-redis:
+  redis-redlock:
     image: redis:3.2.11-alpine
     environment:
-      - VIRTUAL_HOST=redlock-redis.blank-api-rails.local
+      - VIRTUAL_HOST=redis-redlock.blank-api-rails.local
   proxy:
     image: jwilder/nginx-proxy:alpine
     ports:

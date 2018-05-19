@@ -1,4 +1,4 @@
-class ShippingInformation < ApplicationRecord
+class DeliveryInformation < ApplicationRecord
   has_many :carts
   belongs_to :account
 

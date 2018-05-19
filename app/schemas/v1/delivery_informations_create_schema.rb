@@ -1,5 +1,5 @@
 module V1
-  class ShippingInformationsCreateSchema < V1::ApplicationSchema
+  class DeliveryInformationsCreateSchema < V1::ApplicationSchema
     schema type: Strict::Hash do
       field :data, type: Strict::Hash do
         field :id, type: Coercible::String.optional

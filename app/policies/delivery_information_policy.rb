@@ -1,4 +1,4 @@
-class ShippingInformationPolicy < ApplicationPolicy
+class DeliveryInformationPolicy < ApplicationPolicy
   class Scope < ApplicationScope
     def resolve
       return relation.where(account: requester) unless administrator?

@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   namespace :v1 do
     resources :accounts
     resources :billing_informations, path: "billing-informations"
-    resources :shipping_informations, path: "shipping-informations"
+    resources :delivery_informations, path: "delivery-informations"
     resources :cart_items, path: "cart-items"
     resources :carts
     resources :products

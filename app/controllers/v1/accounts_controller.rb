@@ -60,7 +60,13 @@ module V1
     end
 
     private def modified_parameters
-      upsert_parameter([["id"], ["data", "id"]], "me", current_account.id, request.parameters)
+      upsert_parameter(
+        {
+          ["id"] => {"me" => current_account.id},
+          ["data", "id"] => {"me" => current_account.id}
+        },
+        request.parameters
+      )
     end
   end
 end

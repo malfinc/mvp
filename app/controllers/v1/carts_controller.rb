@@ -33,7 +33,15 @@ module V1
     end
 
     private def modified_parameters
-      upsert_parameter([["id"], ["data", "id"]], "mine", current_cart.id, request.parameters)
+      upsert_parameter(
+        {
+          ["id"] => {"mine" => current_cart.id},
+          ["data", "id"] => {"mine" => current_cart.id},
+          ["data", "relationships", "billing-information", "data", "id"] => {"current" => current_cart.billing_information_id},
+          ["data", "relationships", "delivery-information", "data", "id"] => {"current" => current_cart.delivery_information_id},
+        },
+        request.parameters
+      )
     end
   end
 end

@@ -3,7 +3,7 @@ module V1
 
     has_many :carts, include_data: true
     has_many :billing_informations, include_data: true
-    has_many :shipping_informations, include_data: true
+    has_many :delivery_informations, include_data: true
     has_many :payments, include_data: true
 
     attribute :email

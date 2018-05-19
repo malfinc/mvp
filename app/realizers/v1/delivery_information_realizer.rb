@@ -1,8 +1,8 @@
 module V1
-  class ShippingInformationRealizer
+  class DeliveryInformationRealizer
     include JSONAPI::Realizer::Resource
 
-    register :shipping_informations, class_name: "ShippingInformation", adapter: :active_record
+    register :delivery_informations, class_name: "DeliveryInformation", adapter: :active_record
 
     has_one :account, as: :accounts
     has_many :carts, as: :carts

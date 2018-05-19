@@ -166,7 +166,7 @@ CREATE TABLE public.cart_items (
 CREATE TABLE public.carts (
     id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     account_id uuid NOT NULL,
-    shipping_information_id uuid,
+    delivery_information_id uuid,
     billing_information_id uuid,
     checkout_state character varying NOT NULL,
     total_cents integer,
@@ -182,11 +182,11 @@ CREATE TABLE public.carts (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     CONSTRAINT carts_billing_information_id_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (billing_information_id IS NOT NULL))),
+    CONSTRAINT carts_delivery_information_id_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (delivery_information_id IS NOT NULL))),
     CONSTRAINT carts_discount_cents_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (discount_cents IS NOT NULL))),
     CONSTRAINT carts_discount_currency_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (discount_currency IS NOT NULL))),
     CONSTRAINT carts_shipping_cents_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (shipping_cents IS NOT NULL))),
     CONSTRAINT carts_shipping_currency_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (shipping_currency IS NOT NULL))),
-    CONSTRAINT carts_shipping_information_id_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (shipping_information_id IS NOT NULL))),
     CONSTRAINT carts_subtotal_cents_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (subtotal_cents IS NOT NULL))),
     CONSTRAINT carts_subtotal_currency_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (subtotal_currency IS NOT NULL))),
     CONSTRAINT carts_tax_cents_null CHECK (((NOT ((checkout_state)::text = 'purchased'::text)) OR (tax_cents IS NOT NULL))),
@@ -197,12 +197,29 @@ CREATE TABLE public.carts (
 
 
 --
--- Name: carts_shipping_informations; Type: TABLE; Schema: public; Owner: -
+-- Name: carts_delivery_informations; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.carts_shipping_informations (
+CREATE TABLE public.carts_delivery_informations (
     cart_id uuid NOT NULL,
-    shipping_information_id uuid NOT NULL,
+    delivery_information_id uuid NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: delivery_informations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.delivery_informations (
+    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    name text NOT NULL,
+    address text NOT NULL,
+    postal character varying NOT NULL,
+    city character varying NOT NULL,
+    state character varying NOT NULL,
+    account_id uuid NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -338,23 +355,6 @@ CREATE TABLE public.schema_migrations (
 
 
 --
--- Name: shipping_informations; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.shipping_informations (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
-    name text NOT NULL,
-    address text NOT NULL,
-    postal character varying NOT NULL,
-    city character varying NOT NULL,
-    state character varying NOT NULL,
-    account_id uuid NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
 -- Name: versions; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -479,6 +479,14 @@ ALTER TABLE ONLY public.carts
 
 
 --
+-- Name: delivery_informations delivery_informations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.delivery_informations
+    ADD CONSTRAINT delivery_informations_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: friendly_id_slugs friendly_id_slugs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -524,14 +532,6 @@ ALTER TABLE ONLY public.products
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
-
-
---
--- Name: shipping_informations shipping_informations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.shipping_informations
-    ADD CONSTRAINT shipping_informations_pkey PRIMARY KEY (id);
 
 
 --
@@ -648,6 +648,20 @@ CREATE INDEX index_cart_items_on_purchase_state ON public.cart_items USING btree
 
 
 --
+-- Name: index_carts_delivery_informations_on_cart_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_carts_delivery_informations_on_cart_id ON public.carts_delivery_informations USING btree (cart_id);
+
+
+--
+-- Name: index_carts_delivery_informations_on_delivery_information_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_carts_delivery_informations_on_delivery_information_id ON public.carts_delivery_informations USING btree (delivery_information_id);
+
+
+--
 -- Name: index_carts_on_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -669,24 +683,24 @@ CREATE INDEX index_carts_on_checkout_state ON public.carts USING btree (checkout
 
 
 --
--- Name: index_carts_on_shipping_information_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_carts_on_delivery_information_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_carts_on_shipping_information_id ON public.carts USING btree (shipping_information_id) WHERE (shipping_information_id IS NOT NULL);
-
-
---
--- Name: index_carts_shipping_informations_on_cart_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_carts_shipping_informations_on_cart_id ON public.carts_shipping_informations USING btree (cart_id);
+CREATE INDEX index_carts_on_delivery_information_id ON public.carts USING btree (delivery_information_id) WHERE (delivery_information_id IS NOT NULL);
 
 
 --
--- Name: index_carts_shipping_informations_on_shipping_information_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_delivery_information_carts_on_join_columns; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_carts_shipping_informations_on_shipping_information_id ON public.carts_shipping_informations USING btree (shipping_information_id);
+CREATE UNIQUE INDEX index_delivery_information_carts_on_join_columns ON public.carts_delivery_informations USING btree (delivery_information_id, cart_id);
+
+
+--
+-- Name: index_delivery_informations_on_account_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_delivery_informations_on_account_id ON public.delivery_informations USING btree (account_id);
 
 
 --
@@ -809,20 +823,6 @@ CREATE INDEX index_products_on_visibility_state ON public.products USING btree (
 
 
 --
--- Name: index_shipping_information_carts_on_join_columns; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_shipping_information_carts_on_join_columns ON public.carts_shipping_informations USING btree (shipping_information_id, cart_id);
-
-
---
--- Name: index_shipping_informations_on_account_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_shipping_informations_on_account_id ON public.shipping_informations USING btree (account_id);
-
-
---
 -- Name: index_versions_on_actor_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -841,6 +841,14 @@ CREATE INDEX index_versions_on_event ON public.versions USING btree (event);
 --
 
 CREATE INDEX index_versions_on_item_id_and_item_type ON public.versions USING btree (item_id, item_type);
+
+
+--
+-- Name: delivery_informations fk_rails_04842698b7; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.delivery_informations
+    ADD CONSTRAINT fk_rails_04842698b7 FOREIGN KEY (account_id) REFERENCES public.accounts(id);
 
 
 --
@@ -868,11 +876,11 @@ ALTER TABLE ONLY public.billing_informations_carts
 
 
 --
--- Name: shipping_informations fk_rails_597ebf7fd0; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: carts fk_rails_511bc15c1c; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.shipping_informations
-    ADD CONSTRAINT fk_rails_597ebf7fd0 FOREIGN KEY (account_id) REFERENCES public.accounts(id);
+ALTER TABLE ONLY public.carts
+    ADD CONSTRAINT fk_rails_511bc15c1c FOREIGN KEY (delivery_information_id) REFERENCES public.delivery_informations(id);
 
 
 --
@@ -892,6 +900,14 @@ ALTER TABLE ONLY public.cart_items
 
 
 --
+-- Name: carts_delivery_informations fk_rails_6efe453fc7; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.carts_delivery_informations
+    ADD CONSTRAINT fk_rails_6efe453fc7 FOREIGN KEY (cart_id) REFERENCES public.carts(id);
+
+
+--
 -- Name: carts fk_rails_772f954818; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -908,22 +924,6 @@ ALTER TABLE ONLY public.payments
 
 
 --
--- Name: carts_shipping_informations fk_rails_8ab40912b2; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.carts_shipping_informations
-    ADD CONSTRAINT fk_rails_8ab40912b2 FOREIGN KEY (cart_id) REFERENCES public.carts(id);
-
-
---
--- Name: carts fk_rails_955c878d40; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.carts
-    ADD CONSTRAINT fk_rails_955c878d40 FOREIGN KEY (shipping_information_id) REFERENCES public.shipping_informations(id);
-
-
---
 -- Name: cart_items fk_rails_c0ea132c68; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -932,19 +932,19 @@ ALTER TABLE ONLY public.cart_items
 
 
 --
--- Name: carts_shipping_informations fk_rails_c7b27e45c1; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.carts_shipping_informations
-    ADD CONSTRAINT fk_rails_c7b27e45c1 FOREIGN KEY (shipping_information_id) REFERENCES public.shipping_informations(id);
-
-
---
 -- Name: gutentag_taggings fk_rails_cb73a18b77; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.gutentag_taggings
     ADD CONSTRAINT fk_rails_cb73a18b77 FOREIGN KEY (tag_id) REFERENCES public.gutentag_tags(id);
+
+
+--
+-- Name: carts_delivery_informations fk_rails_f16a9ea94b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.carts_delivery_informations
+    ADD CONSTRAINT fk_rails_f16a9ea94b FOREIGN KEY (delivery_information_id) REFERENCES public.delivery_informations(id);
 
 
 --

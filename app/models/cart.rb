@@ -2,7 +2,7 @@ class Cart < ApplicationRecord
   include AuditedTransitions
 
   belongs_to :account
-  belongs_to :shipping_information, required: false
+  belongs_to :delivery_information, required: false
   belongs_to :billing_information, required: false
   has_many :payments
   has_many :cart_items
@@ -17,7 +17,7 @@ class Cart < ApplicationRecord
 
   state_machine :checkout_state, initial: :needs_shipping do
     event :ready_for_shipping do
-      transition to: :needs_shipping, unless: :has_shipping_information?
+      transition to: :needs_shipping, unless: :has_delivery_information?
     end
 
     event :ready_for_billing do
@@ -42,8 +42,8 @@ class Cart < ApplicationRecord
     end
 
     state :purchased do
-      validates_presence_of :shipping_information
-      validates_presence_of :shipping_information_id
+      validates_presence_of :delivery_information
+      validates_presence_of :delivery_information_id
       validates_presence_of :billing_information
       validates_presence_of :billing_information_id
       validates_presence_of :payments
@@ -71,8 +71,8 @@ class Cart < ApplicationRecord
   def tax_cents
     return super if checkout_state?(:purchased)
 
-    if shipping_information.present?
-      (subtotal_cents * TaxRate.new(address: shipping_information).percent).round
+    if delivery_information.present?
+      (subtotal_cents * TaxRate.new(address: delivery_information).percent).round
     else
       0
     end
@@ -81,8 +81,8 @@ class Cart < ApplicationRecord
   def shipping_cents
     return super if checkout_state?(:purchased)
 
-    if shipping_information.present?
-      ShippingRate.new(address: shipping_information).amount_cents
+    if delivery_information.present?
+      ShippingRate.new(address: delivery_information).amount_cents
     else
       0
     end
@@ -98,8 +98,8 @@ class Cart < ApplicationRecord
     end
   end
 
-  def has_shipping_information?
-    shipping_information.present?
+  def has_delivery_information?
+    delivery_information.present?
   end
 
   def has_billing_information?
@@ -111,6 +111,6 @@ class Cart < ApplicationRecord
   end
 
   private def has_all_information?
-    has_shipping_information? && has_billing_information? && has_payments?
+    has_delivery_information? && has_billing_information? && has_payments?
   end
 end
