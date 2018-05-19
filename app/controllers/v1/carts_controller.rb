@@ -37,8 +37,12 @@ module V1
         {
           ["id"] => {"mine" => current_cart.id},
           ["data", "id"] => {"mine" => current_cart.id},
-          ["data", "relationships", "billing-information", "data", "id"] => {"current" => current_cart.billing_information_id},
-          ["data", "relationships", "delivery-information", "data", "id"] => {"current" => current_cart.delivery_information_id},
+          ["data", "relationships", "billing-information", "data", "id"] => {
+            "current" => current_cart.billing_information_id
+          },
+          ["data", "relationships", "delivery-information", "data", "id"] => {
+            "current" => current_cart.delivery_information_id
+          },
         },
         request.parameters
       )
