@@ -1,6 +1,6 @@
 class CreateFriendlyIdSlugs < ActiveRecord::Migration[5.1]
   def change
-    create_table :friendly_id_slugs, id: :bigint do |table|
+    create_table :friendly_id_slugs, id: :bigserial do |table|
       table.citext :slug, null: false
       table.uuid :sluggable_id, null: false
       table.text :sluggable_type, null: false

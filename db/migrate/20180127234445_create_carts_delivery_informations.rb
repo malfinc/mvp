@@ -1,6 +1,6 @@
 class CreateCartsDeliveryInformations < ActiveRecord::Migration[5.1]
   def change
-    create_join_table :carts, :delivery_informations, id: :bigint do |table|
+    create_join_table :carts, :delivery_informations, id: :bigserial do |table|
       table.uuid :delivery_information_id, null: false, index: true
       table.uuid :cart_id, null: false, index: true
       table.timestamps null: false
