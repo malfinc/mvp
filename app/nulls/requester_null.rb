@@ -1,4 +1,8 @@
 class RequesterNull < ApplicationNull
+  def id
+    nil
+  end
+
   def role_state?(*)
     false
   end
