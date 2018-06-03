@@ -28,4 +28,25 @@ RSpec.shared_context "JSON:API request" do
       }.compact.deep_stringify_keys
     )
   end
+
+  def relationship(id:, type:)
+    {
+      data: {
+        id: id,
+        type: type
+      }
+    }
+  end
+
+  def json
+    Oj.load(response.body)
+  end
+
+  def json_data
+    json.fetch("data")
+  end
+
+  def json_data_attributes
+    json_data.fetch("attributes")
+  end
 end
