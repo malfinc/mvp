@@ -46,11 +46,17 @@ module BlankApiRails
     config.active_job.queue_adapter = :sidekiq
     config.cache_store = :redis_store, { expires_in: 30.minutes, pool: BlankApiRails::REDIS_CACHE_CONNECTION_POOL }
     config.log_tags = [
-      :remote_ip,
       lambda do |request|
-        request.cookie_jar.encrypted.try!(:[], config.session_options[:key]).try!(:[], "session_id")
+        "remote-ip=#{request.remote_ip}" if request.remote_ip
       end,
-      :request_id
+      lambda do |request|
+        if request.cookie_jar.encrypted.try!(:[], config.session_options[:key]).try!(:[], "session_id")
+          "session-id=#{request.cookie_jar.encrypted.try!(:[], config.session_options[:key]).try!(:[], "session_id")}"
+        end
+      end,
+      lambda do |request|
+        "request-id=#{request.request_id}" if request.request_id
+      end
     ]
 
     if ENV.fetch("HEROKU_APP_NAME", nil)
