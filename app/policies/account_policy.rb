@@ -7,6 +7,10 @@ class AccountPolicy < ApplicationPolicy
     end
   end
 
+  def show?
+    guests || users || administrators
+  end
+
   def index?
     everyone
   end
