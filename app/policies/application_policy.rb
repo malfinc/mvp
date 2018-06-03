@@ -90,4 +90,8 @@ class ApplicationPolicy
   private def users
     requester.role_state?(:user)
   end
+
+  private def only_logged_out
+    requester.id.nil?
+  end
 end
