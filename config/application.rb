@@ -46,6 +46,7 @@ module BlankApiRails
     config.active_job.queue_adapter = :sidekiq
     config.cache_store = :redis_store, { expires_in: 30.minutes, pool: BlankApiRails::REDIS_CACHE_CONNECTION_POOL }
     config.log_tags = [
+      lambda { |request| "time=#{Time.now.iso8601}" },
       lambda do |request|
         "remote-ip=#{request.remote_ip}" if request.remote_ip
       end,
