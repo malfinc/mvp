@@ -14,11 +14,14 @@ end
 
 RSpec::Matchers.define :have_jsonapi_type do |expected|
   match do |actual|
-    Oj.load(actual.try(:body) || "{}").fetch("data", {}).fetch("type", nil) == expected
+    Oj
+      .load(actual&.body.presence || "{}")
+      .fetch("data", {})
+      .fetch("type", nil) == expected
   end
 
   failure_message do |actual|
-    body = actual.try(:body)
+    body = actual&.body
     return "response had no body or was not a response" unless body.present?
 
     native = Oj.load(body)
@@ -39,11 +42,17 @@ end
 
 RSpec::Matchers.define :have_jsonapi_attributes do |expected|
   match do |actual|
-    values_match?(hash_including(expected), Oj.load(actual.try(:body) || "{}").fetch("data", {}).fetch("attributes", {}))
+    values_match?(
+      hash_including(expected),
+      Oj
+        .load(actual&.body.presence || "{}")
+        .fetch("data", {})
+        .fetch("attributes", {})
+    )
   end
 
   failure_message do |actual|
-    body = actual.try(:body)
+    body = actual&.body
     return "response had no body or was not a response" unless body.present?
 
     native = Oj.load(body)
@@ -66,11 +75,19 @@ end
 
 RSpec::Matchers.define :have_jsonapi_related do |expected_name, expected_related_data|
   match do |actual|
-    values_match?(expected_related_data, Oj.load(actual.try(:body) || "{}").fetch("data", {}).fetch("relationships", {}).fetch(expected_name, {}).fetch("data", nil))
+    values_match?(
+      expected_related_data,
+      Oj
+        .load(actual&.body.presence || "{}")
+        .fetch("data", {})
+        .fetch("relationships", {})
+        .fetch(expected_name, {})
+        .fetch("data", nil)
+    )
   end
 
   failure_message do |actual|
-    body = actual.try(:body)
+    body = actual&.body
     return "response had no body or was not a response" unless body.present?
 
     native = Oj.load(body)
