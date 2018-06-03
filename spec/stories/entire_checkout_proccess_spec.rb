@@ -133,7 +133,7 @@ RSpec.describe "Entire checkout process", type: :request do
     associate_delivery_information_to_cart
     expect(response).to have_http_status(:ok)
 
-    transition_cart("ready_for_billing")
+    transition_cart("ready_for_billing_information")
     expect(response).to have_http_status(:ok)
 
     enter_billing_information
