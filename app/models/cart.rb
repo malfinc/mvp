@@ -15,13 +15,13 @@ class Cart < ApplicationRecord
 
   validates_presence_of :checkout_state
 
-  state_machine :checkout_state, initial: :needs_shipping do
-    event :ready_for_shipping do
-      transition to: :needs_shipping, unless: :has_delivery_information?
+  state_machine :checkout_state, initial: :needs_delivery_information do
+    event :ready_for_delivery_information do
+      transition to: :needs_delivery_information, unless: :has_delivery_information?
     end
 
-    event :ready_for_billing do
-      transition to: :needs_billing, unless: :has_billing_information?
+    event :ready_for_billing_information do
+      transition to: :needs_billing_information, unless: :has_billing_information?
     end
 
     event :ready_for_payments do
