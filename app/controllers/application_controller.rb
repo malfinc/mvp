@@ -1,5 +1,4 @@
 class ApplicationController < ActionController::API
-  include Pundit
 
   before_action :set_paper_trail_whodunnit
   before_bugsnag_notify :set_bugsnag_context

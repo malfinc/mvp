@@ -1,6 +1,7 @@
 module V1
   class ApplicationController < ::ApplicationController
     include JSONAPI::Home
+    include Pundit
 
     RECURSIVE_TREE = ->(accumulated, key) {accumulated[key] = Hash.new(&RECURSIVE_TREE)}
 
