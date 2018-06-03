@@ -1,6 +1,7 @@
 module V1
   class DeliveryInformationsCreateSchema < V1::ApplicationSchema
     schema type: Strict::Hash do
+      field :id, type: Coercible::String.optional
       field :data, type: Strict::Hash do
         field :id, type: Coercible::String.optional
         field :type, type: Strict::String

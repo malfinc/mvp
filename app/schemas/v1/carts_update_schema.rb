@@ -1,6 +1,7 @@
 module V1
   class CartsUpdateSchema < V1::ApplicationSchema
     schema type: Strict::Hash do
+      field :id, type: Strict::String
       field :data, type: Strict::Hash do
         field :id, type: Coercible::String
         field :type, type: Strict::String
