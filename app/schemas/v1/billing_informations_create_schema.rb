@@ -12,6 +12,9 @@ module V1
           field :state, type: Strict::String
           field :postal, type: Strict::String
         end
+        field :relationships, type: Strict::Hash.optional do
+          field :carts, type: Strict::Array.of(Strict::Hash).optional
+        end
       end
       field :meta, type: Strict::Hash.optional
       field :included, type: Strict::Array.optional
