@@ -3,60 +3,45 @@ module V1
     include JSONAPI::Home
     include Pundit
 
-    RECURSIVE_TREE = ->(accumulated, key) {accumulated[key] = Hash.new(&RECURSIVE_TREE)}
+    before_action :set_paper_trail_whodunnit
+    before_bugsnag_notify :set_bugsnag_context
+    after_action :verify_authorized
+    after_action :verify_policy_scoped
+    before_action :ensure_account_exists
+    before_action :ensure_cart_exists
 
-    rescue_from StandardError, with: :generic_error_handling
-    rescue_from JSONAPI::Realizer::Error::MissingAcceptHeader, with: :missing_accept_header
-    rescue_from JSONAPI::Realizer::Error::InvalidAcceptHeader, with: :invalid_accept_header
-    rescue_from JSONAPI::Realizer::Error::MalformedDataRootProperty, with: :malformed_data_root_property
-    rescue_from Pundit::NotAuthorizedError, with: :access_not_authorized
-    rescue_from ActiveRecord::RecordInvalid, with: :record_invalid
-    rescue_from StateMachines::InvalidTransition, with: :invalid_transition
-    rescue_from ApplicationError, with: :application_exception
-
-    private def generic_error_handling(exception)
-      Rails.logger.info("exception=#{exception.class.name.inspect} message=#{exception.message.inspect}")
-      Rails.logger.debug(exception.full_message)
-      raise exception
+    private def pundit_user
+      current_account
     end
 
-    # TODO: Wrap these in an error wrapper so they have the same properties as others and reraise
-    private def missing_accept_header
-      head :not_acceptable
+    private def user_for_paper_trail
+      if account_signed_in? then current_account else "Anonymous" end
     end
 
-    # TODO: Wrap these in an error wrapper so they have the same properties as others and reraise
-    private def invalid_accept_header
-      head :not_acceptable
+    private def info_for_paper_trail
+      {
+        actor_id: if account_signed_in? then current_account.id end,
+        request_id: request.request_id,
+        session_id: if account_signed_in? then session.id end
+      }
     end
 
-    # TODO: Wrap these in an error wrapper so they have the same properties as others and reraise
-    private def access_not_authorized(exception)
-      Rails.logger.debug("Pundit #{exception.policy.class.name} did not authorize #{exception.query}")
+    private def set_bugsnag_context(report)
+      if account_signed_in?
+        report.user = {
+          email: current_account.email,
+          name: current_account.name,
+          username: current_account.username,
+          slug: current_account.slug,
+          id: current_account.id
+        }
+      end
 
-      head :unauthorized
-    end
-
-    # TODO: Wrap these in an error wrapper so they have the same properties as others and reraise
-    private def malformed_data_root_property
-      head :unprocessable_entity
-    end
-
-    # TODO: Wrap these in an error wrapper so they have the same properties as others and reraise
-    private def invalid_transition(exception)
-      Rails.logger.debug("#{exception.object.class.name} failed to save: #{exception.object.errors.full_messages.to_sentence}")
-      render json: JSONAPI::Serializer.serialize_errors(exception.object.errors), status: :unprocessable_entity
-    end
-
-    # TODO: Wrap these in an error wrapper so they have the same properties as others and reraise
-    private def record_invalid(exception)
-      Rails.logger.debug("#{exception.record.class.name} failed to save: #{exception.record.errors.full_messages.to_sentence}")
-      render json: JSONAPI::Serializer.serialize_errors(exception.record.errors), status: :unprocessable_entity
-    end
-
-    private def application_exception(exception)
-      binding.pry
-      render json: JSONAPI::Serializer.serialize_errors(exception.as_jsonapi_errors), status: :unprocessable_entity
+      report.add_tab(:session, {
+        actor: PaperTrail.request.whodunnit,
+        session_id: session.id,
+        request_id: request.request_id
+      })
     end
 
     private def serialize(realization)
@@ -116,24 +101,6 @@ module V1
       }
     end
 
-    # upsert_parameter(
-    #   {
-    #     ["id"] => {"me" => current_cart.id},
-    #     ["data", "id"] => {"me" => current_cart.id}
-    #   }
-    #   request.parameters
-    # )
-    # keychains.reduce(parameters) do |accumulated, keychain|
-    #   if accumulated.dig(*keychain) == before
-    #     accumulated.deep_merge(
-    #       keychain.reverse.reduce(after) do |accumulated, key|
-    #         { key => accumulated }
-    #       end
-    #     )
-    #   else
-    #     accumulated
-    #   end
-    # end
     private def upsert_parameter(tree, parameters)
       tree.reduce(parameters) do |accumulated_parameters, (keychain, mapping)|
         mapping.reduce(accumulated_parameters) do |accumulated_mapping, (before, after)|
