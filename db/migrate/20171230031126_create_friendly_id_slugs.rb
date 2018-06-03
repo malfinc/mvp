@@ -3,8 +3,8 @@ class CreateFriendlyIdSlugs < ActiveRecord::Migration[5.1]
     create_table :friendly_id_slugs, id: :bigint do |table|
       table.citext :slug, null: false
       table.uuid :sluggable_id, null: false
-      table.string :sluggable_type, null: false
-      table.string :scope
+      table.text :sluggable_type, null: false
+      table.text :scope
       table.datetime :created_at, null: false
 
       table.index [:sluggable_id, :sluggable_type]

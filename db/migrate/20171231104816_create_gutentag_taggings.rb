@@ -3,7 +3,7 @@ class CreateGutentagTaggings < ActiveRecord::Migration[5.1]
     create_table :gutentag_taggings, id: :bigserial do |table|
       table.uuid :tag_id, null: false
       table.uuid :taggable_id, null: false
-      table.string :taggable_type, null: false
+      table.text :taggable_type, null: false
       table.timestamps null: false
 
       table.index :tag_id

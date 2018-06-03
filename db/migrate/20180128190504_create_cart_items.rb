@@ -4,11 +4,11 @@ class CreateCartItems < ActiveRecord::Migration[5.1]
       table.uuid :cart_id, null: false
       table.uuid :product_id, null: false
       table.integer :price_cents, null: false
-      table.string :price_currency, null: false, default: "usd"
+      table.text :price_currency, null: false, default: "usd"
       table.integer :discount_cents, null: false, default: 0
-      table.string :discount_currency, null: false, default: "usd"
+      table.text :discount_currency, null: false, default: "usd"
       table.uuid :account_id, null: false
-      table.string :purchase_state, null: false
+      table.text :purchase_state, null: false
       table.timestamps null: false
 
       table.index :cart_id

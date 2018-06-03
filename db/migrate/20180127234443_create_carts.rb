@@ -4,17 +4,17 @@ class CreateCarts < ActiveRecord::Migration[5.1]
       table.uuid :account_id, null: false
       table.uuid :delivery_information_id
       table.uuid :billing_information_id
-      table.string :checkout_state, null: false
+      table.text :checkout_state, null: false
       table.integer :total_cents
-      table.string :total_currency, default: "usd"
+      table.text :total_currency, default: "usd"
       table.integer :subtotal_cents
-      table.string :subtotal_currency, default: "usd"
+      table.text :subtotal_currency, default: "usd"
       table.integer :discount_cents
-      table.string :discount_currency, default: "usd"
+      table.text :discount_currency, default: "usd"
       table.integer :tax_cents
-      table.string :tax_currency, default: "usd"
+      table.text :tax_currency, default: "usd"
       table.integer :shipping_cents
-      table.string :shipping_currency, default: "usd"
+      table.text :shipping_currency, default: "usd"
       table.timestamps null: false
 
       table.foreign_key :accounts, column: :account_id
