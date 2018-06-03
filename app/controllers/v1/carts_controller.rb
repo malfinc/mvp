@@ -7,7 +7,7 @@ module V1
 
     def show
       realization = JSONAPI::Realizer.show(
-        CartsShowSchema.new(modified_parameters).as_json,
+        CartsShowSchema.new(modified_parameters).as_json || {},
         headers: request.headers,
         scope: policy_scope(Cart),
         type: :carts
@@ -20,7 +20,7 @@ module V1
 
     def update
       realization = JSONAPI::Realizer.update(
-        CartsUpdateSchema.new(modified_parameters).as_json,
+        CartsUpdateSchema.new(modified_parameters).as_json || {},
         headers: request.headers,
         scope: policy_scope(Cart)
       )

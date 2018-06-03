@@ -9,7 +9,7 @@ module V1
       authenticate_account!
 
       realization = JSONAPI::Realizer.index(
-        CartItemsIndexSchema.new(request.parameters).as_json,
+        CartItemsIndexSchema.new(request.parameters).as_json || {},
         headers: request.headers,
         scope: policy_scope(CartItem),
         type: :cart_items
@@ -24,7 +24,7 @@ module V1
       authenticate_account!
 
       realization = JSONAPI::Realizer.show(
-        CartItemsShowSchema.new(request.parameters).as_json,
+        CartItemsShowSchema.new(request.parameters).as_json || {},
         headers: request.headers,
         scope: policy_scope(CartItem),
         type: :cart_items
@@ -36,12 +36,10 @@ module V1
     end
 
     def create
-      ensure_account_exists
       authenticate_account!
-      ensure_cart_exists
 
       realization = JSONAPI::Realizer.create(
-        CartItemsCreateSchema.new(request.parameters).as_json,
+        CartItemsCreateSchema.new(request.parameters).as_json || {},
         scope: policy_scope(CartItem),
         headers: request.headers,
       )

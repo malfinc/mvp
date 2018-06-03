@@ -7,7 +7,7 @@ module V1
 
     def index
       realization = JSONAPI::Realizer.index(
-        PaymentsIndexSchema.new(request.parameters).as_json,
+        PaymentsIndexSchema.new(request.parameters).as_json || {},
         headers: request.headers,
         scope: policy_scope(Payment),
         type: :payments
@@ -20,7 +20,7 @@ module V1
 
     def show
       realization = JSONAPI::Realizer.show(
-        PaymentsShowSchema.new(request.parameters).as_json,
+        PaymentsShowSchema.new(request.parameters).as_json || {},
         headers: request.headers,
         scope: policy_scope(Payment),
         type: :payments
@@ -32,12 +32,10 @@ module V1
     end
 
     def create
-      ensure_account_exists
       authenticate_account!
-      ensure_cart_exists
 
       realization = JSONAPI::Realizer.create(
-        PaymentsCreateSchema.new(request.parameters).as_json,
+        PaymentsCreateSchema.new(request.parameters).as_json || {},
         scope: policy_scope(Payment),
         headers: request.headers,
       )

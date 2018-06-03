@@ -7,7 +7,7 @@ module V1
 
     def index
       realization = JSONAPI::Realizer.index(
-        DeliveryInformationsIndexSchema.new(modified_parameters).as_json,
+        DeliveryInformationsIndexSchema.new(modified_parameters).as_json || {},
         headers: request.headers,
         scope: policy_scope(DeliveryInformation),
         type: :delivery_information
@@ -20,7 +20,7 @@ module V1
 
     def show
       realization = JSONAPI::Realizer.show(
-        DeliveryInformationsShowSchema.new(modified_parameters).as_json,
+        DeliveryInformationsShowSchema.new(modified_parameters).as_json || {},
         headers: request.headers,
         scope: policy_scope(DeliveryInformation),
         type: :delivery_informations
@@ -32,12 +32,10 @@ module V1
     end
 
     def create
-      ensure_account_exists
       authenticate_account!
-      ensure_cart_exists
 
       realization = JSONAPI::Realizer.create(
-        DeliveryInformationsCreateSchema.new(modified_parameters).as_json,
+        DeliveryInformationsCreateSchema.new(modified_parameters).as_json || {},
         scope: policy_scope(DeliveryInformation),
         headers: request.headers,
       )
@@ -51,7 +49,7 @@ module V1
 
     def update
       realization = JSONAPI::Realizer.update(
-        DeliveryInformationsUpdateSchema.new(modified_parameters).as_json,
+        DeliveryInformationsUpdateSchema.new(modified_parameters).as_json || {},
         scope: policy_scope(DeliveryInformation),
         headers: request.headers,
       )

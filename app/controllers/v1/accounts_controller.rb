@@ -1,5 +1,7 @@
 module V1
   class AccountsController < ::V1::ApplicationController
+    skip_before_action :ensure_account_exists, only: :create
+
     discoverable(
       version: "v1",
       namespace: "accounts"
@@ -7,7 +9,7 @@ module V1
 
     def index
       realization = JSONAPI::Realizer.index(
-        AccountsIndexSchema.new(request.parameters).as_json,
+        AccountsIndexSchema.new(request.parameters).as_json || {},
         headers: request.headers,
         scope: policy_scope(Account),
         type: :accounts
@@ -20,7 +22,7 @@ module V1
 
     def show
       realization = JSONAPI::Realizer.show(
-        AccountsShowSchema.new(modified_parameters).as_json,
+        AccountsShowSchema.new(modified_parameters).as_json || {},
         headers: request.headers,
         scope: policy_scope(Account),
         type: :accounts
@@ -33,7 +35,7 @@ module V1
 
     def create
       realization = JSONAPI::Realizer.create(
-        AccountsCreateSchema.new(modified_parameters).as_json,
+        AccountsCreateSchema.new(modified_parameters).as_json || {},
         scope: policy_scope(Account),
         headers: request.headers,
       )
@@ -47,7 +49,7 @@ module V1
 
     def update
       realization = JSONAPI::Realizer.update(
-        AccountsUpdateSchema.new(modified_parameters).as_json,
+        AccountsUpdateSchema.new(modified_parameters).as_json || {},
         scope: policy_scope(Account),
         headers: request.headers,
       )
