@@ -15,10 +15,17 @@ RSpec.describe "billing-informations" do
         postal: "90006"
       }
     end
+    let(:relationships) do
+      {
+        "carts" => [
+          relationship(id: cart.id, type: "carts")
+        ]
+      }
+    end
 
     context "with a unfinished cart and a signed-in account" do
       let(:account) { Account.new }
-      let(:cart) { Cart.new(checkout_state: "ready_for_shipping", account: account) }
+      let(:cart) { Cart.new(checkout_state: "needs_billing_information", account: account) }
       let(:authentication) { account.authentication_secret }
 
       before do
