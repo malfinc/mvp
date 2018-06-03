@@ -3,7 +3,7 @@ class ApplicationOperation
 
   def around_steps(raw:)
     Rails.logger.tagged("operation-id=#{SecureRandom.uuid}") do
-      Rails.logger.debug("Started adding cart to product operation with (#{raw.to_json})")
+      Rails.logger.debug("Started adding cart to product operation")
 
       yield
     end
@@ -16,7 +16,7 @@ class ApplicationOperation
   end
 
   def around_task(step:, state:, **)
-    Rails.logger.debug("Working on #{step.receiver}##{step.name} using (#{state.to_json})")
+    Rails.logger.debug("Working on #{step.receiver}##{step.name}")
 
     ApplicationRecord.transaction requires_new: true do
       yield
