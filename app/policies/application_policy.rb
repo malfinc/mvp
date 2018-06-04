@@ -4,7 +4,7 @@ class ApplicationPolicy
     attr_reader :scope
 
     def initialize(account, scope)
-      @account = account
+      @account = account || RequesterNull.new
       @scope = scope
     end
 
