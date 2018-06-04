@@ -16,10 +16,7 @@ class ApplicationController < ActionController::Base
   private def info_for_paper_trail
     {
       actor_id: if account_signed_in? then current_account.id end,
-      ip: request.remote_ip,
-      request_id: request.request_id,
-      session_id: session.id,
-      user_agent: request.user_agent
+      group_id: request.request_id,
     }
   end
 
@@ -36,7 +33,8 @@ class ApplicationController < ActionController::Base
 
     report.add_tab(:session, {
       actor: PaperTrail.request.whodunnit,
-      session_id: session.id,
+      request_id: request.request_id,
+      session_id: if account_signed_in? then session.id end,
     })
   end
 end

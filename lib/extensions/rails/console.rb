@@ -9,7 +9,13 @@ module Rails
 
         raise NoConsoleAuthenticationProvidedError unless email.present?
 
-        PaperTrail.request.whodunnit = Account.find_by!(email: email)
+        actor = Account.find_by!(email: email)
+
+        PaperTrail.request.whodunnit = actor
+        PaperTrail.request.controller_info = {
+          actor_id: actor,
+          group_id: SecureRandom.uuid,
+        }
       end
 
       initialize.bind(self).call(*args)
