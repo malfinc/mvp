@@ -16,6 +16,10 @@ module Admin
 
       # See https://administrate-prototype.herokuapp.com/customizing_controller_actions
       # for more information
+
+      def valid_action?(name, resource = resource_class)
+        [:show, :index].include?(name) && super
+      end
     end
   end
 end

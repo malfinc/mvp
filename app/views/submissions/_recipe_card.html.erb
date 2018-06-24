@@ -1,0 +1,54 @@
+<section class="card-body">
+  <p class="card-text">
+    <%= recipe.summary %>
+  </p>
+</section>
+
+<table class="table">
+  <tbody>
+    <tr>
+      <% if recipe.diets.any? %>
+        <th scope="row">Diets</th>
+        <td>
+          <% recipe.diets.each do |diet| %>
+            <span class="badge badge-info"><%= diet.name %></span>
+          <% end %>
+        </td>
+      <% end %>
+    </tr>
+
+    <tr>
+      <% if recipe.allergies.any? %>
+        <th scope="row">Allergies</th>
+        <td>
+          <% recipe.allergies.each do |allergy| %>
+            <span class="badge badge-warning"><%= allergy.name %></span>
+          <% end %>
+        </td>
+      <% end %>
+    </tr>
+    <tr>
+      <% if recipe.tags.any? %>
+        <th scope="row">Tags</th>
+        <td>
+          <% recipe.tags.each do |tag| %>
+            <span class="badge badge-light"><%= tag.name %></span>
+          <% end %>
+        </td>
+      <% end %>
+    </tr>
+
+    <tr>
+      <th scope="row">Cook Time</th>
+      <td>
+        <%= recipe.cook_time %> minutes
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">Prep Time</th>
+      <td>
+        <%= recipe.prep_time %> minutes
+      </td>
+    </tr>
+  </tbody>
+</table>

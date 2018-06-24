@@ -1,8 +1,26 @@
 class ApplicationPolicy
-  attr_reader :user, :record
+  class ApplicationScope
+    attr_reader :account
+    attr_reader :scope
 
-  def initialize(user, record)
-    @user = user
+    def initialize(account, scope)
+      @account = account || RequesterNull.new
+      @scope = scope
+    end
+
+    def resolve
+      scope.none
+    end
+
+    private def role
+      account.role_state
+    end
+  end
+
+  attr_reader :account, :record
+
+  def initialize(account, record)
+    @account = account
     @record = record
   end
 
@@ -35,19 +53,22 @@ class ApplicationPolicy
   end
 
   def scope
-    Pundit.policy_scope!(user, record.class)
+    Pundit.policy_scope!(account, record.class)
   end
 
-  class Scope
-    attr_reader :user, :scope
+  private def converted?
+    record.onboarding_state?(:converted)
+  end
 
-    def initialize(user, scope)
-      @user = user
-      @scope = scope
-    end
+  private def completed?
+    account.onboarding_state?(:completed)
+  end
 
-    def resolve
-      scope
-    end
+  private def owner?
+    account == record.author
+  end
+
+  private def administrator?
+    account.role_state?(:administrator)
   end
 end

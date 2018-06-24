@@ -13,7 +13,6 @@ class EstablishmentDashboard < ApplicationDashboard
     payment_types: Field::HasMany,
     name: Field::String,
     slug: Field::String,
-    payments_types: Field::Text,
     google_places_id: Field::String,
     google_place: Field::Text.with_options(searchable: false),
     moderation_state_event: StateMachineField,

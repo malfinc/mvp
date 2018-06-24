@@ -10,12 +10,17 @@ class RecipeDashboard < ApplicationDashboard
     versions: Field::HasMany.with_options(class_name: "PaperTrail::Version"),
     slugs: Field::HasMany.with_options(class_name: "FriendlyId::Slug"),
     author: Field::BelongsTo.with_options(class_name: "Account"),
+    diets: Field::HasMany,
+    allergies: Field::HasMany,
     name: Field::String,
     slug: Field::String,
     description: Field::Text,
     moderation_state: Field::String,
+    prep_time: Field::Number,
+    cook_time: Field::Number,
     moderation_state_event: StateMachineField,
     ingredients: ArrayOfTextField,
+    instructions: ArrayOfTextField,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
   }.freeze
@@ -37,14 +42,19 @@ class RecipeDashboard < ApplicationDashboard
     :slug,
     :name,
     :description,
+    :ingredients,
+    :instructions,
+    :cook_time,
+    :prep_time,
+    :diets,
+    :allergies,
     :moderation_state,
     :created_at,
     :updated_at,
-    :ingredients,
-    :slugs,
     :author,
-    :versions,
     :tags,
+    :slugs,
+    :versions,
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -53,12 +63,16 @@ class RecipeDashboard < ApplicationDashboard
   FORM_ATTRIBUTES = [
     :name,
     :description,
+    :cook_time,
+    :prep_time,
+    :diets,
+    :allergies,
     :moderation_state_event,
   ].freeze
 
   # Overwrite this method to customize how recipes are displayed
   # across all pages of the admin dashboard.
   def display_resource(recipe)
-    recipe.name
+    recipe.name.inspect
   end
 end

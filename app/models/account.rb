@@ -47,6 +47,26 @@ class Account < ApplicationRecord
     end
 
     before_transition do: :version_transition
+    after_transition on: :empower do |record|
+      after_transaction do
+        AccountRoleMailer.with(destination: record).upgrade_to_moderator.deliver_now
+      end
+    end
+    after_transition on: :spark do |record|
+      after_transaction do
+        AccountRoleMailer.with(destination: record).upgrade_to_administrator.deliver_now
+      end
+    end
+    after_transition on: :depower do |record|
+      after_transaction do
+        AccountRoleMailer.with(destination: record).downgrade_to_user.deliver_now
+      end
+    end
+    after_transition on: :despark do |record|
+      after_transaction do
+        AccountRoleMailer.with(destination: record).downgrade_to_user.deliver_now
+      end
+    end
   end
 
   before_validation :generate_password, unless: :encrypted_password?
@@ -54,6 +74,24 @@ class Account < ApplicationRecord
 
   validates_presence_of :username, if: :email_required?
   validates_format_of :username, with: USERNAME_PATTERN, if: :email_required?
+
+  def lock_access!(*)
+    PaperTrail.request(whodunnit: "The Machine") do
+      super
+    end
+  end
+
+  def unlock_access!(*)
+    PaperTrail.request(whodunnit: "The Machine") do
+      super
+    end
+  end
+
+  def valid_for_authentication?(*)
+    PaperTrail.request.whodunnit = "The Machine"
+
+    super
+  end
 
   private def generate_password
     assign_attributes(password: SecureRandom.hex(60))
