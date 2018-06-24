@@ -52,3 +52,10 @@ en:
     recipe_policy:
       update?: "You cannot edit this recipe!"
       create?: "You cannot create recipes!"
+  account_role_mailer:
+    upgraded_to_moderator:
+      subject: "You've been given moderator power"
+    upgraded_to_administrator:
+      subject: "You've been given administrator power"
+    downgraded_to_user:
+      subject: "You've had your special access removed"

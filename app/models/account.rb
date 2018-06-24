@@ -47,6 +47,26 @@ class Account < ApplicationRecord
     end
 
     before_transition do: :version_transition
+    after_transition on: :empower do |record|
+      after_transaction do
+        AccountRoleMailer.with(destination: record).upgrade_to_moderator.deliver_now
+      end
+    end
+    after_transition on: :spark do |record|
+      after_transaction do
+        AccountRoleMailer.with(destination: record).upgrade_to_administrator.deliver_now
+      end
+    end
+    after_transition on: :depower do |record|
+      after_transaction do
+        AccountRoleMailer.with(destination: record).downgrade_to_user.deliver_now
+      end
+    end
+    after_transition on: :despark do |record|
+      after_transaction do
+        AccountRoleMailer.with(destination: record).downgrade_to_user.deliver_now
+      end
+    end
   end
 
   before_validation :generate_password, unless: :encrypted_password?
