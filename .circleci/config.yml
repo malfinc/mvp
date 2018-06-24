@@ -5,7 +5,7 @@ shared:
       image: "circleci/ruby:2.5.0"
       environment:
         BUNDLE_JOBS: 8
-        BUNDLE_RETRY: 10
+        BUNDLE_RETRY: 2
         BUNDLE_PATH: "./vendor/bundle"
         RAILS_ENV: "test"
     node: &node_docker
