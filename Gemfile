@@ -63,7 +63,6 @@ end
 group :development, :test do
   gem "dotenv-rails", "2.2.1", require: "dotenv/rails-now"
   gem "byebug", "10.0.0"
-  gem "web-console", "3.5.1"
   gem "rspec-rails", "3.7.2"
   gem "listen", "3.1.5"
 end
@@ -81,6 +80,6 @@ group :development do
   gem "bullet", "5.7.2", require: false
   gem "brakeman", "4.1.1", require: false
   gem "active_record_query_trace", "1.5.4", require: false
-  gem "rails-callback_log", "0.2.2"
-  gem "bundler-audit", "0.6.0"
+  gem "rails-callback_log", "0.2.2", require: false
+  gem "bundler-audit", "0.6.0", require: false
 end
