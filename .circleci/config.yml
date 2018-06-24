@@ -19,18 +19,40 @@ shared:
     redis: &redis_docker
       image: "redis:4.0.8"
   caches:
-    git: &git_restore
+    git_save:
+      save_cache:
+        key: "poutineer-1.0-git-{{ .Branch }}-{{ .Revision }}"
+        paths:
+          - ".git/"
+    git_restore: &git_restore
       restore_cache:
         keys:
-          - "poutineer-1.0-{{ .Branch }}-{{ .Revision }}"
-    bundler: &bundler_restore
+          - "poutineer-1.0-git-{{ .Branch }}-{{ .Revision }}"
+          - "poutineer-1.0-git-{{ .Branch }}-"
+          - "poutineer-1.0-git-"
+    bundler_save:
+      save_cache:
+        key: "poutineer-1.0-bundler-{{ .Branch }}-{{ checksum \"Gemfile.lock\" }}"
+        paths:
+          - "./vendor/bundle"
+          - "/usr/local/bundle/config"
+    bundler_restore: &bundler_restore
       restore_cache:
         keys:
-          - "poutineer-1.0-{{ .Branch }}-{{ checksum \"Gemfile.lock\" }}"
-    npm: &npm_restore
+          - "poutineer-1.0-bundler-{{ .Branch }}-{{ checksum \"Gemfile.lock\" }}"
+          - "poutineer-1.0-bundler-{{ .Branch }}-"
+          - "poutineer-1.0-bundler-"
+    npm_save:
+      save_cache:
+        key: "poutineer-1.0-npm-{{ .Branch }}-{{ checksum \"package-lock.json\" }}"
+        paths:
+          - "./node_modules/"
+    npm_restore: &npm_restore
       restore_cache:
         keys:
-          - "poutineer-1.0-{{ .Branch }}-{{ checksum \"./client/package-lock.json\" }}"
+          - "poutineer-1.0-npm-{{ .Branch }}-{{ checksum \"./client/package-lock.json\" }}"
+          - "poutineer-1.0-npm-{{ .Branch }}-"
+          - "poutineer-1.0-npm-"
 workflows:
   version: 2
   core:
@@ -55,21 +77,13 @@ jobs:
     steps:
       - *git_restore
       - "checkout"
-      -
-        save_cache:
-          key: "poutineer-1.0-{{ .Branch }}-{{ .Revision }}"
-          paths:
-            - ".git/"
+      - *git_save
       - *npm_restore
       -
         run:
           name: "Install npm dependencies"
           command: "npm install"
-      -
-        save_cache:
-          key: "poutineer-1.0-{{ .Branch }}-{{ checksum \"package-lock.json\" }}"
-          paths:
-            - "./node_modules/"
+      - *npm_save
   server_setup:
     docker:
       - *ruby_docker
@@ -78,22 +92,13 @@ jobs:
     steps:
       - *git_restore
       - "checkout"
-      -
-        save_cache:
-          key: "poutineer-1.0-{{ .Branch }}-{{ .Revision }}"
-          paths:
-            - ".git/"
+      - *git_save
       - *bundler_restore
-      -
-        save_cache:
-          key: "poutineer-1.0-{{ .Branch }}-{{ checksum \"Gemfile.lock\" }}"
-          paths:
-            - "./vendor/bundle"
-            - "/usr/local/bundle/config"
       -
         run:
           name: "Install bundler dependencies"
-          command: "bundle install --path=./vendor/bundle"
+          command: "bundle install"
+      - *bundler_save
       -
         run:
           name: "Database Healthcheck"
@@ -104,14 +109,10 @@ jobs:
           command: "sudo apt-get install postgresql-client-10.3"
       -
         run:
-          name: "Create database"
-          command: "bin/rake db:create --trace"
-      -
-        run:
           name: "Load databsase schema"
           command: "bin/rake db:structure:load --trace"
 
-  auditing:
+  audit_gemfile:
     docker:
       - *ruby_docker
       - *node_docker
@@ -121,27 +122,56 @@ jobs:
       - *git_restore
       - "checkout"
       - *bundler_restore
-      - *npm_restore
       -
         run:
           name: "Auditing Bundler"
           command: "bundle exec bundler-audit check --update"
+  audit_routes:
+    docker:
+      - *ruby_docker
+      - *node_docker
+      - *postgres_docker
+      - *redis_docker
+    steps:
+      - *git_restore
+      - "checkout"
+      - *bundler_restore
       -
         run:
           name: "Auditing Routes"
           command: "FAIL_ON_ERROR=1 bin/rake traceroute"
+  audit_ruby:
+    docker:
+      - *ruby_docker
+      - *node_docker
+      - *postgres_docker
+      - *redis_docker
+    steps:
+      - *git_restore
+      - "checkout"
+      - *bundler_restore
       -
         run:
           name: "Audit Ruby Security"
-          command: "bundle exec brakeman --config=.brakeman/config.yml"
-      -
-        run:
-          name: "Auditing Javascript"
-          command: "npm run lint"
+          command: "bundle exec brakeman"
       -
         run:
           name: "Auditing Ruby"
           command: "bundle exec rubocop"
+  audit_javascript:
+    docker:
+      - *ruby_docker
+      - *node_docker
+      - *postgres_docker
+      - *redis_docker
+    steps:
+      - *git_restore
+      - "checkout"
+      - *npm_restore
+      -
+        run:
+          name: "Auditing Javascript"
+          command: "npm run lint"
   rspec:
     docker:
       - *ruby_docker
@@ -153,13 +183,8 @@ jobs:
       - *bundler_restore
       - *npm_restore
       -
-        run:
-          name: "Installing Postgres Client"
-          command: "sudo apt-get install postgresql-client-10.3"
-      -
         name: "Running RSpec"
-        command: "bin/rspec --format RspecJunitFormatter --out ./tmp/rspec/rspec.xml --format progress $(circleci tests glob \"spec/**/*_spec.rb\" | circleci tests split --split-by=timings)\n"
-        type: "shell"
+        command: "bundle exec rspec --format RspecJunitFormatter --out ./tmp/rspec/rspec.xml --format progress $(circleci tests glob \"spec/**/*_spec.rb\" | circleci tests split --split-by=timings)"
       -
         store_test_results:
           path: "tmp/rspec/"
@@ -179,14 +204,15 @@ jobs:
       - *npm_restore
       -
         name: "Running Jest"
-        command: "npm run test --format RspecJunitFormatter --out ./tmp/rspec/rspec.xml --format progress $(circleci tests glob \"spec/**/*_spec.rb\" | circleci tests split --split-by=timings)\n"
-        type: "shell"
+        command: "npm run test -- --runInBand --ci --testResultsProcessor='jest-junit'"
+        environment:
+          JEST_JUNIT_OUTPUT: "tmp/junit/js-test-results.xml"
       -
         store_test_results:
-          path: "tmp/rspec/"
+          path: "tmp/junit/"
       -
         store_artifacts:
-          path: "tmp/rspec/"
+          path: "tmp/junit/"
       -
         store_artifacts:
           path: "logs/"
