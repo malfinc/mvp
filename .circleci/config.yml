@@ -13,7 +13,7 @@ shared:
         PGUSER: poutineer
         PORT: 3000
         RACK_ENV: test
-        RACK_SERVICE_TIMEOUT: 25
+        RACK_TIMEOUT_SERVICE_TIMEOUT: 25
         RAILS_EMAIL_HOST: localhost
         RAILS_EMAIL_USER: noreply
         RAILS_ENV: "test"

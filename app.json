@@ -66,7 +66,7 @@
     "REDIS_SIDEKIQ_URL": {
       "required": true
     },
-    "RACK_SERVICE_TIMEOUT": {
+    "RACK_TIMEOUT_SERVICE_TIMEOUT": {
       "required": true
     },
     "HEROKU_APP_NAME": {
