@@ -139,7 +139,7 @@ jobs:
       -
         run:
           name: "Load databsase schema"
-          command: "bundle exec rake db:structure:load --trace"
+          command: "bundle exec rake db:create db:structure:load --trace"
 
   audit_gemfile:
     docker:
