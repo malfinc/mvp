@@ -19,7 +19,7 @@ shared:
     redis: &redis_docker
       image: "redis:4.0.8"
   caches:
-    git_save:
+    git_save: &git_save
       save_cache:
         key: "poutineer-1.0-git-{{ .Branch }}-{{ .Revision }}"
         paths:
@@ -30,7 +30,7 @@ shared:
           - "poutineer-1.0-git-{{ .Branch }}-{{ .Revision }}"
           - "poutineer-1.0-git-{{ .Branch }}-"
           - "poutineer-1.0-git-"
-    bundler_save:
+    bundler_save: &bundler_save
       save_cache:
         key: "poutineer-1.0-bundler-{{ .Branch }}-{{ checksum \"Gemfile.lock\" }}"
         paths:
@@ -42,7 +42,7 @@ shared:
           - "poutineer-1.0-bundler-{{ .Branch }}-{{ checksum \"Gemfile.lock\" }}"
           - "poutineer-1.0-bundler-{{ .Branch }}-"
           - "poutineer-1.0-bundler-"
-    npm_save:
+    npm_save: &npm_save
       save_cache:
         key: "poutineer-1.0-npm-{{ .Branch }}-{{ checksum \"package-lock.json\" }}"
         paths:
