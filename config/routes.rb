@@ -32,7 +32,7 @@ Rails.application.routes.draw do
     root :to => "accounts#index"
   end
 
-  get :"/pages/*id" => "pages#show", :as => :page, :format => false
+  get "/pages/*id" => "pages#show", :as => :page, :format => false
 
   root :to => "pages#show", :id => "landing"
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
