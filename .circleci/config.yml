@@ -118,7 +118,7 @@ jobs:
       -
         run:
           name: "Install bundler dependencies"
-          command: "bundle install"
+          command: "bundle check || bundle install"
       - *bundler_save
       -
         run:
