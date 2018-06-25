@@ -3,7 +3,7 @@ class MenuItemsController < ApplicationController
 
   # GET /menu_items
   def index
-    authorize MenuItem
+    authorize(MenuItem)
     @records = MenuItem.all
   end
 
@@ -26,9 +26,9 @@ class MenuItemsController < ApplicationController
     authorize_record!
 
     if @record.save!
-      redirect_to @record, notice: 'MenuItem was successfully created.'
+      redirect_to(@record, :notice => "MenuItem was successfully created.")
     else
-      render :new
+      render(:new)
     end
   end
 
@@ -39,9 +39,9 @@ class MenuItemsController < ApplicationController
     authorize_record!
 
     if @record.update!(menu_item_params)
-      redirect_to @record, notice: 'MenuItem was successfully updated.'
+      redirect_to(@record, :notice => "MenuItem was successfully updated.")
     else
-      render :edit
+      render(:edit)
     end
   end
 
@@ -52,7 +52,7 @@ class MenuItemsController < ApplicationController
   # Only allow a trusted parameter "white list" through.
   private def menu_item_params
     {
-      name: params.fetch(:menu_item, {}).fetch(:name, nil),
+      :name => params.fetch(:menu_item, {}).fetch(:name, nil)
     }
   end
 end

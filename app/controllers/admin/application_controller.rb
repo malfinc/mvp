@@ -11,7 +11,7 @@ module Admin
     before_action :set_paper_trail_whodunnit
 
     def authorize_administrator!
-      raise Pundit::NotAuthorizedError unless current_account.administrator?
+      raise(Pundit::NotAuthorizedError) unless current_account.administrator?
     end
 
     private def user_for_paper_trail

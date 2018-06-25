@@ -24,24 +24,24 @@ module Moderated
   included do
     include AuditedTransitions
 
-    state_machine :moderation_state, initial: :draft do
+    state_machine :moderation_state, :initial => :draft do
       event :publish do
-        transition :draft => :queued, if: :allowed_to_publish?
+        transition :draft => :queued, :if => :allowed_to_publish?
       end
 
       event :deny do
-        transition :queued => :draft, if: :allowed_to_deny?
+        transition :queued => :draft, :if => :allowed_to_deny?
       end
 
       event :remove do
-        transition :published => :draft, if: :allowed_to_remove?
+        transition :published => :draft, :if => :allowed_to_remove?
       end
 
       event :approve do
-        transition :queued => :published, if: :allowed_to_approve?
+        transition :queued => :published, :if => :allowed_to_approve?
       end
 
-      before_transition do: :version_transition
+      before_transition :do => :version_transition
     end
   end
 end

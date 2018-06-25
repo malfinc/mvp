@@ -6,10 +6,10 @@ class Gutentag::TaggingDashboard < ApplicationDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    created_at: Field::DateTime,
-    updated_at: Field::DateTime,
-    tag: Field::BelongsTo.with_options(class_name: "Gutentag::Tag"),
-    taggable: Field::Polymorphic,
+    :created_at => Field::DateTime,
+    :updated_at => Field::DateTime,
+    :tag => Field::BelongsTo.with_options(:class_name => "Gutentag::Tag"),
+    :taggable => Field::Polymorphic
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -19,7 +19,7 @@ class Gutentag::TaggingDashboard < ApplicationDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
     :tag,
-    :taggable,
+    :taggable
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -28,7 +28,7 @@ class Gutentag::TaggingDashboard < ApplicationDashboard
     :created_at,
     :updated_at,
     :tag,
-    :taggable,
+    :taggable
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -36,7 +36,7 @@ class Gutentag::TaggingDashboard < ApplicationDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :tag,
-    :taggable,
+    :taggable
   ].freeze
 
   # Overwrite this method to customize how taggings are displayed

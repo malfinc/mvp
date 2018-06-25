@@ -7,13 +7,11 @@ class Submission < ApplicationComputed
       *Establishment.with_moderation_state(:draft),
       *MenuItem.with_moderation_state(:draft)
     ].compact.map do |subject|
-      new(id: "#{subject.class.name}-#{subject.id}", subject: subject)
+      new(:id => "#{subject.class.name}-#{subject.id}", :subject => subject)
     end
   end
 
-  def name
-    subject.name
-  end
+  delegate :name, :to => :subject
 
   def submitter
     case subject
@@ -35,7 +33,5 @@ class Submission < ApplicationComputed
     subject.class.name
   end
 
-  def updated_at
-    subject.updated_at
-  end
+  delegate :updated_at, :to => :subject
 end

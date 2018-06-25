@@ -11,7 +11,7 @@ module Admin
 
       # Define a custom finder by overriding the `find_resource` method:
       private def find_resource(slug)
-        ::FriendlyId::Slug.find_by(slug: slug)
+        ::FriendlyId::Slug.find_by(:slug => slug)
       end
 
       # See https://administrate-prototype.herokuapp.com/customizing_controller_actions

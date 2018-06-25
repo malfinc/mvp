@@ -6,25 +6,25 @@ class AccountDashboard < ApplicationDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    versions: Field::HasMany.with_options(class_name: "PaperTrail::Version"),
-    slugs: Field::HasMany.with_options(class_name: "FriendlyId::Slug"),
-    recipes: Field::HasMany,
-    email: Field::Email,
-    username: Field::String,
-    role_state: Field::String,
-    onboarding_state: Field::String,
-    role_state_event: StateMachineField,
-    onboarding_state_event: StateMachineField,
-    reset_password_token: Field::String,
-    reset_password_sent_at: Field::DateTime,
-    remember_created_at: Field::DateTime,
-    confirmed_at: Field::DateTime,
-    confirmation_sent_at: Field::DateTime,
-    unconfirmed_email: Field::String,
-    failed_attempts: Field::Number,
-    locked_at: Field::DateTime,
-    created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    :versions => Field::HasMany.with_options(:class_name => "PaperTrail::Version"),
+    :slugs => Field::HasMany.with_options(:class_name => "FriendlyId::Slug"),
+    :recipes => Field::HasMany,
+    :email => Field::Email,
+    :username => Field::String,
+    :role_state => Field::String,
+    :onboarding_state => Field::String,
+    :role_state_event => StateMachineField,
+    :onboarding_state_event => StateMachineField,
+    :reset_password_token => Field::String,
+    :reset_password_sent_at => Field::DateTime,
+    :remember_created_at => Field::DateTime,
+    :confirmed_at => Field::DateTime,
+    :confirmation_sent_at => Field::DateTime,
+    :unconfirmed_email => Field::String,
+    :failed_attempts => Field::Number,
+    :locked_at => Field::DateTime,
+    :created_at => Field::DateTime,
+    :updated_at => Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -37,9 +37,8 @@ class AccountDashboard < ApplicationDashboard
     :username,
     :role_state,
     :onboarding_state,
-    :created_at,
+    :created_at
   ].freeze
-
 
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
@@ -57,7 +56,7 @@ class AccountDashboard < ApplicationDashboard
     :remember_created_at,
     :recipes,
     :slugs,
-    :versions,
+    :versions
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -67,7 +66,7 @@ class AccountDashboard < ApplicationDashboard
     :email,
     :username,
     :role_state_event,
-    :onboarding_state_event,
+    :onboarding_state_event
   ].freeze
 
   # Overwrite this method to customize how accounts are displayed

@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
   devise_for :accounts
 
-  authenticate :account, -> (account) { account.administrator?} do
-    mount Sidekiq::Web => '/admin/workers'
+  authenticate :account, -> (account) {account.administrator?} do
+    mount Sidekiq::Web => "/admin/workers"
   end
 
   resources :recipes
@@ -29,11 +29,11 @@ Rails.application.routes.draw do
       resources :taggings
     end
 
-    root to: "accounts#index"
+    root :to => "accounts#index"
   end
 
-  get "/pages/*id" => "pages#show", as: :page, format: false
+  get "/pages/*id" => "pages#show", :as => :page, :format => false
 
-  root to: "pages#show", id: "landing"
+  root :to => "pages#show", :id => "landing"
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end

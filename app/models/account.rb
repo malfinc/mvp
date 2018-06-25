@@ -4,9 +4,9 @@ class Account < ApplicationRecord
 
   USERNAME_PATTERN = /\A[a-zA-Z0-9_-]+\z/i
 
-  has_many :recipes, dependent: :destroy, autosave: true, foreign_key: :author_id
+  has_many :recipes, :dependent => :destroy, :autosave => true, :foreign_key => :author_id
 
-  friendly_id :email, use: [:slugged, :history], slug_column: :username
+  friendly_id :email, :use => [:slugged, :history], :slug_column => :username
 
   devise :database_authenticatable
   devise :confirmable
@@ -17,72 +17,72 @@ class Account < ApplicationRecord
   devise :validatable
   devise :async
 
-  state_machine :onboarding_state, initial: :fresh do
+  state_machine :onboarding_state, :initial => :fresh do
     event :convert do
-      transition from: :fresh, to: :converted
+      transition :from => :fresh, :to => :converted
     end
 
     event :complete do
-      transition from: :converted, to: :completed
+      transition :from => :converted, :to => :completed
     end
 
-    before_transition do: :version_transition
+    before_transition :do => :version_transition
   end
 
-  state_machine :role_state, initial: :user do
+  state_machine :role_state, :initial => :user do
     event :empower do
-      transition user: :moderator
+      transition :user => :moderator
     end
 
     event :spark do
-      transition user: :administrator
+      transition :user => :administrator
     end
 
     event :depower do
-      transition from: :moderator, to: :user
+      transition :from => :moderator, :to => :user
     end
 
     event :despark do
-      transition from: :administrator, to: :user
+      transition :from => :administrator, :to => :user
     end
 
-    before_transition do: :version_transition
-    after_transition on: :empower do |record|
+    before_transition :do => :version_transition
+    after_transition :on => :empower do |record|
       after_transaction do
-        AccountRoleMailer.with(destination: record).upgrade_to_moderator.deliver_now
+        AccountRoleMailer.with(:destination => record).upgrade_to_moderator.deliver_now
       end
     end
-    after_transition on: :spark do |record|
+    after_transition :on => :spark do |record|
       after_transaction do
-        AccountRoleMailer.with(destination: record).upgrade_to_administrator.deliver_now
+        AccountRoleMailer.with(:destination => record).upgrade_to_administrator.deliver_now
       end
     end
-    after_transition on: :depower do |record|
+    after_transition :on => :depower do |record|
       after_transaction do
-        AccountRoleMailer.with(destination: record).downgrade_to_user.deliver_now
+        AccountRoleMailer.with(:destination => record).downgrade_to_user.deliver_now
       end
     end
-    after_transition on: :despark do |record|
+    after_transition :on => :despark do |record|
       after_transaction do
-        AccountRoleMailer.with(destination: record).downgrade_to_user.deliver_now
+        AccountRoleMailer.with(:destination => record).downgrade_to_user.deliver_now
       end
     end
   end
 
-  before_validation :generate_password, unless: :encrypted_password?
-  before_validation :generate_authentication_secret, unless: :authentication_secret?
+  before_validation :generate_password, :unless => :encrypted_password?
+  before_validation :generate_authentication_secret, :unless => :authentication_secret?
 
-  validates_presence_of :username, if: :email_required?
-  validates_format_of :username, with: USERNAME_PATTERN, if: :email_required?
+  validates_presence_of :username, :if => :email_required?
+  validates_format_of :username, :with => USERNAME_PATTERN, :if => :email_required?
 
   def lock_access!(*)
-    PaperTrail.request(whodunnit: "The Machine") do
+    PaperTrail.request(:whodunnit => "The Machine") do
       super
     end
   end
 
   def unlock_access!(*)
-    PaperTrail.request(whodunnit: "The Machine") do
+    PaperTrail.request(:whodunnit => "The Machine") do
       super
     end
   end
@@ -94,11 +94,11 @@ class Account < ApplicationRecord
   end
 
   private def generate_password
-    assign_attributes(password: SecureRandom.hex(60))
+    assign_attributes(:password => SecureRandom.hex(60))
   end
 
   private def generate_authentication_secret
-    assign_attributes(authentication_secret: SecureRandom.hex(60))
+    assign_attributes(:authentication_secret => SecureRandom.hex(60))
   end
 
   private def email_required?

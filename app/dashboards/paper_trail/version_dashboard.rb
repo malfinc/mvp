@@ -6,14 +6,14 @@ class PaperTrail::VersionDashboard < ApplicationDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    item_type: Field::String,
-    item: Field::Polymorphic,
-    event: Field::String,
-    actor: Field::BelongsTo.with_options(class_name: "Account"),
-    transitions: TransitionField,
-    object: ChangeField,
-    object_changes: ChangesetField,
-    created_at: Field::DateTime,
+    :item_type => Field::String,
+    :item => Field::Polymorphic,
+    :event => Field::String,
+    :actor => Field::BelongsTo.with_options(:class_name => "Account"),
+    :transitions => TransitionField,
+    :object => ChangeField,
+    :object_changes => ChangesetField,
+    :created_at => Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -25,7 +25,7 @@ class PaperTrail::VersionDashboard < ApplicationDashboard
     :actor,
     :event,
     :item_type,
-    :item,
+    :item
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -37,7 +37,7 @@ class PaperTrail::VersionDashboard < ApplicationDashboard
     :created_at,
     :actor,
     :item,
-    :object,
+    :object
   ].freeze
 
   # FORM_ATTRIBUTES
