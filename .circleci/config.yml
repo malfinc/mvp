@@ -8,6 +8,25 @@ shared:
         BUNDLE_RETRY: 2
         BUNDLE_PATH: "./vendor/bundle"
         RAILS_ENV: "test"
+        RAILS_MAX_THREADS: 2
+        WEB_CONCURRENCY: 2
+        RAILS_MASTER_KEY: private
+        ORIGIN_ENCRYPTION_PRIVATE: private
+        ORIGIN_ENCRYPTION_SALT: salt
+        RAILS_SESSION_PRIVATE: private
+        RAILS_EMAIL_HOST: localhost
+        RAILS_EMAIL_USER: noreply
+        RAILS_HOST: localhost
+        REDIS_CACHE_URL: redis://localhost:6379/0
+        REDIS_OBJECTS_URL: redis://localhost:6379/1
+        REDIS_SIDEKIQ_URL: redis://localhost:6379/2
+        REDIS_CACHE_POOL_SIZE: 2
+        REDIS_OBJECTS_POOL_SIZE: 2
+        REDIS_SIDEKIQ_SERVER_POOL_SIZE: 2
+        REDIS_SIDEKIQ_CLIENT_POOL_SIZE: 2
+        PORT: 3000
+        RACK_SERVICE_TIMEOUT: 25
+        WWW_LOCATION: localhost
     node: &node_docker
       image: "circleci/node:8.11"
     postgres: &postgres_docker
