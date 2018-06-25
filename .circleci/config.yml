@@ -196,7 +196,7 @@ jobs:
       -
         run:
           name: "Running rubocop"
-          command: "bundle exec rubocop"
+          command: "bundle exec rubocop --config .rubocop/config.yml --lint"
   eslint:
     docker:
       - *ruby_docker
