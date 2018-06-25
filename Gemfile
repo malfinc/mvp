@@ -53,6 +53,7 @@ gem "pry-doc", "0.13.4"
 gem "bootsnap", "1.3.0", require: false
 gem "bugsnag", "6.7.3"
 gem "redcarpet", "3.4.0"
+gem "sprockets", "3.7.2"
 
 group :production do
   gem "rack-timeout", "0.5.1"
@@ -81,4 +82,5 @@ group :development do
   gem "active_record_query_trace", "1.5.4", require: false
   gem "rails-callback_log", "0.2.2", require: false
   gem "bundler-audit", "0.6.0", require: false
+  gem "rubocop", "0.57.2", require: false
 end
