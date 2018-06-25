@@ -1,4 +1,4 @@
-require "administrate/field/base"
+require("administrate/field/base")
 
 class StateMachineField < Administrate::Field::Base
   def to_s
@@ -10,7 +10,7 @@ class StateMachineField < Administrate::Field::Base
   end
 
   def any?
-    resource.public_send("#{attribute.to_s.pluralize}").any?
+    resource.public_send(attribute.to_s.pluralize.to_s).any?
   end
 
   def prompt
@@ -18,6 +18,6 @@ class StateMachineField < Administrate::Field::Base
   end
 
   private def collection
-    @collection ||= options.fetch(:collection, resource.public_send("#{attribute.to_s.pluralize}"))
+    @collection ||= options.fetch(:collection, resource.public_send(attribute.to_s.pluralize.to_s))
   end
 end

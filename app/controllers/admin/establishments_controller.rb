@@ -10,7 +10,6 @@ module Admin
     #     per(10)
     # end
 
-
     # Define a custom finder by overriding the `find_resource` method:
     private def find_resource(identifier)
       Establishment.friendly.find(identifier)

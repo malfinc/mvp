@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery with: :exception, prepend: true
+  protect_from_forgery :with => :exception, :prepend => true
   before_action :set_paper_trail_whodunnit
   before_bugsnag_notify :set_bugsnag_context
 
@@ -15,19 +15,19 @@ class ApplicationController < ActionController::Base
 
   private def info_for_paper_trail
     {
-      actor_id: if account_signed_in? then current_account.id end,
-      group_id: request.request_id,
+      :actor_id => current_account.id if account_signed_in?,
+      :group_id => request.request_id
     }
   end
 
   private def set_bugsnag_context(report)
     if account_signed_in?
       report.user = {
-        email: current_account.email,
-        name: current_account.name,
-        username: current_account.username,
-        slug: current_account.slug,
-        id: current_account.id,
+        :email => current_account.email,
+        :name => current_account.name,
+        :username => current_account.username,
+        :slug => current_account.slug,
+        :id => current_account.id
       }
     end
 

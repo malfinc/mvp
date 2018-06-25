@@ -7,11 +7,7 @@ class ChangeField < Administrate::Field::Base
     object.keys
   end
 
-  def values
-    object.values
-  end
+  delegate :values, :to => :object
 
-  def any?
-    object.any?
-  end
+  delegate :any?, :to => :object
 end

@@ -6,23 +6,23 @@ class RecipeDashboard < ApplicationDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    tags: Field::HasMany.with_options(class_name: "Gutentag::Tag"),
-    versions: Field::HasMany.with_options(class_name: "PaperTrail::Version"),
-    slugs: Field::HasMany.with_options(class_name: "FriendlyId::Slug"),
-    author: Field::BelongsTo.with_options(class_name: "Account"),
-    diets: Field::HasMany,
-    allergies: Field::HasMany,
-    name: Field::String,
-    slug: Field::String,
-    description: Field::Text,
-    moderation_state: Field::String,
-    prep_time: Field::Number,
-    cook_time: Field::Number,
-    moderation_state_event: StateMachineField,
-    ingredients: ArrayOfTextField,
-    instructions: ArrayOfTextField,
-    created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    :tags => Field::HasMany.with_options(:class_name => "Gutentag::Tag"),
+    :versions => Field::HasMany.with_options(:class_name => "PaperTrail::Version"),
+    :slugs => Field::HasMany.with_options(:class_name => "FriendlyId::Slug"),
+    :author => Field::BelongsTo.with_options(:class_name => "Account"),
+    :diets => Field::HasMany,
+    :allergies => Field::HasMany,
+    :name => Field::String,
+    :slug => Field::String,
+    :description => Field::Text,
+    :moderation_state => Field::String,
+    :prep_time => Field::Number,
+    :cook_time => Field::Number,
+    :moderation_state_event => StateMachineField,
+    :ingredients => ArrayOfTextField,
+    :instructions => ArrayOfTextField,
+    :created_at => Field::DateTime,
+    :updated_at => Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -33,7 +33,7 @@ class RecipeDashboard < ApplicationDashboard
   COLLECTION_ATTRIBUTES = [
     :name,
     :author,
-    :moderation_state,
+    :moderation_state
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -54,7 +54,7 @@ class RecipeDashboard < ApplicationDashboard
     :author,
     :tags,
     :slugs,
-    :versions,
+    :versions
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -67,7 +67,7 @@ class RecipeDashboard < ApplicationDashboard
     :prep_time,
     :diets,
     :allergies,
-    :moderation_state_event,
+    :moderation_state_event
   ].freeze
 
   # Overwrite this method to customize how recipes are displayed

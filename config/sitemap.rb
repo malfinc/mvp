@@ -1,7 +1,7 @@
 # Set the host name for URL creation
 SitemapGenerator::Sitemap.default_host = "https://#{ENV.fetch("RAILS_HOST")}"
 
-SitemapGenerator::Sitemap.create do
+SitemapGenerator::Sitemap.create! do
   add root_path
   # Put links creation logic here.
   #

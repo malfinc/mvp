@@ -6,19 +6,19 @@ class MenuItemDashboard < ApplicationDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    tags: Field::HasMany.with_options(class_name: "Gutentag::Tag"),
-    versions: Field::HasMany.with_options(class_name: "PaperTrail::Version"),
-    slugs: Field::HasMany.with_options(class_name: "FriendlyId::Slug"),
-    diets: Field::HasMany,
-    allergies: Field::HasMany,
-    establishment: Field::HasOne,
-    name: Field::String,
-    slug: Field::String,
-    description: Field::String,
-    moderation_state: Field::String,
-    moderation_state_event: StateMachineField,
-    created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    :tags => Field::HasMany.with_options(:class_name => "Gutentag::Tag"),
+    :versions => Field::HasMany.with_options(:class_name => "PaperTrail::Version"),
+    :slugs => Field::HasMany.with_options(:class_name => "FriendlyId::Slug"),
+    :diets => Field::HasMany,
+    :allergies => Field::HasMany,
+    :establishment => Field::HasOne,
+    :name => Field::String,
+    :slug => Field::String,
+    :description => Field::String,
+    :moderation_state => Field::String,
+    :moderation_state_event => StateMachineField,
+    :created_at => Field::DateTime,
+    :updated_at => Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -29,7 +29,7 @@ class MenuItemDashboard < ApplicationDashboard
   COLLECTION_ATTRIBUTES = [
     :name,
     :establishment,
-    :moderation_state,
+    :moderation_state
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -46,7 +46,7 @@ class MenuItemDashboard < ApplicationDashboard
     :establishment,
     :tags,
     :slugs,
-    :versions,
+    :versions
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -57,7 +57,7 @@ class MenuItemDashboard < ApplicationDashboard
     :description,
     :diets,
     :allergies,
-    :moderation_state_event,
+    :moderation_state_event
   ].freeze
 
   # Overwrite this method to customize how menu items are displayed

@@ -4,7 +4,7 @@ class SubmissionsController < ApplicationController
   # GET /submissions
   def index
     authenticate_account!
-    authorize Submission
+    authorize(Submission)
     find_records
   end
 
@@ -22,9 +22,9 @@ class SubmissionsController < ApplicationController
     authorize_record!
 
     if @record.update!(submission_params)
-      redirect_to @record, notice: 'Submission was successfully updated.'
+      redirect_to(@record, :notice => "Submission was successfully updated.")
     else
-      render :edit
+      render(:edit)
     end
   end
 

@@ -6,10 +6,10 @@ class PaymentTypeDashboard < ApplicationDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    establishments: Field::HasMany,
-    name: Field::String,
-    created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    :establishments => Field::HasMany,
+    :name => Field::String,
+    :created_at => Field::DateTime,
+    :updated_at => Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -20,7 +20,7 @@ class PaymentTypeDashboard < ApplicationDashboard
   COLLECTION_ATTRIBUTES = [
     :name,
     :created_at,
-    :updated_at,
+    :updated_at
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -29,14 +29,14 @@ class PaymentTypeDashboard < ApplicationDashboard
     :name,
     :created_at,
     :updated_at,
-    :establishments,
+    :establishments
   ].freeze
 
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-    :name,
+    :name
   ].freeze
 
   # Overwrite this method to customize how payment types are displayed

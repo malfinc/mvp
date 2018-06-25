@@ -1,4 +1,4 @@
-require "dotenv/load" unless ENV["RAILS_ENV"] == "production"
+require("dotenv/load") unless ENV["RAILS_ENV"] == "production"
 
 # Puma can serve each request in a thread from an internal thread pool.
 # The `threads` method setting takes two numbers: a minimum and maximum.
@@ -6,15 +6,15 @@ require "dotenv/load" unless ENV["RAILS_ENV"] == "production"
 # the maximum value specified for Puma. Default is set to 5 threads for minimum
 # and maximum; this matches the default thread size of Active Record.
 #
-threads Integer(ENV.fetch("RAILS_MAX_THREADS")), Integer(ENV.fetch("RAILS_MAX_THREADS"))
+threads(Integer(ENV.fetch("RAILS_MAX_THREADS")), Integer(ENV.fetch("RAILS_MAX_THREADS")))
 
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
 #
-port Integer(ENV.fetch("PORT"))
+port(Integer(ENV.fetch("PORT"))
 
 # Specifies the `environment` that Puma will run in.
 #
-environment ENV.fetch("RAILS_ENV") { "development" }
+environment(ENV.fetch("RAILS_ENV") {"development"})
 
 # Specifies the number of `workers` to boot in clustered mode.
 # Workers are forked webserver processes. If using threads and workers together
@@ -22,7 +22,7 @@ environment ENV.fetch("RAILS_ENV") { "development" }
 # Workers do not work on JRuby or Windows (both of which do not support
 # processes).
 #
-workers Integer(ENV.fetch("WEB_CONCURRENCY"))
+workers(Integer(ENV.fetch("WEB_CONCURRENCY"))
 
 # Use the `preload_app!` method when specifying a `workers` number.
 # This directive tells Puma to first boot the application and load code
@@ -52,7 +52,6 @@ end
 on_worker_boot do
   ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
 end
-#
 
 # Allow puma to be restarted by `rails restart` command.
-plugin :tmp_restart
+plugin(:tmp_restart)

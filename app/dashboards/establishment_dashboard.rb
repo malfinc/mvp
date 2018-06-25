@@ -6,19 +6,19 @@ class EstablishmentDashboard < ApplicationDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    tags: Field::HasMany.with_options(class_name: "Gutentag::Tag"),
-    versions: Field::HasMany.with_options(class_name: "PaperTrail::Version"),
-    slugs: Field::HasMany.with_options(class_name: "FriendlyId::Slug"),
-    menu_items: Field::HasMany,
-    payment_types: Field::HasMany,
-    name: Field::String,
-    slug: Field::String,
-    google_places_id: Field::String,
-    google_place: Field::Text.with_options(searchable: false),
-    moderation_state_event: StateMachineField,
-    moderation_state: Field::String,
-    created_at: Field::DateTime,
-    updated_at: Field::DateTime,
+    :tags => Field::HasMany.with_options(:class_name => "Gutentag::Tag"),
+    :versions => Field::HasMany.with_options(:class_name => "PaperTrail::Version"),
+    :slugs => Field::HasMany.with_options(:class_name => "FriendlyId::Slug"),
+    :menu_items => Field::HasMany,
+    :payment_types => Field::HasMany,
+    :name => Field::String,
+    :slug => Field::String,
+    :google_places_id => Field::String,
+    :google_place => Field::Text.with_options(:searchable => false),
+    :moderation_state_event => StateMachineField,
+    :moderation_state => Field::String,
+    :created_at => Field::DateTime,
+    :updated_at => Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -28,7 +28,7 @@ class EstablishmentDashboard < ApplicationDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
     :name,
-    :moderation_state,
+    :moderation_state
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -44,7 +44,7 @@ class EstablishmentDashboard < ApplicationDashboard
     :menu_items,
     :tags,
     :slugs,
-    :versions,
+    :versions
   ].freeze
 
   # FORM_ATTRIBUTES
@@ -52,7 +52,7 @@ class EstablishmentDashboard < ApplicationDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :name,
-    :moderation_state_event,
+    :moderation_state_event
   ].freeze
 
   # Overwrite this method to customize how establishments are displayed

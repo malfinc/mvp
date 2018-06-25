@@ -5,8 +5,12 @@ SimpleForm.setup do |config|
   # wrapper, change the order or even add your own to the
   # stack. The options given below are used to wrap the
   # whole input.
-  config.wrappers :default, class: :input,
-    hint_class: :field_with_hint, error_class: :field_with_errors do |b|
+  config.wrappers(
+    :default,
+    :class => :input,
+    :hint_class => :field_with_hint,
+    :error_class => :field_with_errors
+  ) do |b|
     ## Extensions enabled by default
     # Any of these extensions can be disabled for a
     # given input by passing: `f.input EXTENSION_NAME => false`.
@@ -15,11 +19,11 @@ SimpleForm.setup do |config|
 
     # Determines whether to use HTML5 (:email, :url, ...)
     # and required attributes
-    b.use :html5
+    b.use(:html5)
 
     # Calculates placeholders automatically from I18n
     # You can also pass a string as f.input placeholder: "Placeholder"
-    b.use :placeholder
+    b.use(:placeholder)
 
     ## Optional extensions
     # They are disabled unless you pass `f.input EXTENSION_NAME => true`
@@ -29,24 +33,24 @@ SimpleForm.setup do |config|
 
     # Calculates maxlength from length validations for string inputs
     # and/or database column lengths
-    b.optional :maxlength
+    b.optional(:maxlength)
 
     # Calculate minlength from length validations for string inputs
-    b.optional :minlength
+    b.optional(:minlength)
 
     # Calculates pattern from format validations for string inputs
-    b.optional :pattern
+    b.optional(:pattern)
 
     # Calculates min and max from length validations for numeric inputs
-    b.optional :min_max
+    b.optional(:min_max)
 
     # Calculates readonly automatically from readonly attributes
-    b.optional :readonly
+    b.optional(:readonly)
 
     ## Inputs
-    b.use :label_input
-    b.use :hint,  wrap_with: { tag: :span, class: :hint }
-    b.use :error, wrap_with: { tag: :span, class: :error }
+    b.use(:label_input)
+    b.use(:hint,  :wrap_with => { :tag => :span, :class => :hint })
+    b.use(:error, :wrap_with => { :tag => :span, :class => :error })
 
     ## full_messages_for
     # If you want to display the full error message for the attribute, you can
@@ -65,7 +69,7 @@ SimpleForm.setup do |config|
   config.boolean_style = :nested
 
   # Default class for buttons
-  config.button_class = 'btn'
+  config.button_class = "btn"
 
   # Method used to tidy up errors. Specify any Rails Array method.
   # :first lists the first message for each field.
@@ -76,7 +80,7 @@ SimpleForm.setup do |config|
   config.error_notification_tag = :section
 
   # CSS class to add for error notification helper.
-  config.error_notification_class = 'error_notification'
+  config.error_notification_class = "error_notification"
 
   # ID to add for error notification helper.
   # config.error_notification_id = nil
@@ -158,7 +162,7 @@ SimpleForm.setup do |config|
   # config.input_class = nil
 
   # Define the default class of the input wrapper of the boolean input.
-  config.boolean_label_class = 'checkbox'
+  config.boolean_label_class = "checkbox"
 
   # Defines if the default input wrapper class should be included in radio
   # collection wrappers.

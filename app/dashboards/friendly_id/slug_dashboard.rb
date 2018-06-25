@@ -6,10 +6,10 @@ class FriendlyId::SlugDashboard < ApplicationDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    sluggable: Field::Polymorphic,
-    slug: Field::String,
-    scope: Field::String,
-    created_at: Field::DateTime,
+    :sluggable => Field::Polymorphic,
+    :slug => Field::String,
+    :scope => Field::String,
+    :created_at => Field::DateTime
   }.freeze
 
   # COLLECTION_ATTRIBUTES
@@ -19,7 +19,7 @@ class FriendlyId::SlugDashboard < ApplicationDashboard
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
     :slug,
-    :scope,
+    :scope
   ].freeze
 
   # SHOW_PAGE_ATTRIBUTES
@@ -28,7 +28,7 @@ class FriendlyId::SlugDashboard < ApplicationDashboard
     :slug,
     :scope,
     :created_at,
-    :sluggable,
+    :sluggable
   ].freeze
 
   # FORM_ATTRIBUTES
