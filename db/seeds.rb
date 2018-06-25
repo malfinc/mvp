@@ -6,6 +6,9 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
+PaperTrail.request.controller_info = {
+  :group_id => SecureRandom.uuid()
+}
 PaperTrail.request(:whodunnit => "The Machine") do
   ActiveRecord::Base.transaction do
     Diet.create([
