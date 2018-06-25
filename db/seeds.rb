@@ -125,7 +125,7 @@ PaperTrail.request(:whodunnit => "The Machine") do
             * CHEESE: If you have leftover cheese, it can be used on things like sandwiches, caprese salads, pasta bakes, breadsticks, or pizza!
             * Nutrition information is a rough estimate for 1 of 6 servings with all of the suggested oil, all of the gravy, and all of the vegan cheese.
         DESCRIPTION
-        vegan_recipe = author.recipes.create!(
+        author.recipes.create!(
           :name => "An amazing vegan poutine",
           :description => vegan_recipe_description,
           :ingredients => [

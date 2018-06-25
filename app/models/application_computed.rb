@@ -9,7 +9,7 @@ class ApplicationComputed
     self.id ||= attributes[:id] || SecureRandom.uuid
     super(
       **attributes.merge(
-        :created_at => attributes[:created_at] || Time.now if created_at.nil?,
+        :created_at => if created_at.nil? then attributes[:created_at] || Time.now end,
         :updated_at => Time.now
       )
     )

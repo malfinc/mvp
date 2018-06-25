@@ -10,7 +10,7 @@ threads(Integer(ENV.fetch("RAILS_MAX_THREADS")), Integer(ENV.fetch("RAILS_MAX_TH
 
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
 #
-port(Integer(ENV.fetch("PORT"))
+port(Integer(ENV.fetch("PORT")))
 
 # Specifies the `environment` that Puma will run in.
 #
@@ -22,7 +22,7 @@ environment(ENV.fetch("RAILS_ENV") {"development"})
 # Workers do not work on JRuby or Windows (both of which do not support
 # processes).
 #
-workers(Integer(ENV.fetch("WEB_CONCURRENCY"))
+workers(Integer(ENV.fetch("WEB_CONCURRENCY")))
 
 # Use the `preload_app!` method when specifying a `workers` number.
 # This directive tells Puma to first boot the application and load code

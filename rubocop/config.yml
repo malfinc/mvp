@@ -758,7 +758,7 @@ Style/Copyright:
 Style/DocumentationMethod:
   RequireForNonPublicMethods: false
   Description: Public methods.
-  Enabled: true
+  Enabled: false
   Exclude:
     - spec/**/*
     - test/**/*
@@ -896,7 +896,7 @@ Style/MissingElse:
   Description: Require if/case expressions to have an else branches. If enabled, it
     is recommended that Style/UnlessElse and Style/EmptyElse be enabled. This will
     conflict with Style/EmptyElse if Style/EmptyElse is configured to style "both"
-  Enabled: true
+  Enabled: false
 Style/MixinGrouping:
   EnforcedStyle: separated
   SupportedStyles:
@@ -1242,6 +1242,7 @@ Style/YodaCondition:
   Reference: https://en.wikipedia.org/wiki/Yoda_conditions
   Enabled: true
 Metrics/AbcSize:
+  Severity: warning
   Max: 15
   Description: A calculated magnitude based on number of assignments, branches, and
     conditions.
@@ -1399,6 +1400,7 @@ Rails/BulkChangeTable:
   Description: Check whether alter queries are combinable.
   Enabled: true
 Rails/CreateTableWithTimestamps:
+  Severity: warning
   Include:
     - db/migrate/*.rb
   Description: Checks the migration for which timestamps are not included when creating
@@ -1491,7 +1493,8 @@ Rails/LexicallyScopedActionFilter:
 Rails/NotNullColumn:
   Include:
     - db/migrate/*.rb
-  Description: Do not add a NOT NULL column without a default value
+  Description: Try not to add a NOT NULL column without a default value
+  Severity: warning
   Enabled: true
 Rails/Output:
   Include:
@@ -1526,6 +1529,7 @@ Rails/RequestReferer:
   Description: Use consistent syntax for request.referer.
   Enabled: true
 Rails/ReversibleMigration:
+  Severity: warning
   Include:
     - db/migrate/*.rb
   Description: Checks whether the change method of the migration file is reversible.
@@ -1566,6 +1570,7 @@ Rails/UnknownEnv:
   Description: Use correct environment name.
   Enabled: true
 Rails/SkipsModelValidations:
+  Severity: warning
   Blacklist:
     - decrement!
     - decrement_counter
@@ -2121,7 +2126,7 @@ Rails/HttpPositionalArguments:
     - test/**/*
 Rails/OutputSafety:
   Description: The use of `html_safe` or `raw` may be a security risk.
-  Enabled: true
+  Enabled: false
 Rails/PluralizationGrammar:
   Description: Checks for incorrect grammar when using methods like `3.day.ago`.
   Enabled: true
@@ -2214,7 +2219,7 @@ Style/Dir:
   Enabled: true
 Style/Documentation:
   Description: Document classes and non-namespace modules.
-  Enabled: true
+  Enabled: false
   Exclude:
     - spec/**/*
     - test/**/*
@@ -2275,7 +2280,7 @@ Style/IfInsideElse:
 Style/IfUnlessModifier:
   Description: Favor modifier if/unless usage when you have a single-line body.
   StyleGuide: "#if-as-a-modifier"
-  Enabled: true
+  Enabled: false
 Style/IfUnlessModifierOfIfUnless:
   Description: Avoid modifier if/unless usage on conditionals.
   Enabled: true

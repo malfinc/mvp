@@ -18,6 +18,6 @@ class Recipe < ApplicationRecord
   validates_length_of :instructions, :minimum => 1
 
   private def should_generate_new_friendly_id?
-    super || send("#{friendly_id_config.base}_changed?")
+    super || __send__("#{friendly_id_config.base}_changed?")
   end
 end
