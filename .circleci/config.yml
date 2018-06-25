@@ -2,22 +2,22 @@ version: 2
 shared:
   dockers:
     ruby: &ruby_docker
-      image: "circleci/ruby:2.5.0"
+      image: "circleci/ruby:2.5"
       environment:
         BUNDLE_JOBS: 8
         BUNDLE_RETRY: 2
         BUNDLE_PATH: "./vendor/bundle"
         RAILS_ENV: "test"
     node: &node_docker
-      image: "circleci/node:8.10.0"
+      image: "circleci/node:8.11"
     postgres: &postgres_docker
-      image: "circleci/postgres:10.3-alpine"
+      image: "circleci/postgres:10-alpine"
       environment:
         POSTGRES_DB: "poutineer_test"
         POSTGRES_USER: "poutineer"
         POSTGRES_PASSWORD: ""
     redis: &redis_docker
-      image: "redis:4.0.8"
+      image: "redis:4.0"
   caches:
     git_save: &git_save
       save_cache:
@@ -106,7 +106,7 @@ jobs:
       -
         run:
           name: "Installing postgres-client"
-          command: "sudo apt-get install postgresql-client-10.3"
+          command: "sudo apt-get install postgresql-client-10"
       -
         run:
           name: "Load databsase schema"
