@@ -118,7 +118,7 @@ jobs:
       -
         run:
           name: "Load databsase schema"
-          command: "bin/rake db:structure:load --trace"
+          command: "bundle exec rake db:structure:load --trace"
 
   audit_gemfile:
     docker:
@@ -147,7 +147,7 @@ jobs:
       -
         run:
           name: "Auditing Routes"
-          command: "FAIL_ON_ERROR=1 bin/rake traceroute"
+          command: "FAIL_ON_ERROR=1 bundle exec rake traceroute"
   audit_ruby:
     docker:
       - *ruby_docker
