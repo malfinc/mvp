@@ -42,38 +42,38 @@ shared:
   caches:
     git_save: &git_save
       save_cache:
-        key: "poutineer-1.0-git-{{ .Branch }}-{{ .Revision }}"
+        key: "poutineer-v2-git-{{ .Branch }}-{{ .Revision }}"
         paths:
           - ".git/"
     git_restore: &git_restore
       restore_cache:
         keys:
-          - "poutineer-1.0-git-{{ .Branch }}-{{ .Revision }}"
-          - "poutineer-1.0-git-{{ .Branch }}-"
-          - "poutineer-1.0-git-"
+          - "poutineer-v2-git-{{ .Branch }}-{{ .Revision }}"
+          - "poutineer-v2-git-{{ .Branch }}-"
+          - "poutineer-v2-git-"
     bundler_save: &bundler_save
       save_cache:
-        key: "poutineer-1.0-bundler-{{ .Branch }}-{{ checksum \"Gemfile.lock\" }}"
+        key: "poutineer-v2-bundler-{{ .Branch }}-{{ checksum \"Gemfile.lock\" }}"
         paths:
           - "./vendor/bundle"
           - "/usr/local/bundle/config"
     bundler_restore: &bundler_restore
       restore_cache:
         keys:
-          - "poutineer-1.0-bundler-{{ .Branch }}-{{ checksum \"Gemfile.lock\" }}"
-          - "poutineer-1.0-bundler-{{ .Branch }}-"
-          - "poutineer-1.0-bundler-"
+          - "poutineer-v2-bundler-{{ .Branch }}-{{ checksum \"Gemfile.lock\" }}"
+          - "poutineer-v2-bundler-{{ .Branch }}-"
+          - "poutineer-v2-bundler-"
     npm_save: &npm_save
       save_cache:
-        key: "poutineer-1.0-npm-{{ .Branch }}-{{ checksum \"package-lock.json\" }}"
+        key: "poutineer-v2-npm-{{ .Branch }}-{{ checksum \"package-lock.json\" }}"
         paths:
           - "./node_modules/"
     npm_restore: &npm_restore
       restore_cache:
         keys:
-          - "poutineer-1.0-npm-{{ .Branch }}-{{ checksum \"package-lock.json\" }}"
-          - "poutineer-1.0-npm-{{ .Branch }}-"
-          - "poutineer-1.0-npm-"
+          - "poutineer-v2-npm-{{ .Branch }}-{{ checksum \"package-lock.json\" }}"
+          - "poutineer-v2-npm-{{ .Branch }}-"
+          - "poutineer-v2-npm-"
 workflows:
   version: 2
   core:
@@ -83,27 +83,27 @@ workflows:
       -
         bundler_audit:
           requires:
-            - "browser_setup"
             - "server_setup"
       -
-        traceroute:
+        brakeman:
           requires:
-            - "browser_setup"
             - "server_setup"
       -
         rubocop:
           requires:
-            - "browser_setup"
             - "server_setup"
       -
         eslint:
           requires:
             - "browser_setup"
-            - "server_setup"
       -
         rspec:
           requires:
             - "browser_setup"
+            - "server_setup"
+      -
+        jest:
+          requires:
             - "server_setup"
 jobs:
   browser_setup:
@@ -167,9 +167,9 @@ jobs:
       - *bundler_restore
       -
         run:
-          name: "Auditing Bundler"
+          name: "Running bundler-audit"
           command: "bundle exec bundler-audit check --update"
-  traceroute:
+  breakman:
     docker:
       - *ruby_docker
       - *node_docker
@@ -181,8 +181,8 @@ jobs:
       - *bundler_restore
       -
         run:
-          name: "Auditing Routes"
-          command: "FAIL_ON_ERROR=1 bundle exec rake traceroute"
+          name: "Running brakeman"
+          command: "bundle exec brakeman"
   rubocop:
     docker:
       - *ruby_docker
@@ -195,11 +195,7 @@ jobs:
       - *bundler_restore
       -
         run:
-          name: "Audit Ruby Security"
-          command: "bundle exec brakeman"
-      -
-        run:
-          name: "Auditing Ruby"
+          name: "Running rubocop"
           command: "bundle exec rubocop"
   eslint:
     docker:
@@ -213,7 +209,7 @@ jobs:
       - *npm_restore
       -
         run:
-          name: "Auditing Javascript"
+          name: "Running eslint"
           command: "npm run lint"
   rspec:
     docker:
@@ -226,8 +222,9 @@ jobs:
       - *bundler_restore
       - *npm_restore
       -
-        name: "Running RSpec"
-        command: "bundle exec rspec --format RspecJunitFormatter --out ./tmp/rspec/rspec.xml --format progress $(circleci tests glob \"spec/**/*_spec.rb\" | circleci tests split --split-by=timings)"
+        run:
+          name: "Running RSpec"
+          command: "bundle exec rspec --format RspecJunitFormatter --out ./tmp/rspec/rspec.xml --format progress $(circleci tests glob \"spec/**/*_spec.rb\" | circleci tests split --split-by=timings)"
       -
         store_test_results:
           path: "tmp/rspec/"
