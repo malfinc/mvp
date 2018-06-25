@@ -50,7 +50,7 @@ shared:
     npm_restore: &npm_restore
       restore_cache:
         keys:
-          - "poutineer-1.0-npm-{{ .Branch }}-{{ checksum \"./client/package-lock.json\" }}"
+          - "poutineer-1.0-npm-{{ .Branch }}-{{ checksum \"package-lock.json\" }}"
           - "poutineer-1.0-npm-{{ .Branch }}-"
           - "poutineer-1.0-npm-"
 workflows:
