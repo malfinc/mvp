@@ -158,7 +158,6 @@ jobs:
   bundler_audit:
     docker:
       - *ruby_docker
-      - *node_docker
       - *postgres_docker
       - *redis_docker
     steps:
@@ -172,7 +171,6 @@ jobs:
   breakman:
     docker:
       - *ruby_docker
-      - *node_docker
       - *postgres_docker
       - *redis_docker
     steps:
@@ -186,7 +184,6 @@ jobs:
   rubocop:
     docker:
       - *ruby_docker
-      - *node_docker
       - *postgres_docker
       - *redis_docker
     steps:
@@ -199,10 +196,7 @@ jobs:
           command: "bundle exec rubocop --config .rubocop/config.yml --lint"
   eslint:
     docker:
-      - *ruby_docker
       - *node_docker
-      - *postgres_docker
-      - *redis_docker
     steps:
       - *git_restore
       - "checkout"
