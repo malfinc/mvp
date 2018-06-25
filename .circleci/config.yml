@@ -81,7 +81,22 @@ workflows:
       - "browser_setup"
       - "server_setup"
       -
-        auditing:
+        bundler_audit:
+          requires:
+            - "browser_setup"
+            - "server_setup"
+      -
+        traceroute:
+          requires:
+            - "browser_setup"
+            - "server_setup"
+      -
+        rubocop:
+          requires:
+            - "browser_setup"
+            - "server_setup"
+      -
+        eslint:
           requires:
             - "browser_setup"
             - "server_setup"
@@ -140,8 +155,7 @@ jobs:
         run:
           name: "Load databsase schema"
           command: "bundle exec rake db:create db:structure:load --trace"
-
-  audit_gemfile:
+  bundler_audit:
     docker:
       - *ruby_docker
       - *node_docker
@@ -155,7 +169,7 @@ jobs:
         run:
           name: "Auditing Bundler"
           command: "bundle exec bundler-audit check --update"
-  audit_routes:
+  traceroute:
     docker:
       - *ruby_docker
       - *node_docker
@@ -169,7 +183,7 @@ jobs:
         run:
           name: "Auditing Routes"
           command: "FAIL_ON_ERROR=1 bundle exec rake traceroute"
-  audit_ruby:
+  rubocop:
     docker:
       - *ruby_docker
       - *node_docker
@@ -187,7 +201,7 @@ jobs:
         run:
           name: "Auditing Ruby"
           command: "bundle exec rubocop"
-  audit_javascript:
+  eslint:
     docker:
       - *ruby_docker
       - *node_docker
