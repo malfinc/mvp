@@ -10,7 +10,7 @@ shared:
         ORIGIN_ENCRYPTION_PRIVATE: private
         ORIGIN_ENCRYPTION_SALT: salt
         PGHOST: 127.0.0.1
-        PGUSER: root
+        PGUSER: poutineer
         PORT: 3000
         RACK_ENV: test
         RACK_SERVICE_TIMEOUT: 25
