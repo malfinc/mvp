@@ -92,10 +92,10 @@ workflows:
         rubocop:
           requires:
             - "server_setup"
-      -
-        eslint:
-          requires:
-            - "browser_setup"
+      # -
+      #   eslint:
+      #     requires:
+      #       - "browser_setup"
       -
         rspec:
           requires:
@@ -194,17 +194,17 @@ jobs:
         run:
           name: "Running rubocop"
           command: "bundle exec rubocop --config .rubocop/config.yml --lint"
-  eslint:
-    docker:
-      - *node_docker
-    steps:
-      - *git_restore
-      - "checkout"
-      - *npm_restore
-      -
-        run:
-          name: "Running eslint"
-          command: "npm run lint"
+  # eslint:
+  #   docker:
+  #     - *node_docker
+  #   steps:
+  #     - *git_restore
+  #     - "checkout"
+  #     - *npm_restore
+  #     -
+  #       run:
+  #         name: "Running eslint"
+  #         command: "npm run lint"
   rspec:
     docker:
       - *ruby_docker
