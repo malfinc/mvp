@@ -69,6 +69,7 @@ end
 
 group :test do
   gem "timecop", "0.9.1"
+  gem "rspec_junit_formatter", "0.4.1"
 end
 
 group :development do
