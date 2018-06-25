@@ -168,7 +168,7 @@ jobs:
         run:
           name: "Running bundler-audit"
           command: "bundle exec bundler-audit check --update"
-  breakman:
+  brakeman:
     docker:
       - *ruby_docker
       - *postgres_docker
