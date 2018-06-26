@@ -4,7 +4,7 @@ class Account < ApplicationRecord
 
   USERNAME_PATTERN = /\A[a-zA-Z0-9_-]+\z/i
 
-  has_many :recipes, :dependent => :destroy, :autosave => true, :foreign_key => :author_id
+  has_many :recipes, :dependent => :destroy, :autosave => true, :inverse_of => :author
 
   friendly_id :email, :use => [:slugged, :history], :slug_column => :username
 

@@ -4,7 +4,7 @@ module Rails
 
     define_method :initialize do |*args|
       unless Rails.env.development? || Rails.env.test?
-        puts("Welcome! What is your email?")
+        Rails.logger.info("Welcome! What is your email?")
         email = gets.chomp
 
         raise(NoConsoleAuthenticationProvidedError) if email.blank?
@@ -18,7 +18,7 @@ module Rails
         }
       end
 
-      initialize.bind(self).call(*args)
+      initialize.bind(self).(*args)
     end
   end
 end
