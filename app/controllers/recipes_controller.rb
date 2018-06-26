@@ -3,7 +3,7 @@ class RecipesController < ApplicationController
 
   # GET /recipes
   def index
-    authorize Recipe
+    authorize(Recipe)
     find_records
   end
 
@@ -33,9 +33,9 @@ class RecipesController < ApplicationController
     authorize_record!
 
     if @record.save!
-      redirect_to @record, notice: 'Recipe was successfully created.'
+      redirect_to(@record, :notice => "Recipe was successfully created.")
     else
-      render :new
+      render(:new)
     end
   end
 
@@ -46,9 +46,9 @@ class RecipesController < ApplicationController
     authorize_record!
 
     if @record.update!(submission_params)
-      redirect_to @record, notice: 'Submission was successfully updated.'
+      redirect_to(@record, :notice => "Submission was successfully updated.")
     else
-      render :edit
+      render(:edit)
     end
   end
 
@@ -57,20 +57,20 @@ class RecipesController < ApplicationController
     authenticate_account!
     find_record
     authorize_record!
-    @record.destroy
+    @record.destroy!
 
-    redirect_to recipes_url, notice: 'Recipe was successfully destroyed.'
+    redirect_to(recipes_url, :notice => "Recipe was successfully destroyed.")
   end
 
   # Only allow a trusted parameter "white list" through.
   private def recipe_params
     {
-      name: params.fetch(:recipe, {}).fetch(:name, nil),
-      description: params.fetch(:recipe, {}).fetch(:description, nil),
-      ingredients: params.fetch(:recipe, {}).fetch(:ingredients, nil),
-      instructions: params.fetch(:recipe, {}).fetch(:instructions, nil),
-      diets: params.fetch(:recipe, {}).fetch(:diets, nil),
-      allergies: params.fetch(:recipe, {}).fetch(:allergies, nil),
+      :name => params.fetch(:recipe, {}).fetch(:name, nil),
+      :description => params.fetch(:recipe, {}).fetch(:description, nil),
+      :ingredients => params.fetch(:recipe, {}).fetch(:ingredients, nil),
+      :instructions => params.fetch(:recipe, {}).fetch(:instructions, nil),
+      :diets => params.fetch(:recipe, {}).fetch(:diets, nil),
+      :allergies => params.fetch(:recipe, {}).fetch(:allergies, nil)
     }
   end
 

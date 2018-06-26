@@ -4,15 +4,21 @@ module Rails
 
     define_method :initialize do |*args|
       unless Rails.env.development? || Rails.env.test?
-        puts "Welcome! What is your email?"
+        Rails.logger.info("Welcome! What is your email?")
         email = gets.chomp
 
-        raise NoConsoleAuthenticationProvidedError unless email.present?
+        raise(NoConsoleAuthenticationProvidedError) if email.blank?
 
-        PaperTrail.request.whodunnit = Account.find_by!(email: email)
+        actor = Account.find_by!(:email => email)
+
+        PaperTrail.request.whodunnit = actor
+        PaperTrail.request.controller_info = {
+          :actor_id => actor,
+          :group_id => SecureRandom.uuid
+        }
       end
 
-      initialize.bind(self).call(*args)
+      initialize.bind(self).(*args)
     end
   end
 end

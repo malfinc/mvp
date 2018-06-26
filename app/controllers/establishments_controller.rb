@@ -3,7 +3,7 @@ class EstablishmentsController < ApplicationController
 
   # GET /establishments
   def index
-    authorize Establishment
+    authorize(Establishment)
     @records = Establishment.all
   end
 
@@ -27,9 +27,9 @@ class EstablishmentsController < ApplicationController
     authorize_record!
 
     if @record.save!
-      redirect_to @record, notice: 'Establishment was successfully created.'
+      redirect_to(@record, :notice => "Establishment was successfully created.")
     else
-      render :new
+      render(:new)
     end
   end
 
@@ -40,9 +40,9 @@ class EstablishmentsController < ApplicationController
     authorize_record!
 
     if @record.update!(establishment_params)
-      redirect_to @record, notice: 'Establishment was successfully updated.'
+      redirect_to(@record, :notice => "Establishment was successfully updated.")
     else
-      render :edit
+      render(:edit)
     end
   end
 
@@ -53,7 +53,7 @@ class EstablishmentsController < ApplicationController
   # Only allow a trusted parameter "white list" through.
   private def establishment_params
     {
-      name: params.fetch(:establishment, {}).fetch(:name, nil),
+      :name => params.fetch(:establishment, {}).fetch(:name, nil)
     }
   end
 end

@@ -7,9 +7,7 @@ class TransitionField < Administrate::Field::Base
     object.keys
   end
 
-  def values
-    object.values
-  end
+  delegate :values, :to => :object
 
   def any?
     object.present? && object.any?

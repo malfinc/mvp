@@ -410,7 +410,8 @@ CREATE TABLE public.versions (
     transitions jsonb,
     object jsonb DEFAULT '{}'::jsonb NOT NULL,
     object_changes jsonb DEFAULT '{}'::jsonb NOT NULL,
-    created_at timestamp without time zone NOT NULL
+    created_at timestamp without time zone NOT NULL,
+    group_id text NOT NULL
 );
 
 
@@ -1073,6 +1074,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180414222016'),
 ('20180415205612'),
 ('20180415210200'),
-('20180415210205');
+('20180415210205'),
+('20180604055134');
 
 
