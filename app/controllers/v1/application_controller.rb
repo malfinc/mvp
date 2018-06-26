@@ -32,14 +32,14 @@ module V1
           name: current_account.name,
           username: current_account.username,
           slug: current_account.slug,
-          id: current_account.id
+          id: current_account.id,
         }
       end
 
       report.add_tab(:session, {
         actor: PaperTrail.request.whodunnit,
-        session_id: session.id,
-        request_id: request.request_id
+        request_id: request.request_id,
+        session_id: if account_signed_in? then session.id end,
       })
     end
 
