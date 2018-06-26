@@ -6,7 +6,7 @@ class Recipe < ApplicationRecord
   has_and_belongs_to_many :diets
   has_and_belongs_to_many :allergies
 
-  Gutentag::ActiveRecord.call(self)
+  Gutentag::ActiveRecord.(self)
 
   friendly_id :name, :use => [:slugged, :history]
 

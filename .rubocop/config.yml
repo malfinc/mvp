@@ -700,7 +700,7 @@ Style/ClassAndModuleChildren:
   Description: Checks style of children classes and modules.
   StyleGuide: "#namespace-definition"
   AutoCorrect: false
-  Enabled: true
+  Enabled: false
 Style/ClassCheck:
   EnforcedStyle: is_a?
   SupportedStyles:
@@ -860,7 +860,7 @@ Style/Lambda:
   StyleGuide: "#lambda-multi-line"
   Enabled: true
 Style/LambdaCall:
-  EnforcedStyle: call
+  EnforcedStyle: braces
   SupportedStyles:
     - call
     - braces
@@ -877,7 +877,7 @@ Style/MethodCallWithoutArgsParentheses:
   IgnoredMethods: []
   Description: Do not use parentheses for method calls with no arguments.
   StyleGuide: "#method-invocation-parens"
-  Enabled: true
+  Enabled: false
 Style/MethodDefParentheses:
   EnforcedStyle: require_parentheses
   SupportedStyles:
@@ -1009,11 +1009,11 @@ Style/ParenthesesAroundCondition:
 Style/PercentLiteralDelimiters:
   PreferredDelimiters:
     default: "()"
-    "%i": "[]"
-    "%I": "[]"
-    "%r": "{}"
-    "%w": "[]"
-    "%W": "[]"
+    "%i": "()"
+    "%I": "()"
+    "%r": "()"
+    "%w": "()"
+    "%W": "()"
   Description: Use `%`-literal delimiters consistently
   StyleGuide: "#percent-literal-braces"
   Enabled: true
@@ -1242,7 +1242,6 @@ Style/YodaCondition:
   Reference: https://en.wikipedia.org/wiki/Yoda_conditions
   Enabled: true
 Metrics/AbcSize:
-  Severity: warning
   Max: 15
   Description: A calculated magnitude based on number of assignments, branches, and
     conditions.
@@ -1464,7 +1463,7 @@ Rails/HasAndBelongsToMany:
     - app/models/**/*.rb
   Description: Prefer has_many :through to has_and_belongs_to_many.
   StyleGuide: https://github.com/rubocop-hq/rails-style-guide#has-many-through
-  Enabled: true
+  Enabled: false
 Rails/HasManyOrHasOneDependent:
   Include:
     - app/models/**/*.rb
@@ -1493,9 +1492,8 @@ Rails/LexicallyScopedActionFilter:
 Rails/NotNullColumn:
   Include:
     - db/migrate/*.rb
-  Description: Try not to add a NOT NULL column without a default value
-  Severity: warning
-  Enabled: true
+  Description: Do not add a NOT NULL column without a default value
+  Enabled: false
 Rails/Output:
   Include:
     - app/**/*.rb
@@ -1529,7 +1527,6 @@ Rails/RequestReferer:
   Description: Use consistent syntax for request.referer.
   Enabled: true
 Rails/ReversibleMigration:
-  Severity: warning
   Include:
     - db/migrate/*.rb
   Description: Checks whether the change method of the migration file is reversible.
@@ -1570,7 +1567,6 @@ Rails/UnknownEnv:
   Description: Use correct environment name.
   Enabled: true
 Rails/SkipsModelValidations:
-  Severity: warning
   Blacklist:
     - decrement!
     - decrement_counter
@@ -1595,7 +1591,7 @@ Rails/Validation:
 Bundler/OrderedGems:
   TreatCommentsAsGroupSeparators: true
   Description: Gems within groups in the Gemfile should be alphabetically sorted.
-  Enabled: true
+  Enabled: false
   Include:
     - "**/*.gemfile"
     - "**/Gemfile"
@@ -2525,7 +2521,7 @@ Style/InlineComment:
 Style/MethodCalledOnDoEndBlock:
   Description: Avoid chaining a method call on a do...end block.
   StyleGuide: "#single-line-blocks"
-  Enabled: true
+  Enabled: false
 Style/Send:
   Description: Prefer `Object#__send__` or `Object#public_send` to `send`, as `send`
     may overlap with existing methods.
@@ -2534,4 +2530,4 @@ Style/Send:
 Style/StringHashKeys:
   Description: Prefer symbols instead of strings as hash keys.
   StyleGuide: "#symbols-as-keys"
-  Enabled: true
+  Enabled: false
