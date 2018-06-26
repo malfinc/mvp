@@ -6,11 +6,11 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-
-
+PaperTrail.controller_info = {
+  group_id: SecureRandom.uuid
+}
 PaperTrail.request(whodunnit: "The Seed") do
   ActiveRecord::Base.transaction do
-
     if Rails.env.production? && Account.count.zero?
       krainboltgreene = Account.create(
         username: "krainboltgreene",
