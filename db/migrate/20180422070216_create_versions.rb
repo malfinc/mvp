@@ -6,7 +6,6 @@ class CreateVersions < ActiveRecord::Migration[5.1]
       table.text :event, null: false
       table.text :whodunnit, null: false
       table.uuid :actor_id
-      table.text :session_id
       table.text :group_id, null: false
       table.jsonb :transitions
       table.jsonb :object, null: false, default: {}

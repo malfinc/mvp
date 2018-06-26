@@ -21,7 +21,6 @@ module V1
     private def info_for_paper_trail
       {
         actor_id: if account_signed_in? then current_account.id end,
-        session_id: if account_signed_in? then session.id end
         group_id: request.request_id,
       }
     end

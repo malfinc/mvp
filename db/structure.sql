@@ -365,7 +365,6 @@ CREATE TABLE public.versions (
     event text NOT NULL,
     whodunnit text NOT NULL,
     actor_id uuid,
-    session_id text,
     group_id text NOT NULL,
     transitions jsonb,
     object jsonb DEFAULT '{}'::jsonb NOT NULL,
