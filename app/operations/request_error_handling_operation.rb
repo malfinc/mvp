@@ -28,7 +28,6 @@ class RequestErrorHandlingOperation < ApplicationOperation
 
   schema :render_output do
     field :exception, type: Types.Instance(StandardError)
-    field :controller, type: Types.Instance(ApplicationController)
   end
   def render_output(state:)
     case state.exception
