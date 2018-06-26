@@ -700,7 +700,7 @@ Style/ClassAndModuleChildren:
   Description: Checks style of children classes and modules.
   StyleGuide: "#namespace-definition"
   AutoCorrect: false
-  Enabled: true
+  Enabled: false
 Style/ClassCheck:
   EnforcedStyle: is_a?
   SupportedStyles:
@@ -1242,7 +1242,6 @@ Style/YodaCondition:
   Reference: https://en.wikipedia.org/wiki/Yoda_conditions
   Enabled: true
 Metrics/AbcSize:
-  Severity: warning
   Max: 15
   Description: A calculated magnitude based on number of assignments, branches, and
     conditions.
@@ -1464,7 +1463,7 @@ Rails/HasAndBelongsToMany:
     - app/models/**/*.rb
   Description: Prefer has_many :through to has_and_belongs_to_many.
   StyleGuide: https://github.com/rubocop-hq/rails-style-guide#has-many-through
-  Enabled: true
+  Enabled: false
 Rails/HasManyOrHasOneDependent:
   Include:
     - app/models/**/*.rb
@@ -1493,9 +1492,8 @@ Rails/LexicallyScopedActionFilter:
 Rails/NotNullColumn:
   Include:
     - db/migrate/*.rb
-  Description: Try not to add a NOT NULL column without a default value
-  Severity: warning
-  Enabled: true
+  Description: Do not add a NOT NULL column without a default value
+  Enabled: false
 Rails/Output:
   Include:
     - app/**/*.rb
@@ -1529,7 +1527,6 @@ Rails/RequestReferer:
   Description: Use consistent syntax for request.referer.
   Enabled: true
 Rails/ReversibleMigration:
-  Severity: warning
   Include:
     - db/migrate/*.rb
   Description: Checks whether the change method of the migration file is reversible.
@@ -1570,7 +1567,6 @@ Rails/UnknownEnv:
   Description: Use correct environment name.
   Enabled: true
 Rails/SkipsModelValidations:
-  Severity: warning
   Blacklist:
     - decrement!
     - decrement_counter
