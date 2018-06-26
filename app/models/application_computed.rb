@@ -10,7 +10,7 @@ class ApplicationComputed
     super(
       **attributes.merge(
         :created_at => if created_at.nil? then attributes[:created_at] || Time.now end,
-        :updated_at => Time.now
+        :updated_at => Time.zone.now
       )
     )
   end

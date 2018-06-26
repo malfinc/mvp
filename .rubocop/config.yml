@@ -860,7 +860,7 @@ Style/Lambda:
   StyleGuide: "#lambda-multi-line"
   Enabled: true
 Style/LambdaCall:
-  EnforcedStyle: call
+  EnforcedStyle: braces
   SupportedStyles:
     - call
     - braces
@@ -877,7 +877,7 @@ Style/MethodCallWithoutArgsParentheses:
   IgnoredMethods: []
   Description: Do not use parentheses for method calls with no arguments.
   StyleGuide: "#method-invocation-parens"
-  Enabled: true
+  Enabled: false
 Style/MethodDefParentheses:
   EnforcedStyle: require_parentheses
   SupportedStyles:
@@ -1009,11 +1009,11 @@ Style/ParenthesesAroundCondition:
 Style/PercentLiteralDelimiters:
   PreferredDelimiters:
     default: "()"
-    "%i": "[]"
-    "%I": "[]"
-    "%r": "{}"
-    "%w": "[]"
-    "%W": "[]"
+    "%i": "()"
+    "%I": "()"
+    "%r": "()"
+    "%w": "()"
+    "%W": "()"
   Description: Use `%`-literal delimiters consistently
   StyleGuide: "#percent-literal-braces"
   Enabled: true
@@ -2525,7 +2525,7 @@ Style/InlineComment:
 Style/MethodCalledOnDoEndBlock:
   Description: Avoid chaining a method call on a do...end block.
   StyleGuide: "#single-line-blocks"
-  Enabled: true
+  Enabled: false
 Style/Send:
   Description: Prefer `Object#__send__` or `Object#public_send` to `send`, as `send`
     may overlap with existing methods.
@@ -2534,4 +2534,4 @@ Style/Send:
 Style/StringHashKeys:
   Description: Prefer symbols instead of strings as hash keys.
   StyleGuide: "#symbols-as-keys"
-  Enabled: true
+  Enabled: false
