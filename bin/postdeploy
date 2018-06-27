@@ -1,4 +1,5 @@
 #! /usr/bin/env bash
 
+echo "test"
+env
 bin/rake db:migrate db:seed
-
