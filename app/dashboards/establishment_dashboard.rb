@@ -14,7 +14,6 @@ class EstablishmentDashboard < ApplicationDashboard
     :name => Field::String,
     :slug => Field::String,
     :google_places_id => Field::String,
-    :google_place => Field::Text.with_options(:searchable => false),
     :moderation_state_event => StateMachineField,
     :moderation_state => Field::String,
     :created_at => Field::DateTime,
