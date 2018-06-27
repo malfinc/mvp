@@ -53,6 +53,7 @@ gem("sitemap_generator", "6.0.1")
 gem("sprockets", "3.7.2")
 gem("webpacker", "3.5.3")
 gem("redcarpet", "3.4.0")
+gem("google_places", "1.1.0")
 gem("bootsnap", "1.3.0", :require => false)
 
 group :production do
