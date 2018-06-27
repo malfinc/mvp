@@ -9,14 +9,14 @@
 <section class="card-deck">
   <% @records.each do |record| %>
     <article class="card bg-light">
-      <%= image_tag(record.google_places.photos.sample, :card => "card-img-top") %>
+      <%= image_tag(record.photos.sample, :card => "card-img-top") if record.moderation_state?(:published) %>
       <section class="card-body">
         <header>
           <h5 class="card-title"><%= record.name %></h5>
           <h6 class="card-subtitle mb-2 text-muted">Contributed by <%= record.contributors.map(&:usernames) %></h6>
         </header>
         <p class="card-text">
-          <%= record.menu_items.count %> menu items, a Google rating of <%= record.google_place.rating * "⭐️" %>, and .
+          <%= record.menu_items.count %> menu items, a Google rating of <%= "⭐️" * record.rating.round  if record.moderation_state?(:published) %>, and .
         </p>
         <%= link_to "Show", record, class: "card-link" %>
         <%= link_to "Edit", edit_establishment_path(record), class: "card-link" %>
