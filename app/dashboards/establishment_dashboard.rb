@@ -50,6 +50,7 @@ class EstablishmentDashboard < ApplicationDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :name,
+    :google_places_id,
     :moderation_state_event
   ].freeze
 
