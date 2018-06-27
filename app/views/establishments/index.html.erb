@@ -13,7 +13,7 @@
       <section class="card-body">
         <header>
           <h5 class="card-title"><%= record.name %></h5>
-          <h6 class="card-subtitle mb-2 text-muted">Contributed by <%= record.contributors.map(&:usernames) %></h6>
+          <h6 class="card-subtitle mb-2 text-muted">Contributed by <%= record.contributors %></h6>
         </header>
         <p class="card-text">
           <%= record.menu_items.count %> menu items, a Google rating of <%= "⭐️" * record.rating.round  if record.moderation_state?(:published) %>, and .
