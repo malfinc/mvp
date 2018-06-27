@@ -7,11 +7,11 @@ shared:
         BUNDLE_JOBS: 8
         BUNDLE_PATH: "./vendor/bundle"
         BUNDLE_RETRY: 2
-        ORIGIN_ENCRYPTION_PRIVATE: private
-        ORIGIN_ENCRYPTION_SALT: salt
         PGHOST: 127.0.0.1
         PGUSER: poutineer
         PORT: 3000
+        ORIGIN_ENCRYPTION_PRIVATE: private
+        ORIGIN_ENCRYPTION_SALT: salt
         RACK_ENV: test
         RACK_TIMEOUT_SERVICE_TIMEOUT: 25
         RAILS_EMAIL_HOST: localhost
