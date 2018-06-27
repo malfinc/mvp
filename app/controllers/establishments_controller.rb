@@ -4,12 +4,12 @@ class EstablishmentsController < ApplicationController
   # GET /establishments
   def index
     authorize(Establishment)
-    @records = Establishment.all
+    find_records
   end
 
   # GET /establishments/1
   def show
-    find_establishment
+    find_record
     authorize_record!
   end
 
@@ -36,7 +36,7 @@ class EstablishmentsController < ApplicationController
   # PATCH/PUT /establishments/1
   def update
     authenticate_account!
-    find_establishment
+    find_record
     authorize_record!
 
     if @record.update!(establishment_params)
@@ -46,14 +46,15 @@ class EstablishmentsController < ApplicationController
     end
   end
 
-  private def find_establishment
-    @record = Establishment.friendly.find(params[:id])
+  private def find_record
+    @record = EstablishmentDecorator.decorate(pundit_scoped.friendly.find(params[:id]))
   end
 
-  # Only allow a trusted parameter "white list" through.
-  private def establishment_params
-    {
-      :name => params.fetch(:establishment, {}).fetch(:name, nil)
-    }
+  private def find_records
+    @records = EstablishmentDecorator.decorate_collection(pundit_scoped)
+  end
+
+  private def pundit_scoped
+    policy_scope(Establishment)
   end
 end
