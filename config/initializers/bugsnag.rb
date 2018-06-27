@@ -1,10 +1,9 @@
-system "env"
 if Rails.env.production?
   Bugsnag.configure do |configuration|
     configuration.auto_notify = Rails.env.production?
     configuration.auto_capture_sessions = Rails.env.production?
     configuration.api_key = ENV.fetch("BUGSNAG_API_KEY", nil)
-    configuration.app_version = ENV.fetch("SOURCE_VERSION")
+    configuration.app_version = ENV.fetch("SOURCE_VERSION", ENV.fetch("DYNO"))
     configuration.notify_release_stages = ["production"]
   end
 end
