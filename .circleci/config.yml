@@ -214,7 +214,6 @@ jobs:
       - *git_restore
       - "checkout"
       - *bundler_restore
-      - *npm_restore
       -
         run:
           name: "Running RSpec"
