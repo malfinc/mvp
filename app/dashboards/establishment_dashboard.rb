@@ -36,7 +36,6 @@ class EstablishmentDashboard < ApplicationDashboard
     :name,
     :slug,
     :moderation_state,
-    :payments_types,
     :created_at,
     :updated_at,
     :payment_types,
