@@ -16,7 +16,7 @@
           <h6 class="card-subtitle mb-2 text-muted">Contributed by <%= record.contributors %></h6>
         </header>
         <p class="card-text">
-          <%= record.menu_items.count %> menu items, a Google rating of <%= "⭐️" * record.rating.round  if record.moderation_state?(:published) %>, and .
+          <%= record.menu_items.count %> menu items and a Google rating of <%= "⭐️" * record.rating.round  if record.moderation_state?(:published) %>.
         </p>
         <%= link_to "Show", record, class: "card-link" %>
         <%= link_to "Edit", edit_establishment_path(record), class: "card-link" %>
