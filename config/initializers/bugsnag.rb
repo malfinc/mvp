@@ -1,3 +1,7 @@
+
+system "env"
+Rails.logger.info `env`
+
 if Rails.env.production?
   Bugsnag.configure do |configuration|
     configuration.auto_notify = Rails.env.production?
