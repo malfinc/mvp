@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery :with => :exception, :prepend => true
   before_action :set_paper_trail_whodunnit
   before_bugsnag_notify :assign_user_context, :if => :account_signed_in?
-  before_bugsnag_notify :assign_session_tab
+  before_bugsnag_notify :assign_metadata_tab
 
   # before_action :set_locale
 
@@ -31,9 +31,9 @@ class ApplicationController < ActionController::Base
     }
   end
 
-  private def assign_session_tab(report)
+  private def assign_metadata_tab(report)
     report.add_tab(
-      :session,
+      :metadata,
       :request_id => request.request_id,
       :session_id => if account_signed_in? then session.id end
     )
