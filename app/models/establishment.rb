@@ -15,6 +15,10 @@ class Establishment < ApplicationRecord
 
   after_commit :google_places_backfill, :on => :create
 
+  def contributors
+    User.with_role_state(:user).where(:id => versions.where.not(:actor_id => nil).select(:actor_id))
+  end
+
   private def google_places_backfill
     GooglePlacesBackfillJob.perform_async(id)
   end
