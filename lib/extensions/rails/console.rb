@@ -10,13 +10,15 @@ module Rails
         raise(NoConsoleAuthenticationProvidedError) if email.blank?
 
         actor = Account.find_by!(:email => email)
-
-        PaperTrail.request.whodunnit = actor
-        PaperTrail.request.controller_info = {
-          :actor_id => actor,
-          :group_id => SecureRandom.uuid
-        }
+      else
+        actor = Account.with_role_state(:administrator).last
       end
+
+      PaperTrail.request.whodunnit = actor.to_gid
+      PaperTrail.request.controller_info = {
+        :actor_id => actor.id,
+        :group_id => SecureRandom.uuid()
+      }
 
       initialize.bind(self).(*args)
     end

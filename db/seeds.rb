@@ -9,7 +9,7 @@
 PaperTrail.request.controller_info = {
   :group_id => SecureRandom.uuid()
 }
-PaperTrail.request(:whodunnit => "The Machine") do
+PaperTrail.request(:whodunnit => "machine@system.local") do
   ActiveRecord::Base.transaction do
     Diet.create([
       { :name => "Diabetic" },

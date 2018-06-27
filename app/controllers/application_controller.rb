@@ -34,7 +34,6 @@ class ApplicationController < ActionController::Base
   private def assign_session_tab(report)
     report.add_tab(
       :session,
-      :actor => PaperTrail.request.whodunnit,
       :request_id => request.request_id,
       :session_id => if account_signed_in? then session.id end
     )

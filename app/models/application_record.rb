@@ -9,10 +9,10 @@ class ApplicationRecord < ActiveRecord::Base
   validates_presence_of :updated_at, :on => :update
 
   private def actor
-    PaperTrail.request.whodunnit
+    Account.find_by(id: actor_id) || ActorNull.new
   end
 
   def actor_id
-    actor.id if actor.is_a?(Account)
+    PaperTrail.request.controller_info.fetch(:actor_id)
   end
 end
