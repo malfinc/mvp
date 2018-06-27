@@ -1,5 +1,5 @@
 class SidekiqServerExceptionHandlerMiddleware
-  def call(worker, job, queue)
+  def call()
     begin
       yield
     rescue StandardError => exception

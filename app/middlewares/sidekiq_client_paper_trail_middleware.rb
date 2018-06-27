@@ -1,5 +1,5 @@
 class SidekiqClientPaperTrailMiddleware
-  def call(worker, job, queue, redis_pool)
+  def call()
     job["chain_id"] ||= SecureRandom.uuid()
     job["paper_trail"] ||= {
       "whodunnit" => PaperTrail.request.whodunnit,

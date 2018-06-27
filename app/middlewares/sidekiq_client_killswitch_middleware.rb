@@ -1,5 +1,5 @@
 class SidekiqClientKillswitchMiddleware
-  def call(worker, job, queue, redis_pool)
+  def call(worker, _, queue)
     return false if kill_by_queue?(queue) || kill_by_worker?(worker)
 
     yield
