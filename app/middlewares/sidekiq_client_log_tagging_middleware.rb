@@ -1,5 +1,5 @@
 class SidekiqClientLogTaggingMiddleware
-  def call(worker, job, queue)
+  def call(worker, job, queue, _)
     Rails.logger.tagged("worker=#{worker}") do
       Rails.logger.tagged("queue=#{queue}") do
         Rails.logger.tagged("group=#{job["chain_id"]}") do

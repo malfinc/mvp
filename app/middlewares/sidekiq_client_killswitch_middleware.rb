@@ -1,5 +1,5 @@
 class SidekiqClientKillswitchMiddleware
-  def call(worker, _, queue)
+  def call(worker, _, queue, _)
     return false if kill_by_queue?(queue) || kill_by_worker?(worker)
 
     yield
