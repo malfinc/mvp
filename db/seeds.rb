@@ -6,10 +6,7 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-PaperTrail.request.controller_info = {
-  :group_id => SecureRandom.uuid()
-}
-PaperTrail.request(:whodunnit => "machine@system.local") do
+PaperTrail.request(:whodunnit => "machine@system.local", :controller_info => {:group_id => SecureRandom.uuid(), :actor_id => "machine@system.local"}) do
   ActiveRecord::Base.transaction do
     Diet.create([
       { :name => "Diabetic" },
@@ -78,7 +75,8 @@ PaperTrail.request(:whodunnit => "machine@system.local") do
       author.convert!
       author.complete!
 
-      PaperTrail.request(:whodunnit => administrator) do
+      PaperTrail.request.controller_info =
+      PaperTrail.request(:whodunnit => administrator, :controller_info => {:group_id => SecureRandom.uuid(), :actor_id => administrator.id}) do
         smokes_poutinerie = Establishment.create!(
           :name => "Smoke's Poutinerie",
           :google_places_id => "ChIJLbNPx9E0K4gRIpDVnhmgUb8",
