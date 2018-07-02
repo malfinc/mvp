@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
       :group_id => request.request_id
     }
 
-    return if account_signed_in?
+    return unless account_signed_in?
 
     PaperTrail.request.whodunnit = current_account.email
     PaperTrail.request.controller_info = {
