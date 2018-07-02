@@ -57,4 +57,10 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  config.around do |example|
+    PaperTrail.request(:whodunnit => "tests@system.local", :controller_info => {:actor_id => nil, :group_id => SecureRandom.uuid()}) do
+      example.run
+    end
+  end
 end
