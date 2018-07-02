@@ -61,6 +61,31 @@ module Poutineer
       {:expires_in => 30.minutes, :pool => Poutineer::REDIS_CACHE_CONNECTION_POOL}
     ]
 
+    # TODO: Document
+    config.logger = ActiveSupport::TaggedLogging.new(
+      ActiveSupport::Logger.new(STDOUT)
+    )
+
+    # TODO: Document
+
+    unless Rails.env.development?
+      config.log_tags = [
+        lambda do |request|
+          "time=#{Time.now.iso8601}"
+        end,
+        lambda do |request|
+          "remote-ip=#{request.remote_ip}" if request.remote_ip
+        end,
+        lambda do |request|
+          if request.cookie_jar.encrypted.try!(:[], config.session_options[:key]).try!(:[], "session_id")
+            "session-id=#{request.cookie_jar.encrypted.try!(:[], config.session_options[:key]).try!(:[], "session_id")}"
+          end
+        end,
+        lambda do |request|
+          "request-id=#{request.request_id}" if request.request_id
+        end
+      ]
+    end
 
     # TODO: Document
     if ENV.fetch("HEROKU_APP_NAME", nil)
