@@ -65,6 +65,8 @@ group :development, :test do
   gem "dotenv-rails", "2.5.0", :require => "dotenv/rails-now"
   gem "listen", "3.1.5"
   gem "rspec-rails", "3.7.2"
+  gem "factory_bot_rails", "4.10.0"
+  gem "faker", "1.8.7"
 end
 
 group :test do

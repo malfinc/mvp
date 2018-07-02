@@ -2,7 +2,7 @@ class Account < ApplicationRecord
   include FriendlyId
   include AuditedTransitions
 
-  USERNAME_PATTERN = /\A[a-zA-Z0-9_-]+\z/i
+  USERNAME_PATTERN = /\A[a-zA-Z0-9_\-\.]+\z/i
 
   has_many :recipes, :dependent => :destroy, :autosave => true, :foreign_key => :author_id, :inverse_of => :author
 
@@ -17,11 +17,7 @@ class Account < ApplicationRecord
   devise :validatable
   devise :async
 
-  state_machine :onboarding_state, :initial => :fresh do
-    event :convert do
-      transition :from => :fresh, :to => :converted
-    end
-
+  state_machine :onboarding_state, :initial => :converted do
     event :complete do
       transition :from => :converted, :to => :completed
     end
@@ -85,5 +81,9 @@ class Account < ApplicationRecord
 
   private def email_required?
     onboarding_state?(:converted) || onboarding_state?(:completed)
+  end
+
+  private def account_confirmed
+    complete! if onboarding_state?(:converted) && can_complete?
   end
 end

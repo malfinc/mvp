@@ -52,8 +52,7 @@ PaperTrail.request(:whodunnit => Account::MACHINE_ID, :controller_info => {:grou
         :email => "sally@example.com",
         :password => "password"
       )
-      administrator.convert!
-      administrator.complete!
+      administrator.confirm
       administrator.spark!
 
       moderator = Account.create!(
@@ -62,8 +61,7 @@ PaperTrail.request(:whodunnit => Account::MACHINE_ID, :controller_info => {:grou
         :email => "mark@example.com",
         :password => "password"
       )
-      moderator.convert!
-      moderator.complete!
+      moderator.confirm
       moderator.empower!
 
       author = Account.create!(
@@ -72,8 +70,7 @@ PaperTrail.request(:whodunnit => Account::MACHINE_ID, :controller_info => {:grou
         :email => "calvin@example.com",
         :password => "password"
       )
-      author.convert!
-      author.complete!
+      author.confirm
 
       PaperTrail.request(:whodunnit => administrator, :controller_info => {:group_id => SecureRandom.uuid(), :actor_id => administrator.id}) do
         smokes_poutinerie = Establishment.create!(
