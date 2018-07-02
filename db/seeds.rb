@@ -82,7 +82,28 @@ PaperTrail.request(:whodunnit => Account::MACHINE_ID, :controller_info => {:grou
             PaymentType.find_by(:name => "Discover Card"),
             PaymentType.find_by(:name => "Mastercard"),
             PaymentType.find_by(:name => "Giftcards")
-          ]
+          ],
+          :google_place => {
+            "types" => ["restaurant", "food", "point_of_interest", "establishment"],
+            "photos" => [
+              "https://lh3.googleusercontent.com/p/AF1QipP2zr_6z7J6FxzJpCvmWXrPxp3-0DViRTehY-su=s1600-w512",
+              "https://lh3.googleusercontent.com/p/AF1QipNwRQFLfPTXF-eOHTXOg1ytpsqdTFOxuwg5JDSN=s1600-w512",
+              "https://lh3.googleusercontent.com/p/AF1QipNjZiUMTQu6V0O2t8tjUoxSrfOE18JyBx4WANdR=s1600-w512"
+            ],
+            "rating" => 4.1,
+            "address" => "218 Adelaide St W, Toronto, ON M5H 1W7, Canada",
+            "website" => "http://smokespoutinerie.com/",
+            "phone_number" => "(416) 599-2873",
+            "schedule" => [
+              {"open" => {"day" => 0, "time" => "1100"}, "close" => {"day" => 1, "time" => "0000"}},
+              {"open" => {"day" => 1, "time" => "1100"}, "close" => {"day" => 2, "time" => "0000"}},
+              {"open" => {"day" => 2, "time" => "1100"}, "close" => {"day" => 3, "time" => "0000"}},
+              {"open" => {"day" => 3, "time" => "1100"}, "close" => {"day" => 4, "time" => "0300"}},
+              {"open" => {"day" => 4, "time" => "1100"}, "close" => {"day" => 5, "time" => "0300"}},
+              {"open" => {"day" => 5, "time" => "1100"}, "close" => {"day" => 6, "time" => "0400"}},
+              {"open" => {"day" => 6, "time" => "1100"}, "close" => {"day" => 0, "time" => "0400"}}
+            ]
+          }
         )
 
         traditional = smokes_poutinerie.menu_items.create!(

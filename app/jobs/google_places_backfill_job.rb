@@ -9,15 +9,7 @@ class GooglePlacesBackfillJob < ApplicationJob
 
     establishment.update_attributes!(
       :name => spot.name,
-      :google_place => {
-        :types => spot.types,
-        :phone_number => spot.formatted_phone_number,
-        :address => spot.formatted_address,
-        :rating => spot.rating,
-        :website => spot.website,
-        :opening_hours => spot.opening_hours,
-        :photos => spot.photos.first(3).map {|photo| photo.fetch_url(512)}
-      }
+      :google_place => GooglePlaceResult.serialize(spot)
     )
   end
 end
