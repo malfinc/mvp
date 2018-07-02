@@ -1,9 +1,10 @@
 class Account < ApplicationRecord
-  include FriendlyId
-  include AuditedTransitions
-
+  PAPER_TRAIL_MODEL = "PublicVersion"
   USERNAME_PATTERN = /\A[a-zA-Z0-9_\-\.]+\z/i
   MACHINE_ID = "machine@system.local".freeze
+
+  include FriendlyId
+  include AuditedTransitions
 
   has_many :recipes, :dependent => :destroy, :autosave => true, :foreign_key => :author_id, :inverse_of => :author
 
@@ -46,22 +47,22 @@ class Account < ApplicationRecord
     before_transition :do => :version_transition
     after_transition :on => :empower do |record|
       record.after_transaction do
-        AccountRoleMailer.with(:destination => record).upgraded_to_moderator.deliver_now
+        AccountRoleMailer.with(:destination => record).upgraded_to_moderator.deliver_later
       end
     end
     after_transition :on => :spark do |record|
       record.after_transaction do
-        AccountRoleMailer.with(:destination => record).upgraded_to_administrator.deliver_now
+        AccountRoleMailer.with(:destination => record).upgraded_to_administrator.deliver_later
       end
     end
     after_transition :on => :depower do |record|
       record.after_transaction do
-        AccountRoleMailer.with(:destination => record).downgraded_to_user.deliver_now
+        AccountRoleMailer.with(:destination => record).downgraded_to_user.deliver_later
       end
     end
     after_transition :on => :despark do |record|
       record.after_transaction do
-        AccountRoleMailer.with(:destination => record).downgraded_to_user.deliver_now
+        AccountRoleMailer.with(:destination => record).downgraded_to_user.deliver_later
       end
     end
   end

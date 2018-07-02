@@ -64,13 +64,6 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
 COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 
 
---
--- Name: CAST (character varying AS uuid); Type: CAST; Schema: -; Owner: -
---
-
-CREATE CAST (character varying AS uuid) WITH INOUT AS IMPLICIT;
-
-
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -86,17 +79,17 @@ CREATE TABLE public.accounts (
     username public.citext,
     onboarding_state public.citext NOT NULL,
     role_state public.citext NOT NULL,
-    encrypted_password character varying,
-    authentication_secret character varying,
-    reset_password_token character varying,
+    encrypted_password text,
+    authentication_secret text,
+    reset_password_token text,
     reset_password_sent_at timestamp without time zone,
     remember_created_at timestamp without time zone,
-    confirmation_token character varying,
+    confirmation_token text,
     confirmed_at timestamp without time zone,
     confirmation_sent_at timestamp without time zone,
-    unconfirmed_email character varying,
+    unconfirmed_email text,
     failed_attempts integer DEFAULT 0 NOT NULL,
-    unlock_token character varying,
+    unlock_token text,
     locked_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
@@ -114,7 +107,7 @@ CREATE TABLE public.accounts (
 
 CREATE TABLE public.allergies (
     id bigint NOT NULL,
-    name character varying NOT NULL,
+    name text NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -177,7 +170,7 @@ CREATE TABLE public.ar_internal_metadata (
 
 CREATE TABLE public.diets (
     id bigint NOT NULL,
-    name character varying NOT NULL,
+    name text NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -232,7 +225,7 @@ CREATE TABLE public.establishments (
     slug public.citext NOT NULL,
     google_places_id text,
     google_place jsonb DEFAULT '{}'::jsonb NOT NULL,
-    moderation_state character varying NOT NULL,
+    moderation_state public.citext NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -256,8 +249,8 @@ CREATE TABLE public.friendly_id_slugs (
     id bigint NOT NULL,
     slug public.citext NOT NULL,
     sluggable_id uuid NOT NULL,
-    sluggable_type character varying NOT NULL,
-    scope character varying,
+    sluggable_type text NOT NULL,
+    scope text,
     created_at timestamp without time zone NOT NULL
 );
 
@@ -289,7 +282,7 @@ CREATE TABLE public.gutentag_taggings (
     id bigint NOT NULL,
     tag_id uuid NOT NULL,
     taggable_id uuid NOT NULL,
-    taggable_type character varying NOT NULL,
+    taggable_type text NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -333,10 +326,10 @@ CREATE TABLE public.gutentag_tags (
 
 CREATE TABLE public.menu_items (
     id uuid DEFAULT public.gen_random_uuid() NOT NULL,
-    name character varying NOT NULL,
+    name text NOT NULL,
     slug public.citext NOT NULL,
-    description character varying NOT NULL,
-    moderation_state character varying NOT NULL,
+    description text NOT NULL,
+    moderation_state public.citext NOT NULL,
     establishment_id uuid NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -349,7 +342,7 @@ CREATE TABLE public.menu_items (
 
 CREATE TABLE public.payment_types (
     id bigint NOT NULL,
-    name character varying NOT NULL,
+    name text NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -375,6 +368,82 @@ ALTER SEQUENCE public.payment_types_id_seq OWNED BY public.payment_types.id;
 
 
 --
+-- Name: private_versions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.private_versions (
+    id bigint NOT NULL,
+    item_type text NOT NULL,
+    item_id bigint NOT NULL,
+    event text NOT NULL,
+    whodunnit text NOT NULL,
+    actor_id uuid,
+    group_id uuid NOT NULL,
+    transitions jsonb,
+    object json DEFAULT '{}'::json NOT NULL,
+    object_changes jsonb DEFAULT '{}'::jsonb NOT NULL,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: private_versions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.private_versions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: private_versions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.private_versions_id_seq OWNED BY public.private_versions.id;
+
+
+--
+-- Name: public_versions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.public_versions (
+    id bigint NOT NULL,
+    item_type text NOT NULL,
+    item_id uuid NOT NULL,
+    event text NOT NULL,
+    whodunnit text NOT NULL,
+    actor_id uuid,
+    group_id uuid NOT NULL,
+    transitions jsonb,
+    object json DEFAULT '{}'::json NOT NULL,
+    object_changes jsonb DEFAULT '{}'::jsonb NOT NULL,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: public_versions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.public_versions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: public_versions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.public_versions_id_seq OWNED BY public.public_versions.id;
+
+
+--
 -- Name: recipes; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -386,11 +455,11 @@ CREATE TABLE public.recipes (
     description text NOT NULL,
     author_id uuid NOT NULL,
     ingredients text[] DEFAULT '{}'::text[] NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    instructions character varying[] DEFAULT '{}'::character varying[] NOT NULL,
+    instructions text[] DEFAULT '{}'::text[] NOT NULL,
     cook_time integer NOT NULL,
-    prep_time integer NOT NULL
+    prep_time integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
 
 
@@ -404,41 +473,35 @@ CREATE TABLE public.schema_migrations (
 
 
 --
--- Name: versions; Type: TABLE; Schema: public; Owner: -
+-- Name: versions; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE TABLE public.versions (
-    id bigint NOT NULL,
-    item_type character varying NOT NULL,
-    item_id character varying NOT NULL,
-    event character varying NOT NULL,
-    whodunnit character varying NOT NULL,
-    actor_id uuid,
-    transitions jsonb,
-    object jsonb DEFAULT '{}'::jsonb NOT NULL,
-    object_changes jsonb DEFAULT '{}'::jsonb NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    group_id text NOT NULL
-);
-
-
---
--- Name: versions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.versions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: versions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.versions_id_seq OWNED BY public.versions.id;
+CREATE VIEW public.versions AS
+ SELECT public_versions.id,
+    public_versions.item_type,
+    (public_versions.item_id)::text AS item_id,
+    public_versions.event,
+    public_versions.whodunnit,
+    public_versions.actor_id,
+    public_versions.transitions,
+    (public_versions.object)::jsonb AS object,
+    public_versions.object_changes,
+    public_versions.created_at,
+    public_versions.group_id
+   FROM public.public_versions
+UNION
+ SELECT private_versions.id,
+    private_versions.item_type,
+    (private_versions.item_id)::text AS item_id,
+    private_versions.event,
+    private_versions.whodunnit,
+    private_versions.actor_id,
+    private_versions.transitions,
+    (private_versions.object)::jsonb AS object,
+    private_versions.object_changes,
+    private_versions.created_at,
+    private_versions.group_id
+   FROM public.private_versions;
 
 
 --
@@ -477,10 +540,17 @@ ALTER TABLE ONLY public.payment_types ALTER COLUMN id SET DEFAULT nextval('publi
 
 
 --
--- Name: versions id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: private_versions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.versions ALTER COLUMN id SET DEFAULT nextval('public.versions_id_seq'::regclass);
+ALTER TABLE ONLY public.private_versions ALTER COLUMN id SET DEFAULT nextval('public.private_versions_id_seq'::regclass);
+
+
+--
+-- Name: public_versions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.public_versions ALTER COLUMN id SET DEFAULT nextval('public.public_versions_id_seq'::regclass);
 
 
 --
@@ -580,6 +650,22 @@ ALTER TABLE ONLY public.payment_types
 
 
 --
+-- Name: private_versions private_versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.private_versions
+    ADD CONSTRAINT private_versions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: public_versions public_versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.public_versions
+    ADD CONSTRAINT public_versions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: recipes recipes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -593,14 +679,6 @@ ALTER TABLE ONLY public.recipes
 
 ALTER TABLE ONLY public.schema_migrations
     ADD CONSTRAINT schema_migrations_pkey PRIMARY KEY (version);
-
-
---
--- Name: versions versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.versions
-    ADD CONSTRAINT versions_pkey PRIMARY KEY (id);
 
 
 --
@@ -884,6 +962,76 @@ CREATE UNIQUE INDEX index_payment_types_on_name ON public.payment_types USING bt
 
 
 --
+-- Name: index_private_versions_on_actor_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_private_versions_on_actor_id ON public.private_versions USING btree (actor_id);
+
+
+--
+-- Name: index_private_versions_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_private_versions_on_created_at ON public.private_versions USING btree (created_at);
+
+
+--
+-- Name: index_private_versions_on_event; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_private_versions_on_event ON public.private_versions USING btree (event);
+
+
+--
+-- Name: index_private_versions_on_group_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_private_versions_on_group_id ON public.private_versions USING btree (group_id);
+
+
+--
+-- Name: index_private_versions_on_item_id_and_item_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_private_versions_on_item_id_and_item_type ON public.private_versions USING btree (item_id, item_type);
+
+
+--
+-- Name: index_public_versions_on_actor_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_public_versions_on_actor_id ON public.public_versions USING btree (actor_id);
+
+
+--
+-- Name: index_public_versions_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_public_versions_on_created_at ON public.public_versions USING btree (created_at);
+
+
+--
+-- Name: index_public_versions_on_event; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_public_versions_on_event ON public.public_versions USING btree (event);
+
+
+--
+-- Name: index_public_versions_on_group_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_public_versions_on_group_id ON public.public_versions USING btree (group_id);
+
+
+--
+-- Name: index_public_versions_on_item_id_and_item_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_public_versions_on_item_id_and_item_type ON public.public_versions USING btree (item_id, item_type);
+
+
+--
 -- Name: index_recipes_on_author_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -919,27 +1067,6 @@ CREATE INDEX index_recipes_on_updated_at ON public.recipes USING btree (updated_
 
 
 --
--- Name: index_versions_on_actor_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_versions_on_actor_id ON public.versions USING btree (actor_id);
-
-
---
--- Name: index_versions_on_event; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_versions_on_event ON public.versions USING btree (event);
-
-
---
--- Name: index_versions_on_item_id_and_item_type; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_versions_on_item_id_and_item_type ON public.versions USING btree (item_id, item_type);
-
-
---
 -- Name: recipes fk_rails_08ee84afe6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -969,6 +1096,14 @@ ALTER TABLE ONLY public.menu_items
 
 ALTER TABLE ONLY public.diets_recipes
     ADD CONSTRAINT fk_rails_462dabbc1c FOREIGN KEY (recipe_id) REFERENCES public.recipes(id);
+
+
+--
+-- Name: public_versions fk_rails_4af9fd648b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.public_versions
+    ADD CONSTRAINT fk_rails_4af9fd648b FOREIGN KEY (actor_id) REFERENCES public.accounts(id);
 
 
 --
@@ -1036,6 +1171,14 @@ ALTER TABLE ONLY public.diets_menu_items
 
 
 --
+-- Name: private_versions fk_rails_e36562bb10; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.private_versions
+    ADD CONSTRAINT fk_rails_e36562bb10 FOREIGN KEY (actor_id) REFERENCES public.accounts(id);
+
+
+--
 -- Name: allergies_menu_items fk_rails_fd128872e5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1057,34 +1200,18 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171210085937'),
 ('20171230031126'),
 ('20171231104815'),
-('20180106211740'),
-('20180106211741'),
-('20180106211742'),
 ('20180403163727'),
 ('20180403163858'),
-('20180404062728'),
-('20180404062732'),
-('20180404062733'),
-('20180406041433'),
-('20180406072846'),
-('20180406151109'),
-('20180406151114'),
-('20180406151118'),
 ('20180408055401'),
 ('20180408055440'),
 ('20180408055642'),
 ('20180408055646'),
 ('20180408203926'),
 ('20180408203957'),
-('20180409023409'),
 ('20180414222011'),
 ('20180414222016'),
-('20180415205612'),
-('20180415210200'),
-('20180415210205'),
-('20180604055134'),
-('20180628070348'),
-('20180628070349'),
-('20180628070350');
+('20180702062857'),
+('20180702062940'),
+('20180702080347');
 
 

@@ -1,4 +1,6 @@
 class MenuItem < ApplicationRecord
+  PAPER_TRAIL_MODEL = "PublicVersion"
+
   include FriendlyId
   include Moderated
 
