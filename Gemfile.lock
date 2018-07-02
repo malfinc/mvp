@@ -188,9 +188,6 @@ GEM
       paper_trail-association_tracking (< 2)
       request_store (~> 1.1)
     paper_trail-association_tracking (1.0.0)
-    paper_trail-globalid (0.2.0)
-      globalid
-      paper_trail (>= 3.0.0)
     parallel (1.12.1)
     parser (2.5.1.0)
       ast (~> 2.4.0)
@@ -413,7 +410,6 @@ DEPENDENCIES
   newrelic_rpm (= 5.2.0.345)
   oj (= 3.6.3)
   paper_trail (= 9.2.0)
-  paper_trail-globalid (= 0.2.0)
   pg (= 0.21.0)
   pry-doc (= 0.13.4)
   pry-rails (= 0.3.6)

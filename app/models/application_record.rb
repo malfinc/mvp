@@ -9,7 +9,7 @@ class ApplicationRecord < ActiveRecord::Base
   validates_presence_of :updated_at, :on => :update
 
   private def actor
-    Account.find_by(id: actor_id) || ActorNull.new
+    Account.find(actor_id) if actor_id.present?
   end
 
   def actor_id

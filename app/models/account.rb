@@ -75,24 +75,6 @@ class Account < ApplicationRecord
   validates_presence_of :username, :if => :email_required?
   validates_format_of :username, :with => USERNAME_PATTERN, :if => :email_required?
 
-  def lock_access!(*)
-    PaperTrail.request(:whodunnit => PaperTrail.request.whodunnit || "machine@system.local") do
-      super
-    end
-  end
-
-  def unlock_access!(*)
-    PaperTrail.request(:whodunnit => PaperTrail.request.whodunnit || "machine@system.local") do
-      super
-    end
-  end
-
-  def valid_for_authentication?(*)
-    PaperTrail.request.whodunnit ||= "machine@system.local"
-
-    super
-  end
-
   private def generate_password
     assign_attributes(:password => SecureRandom.hex(60))
   end

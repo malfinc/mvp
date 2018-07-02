@@ -9,7 +9,7 @@ module PaperTrail
       if super.is_a?(ActiveRecord::Base)
         super
       else
-        ActorNull.new(:name => whodunnit, :username => whodunnit)
+        ActorNull.new(:id => actor_id, :name => whodunnit, :username => whodunnit)
       end
     end
   end

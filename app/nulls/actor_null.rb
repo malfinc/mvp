@@ -1,4 +1,5 @@
 class ActorNull < ApplicationNull
+  attr_accessor :id
   attr_accessor :name
   attr_accessor :username
 

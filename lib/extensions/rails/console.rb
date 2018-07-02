@@ -14,9 +14,13 @@ module Rails
         actor = Account.with_role_state(:administrator).last
       end
 
-      PaperTrail.request(:whodunnit => actor.to_gid, :controller_info => {:group_id => SecureRandom.uuid(), :actor_id => actor.id}) do
-        initialize.bind(self).(*args)
-      end
+      PaperTrail.request.whodunnit = actor.email
+      PaperTrail.request.controller_info = {
+        :group_id => SecureRandom.uuid(),
+        :actor_id => actor.id
+      }
+
+      initialize.bind(self).(*args)
     end
   end
 end
