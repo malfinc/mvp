@@ -1,6 +1,6 @@
 class CreatePrivateVersions < ActiveRecord::Migration[5.1]
   def change
-    create_table :private_versions, :id => :bigint do |table|
+    create_table :private_versions, :id => :uuid do |table|
       table.text(:item_type, :null => false)
       table.bigint(:item_id, :null => false)
       table.text(:event, :null => false)

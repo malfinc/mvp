@@ -1,6 +1,10 @@
 module Moderated
   extend ActiveSupport::Concern
 
+  def contributors
+    Account.with_role_state(:user).where(:id => versions.where.not(:actor_id => nil).select(:actor_id))
+  end
+
   private def allowed_to_publish?
     actor.onboarding_state?(:completed)
   end

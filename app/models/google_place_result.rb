@@ -16,7 +16,7 @@ class GooglePlaceResult < ApplicationComputed
       :address => spot.formatted_address,
       :rating => spot.rating,
       :website => spot.website,
-      :schedule => spot.opening_hours.fetch("periods", []),
+      :schedule => spot.opening_hours&.fetch("periods", []),
       :photos => spot.photos.first(3).map {|photo| photo.fetch_url(512)}
     }
   end

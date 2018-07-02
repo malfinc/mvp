@@ -27,11 +27,9 @@ Rails.application.routes.draw do
     resources :payment_types
     resources :diets
     resources :allergies
+    resources :versions
     namespace :friendly_id do
       resources :slugs
-    end
-    namespace :paper_trail do
-      resources :versions
     end
     namespace :gutentag do
       resources :tags

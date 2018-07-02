@@ -5,7 +5,8 @@ class PaymentType < ApplicationRecord
     :class_name => "PrivateVersion",
     :meta => {
       :actor_id => :actor_id
-    }
+    },
+    :versions => :private_versions
   )
 
   validates_presence_of :name

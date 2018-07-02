@@ -67,7 +67,6 @@ module Poutineer
     )
 
     # TODO: Document
-
     unless Rails.env.development?
       config.log_tags = [
         lambda do |_|

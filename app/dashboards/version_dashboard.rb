@@ -1,4 +1,4 @@
-class PaperTrail::VersionDashboard < ApplicationDashboard
+class VersionDashboard < ApplicationDashboard
   # ATTRIBUTE_TYPES
   # a hash that describes the type of each of the model's fields.
   #
@@ -12,7 +12,6 @@ class PaperTrail::VersionDashboard < ApplicationDashboard
     :group_id => Field::String,
     :actor => Field::BelongsTo.with_options(:class_name => "Account"),
     :transitions => TransitionField,
-    :object => ChangeField,
     :object_changes => ChangesetField,
     :created_at => Field::DateTime
   }.freeze
@@ -26,7 +25,6 @@ class PaperTrail::VersionDashboard < ApplicationDashboard
     :actor,
     :event,
     :group_id,
-    :item_type,
     :item
   ].freeze
 
@@ -39,8 +37,7 @@ class PaperTrail::VersionDashboard < ApplicationDashboard
     :object_changes,
     :created_at,
     :actor,
-    :item,
-    :object
+    :item
   ].freeze
 
   # FORM_ATTRIBUTES

@@ -372,7 +372,7 @@ ALTER SEQUENCE public.payment_types_id_seq OWNED BY public.payment_types.id;
 --
 
 CREATE TABLE public.private_versions (
-    id bigint NOT NULL,
+    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     item_type text NOT NULL,
     item_id bigint NOT NULL,
     event text NOT NULL,
@@ -387,30 +387,11 @@ CREATE TABLE public.private_versions (
 
 
 --
--- Name: private_versions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.private_versions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: private_versions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.private_versions_id_seq OWNED BY public.private_versions.id;
-
-
---
 -- Name: public_versions; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.public_versions (
-    id bigint NOT NULL,
+    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     item_type text NOT NULL,
     item_id uuid NOT NULL,
     event text NOT NULL,
@@ -422,25 +403,6 @@ CREATE TABLE public.public_versions (
     object_changes jsonb DEFAULT '{}'::jsonb NOT NULL,
     created_at timestamp without time zone NOT NULL
 );
-
-
---
--- Name: public_versions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.public_versions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: public_versions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.public_versions_id_seq OWNED BY public.public_versions.id;
 
 
 --
@@ -537,20 +499,6 @@ ALTER TABLE ONLY public.gutentag_taggings ALTER COLUMN id SET DEFAULT nextval('p
 --
 
 ALTER TABLE ONLY public.payment_types ALTER COLUMN id SET DEFAULT nextval('public.payment_types_id_seq'::regclass);
-
-
---
--- Name: private_versions id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.private_versions ALTER COLUMN id SET DEFAULT nextval('public.private_versions_id_seq'::regclass);
-
-
---
--- Name: public_versions id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.public_versions ALTER COLUMN id SET DEFAULT nextval('public.public_versions_id_seq'::regclass);
 
 
 --

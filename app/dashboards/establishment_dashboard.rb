@@ -7,7 +7,7 @@ class EstablishmentDashboard < ApplicationDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     :tags => Field::HasMany.with_options(:class_name => "Gutentag::Tag"),
-    :versions => Field::HasMany.with_options(:class_name => "PaperTrail::Version"),
+    :versions => Field::HasMany.with_options,
     :slugs => Field::HasMany.with_options(:class_name => "FriendlyId::Slug"),
     :menu_items => Field::HasMany,
     :payment_types => Field::HasMany,

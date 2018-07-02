@@ -1,6 +1,6 @@
 class CreatePublicVersions < ActiveRecord::Migration[5.1]
   def change
-    create_table :public_versions, :id => :bigint do |table|
+    create_table :public_versions, :id => :uuid do |table|
       table.text(:item_type, :null => false)
       table.uuid(:item_id, :null => false)
       table.text(:event, :null => false)

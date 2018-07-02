@@ -4,12 +4,15 @@ module AuditedTransitions
   included do
     attr_accessor :transitions
 
+    has_many :versions, :as => :item
+
     has_paper_trail(
       :meta => {
         :actor_id => :actor_id,
         :transitions => :transitions
       },
-      :class_name => const_get("PAPER_TRAIL_MODEL")
+      :class_name => const_get("PAPER_TRAIL_MODEL"),
+      :versions => const_get("PAPER_TRAIL_MODEL").tableize.to_sym
     )
   end
 
