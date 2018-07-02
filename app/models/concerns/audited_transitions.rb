@@ -4,7 +4,7 @@ module AuditedTransitions
   included do
     attr_accessor :transitions
 
-    has_many :versions, :foreign_key => :actor_id, :inverse_of => :actor
+    has_many :versions, :as => :item
 
     has_paper_trail(
       :meta => {
