@@ -53,6 +53,7 @@ PaperTrail.request(:whodunnit => Account::MACHINE_ID, :controller_info => {:grou
         :password => "password"
       )
       administrator.confirm
+      administrator.complete!
       administrator.spark!
 
       moderator = Account.create!(
@@ -62,6 +63,7 @@ PaperTrail.request(:whodunnit => Account::MACHINE_ID, :controller_info => {:grou
         :password => "password"
       )
       moderator.confirm
+      moderator.complete!
       moderator.empower!
 
       author = Account.create!(
