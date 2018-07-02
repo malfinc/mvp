@@ -3,7 +3,9 @@ class SidekiqServerExceptionHandlerMiddleware
     begin
       yield
     rescue StandardError => exception
-      puts exception.message
+      Rails.logger.error(exception.message)
+
+      raise exception
     end
   end
 end
