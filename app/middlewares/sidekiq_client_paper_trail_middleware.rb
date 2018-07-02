@@ -3,12 +3,12 @@ class SidekiqClientPaperTrailMiddleware
     job["chain_id"] ||= SecureRandom.uuid()
 
     Rails.logger.tagged("group=#{job.fetch("chain_id")}") do
-      unless PaperTrail.request.whodunnit.present?
+      if PaperTrail.request.whodunnit.blank?
         Rails.logger.warn("No PaperTrail whodunnit available")
         return false
       end
 
-      unless PaperTrail.request.controller_info.present?
+      if PaperTrail.request.controller_info.blank?
         Rails.logger.warn("No PaperTrail metadata available")
         return false
       end

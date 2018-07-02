@@ -32,17 +32,17 @@ module RedisBacked
 
         private "#{name}_redis_value"
 
-        define_method("#{name}") do
-          send("#{name}_redis_value").value
+        define_method(name.to_s) do
+          __send__("#{name}_redis_value").value
         end
 
         define_method("#{name}=") do |value|
           public_send(:updated_at=, Time.zone.now) if respond_to?(:updated_at)
-          send("#{name}_redis_value").value = value
+          __send__("#{name}_redis_value").value = value
         end
       end
 
-      include redis_accessors
+      include(redis_accessors)
     end
   end
 end

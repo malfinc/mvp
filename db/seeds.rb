@@ -9,40 +9,40 @@
 PaperTrail.request(:whodunnit => Account::MACHINE_ID, :controller_info => {:group_id => SecureRandom.uuid(), :actor_id => nil}) do
   ActiveRecord::Base.transaction do
     Diet.create([
-      { :name => "Diabetic" },
-      { :name => "GlutenFree" },
-      { :name => "Halal" },
-      { :name => "Hindu" },
-      { :name => "Kosher" },
-      { :name => "LowCalorie" },
-      { :name => "LowFat" },
-      { :name => "LowLactose" },
-      { :name => "LowSalt" },
-      { :name => "Vegan" },
-      { :name => "Vegetarian" }
+      {:name => "Diabetic"},
+      {:name => "GlutenFree"},
+      {:name => "Halal"},
+      {:name => "Hindu"},
+      {:name => "Kosher"},
+      {:name => "LowCalorie"},
+      {:name => "LowFat"},
+      {:name => "LowLactose"},
+      {:name => "LowSalt"},
+      {:name => "Vegan"},
+      {:name => "Vegetarian"}
     ])
     Allergy.create([
-      { :name => "Cow's Milk" },
-      { :name => "Peanuts" },
-      { :name => "Eggs" },
-      { :name => "Shellfish" },
-      { :name => "Fish" },
-      { :name => "Tree Nuts" },
-      { :name => "Soy" },
-      { :name => "Wheat" },
-      { :name => "Rice" },
-      { :name => "Fruit" }
+      {:name => "Cow's Milk"},
+      {:name => "Peanuts"},
+      {:name => "Eggs"},
+      {:name => "Shellfish"},
+      {:name => "Fish"},
+      {:name => "Tree Nuts"},
+      {:name => "Soy"},
+      {:name => "Wheat"},
+      {:name => "Rice"},
+      {:name => "Fruit"}
     ])
     PaymentType.create([
-      { :name => "Cash" },
-      { :name => "Check" },
-      { :name => "Visa" },
-      { :name => "Discover Card" },
-      { :name => "Mastercard" },
-      { :name => "EBT/Foodstamps" },
-      { :name => "Giftcards" },
-      { :name => "Online Payments" },
-      { :name => "Bitcoin/Cryptocurrency" }
+      {:name => "Cash"},
+      {:name => "Check"},
+      {:name => "Visa"},
+      {:name => "Discover Card"},
+      {:name => "Mastercard"},
+      {:name => "EBT/Foodstamps"},
+      {:name => "Giftcards"},
+      {:name => "Online Payments"},
+      {:name => "Bitcoin/Cryptocurrency"}
     ])
 
     if Rails.env.development?

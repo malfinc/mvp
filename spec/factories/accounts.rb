@@ -1,32 +1,24 @@
 FactoryBot.define do
   factory :account do
-    name { Faker::Name.name }
-    email { Faker::Internet.unique.email }
-    username { Faker::Internet.unique.user_name }
-    password { Faker::Internet.unique.password }
+    name {Faker::Name.name}
+    email {Faker::Internet.unique.email}
+    username {Faker::Internet.unique.user_name}
+    password {Faker::Internet.unique.password}
 
     trait :confirmed do
-      after(:create) do |record|
-        record.confirm
-      end
+      after(:create, &:confirm)
     end
 
     trait :completed do
-      after(:create) do |record|
-        record.completed!
-      end
+      after(:create, &:completed!)
     end
 
     trait :moderator do
-      after(:create) do |record|
-        record.empower!
-      end
+      after(:create, &:empower!)
     end
 
     trait :administrator do
-      after(:create) do |record|
-        record.spark!
-      end
+      after(:create, &:spark!)
     end
   end
 end

@@ -16,6 +16,6 @@ class ApplicationComputed
   end
 
   def persisted?
-    raise NoMethodError, "Define your own persisted? method"
+    raise(NoMethodError, "Define your own persisted? method")
   end
 end

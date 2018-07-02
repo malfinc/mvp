@@ -1,11 +1,11 @@
 Rails.application.routes.draw do
-  devise_for :accounts, controllers: {
+  devise_for :accounts, :controllers => {
     :confirmations => "accounts/confirmations"
   }
 
   devise_scope :account do
     namespace :accounts do
-      resources :confirmations, only: [:edit, :update, :new, :create]
+      resources :confirmations, :only => [:edit, :update, :new, :create]
     end
   end
 

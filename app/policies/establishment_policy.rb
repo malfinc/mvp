@@ -3,12 +3,12 @@ class EstablishmentPolicy < ApplicationPolicy
     def resolve
       case role
       when "user"
-        scope.
-          joins(:versions).
-          where.has do |query|
+        scope
+          .joins(:versions)
+          .where.has do |query|
             (query.versions.actor == account) | (query.moderation_state == "published")
-          end.
-          distinct
+          end
+          .distinct
       when "administrator"
         scope.all
       when "moderator"

@@ -16,13 +16,14 @@ class ApplicationController < ActionController::Base
       :actor_id => nil,
       :group_id => request.request_id
     }
-    if account_signed_in?
-      PaperTrail.request.whodunnit = current_account.email
-      PaperTrail.request.controller_info = {
-        :actor_id => current_account.id,
-        :group_id => request.request_id
-      }
-    end
+
+    return if account_signed_in?
+
+    PaperTrail.request.whodunnit = current_account.email
+    PaperTrail.request.controller_info = {
+      :actor_id => current_account.id,
+      :group_id => request.request_id
+    }
   end
 
   private def assign_user_context(report)

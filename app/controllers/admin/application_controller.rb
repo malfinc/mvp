@@ -13,7 +13,7 @@ module Admin
     before_bugsnag_notify :assign_metadata_tab
 
     def authorize_administrator!
-      raise(Pundit::NotAuthorizedError, message: "you're not allowed to use this resource") unless current_account.administrator?
+      raise(Pundit::NotAuthorizedError, :message => "you're not allowed to use this resource") unless current_account.administrator?
     end
 
     private def user_for_paper_trail

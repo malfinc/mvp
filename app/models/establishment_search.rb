@@ -11,7 +11,7 @@ class EstablishmentSearch < ApplicationComputed
   end
 
   def results
-    Oj.load(super).map { |raw| GooglePlaceResult.new(**raw.symbolize_keys) } if super.present?
+    Oj.load(super).map {|raw| GooglePlaceResult.new(**raw.symbolize_keys)} if super.present?
   end
 
   def persisted?

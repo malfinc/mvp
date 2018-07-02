@@ -70,7 +70,7 @@ module Poutineer
 
     unless Rails.env.development?
       config.log_tags = [
-        lambda do |request|
+        lambda do
           "time=#{Time.now.iso8601}"
         end,
         lambda do |request|
