@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
-  devise_for :accounts
+  devise_for :accounts, :controllers => {
+    :confirmations => "accounts/confirmations"
+  }
+
+  devise_scope :account do
+    namespace :accounts do
+      resources :confirmations, :only => [:edit, :update, :new, :create]
+    end
+  end
 
   authenticate :account, -> (account) {account.administrator?} do
     mount Sidekiq::Web => "/admin/workers"
@@ -8,6 +16,7 @@ Rails.application.routes.draw do
   resources :recipes
   resources :menu_items
   resources :establishments
+  resources :establishment_searches, :only => [:new, :create, :show]
   resources :submissions
 
   namespace :admin do

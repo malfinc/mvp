@@ -24,7 +24,6 @@ html, body {
 
 main#application {
   height: 100%;
-  background-color: #f8c95c;
 }
 
 main#application.page.splash {
@@ -37,7 +36,6 @@ main#application.page.splash {
 main#application #landing_page .page-title {
   text-align: center;
 }
-
 
 .page-title {
   color: white;

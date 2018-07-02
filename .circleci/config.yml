@@ -7,11 +7,11 @@ shared:
         BUNDLE_JOBS: 8
         BUNDLE_PATH: "./vendor/bundle"
         BUNDLE_RETRY: 2
-        ORIGIN_ENCRYPTION_PRIVATE: private
-        ORIGIN_ENCRYPTION_SALT: salt
         PGHOST: 127.0.0.1
         PGUSER: poutineer
         PORT: 3000
+        ORIGIN_ENCRYPTION_PRIVATE: private
+        ORIGIN_ENCRYPTION_SALT: salt
         RACK_ENV: test
         RACK_TIMEOUT_SERVICE_TIMEOUT: 25
         RAILS_EMAIL_HOST: localhost
@@ -194,17 +194,6 @@ jobs:
         run:
           name: "Running rubocop"
           command: "bundle exec rubocop --config .rubocop/config.yml --lint"
-  # eslint:
-  #   docker:
-  #     - *node_docker
-  #   steps:
-  #     - *git_restore
-  #     - "checkout"
-  #     - *npm_restore
-  #     -
-  #       run:
-  #         name: "Running eslint"
-  #         command: "npm run lint"
   rspec:
     docker:
       - *ruby_docker
@@ -214,7 +203,18 @@ jobs:
       - *git_restore
       - "checkout"
       - *bundler_restore
-      - *npm_restore
+      -
+        run:
+          name: "Adding postgresql to apt sources"
+          command: "sudo su -c \"echo 'deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main' >> /etc/apt/sources.list.d/pgdg.list\""
+      -
+        run:
+          name: "Fetching postgresql apt-key"
+          command: "wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -"
+      -
+        run:
+          name: "Installing postgres-client"
+          command: "sudo apt-get update && sudo apt-get install postgresql-client-10"
       -
         run:
           name: "Running RSpec"

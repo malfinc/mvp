@@ -64,6 +64,13 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
 COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 
 
+--
+-- Name: CAST (character varying AS uuid); Type: CAST; Schema: -; Owner: -
+--
+
+CREATE CAST (character varying AS uuid) WITH INOUT AS IMPLICIT;
+
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -1075,6 +1082,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180415205612'),
 ('20180415210200'),
 ('20180415210205'),
-('20180604055134');
+('20180604055134'),
+('20180628070350');
 
 

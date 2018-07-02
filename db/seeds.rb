@@ -6,46 +6,43 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-PaperTrail.request.controller_info = {
-  :group_id => SecureRandom.uuid()
-}
-PaperTrail.request(:whodunnit => "The Machine") do
+PaperTrail.request(:whodunnit => Account::MACHINE_ID, :controller_info => {:group_id => SecureRandom.uuid(), :actor_id => nil}) do
   ActiveRecord::Base.transaction do
     Diet.create([
-      { :name => "Diabetic" },
-      { :name => "GlutenFree" },
-      { :name => "Halal" },
-      { :name => "Hindu" },
-      { :name => "Kosher" },
-      { :name => "LowCalorie" },
-      { :name => "LowFat" },
-      { :name => "LowLactose" },
-      { :name => "LowSalt" },
-      { :name => "Vegan" },
-      { :name => "Vegetarian" }
+      {:name => "Diabetic"},
+      {:name => "GlutenFree"},
+      {:name => "Halal"},
+      {:name => "Hindu"},
+      {:name => "Kosher"},
+      {:name => "LowCalorie"},
+      {:name => "LowFat"},
+      {:name => "LowLactose"},
+      {:name => "LowSalt"},
+      {:name => "Vegan"},
+      {:name => "Vegetarian"}
     ])
     Allergy.create([
-      { :name => "Cow's Milk" },
-      { :name => "Peanuts" },
-      { :name => "Eggs" },
-      { :name => "Shellfish" },
-      { :name => "Fish" },
-      { :name => "Tree Nuts" },
-      { :name => "Soy" },
-      { :name => "Wheat" },
-      { :name => "Rice" },
-      { :name => "Fruit" }
+      {:name => "Cow's Milk"},
+      {:name => "Peanuts"},
+      {:name => "Eggs"},
+      {:name => "Shellfish"},
+      {:name => "Fish"},
+      {:name => "Tree Nuts"},
+      {:name => "Soy"},
+      {:name => "Wheat"},
+      {:name => "Rice"},
+      {:name => "Fruit"}
     ])
     PaymentType.create([
-      { :name => "Cash" },
-      { :name => "Check" },
-      { :name => "Visa" },
-      { :name => "Discover Card" },
-      { :name => "Mastercard" },
-      { :name => "EBT/Foodstamps" },
-      { :name => "Giftcards" },
-      { :name => "Online Payments" },
-      { :name => "Bitcoin/Cryptocurrency" }
+      {:name => "Cash"},
+      {:name => "Check"},
+      {:name => "Visa"},
+      {:name => "Discover Card"},
+      {:name => "Mastercard"},
+      {:name => "EBT/Foodstamps"},
+      {:name => "Giftcards"},
+      {:name => "Online Payments"},
+      {:name => "Bitcoin/Cryptocurrency"}
     ])
 
     if Rails.env.development?
@@ -55,8 +52,7 @@ PaperTrail.request(:whodunnit => "The Machine") do
         :email => "sally@example.com",
         :password => "password"
       )
-      administrator.convert!
-      administrator.complete!
+      administrator.confirm
       administrator.spark!
 
       moderator = Account.create!(
@@ -65,8 +61,7 @@ PaperTrail.request(:whodunnit => "The Machine") do
         :email => "mark@example.com",
         :password => "password"
       )
-      moderator.convert!
-      moderator.complete!
+      moderator.confirm
       moderator.empower!
 
       author = Account.create!(
@@ -75,10 +70,9 @@ PaperTrail.request(:whodunnit => "The Machine") do
         :email => "calvin@example.com",
         :password => "password"
       )
-      author.convert!
-      author.complete!
+      author.confirm
 
-      PaperTrail.request(:whodunnit => administrator) do
+      PaperTrail.request(:whodunnit => administrator, :controller_info => {:group_id => SecureRandom.uuid(), :actor_id => administrator.id}) do
         smokes_poutinerie = Establishment.create!(
           :name => "Smoke's Poutinerie",
           :google_places_id => "ChIJLbNPx9E0K4gRIpDVnhmgUb8",
@@ -88,7 +82,28 @@ PaperTrail.request(:whodunnit => "The Machine") do
             PaymentType.find_by(:name => "Discover Card"),
             PaymentType.find_by(:name => "Mastercard"),
             PaymentType.find_by(:name => "Giftcards")
-          ]
+          ],
+          :google_place => {
+            "types" => ["restaurant", "food", "point_of_interest", "establishment"],
+            "photos" => [
+              "https://lh3.googleusercontent.com/p/AF1QipP2zr_6z7J6FxzJpCvmWXrPxp3-0DViRTehY-su=s1600-w512",
+              "https://lh3.googleusercontent.com/p/AF1QipNwRQFLfPTXF-eOHTXOg1ytpsqdTFOxuwg5JDSN=s1600-w512",
+              "https://lh3.googleusercontent.com/p/AF1QipNjZiUMTQu6V0O2t8tjUoxSrfOE18JyBx4WANdR=s1600-w512"
+            ],
+            "rating" => 4.1,
+            "address" => "218 Adelaide St W, Toronto, ON M5H 1W7, Canada",
+            "website" => "http://smokespoutinerie.com/",
+            "phone_number" => "(416) 599-2873",
+            "schedule" => [
+              {"open" => {"day" => 0, "time" => "1100"}, "close" => {"day" => 1, "time" => "0000"}},
+              {"open" => {"day" => 1, "time" => "1100"}, "close" => {"day" => 2, "time" => "0000"}},
+              {"open" => {"day" => 2, "time" => "1100"}, "close" => {"day" => 3, "time" => "0000"}},
+              {"open" => {"day" => 3, "time" => "1100"}, "close" => {"day" => 4, "time" => "0300"}},
+              {"open" => {"day" => 4, "time" => "1100"}, "close" => {"day" => 5, "time" => "0300"}},
+              {"open" => {"day" => 5, "time" => "1100"}, "close" => {"day" => 6, "time" => "0400"}},
+              {"open" => {"day" => 6, "time" => "1100"}, "close" => {"day" => 0, "time" => "0400"}}
+            ]
+          }
         )
 
         traditional = smokes_poutinerie.menu_items.create!(

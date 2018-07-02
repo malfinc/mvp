@@ -2,9 +2,10 @@ class Account < ApplicationRecord
   include FriendlyId
   include AuditedTransitions
 
-  USERNAME_PATTERN = /\A[a-zA-Z0-9_-]+\z/i
+  USERNAME_PATTERN = /\A[a-zA-Z0-9_\-\.]+\z/i
+  MACHINE_ID = "machine@system.local".freeze
 
-  has_many :recipes, :dependent => :destroy, :autosave => true, :inverse_of => :author
+  has_many :recipes, :dependent => :destroy, :autosave => true, :foreign_key => :author_id, :inverse_of => :author
 
   friendly_id :email, :use => [:slugged, :history], :slug_column => :username
 
@@ -17,11 +18,7 @@ class Account < ApplicationRecord
   devise :validatable
   devise :async
 
-  state_machine :onboarding_state, :initial => :fresh do
-    event :convert do
-      transition :from => :fresh, :to => :converted
-    end
-
+  state_machine :onboarding_state, :initial => :converted do
     event :complete do
       transition :from => :converted, :to => :completed
     end
@@ -75,24 +72,6 @@ class Account < ApplicationRecord
   validates_presence_of :username, :if => :email_required?
   validates_format_of :username, :with => USERNAME_PATTERN, :if => :email_required?
 
-  def lock_access!(*)
-    PaperTrail.request(:whodunnit => "The Machine") do
-      super
-    end
-  end
-
-  def unlock_access!(*)
-    PaperTrail.request(:whodunnit => "The Machine") do
-      super
-    end
-  end
-
-  def valid_for_authentication?(*)
-    PaperTrail.request.whodunnit = "The Machine"
-
-    super
-  end
-
   private def generate_password
     assign_attributes(:password => SecureRandom.hex(60))
   end
@@ -103,5 +82,9 @@ class Account < ApplicationRecord
 
   private def email_required?
     onboarding_state?(:converted) || onboarding_state?(:completed)
+  end
+
+  private def account_confirmed
+    complete! if onboarding_state?(:converted) && can_complete?
   end
 end

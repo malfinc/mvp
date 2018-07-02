@@ -6,12 +6,16 @@ class ApplicationComputed
   attr_accessor :updated_at
 
   def initialize(**attributes)
-    self.id ||= attributes[:id] || SecureRandom.uuid
+    self.id ||= attributes[:id] || SecureRandom.uuid()
     super(
       **attributes.merge(
         :created_at => if created_at.nil? then attributes[:created_at] || Time.zone.now end,
         :updated_at => Time.zone.now
       )
     )
+  end
+
+  def persisted?
+    raise(NoMethodError, "Define your own persisted? method")
   end
 end

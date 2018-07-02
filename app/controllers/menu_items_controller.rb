@@ -3,7 +3,7 @@ class MenuItemsController < ApplicationController
 
   # GET /menu_items
   def index
-    authorize(MenuItem)
+    authorize(pundit_scoped)
     @records = MenuItem.all
   end
 

@@ -9,6 +9,7 @@ class PaperTrail::VersionDashboard < ApplicationDashboard
     :item_type => Field::String,
     :item => Field::Polymorphic,
     :event => Field::String,
+    :group_id => Field::String,
     :actor => Field::BelongsTo.with_options(:class_name => "Account"),
     :transitions => TransitionField,
     :object => ChangeField,
@@ -24,6 +25,7 @@ class PaperTrail::VersionDashboard < ApplicationDashboard
   COLLECTION_ATTRIBUTES = [
     :actor,
     :event,
+    :group_id,
     :item_type,
     :item
   ].freeze
@@ -31,6 +33,7 @@ class PaperTrail::VersionDashboard < ApplicationDashboard
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
+    :group_id,
     :event,
     :transitions,
     :object_changes,
@@ -43,8 +46,7 @@ class PaperTrail::VersionDashboard < ApplicationDashboard
   # FORM_ATTRIBUTES
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
-  FORM_ATTRIBUTES = [
-  ].freeze
+  FORM_ATTRIBUTES = [].freeze
 
   # Overwrite this method to customize how versions are displayed
   # across all pages of the admin dashboard.

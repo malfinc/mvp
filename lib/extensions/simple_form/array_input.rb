@@ -78,7 +78,7 @@ class ArrayInput < SimpleForm::Inputs::StringInput
       "#{attribute_name}_#{index}",
       merge_wrapper_options(
         merge_wrapper_options(
-          { :type => :text }.merge(input_html_options),
+          {:type => :text}.merge(input_html_options),
           @wrapped_options
         ),
         :value => item, :name => "#{object_name}[#{attribute_name}][]"

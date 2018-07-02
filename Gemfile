@@ -23,6 +23,7 @@ gem("activerecord-safer_migrations", "2.0.0")
 gem("ar_after_transaction", "0.5.0")
 gem("ar_transaction_changes", "1.1.3")
 gem("rein", "3.5.0")
+gem("baby_squeel", "1.3.1")
 gem("state_machines-activerecord", "0.5.1")
 gem("strong_migrations", "0.2.2")
 gem("friendly_id", "5.2.4")
@@ -33,7 +34,6 @@ gem("migration_data", "0.3.0")
 gem("kaminari", "1.1.1")
 gem("bugsnag", "6.7.3")
 gem("paper_trail", "9.2.0")
-gem("paper_trail-globalid", "0.2.0")
 gem("devise", "4.4.3")
 gem("devise-async", "1.0.0")
 gem("draper", "3.0.1")
@@ -53,6 +53,7 @@ gem("sitemap_generator", "6.0.1")
 gem("sprockets", "3.7.2")
 gem("webpacker", "3.5.3")
 gem("redcarpet", "3.4.0")
+gem("google_places", "1.1.0")
 gem("bootsnap", "1.3.0", :require => false)
 
 group :production do
@@ -65,6 +66,8 @@ group :development, :test do
   gem "dotenv-rails", "2.5.0", :require => "dotenv/rails-now"
   gem "listen", "3.1.5"
   gem "rspec-rails", "3.7.2"
+  gem "factory_bot_rails", "4.10.0"
+  gem "faker", "1.8.7"
 end
 
 group :test do

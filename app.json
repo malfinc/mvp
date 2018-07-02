@@ -74,6 +74,9 @@
     },
     "HEROKU_PARENT_APP_NAME": {
       "required": true
+    },
+    "GOOGLE_PLACES_API_SECRET": {
+      "required": true
     }
   },
   "formation": {

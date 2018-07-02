@@ -1,0 +1,26 @@
+<% content_for :page_title, "Poutineer - Final Steps" %>
+<% content_for :page_class, "splash" %>
+
+<section id="final-steps" class="page">
+  <h1 class="page-title">Final Steps</h1>
+
+  <%= form_for(resource, as: resource_name, url: accounts_confirmation_path(params[:id]), html: { method: :put }) do |f| %>
+    <% resource.errors.full_messages.each do |message| %>
+      <section class="alert alert-danger" role="alert">
+        <%= message %>!
+      </section>
+    <% end %>
+
+    <section class="form-group">
+      <%= f.label :name, "What's your name?" %>
+      <%= f.text_field :name, autofocus: true, required: true, class: "form-control" %>
+    </section>
+
+    <section class="form-group">
+      <%= f.label :password, "What password do you want?" %>
+      <%= f.password_field :password, required: true, class: "form-control" %>
+    </section>
+
+    <%= f.submit "Complete my account", class: "btn btn-primary" %>
+  <% end %>
+</section>

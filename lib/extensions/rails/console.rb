@@ -3,20 +3,22 @@ module Rails
     initialize = instance_method(:initialize)
 
     define_method :initialize do |*args|
-      unless Rails.env.development? || Rails.env.test?
+      if Rails.env.development? || Rails.env.test?
+        actor = Account.with_role_state(:administrator).last
+      else
         Rails.logger.info("Welcome! What is your email?")
         email = gets.chomp
 
         raise(NoConsoleAuthenticationProvidedError) if email.blank?
 
         actor = Account.find_by!(:email => email)
-
-        PaperTrail.request.whodunnit = actor
-        PaperTrail.request.controller_info = {
-          :actor_id => actor,
-          :group_id => SecureRandom.uuid
-        }
       end
+
+      PaperTrail.request.whodunnit = actor.email
+      PaperTrail.request.controller_info = {
+        :group_id => SecureRandom.uuid(),
+        :actor_id => actor.id
+      }
 
       initialize.bind(self).(*args)
     end

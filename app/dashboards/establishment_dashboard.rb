@@ -14,7 +14,6 @@ class EstablishmentDashboard < ApplicationDashboard
     :name => Field::String,
     :slug => Field::String,
     :google_places_id => Field::String,
-    :google_place => Field::Text.with_options(:searchable => false),
     :moderation_state_event => StateMachineField,
     :moderation_state => Field::String,
     :created_at => Field::DateTime,
@@ -37,7 +36,6 @@ class EstablishmentDashboard < ApplicationDashboard
     :name,
     :slug,
     :moderation_state,
-    :payments_types,
     :created_at,
     :updated_at,
     :payment_types,
@@ -52,6 +50,7 @@ class EstablishmentDashboard < ApplicationDashboard
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
     :name,
+    :google_places_id,
     :moderation_state_event
   ].freeze
 

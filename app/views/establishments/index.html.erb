@@ -1,0 +1,38 @@
+<% if notice %>
+  <p id="notice">
+    <%= notice %>
+  </p>
+<% end %>
+
+<h1>Establishments</h1>
+
+<section class="card-deck">
+  <% @records.each do |record| %>
+    <% case record.moderation_state %>
+    <% when "published" %>
+      <article class="card bg-light">
+        <%= image_tag(record.photos.sample, :card => "card-img-top") %>
+        <section class="card-body">
+          <header>
+            <h5 class="card-title"><%= record.name %></h5>
+            <h6 class="card-subtitle mb-2 text-muted">Contributed by <%= record.contributors %></h6>
+          </header>
+          <p class="card-text">
+            <%= record.menu_items.size %> menu items and a Google rating of <%= "⭐️" * record.rating.round  %>.
+          </p>
+          <%= link_to "Show", record, class: "card-link" %>
+          <%= link_to "Edit", edit_establishment_path(record), class: "card-link" %>
+        </section>
+        <footer class="card-footer">
+          <small class="text-muted">Last updated <%= time_ago_in_words(record.updated_at) %> ago</small>
+        </footer>
+      </article>
+    <% end %>
+  <% end %>
+</section>
+
+<nav class="nav justify-content-end mt-2">
+  <li class="nav-item">
+    <%= link_to "Find Establishment", new_establishment_search_path, class: "nav-link" %>
+  </li>
+</nav>

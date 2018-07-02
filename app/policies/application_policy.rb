@@ -57,7 +57,7 @@ class ApplicationPolicy
   end
 
   private def converted?
-    record.onboarding_state?(:converted)
+    account.onboarding_state?(:converted)
   end
 
   private def completed?

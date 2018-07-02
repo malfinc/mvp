@@ -1,0 +1,16 @@
+<h1>New Establishment Search</h1>
+
+<%= simple_form_for(@record) do |f| %>
+  <%= f.error_notification %>
+
+  <section class="form-inputs">
+    <%= f.input :query, label: "Google Maps Search Query", as: :string %>
+  </section>
+
+  <section class="form-actions card">
+    <section class="card-body">
+      <%= f.button :submit, class: "btn-primary" %>
+      <%= f.button :button, "Clear data", type: :reset, class: "btn-link" %>
+    </section>
+  </section>
+<% end %>

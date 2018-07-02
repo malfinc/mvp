@@ -3,27 +3,27 @@ class EstablishmentsController < ApplicationController
 
   # GET /establishments
   def index
-    authorize(Establishment)
-    @records = Establishment.all
+    authorize(pundit_scoped)
+    find_records
   end
 
   # GET /establishments/1
   def show
-    find_establishment
+    find_record
     authorize_record!
   end
 
   # GET /establishments/new
   def new
     authenticate_account!
-    @record = current_account.establishments.new
+    @record = pundit_scoped.new
     authorize_record!
   end
 
   # POST /establishments
   def create
     authenticate_account!
-    @record = current_account.establishments.new(establishment_params)
+    @record = pundit_scoped.new(establishment_params)
     authorize_record!
 
     if @record.save!
@@ -36,7 +36,7 @@ class EstablishmentsController < ApplicationController
   # PATCH/PUT /establishments/1
   def update
     authenticate_account!
-    find_establishment
+    find_record
     authorize_record!
 
     if @record.update!(establishment_params)
@@ -46,14 +46,23 @@ class EstablishmentsController < ApplicationController
     end
   end
 
-  private def find_establishment
-    @record = Establishment.friendly.find(params[:id])
+  private def find_record
+    @record = EstablishmentDecorator.decorate(pundit_scoped.friendly.find(params[:id]))
+  end
+
+  private def find_records
+    @records = EstablishmentDecorator.decorate_collection(pundit_scoped)
+  end
+
+  private def pundit_scoped
+    policy_scope(Establishment)
   end
 
   # Only allow a trusted parameter "white list" through.
   private def establishment_params
     {
-      :name => params.fetch(:establishment, {}).fetch(:name, nil)
+      :name => params.fetch(:establishment, {}).fetch(:name, nil),
+      :google_place_id => params.fetch(:establishment, {}).fetch(:google_place_id, nil)
     }
   end
 end

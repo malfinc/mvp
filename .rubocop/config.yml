@@ -391,7 +391,6 @@ Layout/SpaceBeforeFirstArg:
 Layout/SpaceInsideArrayLiteralBrackets:
   EnforcedStyle: no_space
   SupportedStyles:
-    - space
     - no_space
     - compact
   EnforcedStyleForEmptyBrackets: no_space
@@ -403,26 +402,23 @@ Layout/SpaceInsideArrayLiteralBrackets:
 Layout/SpaceInsideBlockBraces:
   EnforcedStyle: no_space
   SupportedStyles:
-    - space
     - no_space
   EnforcedStyleForEmptyBraces: no_space
   SupportedStylesForEmptyBraces:
-    - space
     - no_space
-  SpaceBeforeBlockParameters: true
+  SpaceBeforeBlockParameters: false
   Description: Checks that block braces have or don't have surrounding space. For
     blocks taking parameters, checks that the left brace has or doesn't have trailing
     space.
   Enabled: true
 Layout/SpaceInsideHashLiteralBraces:
-  EnforcedStyle: space
+  EnforcedStyle: no_space
   SupportedStyles:
     - space
     - no_space
     - compact
   EnforcedStyleForEmptyBraces: no_space
   SupportedStylesForEmptyBraces:
-    - space
     - no_space
   Description: Use spaces inside hash literal braces - or don't.
   StyleGuide: "#spaces-operators"
@@ -598,6 +594,7 @@ Naming/UncommunicativeMethodParamName:
     - 'on'
     - in
     - at
+    - "_"
   ForbiddenNames: []
   Description: Checks for method parameter names that contain capital letters, end
     in numbers, or do not meet a minimal length.
@@ -1399,7 +1396,6 @@ Rails/BulkChangeTable:
   Description: Check whether alter queries are combinable.
   Enabled: true
 Rails/CreateTableWithTimestamps:
-  Severity: warning
   Include:
     - db/migrate/*.rb
   Description: Checks the migration for which timestamps are not included when creating
@@ -2082,7 +2078,7 @@ Performance/StringReplacement:
 Performance/TimesMap:
   Description: Checks for .times.map calls.
   AutoCorrect: false
-  Enabled: true
+  Enabled: false
 Performance/UnfreezeString:
   Description: Use unary plus to get an unfrozen string literal.
   Enabled: true

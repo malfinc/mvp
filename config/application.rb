@@ -34,16 +34,60 @@ module Poutineer
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    # Don't generate asset files.
     config.generators.assets = false
+
+    # Don't generate helper files.
     config.generators.helper = false
+
+    # by default tables should have uuid primary keys
     config.generators do |generator|
       generator.orm(:active_record, :primary_key_type => :uuid)
     end
-    config.action_controller.include_all_helpers = false
-    config.active_record.schema_format = :sql
-    config.active_job.queue_adapter = :sidekiq
-    config.cache_store = :redis_store, { :expires_in => 30.minutes, :pool => Poutineer::REDIS_CACHE_CONNECTION_POOL }
 
+    # TODO: Document
+    config.action_controller.include_all_helpers = false
+
+    # TODO: Document
+    config.active_record.schema_format = :sql
+
+    # TODO: Document
+    config.active_job.queue_adapter = :sidekiq
+
+    # TODO: Document
+    config.cache_store = [
+      :redis_store,
+      {:expires_in => 30.minutes, :pool => Poutineer::REDIS_CACHE_CONNECTION_POOL}
+    ]
+
+    # TODO: Document
+    config.logger = ActiveSupport::TaggedLogging.new(
+      ActiveSupport::Logger.new(STDOUT)
+    )
+
+    # TODO: Document
+
+    unless Rails.env.development?
+      config.log_tags = [
+        lambda do
+          "time=#{Time.now.iso8601}"
+        end,
+        lambda do |request|
+          "remote-ip=#{request.remote_ip}" if request.remote_ip
+        end,
+        lambda do |request|
+          if request.cookie_jar.encrypted.try!(:[], config.session_options[:key]).try!(:[], "session_id")
+            "session-id=#{request.cookie_jar.encrypted.try!(:[], config.session_options[:key]).try!(:[], "session_id")}"
+          end
+        end,
+        lambda do |request|
+          "request-id=#{request.request_id}" if request.request_id
+        end
+      ]
+    end
+
+    # TODO: Document
     if ENV.fetch("HEROKU_APP_NAME", nil)
       Rails.application.config.action_mailer.default_url_options = {
         :host => "#{ENV.fetch("HEROKU_APP_NAME")}.herokuapp.com"

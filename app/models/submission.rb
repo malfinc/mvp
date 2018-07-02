@@ -13,25 +13,19 @@ class Submission < ApplicationComputed
 
   delegate :name, :to => :subject
 
-  def submitter
-    case subject
-    when Recipe then subject.author
-    end
-  end
-
   def category
     subject.class.model_name
-  end
-
-  def description
-    case subject
-    when Recipe then subject.description
-    end
   end
 
   def subject_type
     subject.class.name
   end
 
-  delegate :updated_at, :to => :subject
+  def submitter
+    case subject
+    when Recipe then subject.author
+    when Establishment then subject.contributors.first
+    when MenuItem then subject.contributors.first
+    end
+  end
 end
