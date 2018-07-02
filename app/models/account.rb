@@ -47,22 +47,22 @@ class Account < ApplicationRecord
     before_transition :do => :version_transition
     after_transition :on => :empower do |record|
       record.after_transaction do
-        AccountRoleMailer.with(:destination => record).upgraded_to_moderator.deliver_now
+        AccountRoleMailer.with(:destination => record).upgraded_to_moderator.deliver_later
       end
     end
     after_transition :on => :spark do |record|
       record.after_transaction do
-        AccountRoleMailer.with(:destination => record).upgraded_to_administrator.deliver_now
+        AccountRoleMailer.with(:destination => record).upgraded_to_administrator.deliver_later
       end
     end
     after_transition :on => :depower do |record|
       record.after_transaction do
-        AccountRoleMailer.with(:destination => record).downgraded_to_user.deliver_now
+        AccountRoleMailer.with(:destination => record).downgraded_to_user.deliver_later
       end
     end
     after_transition :on => :despark do |record|
       record.after_transaction do
-        AccountRoleMailer.with(:destination => record).downgraded_to_user.deliver_now
+        AccountRoleMailer.with(:destination => record).downgraded_to_user.deliver_later
       end
     end
   end
