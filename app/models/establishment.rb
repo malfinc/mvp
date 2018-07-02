@@ -20,6 +20,10 @@ class Establishment < ApplicationRecord
   end
 
   private def google_places_backfill
-    GooglePlacesBackfillJob.perform_async(id)
+    GooglePlacesBackfillJob.perform_async(id) unless google_place.present?
+  end
+
+  private def allowed_to_publish?
+    super && google_place.present?
   end
 end

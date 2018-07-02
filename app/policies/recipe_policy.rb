@@ -3,7 +3,7 @@ class RecipePolicy < ApplicationPolicy
     def resolve
       case role
       when "user"
-        scope.with_moderation_state(:published).or(scope.where(:author => account))
+        scope.where(:author => account).or(scope.with_moderation_state(:published))
       when "administrator"
         scope.all
       when "moderator"
@@ -22,7 +22,7 @@ class RecipePolicy < ApplicationPolicy
     true
   end
 
-  def new
+  def new?
     create?
   end
 
@@ -34,7 +34,7 @@ class RecipePolicy < ApplicationPolicy
     administrator? || owner?
   end
 
-  def create
+  def create?
     converted? || completed? || administrator?
   end
 

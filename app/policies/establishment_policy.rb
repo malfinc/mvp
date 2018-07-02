@@ -3,7 +3,12 @@ class EstablishmentPolicy < ApplicationPolicy
     def resolve
       case role
       when "user"
-        scope.with_moderation_state(:published).or(scope.where(:author => account))
+        scope.
+          joins(:versions).
+          where.has do |query|
+            (query.versions.actor == account) | (query.moderation_state == "published")
+          end.
+          distinct
       when "administrator"
         scope.all
       when "moderator"
@@ -22,7 +27,7 @@ class EstablishmentPolicy < ApplicationPolicy
     true
   end
 
-  def new
+  def new?
     create?
   end
 
@@ -34,7 +39,7 @@ class EstablishmentPolicy < ApplicationPolicy
     administrator? || owner?
   end
 
-  def create
+  def create?
     converted? || completed? || administrator?
   end
 

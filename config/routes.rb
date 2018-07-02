@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   resources :recipes
   resources :menu_items
   resources :establishments
+  resources :establishment_searches, :only => [:new, :create, :show]
   resources :submissions
 
   namespace :admin do

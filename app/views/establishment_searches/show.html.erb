@@ -1,0 +1,29 @@
+<% if notice %>
+  <p id="notice">
+    <%= notice %>
+  </p>
+<% end %>
+
+<h1><%= @record.result_total %> for "<%= @record.query %>"</h1>
+
+<% if @record.results.present? %>
+  <ul>
+    <% @record.results.each do |result| %>
+      <li><%= result.name %></li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>
+    We couldn't find any matching places. Try being more specific, like these:
+  </p>
+  <ul>
+    <li>"smoke's poutinerie in downtown los angeles"</li>
+    <li>"best poutine in seattle"</li>
+  </ul>
+<% end %>
+
+<nav class="nav justify-content-end mt-2">
+  <li class="nav-item">
+    <%= link_to "New Search", new_establishment_search_path, class: "nav-link" %>
+  </li>
+</nav>

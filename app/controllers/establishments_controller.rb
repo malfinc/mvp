@@ -3,7 +3,7 @@ class EstablishmentsController < ApplicationController
 
   # GET /establishments
   def index
-    authorize(Establishment)
+    authorize(pundit_scoped)
     find_records
   end
 
@@ -16,14 +16,14 @@ class EstablishmentsController < ApplicationController
   # GET /establishments/new
   def new
     authenticate_account!
-    @record = current_account.establishments.new
+    @record = pundit_scoped.new
     authorize_record!
   end
 
   # POST /establishments
   def create
     authenticate_account!
-    @record = current_account.establishments.new(establishment_params)
+    @record = pundit_scoped.new(establishment_params)
     authorize_record!
 
     if @record.save!
@@ -56,5 +56,13 @@ class EstablishmentsController < ApplicationController
 
   private def pundit_scoped
     policy_scope(Establishment)
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  private def establishment_params
+    {
+      :name => params.fetch(:establishment, {}).fetch(:name, nil),
+      :google_place_id => params.fetch(:establishment, {}).fetch(:google_place_id, nil)
+    }
   end
 end
