@@ -4,10 +4,13 @@ module AuditedTransitions
   included do
     attr_accessor :transitions
 
-    has_paper_trail :meta => {
-      :actor_id => :actor_id,
-      :transitions => :transitions
-    }
+    has_paper_trail(
+      :meta => {
+        :actor_id => :actor_id,
+        :transitions => :transitions
+      },
+      :class_name => const_get("PAPER_TRAIL_MODEL")
+    )
   end
 
   private def version_transition(transition)

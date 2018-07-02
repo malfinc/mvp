@@ -1,4 +1,6 @@
 class Establishment < ApplicationRecord
+  PAPER_TRAIL_MODEL = "PublicVersion"
+
   include FriendlyId
   include Moderated
 

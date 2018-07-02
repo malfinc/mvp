@@ -1,9 +1,10 @@
 class Account < ApplicationRecord
-  include FriendlyId
-  include AuditedTransitions
-
+  PAPER_TRAIL_MODEL = "PublicVersion"
   USERNAME_PATTERN = /\A[a-zA-Z0-9_\-\.]+\z/i
   MACHINE_ID = "machine@system.local".freeze
+
+  include FriendlyId
+  include AuditedTransitions
 
   has_many :recipes, :dependent => :destroy, :autosave => true, :foreign_key => :author_id, :inverse_of => :author
 
