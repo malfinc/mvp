@@ -3,6 +3,7 @@ class Account < ApplicationRecord
   include AuditedTransitions
 
   USERNAME_PATTERN = /\A[a-zA-Z0-9_\-\.]+\z/i
+  MACHINE_ID = "machine@system.local"
 
   has_many :recipes, :dependent => :destroy, :autosave => true, :foreign_key => :author_id, :inverse_of => :author
 
