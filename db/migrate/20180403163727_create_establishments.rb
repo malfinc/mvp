@@ -5,7 +5,7 @@ class CreateEstablishments < ActiveRecord::Migration[5.1]
       table.citext(:slug, :null => false)
       table.text(:google_places_id)
       table.jsonb(:google_place, :null => false, :default => {})
-      table.string(:moderation_state, :null => false)
+      table.citext(:moderation_state, :null => false)
       table.timestamps
 
       table.index(:slug)
