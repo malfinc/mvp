@@ -3,7 +3,7 @@ class RecipesController < ApplicationController
 
   # GET /recipes
   def index
-    authorize(Recipe)
+    authorize(pundit_scoped)
     find_records
   end
 
@@ -16,7 +16,9 @@ class RecipesController < ApplicationController
   # GET /recipes/new
   def new
     authenticate_account!
-    @record = current_account.recipes.new
+    @record = RecipeDecorator.decorate(pundit_scoped.new)
+    @record.assign_attributes(:author => current_account)
+    authorize_record!
   end
 
   # GET /recipes/1/edit
@@ -29,7 +31,8 @@ class RecipesController < ApplicationController
   # POST /recipes
   def create
     authenticate_account!
-    @record = current_account.recipes.new(recipe_params)
+    @record = pundit_scoped.new(recipe_params)
+    @record.assign_attributes(:author => current_account)
     authorize_record!
 
     if @record.save!
