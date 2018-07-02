@@ -6,7 +6,7 @@ class AccountDashboard < ApplicationDashboard
   # which determines how the attribute is displayed
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
-    :versions => Field::HasMany.with_options(:class_name => "PaperTrail::Version"),
+    :versions => Field::HasMany.with_options,
     :slugs => Field::HasMany.with_options(:class_name => "FriendlyId::Slug"),
     :recipes => Field::HasMany,
     :email => Field::Email,

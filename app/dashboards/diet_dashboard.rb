@@ -7,7 +7,7 @@ class DietDashboard < ApplicationDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     :menu_items => Field::HasMany,
-    :versions => Field::HasMany.with_options(:class_name => "PaperTrail::Version"),
+    :versions => Field::HasMany.with_options,
     :name => Field::String,
     :created_at => Field::DateTime,
     :updated_at => Field::DateTime
