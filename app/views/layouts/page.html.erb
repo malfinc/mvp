@@ -14,7 +14,7 @@
     <main id="application" class="page <%= Array(yield(:page_types)).join(" ") %>">
       <section id="<%= params[:id] %>_page" class="container">
         <h1 class="page-title">
-          <%= yield(:page_title) %>
+          <strong><%= yield(:page_header) %></strong>
         </h1>
         <%= yield %>
       </section>

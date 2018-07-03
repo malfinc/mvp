@@ -1,21 +1,21 @@
-<% content_for :page_title, "Poutineer - Login" %>
-<% content_for :page_class, "splash" %>
+<% content_for :page_title, "Poutineer - Resend Email Confirmation" %>
+<% content_for :page_header, "Resend Email Confirmation" %>
+<% content_for :page_types, :splash %>
 
-<section id="email-confirmation" class="page">
-  <h1 class="page-title">Email Confirmation</h1>
-
-  <%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
-    <% resource.errors.full_messages.each do |message| %>
-      <section class="alert alert-danger" role="alert">
-        <%= message %>!
-      </section>
-    <% end %>
-
-    <section class="form-group">
-      <%= f.label :email %>
-      <%= f.email_field :email, autofocus: true, value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), class: "form-control" %>
+<%= form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
+  <% resource.errors.full_messages.each do |message| %>
+    <section class="alert alert-danger" role="alert">
+      <%= message %>!
     </section>
-
-    <%= f.submit "Resend instructions", class: "btn btn-primary" %>
   <% end %>
-</section>
+
+  <section class="form-group">
+    <%= f.label :email %>
+    <%= f.email_field :email, autofocus: true, value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), class: "form-control" %>
+  </section>
+
+  <section class="call-to-action btn-group">
+    <%= f.submit "Resend", class: "btn btn-link link-primary" %>
+    <%= render "accounts/shared/links" %>
+  </section>
+<% end %>

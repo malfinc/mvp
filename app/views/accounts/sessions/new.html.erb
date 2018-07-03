@@ -1,34 +1,33 @@
 <% content_for :page_title, "Poutineer - Login" %>
-<% content_for :page_class, "splash" %>
+<% content_for :page_header, "Login" %>
+<% content_for :page_types, :splash %>
 
-<section id="login" class="page">
-  <h1 class="page-title">Login</h1>
+<% if flash.key?("alert") %>
+  <section class="alert alert-danger" role="alert">
+    <%= flash["alert"] %>
+  </section>
+<% end %>
 
-  <% if flash.key?("alert") %>
-    <section class="alert alert-danger" role="alert">
-      <%= flash["alert"] %>
+<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+  <section class="form-group">
+    <%= f.label :email %>
+    <%= f.email_field :email, autofocus: true, class: "form-control" %>
+  </section>
+
+  <section class="form-group">
+    <%= f.label :password %>
+    <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
+  </section>
+
+  <% if devise_mapping.rememberable? -%>
+    <section class="form-group form-check">
+      <%= f.check_box :remember_me, class: "form-check-input" %>
+      <%= f.label :remember_me, class: "form-check-label" %>
     </section>
-  <% end %>
+  <% end -%>
 
-  <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-    <section class="form-group">
-      <%= f.label :email %>
-      <%= f.email_field :email, autofocus: true, class: "form-control" %>
-    </section>
-
-    <section class="form-group">
-      <%= f.label :password %>
-      <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
-    </section>
-
-    <% if devise_mapping.rememberable? -%>
-      <section class="form-group form-check">
-        <%= f.check_box :remember_me, class: "form-check-input" %>
-        <%= f.label :remember_me, class: "form-check-label" %>
-      </section>
-    <% end -%>
-
-    <%= f.submit "Login", class: "btn btn-primary" %>
-  <% end %>
-  <%= render "accounts/shared/links" %>
-</section>
+  <section class="call-to-action btn-group">
+    <%= f.submit "Login", class: "btn btn-link link-primary" %>
+    <%= render "accounts/shared/links" %>
+  </section>
+<% end %>

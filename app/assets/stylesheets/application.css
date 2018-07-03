@@ -16,6 +16,7 @@
 
 :root {
   --primary: #f85c8b;
+  --secondary: #f8c95c;
 }
 
 html, body {
@@ -23,7 +24,7 @@ html, body {
 }
 
 main#application {
-  height: 100%;
+  padding-top: 25px;
 }
 
 main#application.page.splash {
@@ -41,12 +42,19 @@ main#application #landing_page .page-title {
   color: white;
   text-transform: uppercase;
   font-size: 78px;
-  font-family: 'Six Caps', sans-serif;
+}
+
+.page-title strong {
+  background-color: var(--secondary);
 }
 
 .btn-primary {
   background-color: var(--primary);
   border-color: var(--primary);
+}
+
+.link-primary {
+  text-decoration: underline var(--secondary);
 }
 
 .btn-primary:hover {

@@ -1,0 +1,14 @@
+<% content_for :page_title, "Poutineer - Frontpage" %>
+<% content_for :page_header, "Frontpage" %>
+<% content_for :page_types, :splash %>
+
+<p>
+  Welcome!
+</p>
+
+<section class="call-to-actions btn-group">
+  <%= link_to "Recipes", recipes_path(), class: "btn btn-link link-primary" %>
+  <%= link_to "Establishments", establishments_path(), class: "btn btn-link link-primary" %>
+  <%= link_to "Admin", admin_root_path(), class: "btn btn-link link-primary" if current_account.role_state?(:administrator) %>
+  <%= button_to "Sign out", destroy_account_session_path(), :method => :delete, data: {:confirm => "You sure?"}, :class => "btn btn-link link-primary" %>
+</section>

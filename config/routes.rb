@@ -39,6 +39,7 @@ Rails.application.routes.draw do
     root :to => "accounts#index"
   end
 
+  get "/frontpage" => "pages#show", :as => :frontpage, :format => false, :id => "frontpage"
   get "/pages/*id" => "pages#show", :as => :page, :format => false
 
   root :to => "pages#show", :id => "landing"

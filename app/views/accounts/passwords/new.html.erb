@@ -1,4 +1,6 @@
-<h2>Forgot your password?</h2>
+<% content_for :page_title, "Poutineer - Reset Password" %>
+<% content_for :page_header, "Reset Password" %>
+<% content_for :page_types, :splash %>
 
 <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
   <%= devise_error_messages! %>
@@ -8,9 +10,8 @@
     <%= f.email_field :email, autofocus: true %>
   </div>
 
-  <div class="actions">
-    <%= f.submit "Send me reset password instructions" %>
-  </div>
+  <section class="call-to-action btn-group">
+    <%= f.submit "Reset", class: "btn btn-link link-primary" %>
+    <%= render "accounts/shared/links" %>
+  </section>
 <% end %>
-
-<%= render "accounts/shared/links" %>

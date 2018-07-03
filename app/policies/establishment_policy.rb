@@ -4,9 +4,9 @@ class EstablishmentPolicy < ApplicationPolicy
       case role
       when "user"
         scope
-          .joins(:versions)
+          .joins(:public_versions)
           .where.has do |query|
-            (query.versions.actor == account) | (query.moderation_state == "published")
+            (query.public_versions.actor == account) | (query.moderation_state == "published")
           end
           .distinct
       when "administrator"

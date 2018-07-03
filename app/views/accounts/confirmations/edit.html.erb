@@ -1,8 +1,11 @@
 <% content_for :page_title, "Poutineer - Final Steps" %>
-<% content_for :page_class, "splash" %>
+<% content_for :page_header, "Final Steps" %>
+<% content_for :page_types, :splash %>
 
 <section id="final-steps" class="page">
-  <h1 class="page-title">Final Steps</h1>
+  <h2 class="page-title">
+    <strong>Final Steps</strong>
+  </h2>
 
   <%= form_for(resource, as: resource_name, url: accounts_confirmation_path(params[:id]), html: { method: :put }) do |f| %>
     <% resource.errors.full_messages.each do |message| %>
@@ -21,6 +24,9 @@
       <%= f.password_field :password, required: true, class: "form-control" %>
     </section>
 
-    <%= f.submit "Complete my account", class: "btn btn-primary" %>
+    <section class="call-to-action btn-group">
+      <%= f.submit "Complete my account", class: "btn btn-link link-primary" %>
+      <%= render "accounts/shared/links" %>
+    </section>
   <% end %>
 </section>
