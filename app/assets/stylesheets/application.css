@@ -34,10 +34,6 @@ main#application.page.splash {
   flex-direction: column;
 }
 
-main#application #landing_page .page-title {
-  text-align: center;
-}
-
 .page-title {
   color: white;
   text-transform: uppercase;
