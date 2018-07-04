@@ -1,28 +1,26 @@
-<% content_for :page_title, "Poutineer" %>
-<% content_for :page_class, "splash" %>
+<% content_for :page_title, "Poutineer - Sign up" %>
+<% content_for :page_header, "Sign up" %>
+<% content_for :page_types, :splash %>
 
-<section id="signup" class="page">
-  <h1 class="page-title">Sign up</h1>
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= devise_error_messages! %>
 
-  <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-    <%= devise_error_messages! %>
-
-    <% if flash.key?("alert") %>
-      <section class="alert alert-danger" role="alert">
-        <%= flash["alert"] %>
-      </section>
-    <% end %>
-
-    <section class="field-group">
-      <%= f.label :email %>
-      <%= f.email_field :email, autofocus: true, class: "form-control" %>
-      <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+  <% if flash.key?("alert") %>
+    <section class="alert alert-danger" role="alert">
+      <%= flash["alert"] %>
     </section>
-
-    <%= f.hidden_field :password, value: SecureRandom.hex %>
-
-    <%= f.submit "Login", class: "btn btn-primary" %>
   <% end %>
 
-  <%= render "accounts/shared/links" %>
-</section>
+  <section class="field-group">
+    <%= f.label :email %>
+    <%= f.email_field :email, autofocus: true, class: "form-control" %>
+    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+  </section>
+
+  <%= f.hidden_field :password, value: SecureRandom.hex %>
+
+  <section class="call-to-action btn-group">
+    <%= f.submit "Sign up", class: "btn btn-link link-primary" %>
+    <%= render "accounts/shared/links" %>
+  </section>
+<% end %>

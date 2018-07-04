@@ -1,12 +1,14 @@
-<h1>Editing Recipe</h1>
+<% content_for :page_title, "Poutineer - Modify Recipe" %>
+<% content_for :page_header, "Modify Recipe" %>
+<% content_for :page_types, :splash %>
 
 <%= render "form", recipe: @record %>
 
 <nav class="nav justify-content-end mt-2">
   <li class="nav-item">
-    <%= link_to "Show", @record, class: "nav-link" %>
+    <%= link_to "Show", @record, class: "nav-link link-primary" %>
   </li>
   <li class="nav-item">
-    <%= link_to "List", recipes_path, class: "nav-link" %>
+    <%= link_to "List", recipes_path, class: "nav-link link-primary" %>
   </li>
 </nav>

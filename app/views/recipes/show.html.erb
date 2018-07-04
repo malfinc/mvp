@@ -1,10 +1,12 @@
+<% content_for :page_title, "Poutineer - #{@record.name}" %>
+<% content_for :page_header, "#{@record.name}" %>
+<% content_for :page_types, :splash %>
+
 <% if notice %>
   <p id="notice">
     <%= notice %>
   </p>
 <% end %>
-
-<h1><%= @record.name %></h1>
 
 <%= @record.rendered_description %>
 
@@ -18,9 +20,9 @@
 
 <nav class="nav justify-content-end mt-2">
   <li class="nav-item">
-    <%= link_to "Edit", edit_recipe_path(@record), class: "nav-link" %>
+    <%= link_to "Edit", edit_recipe_path(@record), class: "nav-link link-primary" %>
   </li>
   <li class="nav-item">
-    <%= link_to "List", recipes_path, class: "nav-link" %>
+    <%= link_to "List", recipes_path, class: "nav-link link-primary" %>
   </li>
 </nav>

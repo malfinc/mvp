@@ -1,9 +1,11 @@
-<h1>New Establishment</h1>
+<% content_for :page_title, "Poutineer - Submit Establishment" %>
+<% content_for :page_header, "Submit Establishment" %>
+<% content_for :page_types, :splash %>
 
 <%= render "form", recipe: @record %>
 
 <nav class="nav justify-content-end mt-2">
   <li class="nav-item">
-    <%= link_to "Back", establishments_path, class: "nav-link" %>
+    <%= link_to "List", establishments_path, class: "nav-link" %>
   </li>
 </nav>

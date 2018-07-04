@@ -1,10 +1,12 @@
+<% content_for :page_title, "Poutineer - #{@record.name}" %>
+<% content_for :page_header, "#{@record.name}" %>
+<% content_for :page_types, :splash %>
+
 <% if notice %>
   <p id="notice">
     <%= notice %>
   </p>
 <% end %>
-
-<h1><%= @record.name %></h1>
 
 <%= @record.rendered_description %>
 

@@ -5,6 +5,6 @@ class EstablishmentSearchDecorator < ApplicationDecorator
   decorates_association :submitter
 
   def result_total
-    "#{results.count} Google Place result".pluralize(results.count)
+    "#{results.count} result".pluralize(results.count)
   end
 end

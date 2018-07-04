@@ -1,13 +1,14 @@
 <% content_for :page_title, "Poutineer" %>
+<% content_for :page_header, "Poutineer" %>
 <% content_for :page_types, :splash %>
 
-<blockquote class="blockquote text-center">
+<blockquote class="blockquote">
   <p>
     Find the best poutine near you, reviewed by people who love it.
   </p>
 </blockquote>
 
-<section class="call-to-actions">
-  <%= link_to "Sign up", new_account_registration_url(), class: "btn btn-primary btn-lg btn-block" %>
-  <%= link_to "Login", new_account_session_url(), class: "btn btn-light btn-lg btn-block" %>
+<section class="call-to-actions btn-group">
+  <%= link_to "Sign up", new_account_registration_url(), class: "btn btn-link link-primary" %>
+  <%= link_to "Login", new_account_session_url(), class: "btn btn-link link-primary" %>
 </section>
