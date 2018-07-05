@@ -21,4 +21,8 @@ class GooglePlaceResult < ApplicationComputed
       :photos => spot.photos.first(3).map {|photo| photo.fetch_url(512)}
     }
   end
+
+  def persisted?
+    true
+  end
 end
