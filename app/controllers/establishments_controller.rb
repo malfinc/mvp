@@ -62,7 +62,7 @@ class EstablishmentsController < ApplicationController
   private def establishment_params
     {
       :name => params.fetch(:establishment, {}).fetch(:name, nil),
-      :google_place_id => params.fetch(:establishment, {}).fetch(:google_place_id, nil)
+      :google_places_id => params.fetch(:establishment, {}).fetch(:google_places_id, nil)
     }
   end
 end

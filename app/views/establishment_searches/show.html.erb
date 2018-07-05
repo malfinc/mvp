@@ -13,11 +13,11 @@
 </p>
 
 <% if @record.results.present? %>
-  <ul>
-    <% @record.results.each do |result| %>
-      <li><%= result.name %></li>
-    <% end %>
-  </ul>
+  <% @record.results.in_groups_of(2, false) do |results| %>
+    <section class="card-group">
+      <%= render partial: "card", collection: results, as: :result %>
+    </section>
+  <% end %>
 <% else %>
   <p>
     We couldn't find any matching places. Try being more specific, like these:

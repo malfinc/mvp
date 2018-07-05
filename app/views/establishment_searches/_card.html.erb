@@ -1,0 +1,22 @@
+<section class="card">
+  <%= image_tag(result.photos.sample, :card => "card-img-top") %>
+  <section class="card-body">
+    <header>
+      <h5 class="card-title"><%= result.name %></h5>
+    </header>
+    <p class="card-text">
+      A Google rating of <span class="rating"><%= "⭐️" * result.rating.round  %></span>.
+    </p>
+    </header>
+    <p class="card-text">
+      <% result.types.each do |type| %>
+        <span class="badge badge-info"><%= type.humanize %></span>
+      <% end %>
+    </p>
+    <%= form_tag establishments_path do %>
+      <%= hidden_field_tag "establishment[name]", result.name %>
+      <%= hidden_field_tag "establishment[google_places_id]", result.id %>
+      <%= submit_tag "Save" , :class => "btn btn-link link-primary card-link" %>
+    <% end %>
+  </section>
+</section>
