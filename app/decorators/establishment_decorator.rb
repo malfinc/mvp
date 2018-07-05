@@ -6,11 +6,11 @@ class EstablishmentDecorator < ApplicationDecorator
   end
 
   def photos
-    google_place.fetch("photos")
+    google_place.fetch("photos", [])
   end
 
   def rating
-    google_place.fetch("rating")
+    google_place.fetch("rating", 0.0)
   end
 
   def google_place
