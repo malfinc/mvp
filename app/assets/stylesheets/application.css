@@ -25,6 +25,7 @@ html, body {
 
 main#application {
   padding-top: 25px;
+  height: 100%;
 }
 
 main#application.page.splash {

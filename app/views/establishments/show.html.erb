@@ -8,21 +8,27 @@
   </p>
 <% end %>
 
-<%= @record.rendered_description %>
-
-<h2>Ingredients</h2>
-
-<ul class="list-group">
-  <% @record.ingredients.each do |ingredient| %>
-    <li class="list-group-item"><%= ingredient %></li>
-  <% end %>
-</ol>
+<section>
+  <%= image_tag(@record.photos.sample, :card => "card-img-top") if @record.photos.any? %>
+  <section>
+    <header>
+      <h5><%= @record.name %></h5>
+      <h6 class="text-muted">Contributed by <%= @record.contributors %></h6>
+    </header>
+    <p>
+      <%= @record.menu_items.size %> menu items and a Google rating of <%= "⭐️" * @record.rating.round  %>.
+    </p>
+  </section>
+  <footer>
+    <small class="text-muted">Last updated <%= time_ago_in_words(@record.updated_at) %> ago</small>
+  </footer>
+</section>
 
 <nav class="nav justify-content-end mt-2">
   <li class="nav-item">
-    <%= link_to "Edit", edit_establishment_path(@record), class: "nav-link" %>
+    <%= link_to "Edit", edit_establishment_path(@record), class: "link-primary nav-link" %>
   </li>
   <li class="nav-item">
-    <%= link_to "List", establishments_path, class: "nav-link" %>
+    <%= link_to "List", establishments_path, class: "link-primary nav-link" %>
   </li>
 </nav>

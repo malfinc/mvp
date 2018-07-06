@@ -10,6 +10,7 @@ class GooglePlaceResult < ApplicationComputed
 
   def self.serialize(spot)
     {
+      :id => spot.place_id,
       :name => spot.name,
       :types => spot.types,
       :phone_number => spot.formatted_phone_number,
@@ -19,5 +20,9 @@ class GooglePlaceResult < ApplicationComputed
       :schedule => spot.opening_hours&.fetch("periods", []),
       :photos => spot.photos.first(3).map {|photo| photo.fetch_url(512)}
     }
+  end
+
+  def persisted?
+    true
   end
 end

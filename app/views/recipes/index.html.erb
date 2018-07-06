@@ -10,7 +10,7 @@
 
 <section class="card-deck">
   <% @records.each do |record| %>
-    <article class="card bg-light">
+    <section class="card bg-light">
       <img class="card-img-top" src="" alt="title">
       <section class="card-body">
         <header>
@@ -27,7 +27,7 @@
       <footer class="card-footer">
         <small class="text-muted">Last updated <%= time_ago_in_words(record.updated_at) %> ago</small>
       </footer>
-    </article>
+    </section>
   <% end %>
 </section>
 
