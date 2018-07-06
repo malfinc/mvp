@@ -8,11 +8,11 @@
   </p>
 </blockquote>
 
+<picture style="display: block;">
+  <%= image_tag image_path("logo.png"), :width => 150 %>
+</picture>
+
 <section class="call-to-actions btn-group">
   <%= link_to "Sign up", new_account_registration_url(), class: "btn btn-link link-primary" %>
   <%= link_to "Login", new_account_session_url(), class: "btn btn-link link-primary" %>
 </section>
-
-<picture>
-  <%= image_tag image_path("logo.png") %>
-</picture>
