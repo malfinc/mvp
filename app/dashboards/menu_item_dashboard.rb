@@ -7,11 +7,11 @@ class MenuItemDashboard < ApplicationDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     :tags => Field::HasMany.with_options(:class_name => "Gutentag::Tag"),
-    :versions => Field::HasMany.with_options,
+    :public_versions => Field::HasMany.with_options,
     :slugs => Field::HasMany.with_options(:class_name => "FriendlyId::Slug"),
     :diets => Field::HasMany,
     :allergies => Field::HasMany,
-    :establishment => Field::HasOne,
+    :establishment => Field::BelongsTo,
     :name => Field::String,
     :slug => Field::String,
     :description => Field::String,

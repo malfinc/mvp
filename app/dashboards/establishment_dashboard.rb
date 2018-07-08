@@ -7,15 +7,15 @@ class EstablishmentDashboard < ApplicationDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     :tags => Field::HasMany.with_options(:class_name => "Gutentag::Tag"),
-    :versions => Field::HasMany.with_options,
+    :public_versions => Field::HasMany.with_options,
     :slugs => Field::HasMany.with_options(:class_name => "FriendlyId::Slug"),
     :menu_items => Field::HasMany,
     :payment_types => Field::HasMany,
     :name => Field::String,
     :slug => Field::String,
     :google_places_id => Field::String,
-    :moderation_state_event => StateMachineField,
     :moderation_state => Field::String,
+    :moderation_state_event => StateMachineField,
     :created_at => Field::DateTime,
     :updated_at => Field::DateTime
   }.freeze
