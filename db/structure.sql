@@ -479,7 +479,7 @@ CREATE TABLE public.public_versions (
 CREATE TABLE public.questions (
     id bigint NOT NULL,
     body text NOT NULL,
-    type text NOT NULL,
+    kind text NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );

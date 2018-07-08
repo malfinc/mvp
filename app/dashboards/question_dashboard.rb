@@ -7,7 +7,7 @@ class QuestionDashboard < ApplicationDashboard
   # on pages throughout the dashboard.
   ATTRIBUTE_TYPES = {
     :answers => Field::HasMany,
-    :type => Field::Enum,
+    :kind => Field::Enum,
     :body => Field::Text,
     :created_at => Field::DateTime,
     :updated_at => Field::DateTime
@@ -19,7 +19,7 @@ class QuestionDashboard < ApplicationDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :type,
+    :kind,
     :body,
     :created_at
   ].freeze
@@ -27,7 +27,7 @@ class QuestionDashboard < ApplicationDashboard
   # SHOW_PAGE_ATTRIBUTES
   # an array of attributes that will be displayed on the model's show page.
   SHOW_PAGE_ATTRIBUTES = [
-    :type,
+    :kind,
     :body,
     :answers
   ].freeze
@@ -36,7 +36,7 @@ class QuestionDashboard < ApplicationDashboard
   # an array of attributes that will be displayed
   # on the model's form (`new` and `edit`) pages.
   FORM_ATTRIBUTES = [
-    :type,
+    :kind,
     :body
   ].freeze
 
