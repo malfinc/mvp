@@ -18,7 +18,7 @@ class CreatePublicVersions < ActiveRecord::Migration[5.1]
       table.index(:created_at)
       table.index(:event)
 
-      table.foreign_key :accounts, column: :actor_id
+      table.foreign_key(:accounts, :column => :actor_id)
     end
   end
 end

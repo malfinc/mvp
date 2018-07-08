@@ -1,6 +1,5 @@
 class Recipe < ApplicationRecord
-  PAPER_TRAIL_MODEL = "PublicVersion"
-
+  PAPER_TRAIL_MODEL = "PublicVersion".freeze
   include FriendlyId
   include Moderated
 

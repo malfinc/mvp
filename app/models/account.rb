@@ -1,5 +1,5 @@
 class Account < ApplicationRecord
-  PAPER_TRAIL_MODEL = "PublicVersion"
+  PAPER_TRAIL_MODEL = "PublicVersion".freeze
   USERNAME_PATTERN = /\A[a-zA-Z0-9_\-\.]+\z/i
   MACHINE_ID = "machine@system.local".freeze
 
