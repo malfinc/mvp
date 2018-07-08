@@ -58,8 +58,12 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 
+  config.before(:each) do
+    load(Rails.root.join("db", "seeds.rb"))
+  end
+
   config.around do |example|
-    PaperTrail.request(:whodunnit => "tests@system.local", :controller_info => {:actor_id => nil, :group_id => SecureRandom.uuid()}) do
+    PaperTrail.request(:whodunnit => Account::MACHINE_ID, :controller_info => {:actor_id => nil, :group_id => SecureRandom.uuid()}) do
       example.run
     end
   end
