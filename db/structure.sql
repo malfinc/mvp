@@ -153,6 +153,38 @@ CREATE TABLE public.allergies_recipes (
 
 
 --
+-- Name: answers; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.answers (
+    id bigint NOT NULL,
+    body text NOT NULL,
+    question_id bigint NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: answers_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.answers_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: answers_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.answers_id_seq OWNED BY public.answers.id;
+
+
+--
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -162,6 +194,41 @@ CREATE TABLE public.ar_internal_metadata (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
+
+
+--
+-- Name: critiques; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.critiques (
+    id bigint NOT NULL,
+    author_id uuid NOT NULL,
+    review_id uuid NOT NULL,
+    question_id bigint NOT NULL,
+    answer_id bigint NOT NULL,
+    gauge integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: critiques_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.critiques_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: critiques_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.critiques_id_seq OWNED BY public.critiques.id;
 
 
 --
@@ -406,6 +473,38 @@ CREATE TABLE public.public_versions (
 
 
 --
+-- Name: questions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.questions (
+    id bigint NOT NULL,
+    body text NOT NULL,
+    type text NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: questions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.questions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: questions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.questions_id_seq OWNED BY public.questions.id;
+
+
+--
 -- Name: recipes; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -420,6 +519,20 @@ CREATE TABLE public.recipes (
     instructions text[] DEFAULT '{}'::text[] NOT NULL,
     cook_time integer NOT NULL,
     prep_time integer NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: reviews; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.reviews (
+    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
+    author_id uuid NOT NULL,
+    body text NOT NULL,
+    moderation_state text NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -474,6 +587,20 @@ ALTER TABLE ONLY public.allergies ALTER COLUMN id SET DEFAULT nextval('public.al
 
 
 --
+-- Name: answers id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.answers ALTER COLUMN id SET DEFAULT nextval('public.answers_id_seq'::regclass);
+
+
+--
+-- Name: critiques id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.critiques ALTER COLUMN id SET DEFAULT nextval('public.critiques_id_seq'::regclass);
+
+
+--
 -- Name: diets id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -499,6 +626,13 @@ ALTER TABLE ONLY public.gutentag_taggings ALTER COLUMN id SET DEFAULT nextval('p
 --
 
 ALTER TABLE ONLY public.payment_types ALTER COLUMN id SET DEFAULT nextval('public.payment_types_id_seq'::regclass);
+
+
+--
+-- Name: questions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.questions ALTER COLUMN id SET DEFAULT nextval('public.questions_id_seq'::regclass);
 
 
 --
@@ -534,11 +668,27 @@ ALTER TABLE ONLY public.allergies
 
 
 --
+-- Name: answers answers_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.answers
+    ADD CONSTRAINT answers_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: ar_internal_metadata ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: critiques critiques_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.critiques
+    ADD CONSTRAINT critiques_pkey PRIMARY KEY (id);
 
 
 --
@@ -614,11 +764,27 @@ ALTER TABLE ONLY public.public_versions
 
 
 --
+-- Name: questions questions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.questions
+    ADD CONSTRAINT questions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: recipes recipes_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.recipes
     ADD CONSTRAINT recipes_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: reviews reviews_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.reviews
+    ADD CONSTRAINT reviews_pkey PRIMARY KEY (id);
 
 
 --
@@ -725,6 +891,48 @@ CREATE INDEX index_allergies_recipes_on_recipe_id ON public.allergies_recipes US
 --
 
 CREATE UNIQUE INDEX index_allergies_recipes_on_recipe_id_and_allergy_id ON public.allergies_recipes USING btree (recipe_id, allergy_id);
+
+
+--
+-- Name: index_answers_on_question_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_answers_on_question_id ON public.answers USING btree (question_id);
+
+
+--
+-- Name: index_critiques_on_all_relationships; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_critiques_on_all_relationships ON public.critiques USING btree (author_id, question_id, review_id, answer_id);
+
+
+--
+-- Name: index_critiques_on_answer_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_critiques_on_answer_id ON public.critiques USING btree (answer_id);
+
+
+--
+-- Name: index_critiques_on_author_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_critiques_on_author_id ON public.critiques USING btree (author_id);
+
+
+--
+-- Name: index_critiques_on_question_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_critiques_on_question_id ON public.critiques USING btree (question_id);
+
+
+--
+-- Name: index_critiques_on_review_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_critiques_on_review_id ON public.critiques USING btree (review_id);
 
 
 --
@@ -1015,6 +1223,27 @@ CREATE INDEX index_recipes_on_updated_at ON public.recipes USING btree (updated_
 
 
 --
+-- Name: index_reviews_on_author_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_reviews_on_author_id ON public.reviews USING btree (author_id);
+
+
+--
+-- Name: index_reviews_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_reviews_on_created_at ON public.reviews USING btree (created_at);
+
+
+--
+-- Name: index_reviews_on_moderation_state; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_reviews_on_moderation_state ON public.reviews USING btree (moderation_state);
+
+
+--
 -- Name: recipes fk_rails_08ee84afe6; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1031,11 +1260,35 @@ ALTER TABLE ONLY public.establishments_payment_types
 
 
 --
+-- Name: critiques fk_rails_0edfa2088e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.critiques
+    ADD CONSTRAINT fk_rails_0edfa2088e FOREIGN KEY (author_id) REFERENCES public.accounts(id);
+
+
+--
 -- Name: menu_items fk_rails_20953bddc9; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.menu_items
     ADD CONSTRAINT fk_rails_20953bddc9 FOREIGN KEY (establishment_id) REFERENCES public.establishments(id);
+
+
+--
+-- Name: reviews fk_rails_29e6f859c4; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.reviews
+    ADD CONSTRAINT fk_rails_29e6f859c4 FOREIGN KEY (author_id) REFERENCES public.accounts(id);
+
+
+--
+-- Name: answers fk_rails_3d5ed4418f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.answers
+    ADD CONSTRAINT fk_rails_3d5ed4418f FOREIGN KEY (question_id) REFERENCES public.questions(id);
 
 
 --
@@ -1076,6 +1329,22 @@ ALTER TABLE ONLY public.allergies_recipes
 
 ALTER TABLE ONLY public.allergies_recipes
     ADD CONSTRAINT fk_rails_6ab7304ced FOREIGN KEY (allergy_id) REFERENCES public.allergies(id);
+
+
+--
+-- Name: critiques fk_rails_8c3e5604b1; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.critiques
+    ADD CONSTRAINT fk_rails_8c3e5604b1 FOREIGN KEY (question_id) REFERENCES public.questions(id);
+
+
+--
+-- Name: critiques fk_rails_b03422a80b; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.critiques
+    ADD CONSTRAINT fk_rails_b03422a80b FOREIGN KEY (review_id) REFERENCES public.reviews(id);
 
 
 --
@@ -1160,6 +1429,10 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180414222016'),
 ('20180702062857'),
 ('20180702062940'),
-('20180702080347');
+('20180702080347'),
+('20180707215031'),
+('20180707215041'),
+('20180707215045'),
+('20180707215806');
 
 

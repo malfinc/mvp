@@ -28,6 +28,8 @@ Rails.application.routes.draw do
     resources :diets
     resources :allergies
     resources :versions
+    resources :reviews
+    resources :questions
     namespace :friendly_id do
       resources :slugs
     end

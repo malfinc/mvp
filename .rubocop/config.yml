@@ -457,9 +457,10 @@ Layout/ClassStructure:
       - prepend
       - extend
   ExpectedOrder:
-    - module_inclusion
     - constants
+    - module_inclusion
     - public_class_methods
+    - private_class_methods
     - initializer
     - public_methods
     - protected_methods
