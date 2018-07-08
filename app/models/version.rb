@@ -1,4 +1,4 @@
-class Version < ActiveRecord::Base
+class Version < ApplicationRecord
   self.primary_key = :id
   belongs_to :actor, :class_name => "Account", :optional => true
   belongs_to :item, :polymorphic => true
