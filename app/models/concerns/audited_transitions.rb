@@ -4,7 +4,7 @@ module AuditedTransitions
   included do
     attr_accessor :transitions
 
-    has_many :versions, :as => :item, :inverse_of => :item, :dependent => :nothing
+    has_many :versions, :as => :item, :inverse_of => :item, :dependent => nil
 
     has_paper_trail(
       :meta => {
