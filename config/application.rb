@@ -63,9 +63,11 @@ module Poutineer
     ]
 
     # TODO: Document
-    config.logger = ActiveSupport::TaggedLogging.new(
-      ActiveSupport::Logger.new(STDOUT)
-    )
+    unless Rails.env.test?
+      config.logger = ActiveSupport::TaggedLogging.new(
+        ActiveSupport::Logger.new(STDOUT)
+      )
+    end
 
     # TODO: Document
     unless Rails.env.development?
