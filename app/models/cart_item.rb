@@ -1,28 +1,29 @@
 class CartItem < ApplicationRecord
-  include AuditedTransitions
+  PAPER_TRAIL_MODEL = "PublicVersion".freeze
+  include(AuditedTransitions)
 
-  belongs_to :cart
-  belongs_to :account
-  belongs_to :product
+  belongs_to(:cart)
+  belongs_to(:account)
+  belongs_to(:product)
 
-  monetize :price_cents
-  monetize :discount_cents
+  monetize(:price_cents)
+  monetize(:discount_cents)
 
-  state_machine :purchase_state, initial: :pending do
-    event :purchase do
-      transition :pending => :purchased
+  state_machine(:purchase_state, :initial => :pending) do
+    event(:purchase) do
+      transition(:pending => :purchased)
     end
 
-    event :returned do
-      transition :purchased => :returned
+    event(:returned) do
+      transition(:purchased => :returned)
     end
 
-    before_transition do: :version_transition
+    before_transition(:do => :version_transition)
   end
 
   def carbon_copy
-    raise CartItemAlreadyFinalized, self unless purchase_state?(:pending)
+    raise(CartItemAlreadyFinalized, self) unless purchase_state?(:pending)
 
-    assign_attributes(price: product.price)
+    assign_attributes(:price => product.price)
   end
 end

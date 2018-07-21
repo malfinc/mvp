@@ -1,8 +1,8 @@
 module V1
   class CartItemsController < ::V1::ApplicationController
     discoverable(
-      version: "v1",
-      namespace: "cart-items"
+      :version => "v1",
+      :namespace => "cart-items"
     )
 
     def index
@@ -10,14 +10,14 @@ module V1
 
       realization = JSONAPI::Realizer.index(
         CartItemsIndexSchema.new(request.parameters).as_json || {},
-        headers: request.headers,
-        scope: policy_scope(CartItem),
-        type: :cart_items
+        :headers => request.headers,
+        :scope => policy_scope(CartItem),
+        :type => :cart_items
       )
 
-      authorize policy_scope(CartItem)
+      authorize(policy_scope(CartItem))
 
-      render json: serialize(realization)
+      render(:json => serialize(realization))
     end
 
     def show
@@ -25,14 +25,14 @@ module V1
 
       realization = JSONAPI::Realizer.show(
         CartItemsShowSchema.new(request.parameters).as_json || {},
-        headers: request.headers,
-        scope: policy_scope(CartItem),
-        type: :cart_items
+        :headers => request.headers,
+        :scope => policy_scope(CartItem),
+        :type => :cart_items
       )
 
-      authorize realization.model
+      authorize(realization.model)
 
-      render json: serialize(realization)
+      render(:json => serialize(realization))
     end
 
     def create
@@ -40,15 +40,15 @@ module V1
 
       realization = JSONAPI::Realizer.create(
         CartItemsCreateSchema.new(request.parameters).as_json || {},
-        scope: policy_scope(CartItem),
-        headers: request.headers,
+        :scope => policy_scope(CartItem),
+        :headers => request.headers
       )
 
-      authorize realization.model
+      authorize(realization.model)
 
-      AddToCartOperation.(cart_item: realization.model)
+      AddToCartOperation.(:cart_item => realization.model)
 
-      render json: serialize(realization), status: :created
+      render(:json => serialize(realization), :status => :created)
     end
   end
 end

@@ -1,8 +1,8 @@
 module V1
   class ApplicationSerializer
-    include JSONAPI::Serializer
+    include(JSONAPI::Serializer)
 
-    def relationship_related_link(attribute_name)
+    def relationship_related_link(_attribute_name)
       nil
     end
   end

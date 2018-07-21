@@ -1,58 +1,53 @@
 module V1
   class ApplicationController < ::ApplicationController
-    include JSONAPI::Home
-    include Pundit
+    include(JSONAPI::Home)
+    include(Pundit)
 
-    before_action :set_paper_trail_whodunnit
-    before_bugsnag_notify :set_bugsnag_context
-    after_action :verify_authorized
-    after_action :verify_policy_scoped
-    before_action :ensure_account_exists
-    before_action :ensure_cart_exists
+    before_action(:assign_paper_trail_context)
+    before_bugsnag_notify(:assign_user_context, :if => :account_signed_in?)
+    before_bugsnag_notify(:assign_metadata_tab)
+    after_action(:verify_authorized)
+    after_action(:verify_policy_scoped)
+    before_action(:ensure_account_exists)
+    before_action(:ensure_cart_exists)
 
     private def pundit_user
       current_account
     end
 
-    private def user_for_paper_trail
-      if account_signed_in? then current_account else "Anonymous" end
-    end
-
-    private def info_for_paper_trail
-      {
-        actor_id: if account_signed_in? then current_account.id end,
-        group_id: request.request_id,
+    private def assign_paper_trail_context
+      PaperTrail.request.whodunnit = if account_signed_in? then current_account.email else "anonymous@system.local" end
+      PaperTrail.request.controller_info = {
+        :actor_id => if account_signed_in? then current_account.id end,
+        :context_id => request.request_id
       }
     end
 
-    private def set_bugsnag_context(report)
-      if account_signed_in?
-        report.user = {
-          email: current_account.email,
-          name: current_account.name,
-          username: current_account.username,
-          slug: current_account.slug,
-          id: current_account.id,
-        }
-      end
+    private def assign_user_context(report)
+      report.user = {
+        :email => current_account.email,
+        :id => current_account.id
+      }
+    end
 
-      report.add_tab(:session, {
-        actor: PaperTrail.request.whodunnit,
-        request_id: request.request_id,
-        session_id: if account_signed_in? then session.id end,
-      })
+    private def assign_metadata_tab(report)
+      report.add_tab(
+        :metadata,
+        :request_id => request.request_id,
+        :session_id => if account_signed_in? then session.id end
+      )
     end
 
     private def serialize(realization)
       JSONAPI::Serializer.serialize(
         if realization.respond_to?(:models) then realization.models else realization.model end,
-        is_collection: realization.respond_to?(:models),
-        meta: serialized_metadata,
-        links: serialized_links,
-        jsonapi: serialized_jsonapi,
-        fields: if realization.fields.any? then realization.fields end,
-        include: if realization.includes.any? then realization.includes end,
-        namespace: ::V1
+        :is_collection => realization.respond_to?(:models),
+        :meta => serialized_metadata,
+        :links => serialized_links,
+        :jsonapi => serialized_jsonapi,
+        :fields => if realization.fields.any? then realization.fields end,
+        :include => if realization.includes.any? then realization.includes end,
+        :namespace => ::V1
       )
     end
 
@@ -80,23 +75,23 @@ module V1
 
     private def serialized_metadata
       {
-        api: {
-          version: "1"
+        :api => {
+          :version => "1"
         }
       }
     end
 
     private def serialized_links
       {
-        discovery: {
-          href: "/"
+        :discovery => {
+          :href => "/"
         }
       }
     end
 
     private def serialized_jsonapi
       {
-        version: "1.0"
+        :version => "1.0"
       }
     end
 
@@ -106,7 +101,7 @@ module V1
           if accumulated_mapping.dig(*keychain) == before
             accumulated_mapping.deep_merge(
               keychain.reverse.reduce(after) do |accumulated, key|
-                { key => accumulated }
+                {key => accumulated}
               end
             )
           else

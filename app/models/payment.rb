@@ -1,33 +1,34 @@
 class Payment < ApplicationRecord
-  include AuditedTransitions
-
+  PAPER_TRAIL_MODEL = "PublicVersion".freeze
   # NOTE: Ordered by preference
   TYPES = [
     "GiftCardPayment",
     "CreditPayment",
-    "StripePayment",
-  ]
+    "StripePayment"
+  ].freeze
 
-  belongs_to :account
-  belongs_to :cart
+  include(AuditedTransitions)
 
-  monetize :paid_cents
-  monetize :restitution_cents, allow_nil: true
+  belongs_to(:account)
+  belongs_to(:cart)
 
-  validates_presence_of :subtype
-  validates_inclusion_of :subtype, in: TYPES
-  validates_presence_of :source_id
+  monetize(:paid_cents)
+  monetize(:restitution_cents, :allow_nil => true)
 
-  state_machine :processing_state, initial: :pending do
-    event :charge do
-      transition from: :pending, to: :paid
+  validates_presence_of(:subtype)
+  validates_inclusion_of(:subtype, :in => TYPES)
+  validates_presence_of(:source_id)
+
+  state_machine(:processing_state, :initial => :pending) do
+    event(:charge) do
+      transition(:from => :pending, :to => :paid)
     end
 
-    event :refund do
-      transition from: :paid, to: :refunded
+    event(:refund) do
+      transition(:from => :paid, :to => :refunded)
     end
 
-    before_transition do: :version_transition
+    before_transition(:do => :version_transition)
   end
 
   def preference

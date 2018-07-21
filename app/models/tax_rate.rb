@@ -1,5 +1,5 @@
 class TaxRate < ApplicationComputed
-  attr_accessor :address
+  attr_accessor(:address)
 
   def percent
     0.10

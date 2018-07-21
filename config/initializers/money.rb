@@ -1,5 +1,3 @@
-# encoding : utf-8
-
 MoneyRails.configure do |config|
   # To set the default currency
   #
@@ -77,9 +75,9 @@ MoneyRails.configure do |config|
   # Example:
   #
   config.default_format = {
-    no_cents_if_whole: false,
-    symbol: true,
-    sign_before_symbol: true
+    :no_cents_if_whole => false,
+    :symbol => true,
+    :sign_before_symbol => true
   }
 
   # Set default raise_error_on_money_parsing option

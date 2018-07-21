@@ -1,10 +1,9 @@
 class RealtimeMessage < ApplicationMessage
-  SUBSCRIBE_KEY = ""
-  PUBLISH_KEY = ""
+  SUBSCRIBE_KEY = "".freeze
+  PUBLISH_KEY = "".freeze
 
   class Pubnub
-    def publish(**)
-    end
+    def publish(**); end
   end
 
   private def client

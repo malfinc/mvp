@@ -23,7 +23,6 @@ Rails.application.configure do
   # Apache or NGINX already handles this.
   config.public_file_server.enabled = ENV.fetch("RAILS_SERVE_STATIC_FILES").present?
 
-
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
   # config.action_controller.asset_host = "http://assets.example.com"
 
@@ -31,8 +30,8 @@ Rails.application.configure do
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for Apache
   # config.action_dispatch.x_sendfile_header = "X-Accel-Redirect" # for NGINX
   config.action_dispatch.rack_cache = {
-    metastore: "#{ENV.fetch("REDIS_CACHE_URL")}/metastore",
-    entitystore: "#{ENV.fetch("REDIS_CACHE_URL")}/entitystore"
+    :metastore => "#{ENV.fetch("REDIS_CACHE_URL")}/metastore",
+    :entitystore => "#{ENV.fetch("REDIS_CACHE_URL")}/entitystore"
   }
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
@@ -40,10 +39,7 @@ Rails.application.configure do
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = :debug
-
-  # Prepend all log lines with the following tags.
-  config.log_tags = [ :request_id ]
+  config.log_level = :info
 
   # Use a real queuing backend for Active Job (and separate queues per environment)
   # config.active_job.queue_adapter     = :resque
@@ -59,19 +55,6 @@ Rails.application.configure do
 
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
-
-  # Use default logging formatter so that PID and timestamp are not suppressed.
-  config.log_formatter = ::Logger::Formatter.new
-
-  # Use a different logger for distributed setups.
-  # require "syslog/logger"
-  # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new "app-name")
-
-  if ENV.fetch("RAILS_LOG_TO_STDOUT").present?
-    logger           = ActiveSupport::Logger.new(STDOUT)
-    logger.formatter = config.log_formatter
-    config.logger    = ActiveSupport::TaggedLogging.new(logger)
-  end
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false

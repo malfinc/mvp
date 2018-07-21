@@ -1,7 +1,7 @@
 class CartPolicy < ApplicationPolicy
   class Scope < ApplicationScope
     def resolve
-      return relation.where(account: requester) unless administrator?
+      return relation.where(:account => requester) unless administrator?
 
       relation.none
     end

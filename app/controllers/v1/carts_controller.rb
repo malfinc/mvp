@@ -1,35 +1,35 @@
 module V1
   class CartsController < ::V1::ApplicationController
     discoverable(
-      version: "v1",
-      namespace: "carts"
+      :version => "v1",
+      :namespace => "carts"
     )
 
     def show
       realization = JSONAPI::Realizer.show(
         CartsShowSchema.new(modified_parameters).as_json || {},
-        headers: request.headers,
-        scope: policy_scope(Cart),
-        type: :carts
+        :headers => request.headers,
+        :scope => policy_scope(Cart),
+        :type => :carts
       )
 
-      authorize realization.model
+      authorize(realization.model)
 
-      render json: serialize(realization)
+      render(:json => serialize(realization))
     end
 
     def update
       realization = JSONAPI::Realizer.update(
         CartsUpdateSchema.new(modified_parameters).as_json || {},
-        headers: request.headers,
-        scope: policy_scope(Cart)
+        :headers => request.headers,
+        :scope => policy_scope(Cart)
       )
 
-      authorize realization.model
+      authorize(realization.model)
 
       realization.model.save!
 
-      render json: serialize(realization)
+      render(:json => serialize(realization))
     end
 
     private def modified_parameters
@@ -39,12 +39,12 @@ module V1
           ["data", "id"] => {"mine" => current_cart.id},
           ["data", "relationships", "billing-information", "data", "id"] => {
             "current" => current_cart.billing_information_id,
-            "latest" => current_account.billing_informations.try!(:last).try!(:id)
+            "latest" => current_account.billing_informations&.last&.id
           },
           ["data", "relationships", "delivery-information", "data", "id"] => {
             "current" => current_cart.delivery_information_id,
-            "latest" => current_account.delivery_informations.try!(:last).try!(:id)
-          },
+            "latest" => current_account.delivery_informations&.last&.id
+          }
         },
         request.parameters
       )

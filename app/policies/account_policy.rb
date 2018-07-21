@@ -3,7 +3,7 @@ class AccountPolicy < ApplicationPolicy
     def resolve
       return relation if requester.role_state?(:administrator)
 
-      relation.where(id: requester.id)
+      relation.where(:id => requester.id)
     end
   end
 

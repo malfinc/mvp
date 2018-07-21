@@ -7,16 +7,16 @@
 #   Character.create(name: "Luke", movie: movies.first)
 
 PaperTrail.controller_info = {
-  group_id: SecureRandom.uuid
+  :context_id => SecureRandom.uuid
 }
-PaperTrail.request(whodunnit: "The Seed") do
+PaperTrail.request(:whodunnit => "The Seed") do
   ActiveRecord::Base.transaction do
     if Rails.env.production? && Account.count.zero?
-      krainboltgreene = Account.create(
-        username: "krainboltgreene",
-        name: "Kurtis Rainbolt-Greene",
-        email: "kurtis@rainbolt-greene.online",
-        password: SecureRandom.hex(32)
+      krainboltgreene = Account.create!(
+        :username => "krainboltgreene",
+        :name => "Kurtis Rainbolt-Greene",
+        :email => "kurtis@rainbolt-greene.online",
+        :password => SecureRandom.hex(32)
       )
       krainboltgreene.convert!
       krainboltgreene.complete!
@@ -25,30 +25,30 @@ PaperTrail.request(whodunnit: "The Seed") do
 
     if Rails.env.development?
       administrator = Account.create!(
-        username: "sally",
-        name: "Sally Stuthers",
-        email: "sally@example.com",
-        password: "password",
+        :username => "sally",
+        :name => "Sally Stuthers",
+        :email => "sally@example.com",
+        :password => "password"
       )
       administrator.convert!
       administrator.complete!
       administrator.spark!
 
       operator = Account.create!(
-        username: "mark",
-        name: "Mark Muffalo",
-        email: "mark@example.com",
-        password: "password",
+        :username => "mark",
+        :name => "Mark Muffalo",
+        :email => "mark@example.com",
+        :password => "password"
       )
       operator.convert!
       operator.complete!
       operator.empower!
 
       buyer = Account.create!(
-        username: "calvin",
-        name: "Calvin Klean",
-        email: "calvin@example.com",
-        password: "password",
+        :username => "calvin",
+        :name => "Calvin Klean",
+        :email => "calvin@example.com",
+        :password => "password"
       )
       buyer.convert!
       buyer.complete!

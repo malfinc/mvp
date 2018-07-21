@@ -5,23 +5,21 @@ module BlankApiRails
     end
 
     def authenticate!
-      raise authentication_secret if exception?
-      raise MissingAuthenticationError unless found?
-      raise fail!(:incorrect_credentials) unless matches?
+      raise(authentication_secret) if exception?
+      raise(MissingAuthenticationError) unless found?
+      raise(fail!(:incorrect_credentials)) unless matches?
 
-      success! record
+      success!(record)
     end
 
     private def authentication_secret
       request.env.fetch(Rack::AuthenticationBearer::RACK_KEY, nil)
     end
 
-    private def present?
-      authentication_secret.present?
-    end
+    private delegate(:present?, :to => :authentication_secret)
 
     private def record
-      @record ||= Account.find_by(authentication_secret: authentication_secret)
+      @record ||= Account.find_by(:authentication_secret => authentication_secret)
     end
 
     private def found?
@@ -33,7 +31,7 @@ module BlankApiRails
     end
 
     private def exception?
-      authentication_secret.kind_of?(Class) && authentication_secret < StandardError
+      authentication_secret.is_a?(Class) && authentication_secret < StandardError
     end
   end
 end

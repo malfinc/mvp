@@ -1,4 +1,4 @@
-RSpec::Matchers.define :have_pairing do |expected_key, expected_value|
+RSpec::Matchers.define(:have_pairing) do |expected_key, expected_value|
   match do |actual|
     actual.try(:[], expected_key).try(:==, expected_value)
   end
@@ -12,7 +12,7 @@ RSpec::Matchers.define :have_pairing do |expected_key, expected_value|
   end
 end
 
-RSpec::Matchers.define :have_jsonapi_type do |expected|
+RSpec::Matchers.define(:have_jsonapi_type) do |expected|
   match do |actual|
     Oj
       .load(actual&.body.presence || "{}")
@@ -22,25 +22,25 @@ RSpec::Matchers.define :have_jsonapi_type do |expected|
 
   failure_message do |actual|
     body = actual&.body
-    return "response had no body or was not a response" unless body.present?
+    return "response had no body or was not a response" if body.blank?
 
     native = Oj.load(body)
     @actual = body
-    return "response was not valid json" unless native.present?
+    return "response was not valid json" if native.blank?
 
     data = native["data"]
     @actual = native
-    return "the payload didn't have the data attribute or was empty" unless data.present?
+    return "the payload didn't have the data attribute or was empty" if data.blank?
 
     type = data["type"]
     @actual = data
-    return "data.type property either didn't have a value or didn't exist" unless type.present?
+    return "data.type property either didn't have a value or didn't exist" if type.blank?
 
     "expected that the JSON:API response type #{type} would be #{expected}"
   end
 end
 
-RSpec::Matchers.define :have_jsonapi_attributes do |expected|
+RSpec::Matchers.define(:have_jsonapi_attributes) do |expected|
   match do |actual|
     values_match?(
       hash_including(expected),
@@ -53,19 +53,19 @@ RSpec::Matchers.define :have_jsonapi_attributes do |expected|
 
   failure_message do |actual|
     body = actual&.body
-    return "response had no body or was not a response" unless body.present?
+    return "response had no body or was not a response" if body.blank?
 
     native = Oj.load(body)
     @actual = body
-    return "response was not valid json" unless native.present?
+    return "response was not valid json" if native.blank?
 
     data = native["data"]
     @actual = native
-    return "the payload didn't have the data attribute or was empty" unless data.present?
+    return "the payload didn't have the data attribute or was empty" if data.blank?
 
     attributes = data["attributes"]
     @actual = data
-    return "data.attributes property either didn't have a value or didn't exist" unless attributes.present?
+    return "data.attributes property either didn't have a value or didn't exist" if attributes.blank?
 
     "expected that the JSON:API response attributes #{attributes.inspect} would match #{expected.inspect}"
   end
@@ -73,7 +73,7 @@ RSpec::Matchers.define :have_jsonapi_attributes do |expected|
   diffable
 end
 
-RSpec::Matchers.define :have_jsonapi_related do |expected_name, expected_related_data|
+RSpec::Matchers.define(:have_jsonapi_related) do |expected_name, expected_related_data|
   match do |actual|
     values_match?(
       expected_related_data,
@@ -88,28 +88,27 @@ RSpec::Matchers.define :have_jsonapi_related do |expected_name, expected_related
 
   failure_message do |actual|
     body = actual&.body
-    return "response had no body or was not a response" unless body.present?
+    return "response had no body or was not a response" if body.blank?
 
     native = Oj.load(body)
     @actual = body
-    return "response was not valid json" unless native.present?
+    return "response was not valid json" if native.blank?
 
     data = native["data"]
     @actual = native
-    return "the payload didn't have the data attribute or was empty" unless data.present?
+    return "the payload didn't have the data attribute or was empty" if data.blank?
 
     relationships = data["relationships"]
     @actual = data
-    return "data.relationships property either didn't have a value or didn't exist" unless relationships.present?
+    return "data.relationships property either didn't have a value or didn't exist" if relationships.blank?
 
     related = relationships[expected_name]
     @actual = relationships
-    return "data.relationships.#{expected_name} property either didn't have a value or didn't exist" unless related.present?
-
+    return "data.relationships.#{expected_name} property either didn't have a value or didn't exist" if related.blank?
 
     related_data = related["data"]
     @actual = related
-    return "data.relationships.#{expected_name}.data property either didn't have a value or didn't exist" unless related_data.present?
+    return "data.relationships.#{expected_name}.data property either didn't have a value or didn't exist" if related_data.blank?
 
     "expected that the JSON:API response relationships #{related_data.inspect} would match #{expected_related_data}.inspect}"
   end

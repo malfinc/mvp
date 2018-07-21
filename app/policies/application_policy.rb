@@ -1,6 +1,7 @@
 class ApplicationPolicy
   class ApplicationScope
-    attr_reader :requester, :relation
+    attr_reader(:requester)
+    attr_reader(:relation)
 
     def initialize(requester, relation)
       @requester = requester || RequesterNull.new
@@ -9,10 +10,6 @@ class ApplicationPolicy
 
     def resolve
       relation.none
-    end
-
-    private def fresh?
-      requester.onboarding_state?(:fresh)
     end
 
     private def completed?
@@ -32,7 +29,8 @@ class ApplicationPolicy
     end
   end
 
-  attr_reader :requester, :record
+  attr_reader(:requester)
+  attr_reader(:record)
 
   def initialize(requester, record)
     @requester = requester || RequesterNull.new
@@ -63,10 +61,6 @@ class ApplicationPolicy
     Pundit.policy_scope!(requester, record.class)
   end
 
-  private def fresh
-    requester.onboarding_state?(:fresh)
-  end
-
   private def completed
     requester.onboarding_state?(:completed)
   end
@@ -91,7 +85,23 @@ class ApplicationPolicy
     requester.role_state?(:user)
   end
 
+  private def converted?
+    requester.onboarding_state?(:converted)
+  end
+
+  private def completed?
+    requester.onboarding_state?(:completed)
+  end
+
   private def only_logged_out
     requester.id.nil?
+  end
+
+  private def owner?
+    requester == record.author
+  end
+
+  private def administrator?
+    account.role_state?(:administrator)
   end
 end

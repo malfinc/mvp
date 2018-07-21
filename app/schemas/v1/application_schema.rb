@@ -1,5 +1,5 @@
 module V1
   class ApplicationSchema
-    include SmartParams
+    include(SmartParams)
   end
 end

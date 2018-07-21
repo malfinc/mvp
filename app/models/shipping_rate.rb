@@ -1,5 +1,5 @@
 class ShippingRate < ApplicationComputed
-  attr_accessor :address
+  attr_accessor(:address)
 
   def amount_cents
     15_00

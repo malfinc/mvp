@@ -1,34 +1,34 @@
 module V1
   class DeliveryInformationsController < ::V1::ApplicationController
     discoverable(
-      version: "v1",
-      namespace: "delivery-informations"
+      :version => "v1",
+      :namespace => "delivery-informations"
     )
 
     def index
       realization = JSONAPI::Realizer.index(
         DeliveryInformationsIndexSchema.new(modified_parameters).as_json || {},
-        headers: request.headers,
-        scope: policy_scope(DeliveryInformation),
-        type: :delivery_information
+        :headers => request.headers,
+        :scope => policy_scope(DeliveryInformation),
+        :type => :delivery_information
       )
 
-      authorize policy_scope(DeliveryInformation)
+      authorize(policy_scope(DeliveryInformation))
 
-      render json: serialize(realization)
+      render(:json => serialize(realization))
     end
 
     def show
       realization = JSONAPI::Realizer.show(
         DeliveryInformationsShowSchema.new(modified_parameters).as_json || {},
-        headers: request.headers,
-        scope: policy_scope(DeliveryInformation),
-        type: :delivery_informations
+        :headers => request.headers,
+        :scope => policy_scope(DeliveryInformation),
+        :type => :delivery_informations
       )
 
-      authorize realization.model
+      authorize(realization.model)
 
-      render json: serialize(realizer.model)
+      render(:json => serialize(realizer.model))
     end
 
     def create
@@ -36,29 +36,29 @@ module V1
 
       realization = JSONAPI::Realizer.create(
         DeliveryInformationsCreateSchema.new(modified_parameters).as_json || {},
-        scope: policy_scope(DeliveryInformation),
-        headers: request.headers,
+        :scope => policy_scope(DeliveryInformation),
+        :headers => request.headers
       )
 
-      authorize realization.model
+      authorize(realization.model)
 
       realization.model.save!
 
-      render json: serialize(realization), status: :created
+      render(:json => serialize(realization), :status => :created)
     end
 
     def update
       realization = JSONAPI::Realizer.update(
         DeliveryInformationsUpdateSchema.new(modified_parameters).as_json || {},
-        scope: policy_scope(DeliveryInformation),
-        headers: request.headers,
+        :scope => policy_scope(DeliveryInformation),
+        :headers => request.headers
       )
 
-      authorize realization.model
+      authorize(realization.model)
 
       realization.model.save!
 
-      render json: serialize(realizationmodel)
+      render(:json => serialize(realizationmodel))
     end
 
     private def modified_parameters

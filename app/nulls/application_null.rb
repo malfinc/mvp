@@ -1,4 +1,2 @@
-class ApplicationNull
-  include ActiveModel::Model
-
+class ApplicationNull < ApplicationComputed
 end

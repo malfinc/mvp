@@ -1,22 +1,16 @@
 class ApplicationMessage
-  include ActiveModel::Model
+  include(ActiveModel::Model)
 
-  attr_accessor :to
-  attr_accessor :message
+  attr_accessor(:to)
+  attr_accessor(:message)
 
   def self.call(**keyword_arguments)
-    new(**keyword_arguments).call()
+    new(**keyword_arguments).()
   end
 
-  private def via_realtime
+  private def via_realtime; end
 
-  end
+  private def deliver_later; end
 
-  private def deliver_later
-
-  end
-
-  private def deliver_now
-
-  end
+  private def deliver_now; end
 end
