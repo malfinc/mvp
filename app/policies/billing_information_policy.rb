@@ -1,7 +1,7 @@
 class BillingInformationPolicy < ApplicationPolicy
   class Scope < ApplicationScope
     def resolve
-      return relation.where(:account => requester) unless administrator?
+      return relation.where(:account => actor) unless administrator?
 
       relation.none
     end
@@ -12,14 +12,14 @@ class BillingInformationPolicy < ApplicationPolicy
   end
 
   def show?
-    guests || users || administrators
+    only_logged_in
   end
 
   def create?
-    guests || users || administrators
+    only_logged_in
   end
 
   def update?
-    guests || users || administrators
+    only_logged_in
   end
 end

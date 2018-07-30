@@ -93,9 +93,7 @@ CREATE TABLE public.accounts (
     locked_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    CONSTRAINT accounts_email_null CHECK (((NOT (onboarding_state OPERATOR(public.=) 'completed'::public.citext)) OR (email IS NOT NULL))),
-    CONSTRAINT accounts_name_null CHECK (((NOT (onboarding_state OPERATOR(public.=) 'completed'::public.citext)) OR (name IS NOT NULL))),
-    CONSTRAINT accounts_username_null CHECK (((NOT (onboarding_state OPERATOR(public.=) 'completed'::public.citext)) OR (username IS NOT NULL)))
+    CONSTRAINT accounts_name_null CHECK (((NOT (onboarding_state OPERATOR(public.=) 'completed'::public.citext)) OR (name IS NOT NULL)))
 );
 
 
@@ -109,6 +107,44 @@ CREATE TABLE public.ar_internal_metadata (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
+
+
+--
+-- Name: bigint_versions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.bigint_versions (
+    id bigint NOT NULL,
+    item_type text NOT NULL,
+    item_id bigint NOT NULL,
+    event text NOT NULL,
+    whodunnit text NOT NULL,
+    actor_id uuid,
+    context_id uuid NOT NULL,
+    transitions jsonb,
+    object json DEFAULT '{}'::json NOT NULL,
+    object_changes jsonb DEFAULT '{}'::jsonb NOT NULL,
+    created_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: bigint_versions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.bigint_versions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: bigint_versions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.bigint_versions_id_seq OWNED BY public.bigint_versions.id;
 
 
 --
@@ -305,6 +341,37 @@ CREATE TABLE public.gutentag_tags (
 
 
 --
+-- Name: payment_types; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.payment_types (
+    id bigint NOT NULL,
+    name text NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: payment_types_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.payment_types_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: payment_types_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.payment_types_id_seq OWNED BY public.payment_types.id;
+
+
+--
 -- Name: payments; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -355,29 +422,29 @@ CREATE TABLE public.schema_migrations (
 
 
 --
--- Name: versions; Type: TABLE; Schema: public; Owner: -
+-- Name: uuid_versions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.versions (
+CREATE TABLE public.uuid_versions (
     id bigint NOT NULL,
     item_type text NOT NULL,
-    item_id text NOT NULL,
+    item_id uuid NOT NULL,
     event text NOT NULL,
     whodunnit text NOT NULL,
     actor_id uuid,
-    group_id text NOT NULL,
+    context_id uuid NOT NULL,
     transitions jsonb,
-    object jsonb DEFAULT '{}'::jsonb NOT NULL,
+    object json DEFAULT '{}'::json NOT NULL,
     object_changes jsonb DEFAULT '{}'::jsonb NOT NULL,
     created_at timestamp without time zone NOT NULL
 );
 
 
 --
--- Name: versions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: uuid_versions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.versions_id_seq
+CREATE SEQUENCE public.uuid_versions_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -386,10 +453,47 @@ CREATE SEQUENCE public.versions_id_seq
 
 
 --
--- Name: versions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: uuid_versions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.versions_id_seq OWNED BY public.versions.id;
+ALTER SEQUENCE public.uuid_versions_id_seq OWNED BY public.uuid_versions.id;
+
+
+--
+-- Name: versions; Type: VIEW; Schema: public; Owner: -
+--
+
+CREATE VIEW public.versions AS
+ SELECT (uuid_versions.id)::text AS id,
+    uuid_versions.item_type,
+    (uuid_versions.item_id)::text AS item_id,
+    uuid_versions.event,
+    uuid_versions.whodunnit,
+    uuid_versions.actor_id,
+    uuid_versions.transitions,
+    uuid_versions.object_changes,
+    uuid_versions.created_at,
+    uuid_versions.context_id
+   FROM public.uuid_versions
+UNION
+ SELECT (bigint_versions.id)::text AS id,
+    bigint_versions.item_type,
+    (bigint_versions.item_id)::text AS item_id,
+    bigint_versions.event,
+    bigint_versions.whodunnit,
+    bigint_versions.actor_id,
+    bigint_versions.transitions,
+    bigint_versions.object_changes,
+    bigint_versions.created_at,
+    bigint_versions.context_id
+   FROM public.bigint_versions;
+
+
+--
+-- Name: bigint_versions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bigint_versions ALTER COLUMN id SET DEFAULT nextval('public.bigint_versions_id_seq'::regclass);
 
 
 --
@@ -407,10 +511,17 @@ ALTER TABLE ONLY public.gutentag_taggings ALTER COLUMN id SET DEFAULT nextval('p
 
 
 --
--- Name: versions id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: payment_types id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.versions ALTER COLUMN id SET DEFAULT nextval('public.versions_id_seq'::regclass);
+ALTER TABLE ONLY public.payment_types ALTER COLUMN id SET DEFAULT nextval('public.payment_types_id_seq'::regclass);
+
+
+--
+-- Name: uuid_versions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.uuid_versions ALTER COLUMN id SET DEFAULT nextval('public.uuid_versions_id_seq'::regclass);
 
 
 --
@@ -443,6 +554,14 @@ ALTER TABLE ONLY public.accounts
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: bigint_versions bigint_versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bigint_versions
+    ADD CONSTRAINT bigint_versions_pkey PRIMARY KEY (id);
 
 
 --
@@ -510,6 +629,14 @@ ALTER TABLE ONLY public.gutentag_tags
 
 
 --
+-- Name: payment_types payment_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.payment_types
+    ADD CONSTRAINT payment_types_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: payments payments_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -534,11 +661,11 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
--- Name: versions versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: uuid_versions uuid_versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.versions
-    ADD CONSTRAINT versions_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.uuid_versions
+    ADD CONSTRAINT uuid_versions_pkey PRIMARY KEY (id);
 
 
 --
@@ -559,7 +686,7 @@ CREATE UNIQUE INDEX index_accounts_on_confirmation_token ON public.accounts USIN
 -- Name: index_accounts_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_accounts_on_email ON public.accounts USING btree (email) WHERE (email IS NOT NULL);
+CREATE INDEX index_accounts_on_email ON public.accounts USING btree (email);
 
 
 --
@@ -587,7 +714,42 @@ CREATE UNIQUE INDEX index_accounts_on_unlock_token ON public.accounts USING btre
 -- Name: index_accounts_on_username; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_accounts_on_username ON public.accounts USING btree (username) WHERE (email IS NOT NULL);
+CREATE INDEX index_accounts_on_username ON public.accounts USING btree (username);
+
+
+--
+-- Name: index_bigint_versions_on_actor_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_bigint_versions_on_actor_id ON public.bigint_versions USING btree (actor_id) WHERE (actor_id IS NOT NULL);
+
+
+--
+-- Name: index_bigint_versions_on_context_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_bigint_versions_on_context_id ON public.bigint_versions USING btree (context_id);
+
+
+--
+-- Name: index_bigint_versions_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_bigint_versions_on_created_at ON public.bigint_versions USING btree (created_at);
+
+
+--
+-- Name: index_bigint_versions_on_event; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_bigint_versions_on_event ON public.bigint_versions USING btree (event);
+
+
+--
+-- Name: index_bigint_versions_on_item_id_and_item_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_bigint_versions_on_item_id_and_item_type ON public.bigint_versions USING btree (item_id, item_type);
 
 
 --
@@ -766,6 +928,13 @@ CREATE INDEX index_gutentag_tags_on_updated_at ON public.gutentag_tags USING btr
 
 
 --
+-- Name: index_payment_types_on_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE UNIQUE INDEX index_payment_types_on_name ON public.payment_types USING btree (name);
+
+
+--
 -- Name: index_payments_on_account_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -822,24 +991,38 @@ CREATE INDEX index_products_on_visibility_state ON public.products USING btree (
 
 
 --
--- Name: index_versions_on_actor_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_uuid_versions_on_actor_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_versions_on_actor_id ON public.versions USING btree (actor_id) WHERE (actor_id IS NOT NULL);
-
-
---
--- Name: index_versions_on_event; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_versions_on_event ON public.versions USING btree (event);
+CREATE INDEX index_uuid_versions_on_actor_id ON public.uuid_versions USING btree (actor_id) WHERE (actor_id IS NOT NULL);
 
 
 --
--- Name: index_versions_on_item_id_and_item_type; Type: INDEX; Schema: public; Owner: -
+-- Name: index_uuid_versions_on_context_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_versions_on_item_id_and_item_type ON public.versions USING btree (item_id, item_type);
+CREATE INDEX index_uuid_versions_on_context_id ON public.uuid_versions USING btree (context_id);
+
+
+--
+-- Name: index_uuid_versions_on_created_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_uuid_versions_on_created_at ON public.uuid_versions USING btree (created_at);
+
+
+--
+-- Name: index_uuid_versions_on_event; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_uuid_versions_on_event ON public.uuid_versions USING btree (event);
+
+
+--
+-- Name: index_uuid_versions_on_item_id_and_item_type; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_uuid_versions_on_item_id_and_item_type ON public.uuid_versions USING btree (item_id, item_type);
 
 
 --
@@ -923,6 +1106,14 @@ ALTER TABLE ONLY public.payments
 
 
 --
+-- Name: uuid_versions fk_rails_8aa0e36113; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.uuid_versions
+    ADD CONSTRAINT fk_rails_8aa0e36113 FOREIGN KEY (actor_id) REFERENCES public.accounts(id);
+
+
+--
 -- Name: cart_items fk_rails_c0ea132c68; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -936,6 +1127,14 @@ ALTER TABLE ONLY public.cart_items
 
 ALTER TABLE ONLY public.gutentag_taggings
     ADD CONSTRAINT fk_rails_cb73a18b77 FOREIGN KEY (tag_id) REFERENCES public.gutentag_tags(id);
+
+
+--
+-- Name: bigint_versions fk_rails_da90abbf6a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.bigint_versions
+    ADD CONSTRAINT fk_rails_da90abbf6a FOREIGN KEY (actor_id) REFERENCES public.accounts(id);
 
 
 --
@@ -984,6 +1183,9 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180127234446'),
 ('20180128190453'),
 ('20180128190504'),
-('20180422070216');
+('20180408203926'),
+('20180702062857'),
+('20180702062940'),
+('20180702080347');
 
 

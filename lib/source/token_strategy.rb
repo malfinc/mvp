@@ -12,11 +12,11 @@ module BlankApiRails
       success!(record)
     end
 
+    delegate(:present?, :to => :authentication_secret)
+
     private def authentication_secret
       request.env.fetch(Rack::AuthenticationBearer::RACK_KEY, nil)
     end
-
-    private delegate(:present?, :to => :authentication_secret)
 
     private def record
       @record ||= Account.find_by(:authentication_secret => authentication_secret)

@@ -36,13 +36,23 @@ RSpec.describe("Entire checkout process", :type => :request) do
     )
   end
 
-  def provide_email_address
+  def sign_up
+    jsonapi_create(
+      :path => "/v1/accounts",
+      :type => "accounts",
+      :attributes => {
+        "email" => email
+      }
+    )
+  end
+
+  def provide_password()
     jsonapi_update(
       :path => "/v1/accounts/me",
       :id => "me",
       :type => "accounts",
       :attributes => {
-        "email" => email
+        :password => "helloworld"
       }
     )
   end
@@ -108,6 +118,17 @@ RSpec.describe("Entire checkout process", :type => :request) do
     )
   end
 
+  def login_with(shared, secret)
+    jsonapi_create(
+      :path => "/v1/sessions",
+      :type => "sessions",
+      :attributes => {
+        "shared" => shared,
+        "secret" => secret
+      }
+    )
+  end
+
   before do
     @products = {}
     create_product("a")
@@ -115,16 +136,31 @@ RSpec.describe("Entire checkout process", :type => :request) do
   end
 
   it("works") do
-    add_product_to_cart("a")
+    sign_up()
     expect(response).to(have_http_status(:created))
+    expect(Account.count).to eq(1)
+    expect(json_data).to match(
+      hash_including(
+        "id" => a_kind_of(String),
+        "attributes" => hash_including(
+          "email" => "kurtis@rainbolt-greene.online"
+        )
+      )
+    )
 
     add_product_to_cart("a")
     expect(response).to(have_http_status(:created))
+    expect(CartItem.count).to eq(1)
+
+    add_product_to_cart("a")
+    expect(response).to(have_http_status(:created))
+    expect(CartItem.count).to eq(2)
 
     add_product_to_cart("b")
     expect(response).to(have_http_status(:created))
+    expect(CartItem.count).to eq(3)
 
-    provide_email_address
+    provide_password()
     expect(response).to(have_http_status(:ok))
 
     enter_delivery_information

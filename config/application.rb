@@ -10,7 +10,7 @@ require("active_record/railtie")
 require("action_controller/railtie")
 require("action_mailer/railtie")
 require("action_view/railtie")
-# require "action_cable/engine"
+require("action_cable/engine")
 # require "sprockets/railtie"
 # require "rails/test_unit/railtie"
 
@@ -48,7 +48,7 @@ module BlankApiRails
     config.active_job.queue_adapter = :sidekiq
     config.cache_store = [
       :redis_store,
-      {:expires_in => 30.minutes, :pool => Poutineer::REDIS_CACHE_CONNECTION_POOL}
+      {:expires_in => 30.minutes, :pool => BlankApiRails::REDIS_CACHE_CONNECTION_POOL}
     ]
 
     # Uses the tags defined below to create logs that are easily grep-able.

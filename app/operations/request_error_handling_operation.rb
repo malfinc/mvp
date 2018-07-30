@@ -14,14 +14,14 @@ class RequestErrorHandlingOperation < ApplicationOperation
   end
   def write_to_log(state:)
     case state.exception
-    when ActiveRecord::RecordInvalid
+    when StateMachines::InvalidTransition
       Rails.logger.debug("#{state.exception.object.class.name} failed to save due to #{state.exception.object.errors.full_messages.to_sentence}")
     when Pundit::NotAuthorizedError
-      Rails.logger.debug("#{state.exception.policy.class.name} does not authorize #{state.exception.query}")
-    when StateMachines::InvalidTransition
+      Rails.logger.debug("#{state.exception.policy.class.name} did not allow #{state.exception.policy.actor.to_gid} to #{state.exception.query.gsub("?", "")} a #{state.exception.policy.record.class}")
+    when ActiveRecord::RecordInvalid
       Rails.logger.error("#{state.exception.record.class.name} failed to save due to #{state.exception.record.errors.full_messages.to_sentence}")
     else
-      Rails.logger.error("#{state.exception.class.name} failed to save due to #{state.exception.message.inspect}")
+      Rails.logger.error("#{state.exception.class.name} was raised due to #{state.exception.message.inspect}")
     end
     Rails.logger.debug(state.exception.full_message)
   end
@@ -44,6 +44,7 @@ class RequestErrorHandlingOperation < ApplicationOperation
 
   schema(:record_invalid) do
     field(:controller, :type => Types.Instance(ApplicationController))
+    field(:exception, :type => Types.Instance(StandardError))
   end
   def record_invalid(state:)
     state.controller.render(:json => JSONAPI::Serializer.serialize_errors(state.exception.record.errors), :status => :unprocessable_entity)
@@ -51,6 +52,7 @@ class RequestErrorHandlingOperation < ApplicationOperation
 
   schema(:application_exception) do
     field(:controller, :type => Types.Instance(ApplicationController))
+    field(:exception, :type => Types.Instance(StandardError))
   end
   def application_exception(state:)
     state.controller.render(:json => JSONAPI::Serializer.serialize_errors(state.exception.as_jsonapi_errors), :status => :unprocessable_entity)

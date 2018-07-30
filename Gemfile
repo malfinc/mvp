@@ -53,6 +53,7 @@ gem("bugsnag", "6.7.1")
 gem("paper_trail", "9.0.0")
 gem("action_operation", "2.1.2")
 gem("redlock", "0.2.2")
+gem "flag_shih_tzu", "0.3.19"
 
 group(:production) do
   gem("rack-timeout", "0.4.2")
@@ -63,6 +64,8 @@ group(:development, :test) do
   gem("dotenv-rails", "2.3.0", :require => "dotenv/rails-now")
   gem("rspec-rails", "3.7.2")
   gem("listen", "3.1.5")
+  gem("factory_bot_rails", "4.10.0")
+  gem("faker", "1.8.7")
 end
 
 group(:test) do

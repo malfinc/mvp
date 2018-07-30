@@ -6,14 +6,14 @@ module V1
     )
 
     def index
+      authorize(policy_scope(Product))
+
       realization = JSONAPI::Realizer.index(
         ProductsIndexSchema.new(request.parameters).as_json || {},
         :headers => request.headers,
         :scope => policy_scope(Product),
         :type => :products
       )
-
-      authorize(policy_scope(Product))
 
       render(:json => serialize(realization))
     end

@@ -1,10 +1,10 @@
 class ApplicationPolicy
   class ApplicationScope
-    attr_reader(:requester)
+    attr_reader(:actor)
     attr_reader(:relation)
 
-    def initialize(requester, relation)
-      @requester = requester || RequesterNull.new
+    def initialize(actor, relation)
+      @actor = actor || RequesterNull.new
       @relation = relation
     end
 
@@ -13,27 +13,23 @@ class ApplicationPolicy
     end
 
     private def completed?
-      requester.onboarding_state?(:completed)
+      actor.onboarding_state?(:completed)
     end
 
     private def administrator?
-      requester.role_state?(:administrator)
-    end
-
-    private def guest?
-      requester.role_state?(:guest)
+      actor.role_state?(:administrator)
     end
 
     private def user?
-      requester.role_state?(:user)
+      actor.role_state?(:user)
     end
   end
 
-  attr_reader(:requester)
+  attr_reader(:actor)
   attr_reader(:record)
 
-  def initialize(requester, record)
-    @requester = requester || RequesterNull.new
+  def initialize(actor, record)
+    @actor = actor || RequesterNull.new
     @record = record
   end
 
@@ -58,15 +54,39 @@ class ApplicationPolicy
   end
 
   def scope
-    Pundit.policy_scope!(requester, record.class)
+    Pundit.policy_scope!(actor, record.class)
+  end
+
+  def read_attribute?(name)
+    if respond_to?("read_attribute_#{name}?")
+      public_send("read_attribute_#{name}?")
+    else
+      noone
+    end
+  end
+
+  def write_attribute?(name)
+    if respond_to?("write_attribute_#{name}?")
+      public_send("write_attribute_#{name}?")
+    else
+      noone
+    end
+  end
+
+  private def read_relation?(association)
+    if record.public_send(association).model.policy_class.const_defined?("Scope")
+      record.public_send(association).model.policy_class.const_get("Scope").new(actor, record.public_send(association))
+    else
+      record.public_send(association).none
+    end
   end
 
   private def completed
-    requester.onboarding_state?(:completed)
+    actor.onboarding_state?(:completed)
   end
 
   private def administrators
-    requester.role_state?(:administrator)
+    actor.role_state?(:administrator)
   end
 
   private def everyone
@@ -77,28 +97,28 @@ class ApplicationPolicy
     false
   end
 
-  private def guests
-    requester.role_state?(:guest)
-  end
-
   private def users
-    requester.role_state?(:user)
+    actor.role_state?(:user)
   end
 
   private def converted?
-    requester.onboarding_state?(:converted)
+    actor.onboarding_state?(:converted)
   end
 
   private def completed?
-    requester.onboarding_state?(:completed)
+    actor.onboarding_state?(:completed)
   end
 
   private def only_logged_out
-    requester.id.nil?
+    actor.blank?
+  end
+
+  private def only_logged_in
+    actor.id.present?
   end
 
   private def owner?
-    requester == record.author
+    actor == record.author
   end
 
   private def administrator?

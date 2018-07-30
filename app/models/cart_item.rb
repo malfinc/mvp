@@ -1,5 +1,5 @@
 class CartItem < ApplicationRecord
-  PAPER_TRAIL_MODEL = "PublicVersion".freeze
+  PAPER_TRAIL_MODEL = "UuidVersion".freeze
   include(AuditedTransitions)
 
   belongs_to(:cart)

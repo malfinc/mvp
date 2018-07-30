@@ -1,5 +1,5 @@
 class Account < ApplicationRecord
-  PAPER_TRAIL_MODEL = "PublicVersion".freeze
+  PAPER_TRAIL_MODEL = "UuidVersion".freeze
   MACHINE_ID = "machine@system.local".freeze
   USERNAME_PATTERN = /\A[a-zA-Z0-9_-]+\z/i
   include(FriendlyId)
@@ -32,11 +32,7 @@ class Account < ApplicationRecord
     before_transition(:do => :version_transition)
   end
 
-  state_machine(:role_state, :initial => :guest) do
-    event(:convert) do
-      transition(:from => :guest, :to => :user)
-    end
-
+  state_machine(:role_state, :initial => :user) do
     event(:upgrade_to_moderator) do
       transition(:user => :moderator)
     end

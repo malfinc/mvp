@@ -6,6 +6,8 @@ module V1
     )
 
     def index
+      authorize(policy_scope(DeliveryInformation))
+
       realization = JSONAPI::Realizer.index(
         DeliveryInformationsIndexSchema.new(modified_parameters).as_json || {},
         :headers => request.headers,
@@ -13,7 +15,6 @@ module V1
         :type => :delivery_information
       )
 
-      authorize(policy_scope(DeliveryInformation))
 
       render(:json => serialize(realization))
     end

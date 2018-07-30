@@ -1,6 +1,6 @@
-class CreatePublicVersions < ActiveRecord::Migration[5.1]
+class CreateUuidVersions < ActiveRecord::Migration[5.1]
   def change
-    create_table(:public_versions, :id => :uuid) do |table|
+    create_table(:uuid_versions, :id => :bigint) do |table|
       table.text(:item_type, :null => false)
       table.uuid(:item_id, :null => false)
       table.text(:event, :null => false)
@@ -13,7 +13,7 @@ class CreatePublicVersions < ActiveRecord::Migration[5.1]
       table.timestamp(:created_at, :null => false)
 
       table.index([:item_id, :item_type])
-      table.index(:actor_id, :where => %("versions"."actor_id" IS NOT NULL))
+      table.index(:actor_id, :where => %("uuid_versions"."actor_id" IS NOT NULL))
       table.index(:context_id)
       table.index(:created_at)
       table.index(:event)

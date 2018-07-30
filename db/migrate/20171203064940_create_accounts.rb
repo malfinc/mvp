@@ -20,8 +20,8 @@ class CreateAccounts < ActiveRecord::Migration[5.1]
       table.datetime(:locked_at)
       table.timestamps(:null => false)
 
-      table.index(:email, :where => %("accounts"."email" IS NOT NULL))
-      table.index(:username, :where => %("accounts"."email" IS NOT NULL))
+      table.index(:email)
+      table.index(:username)
       table.index(:onboarding_state)
       table.index(:role_state)
       table.index(:confirmation_token, :unique => true)
@@ -31,10 +31,8 @@ class CreateAccounts < ActiveRecord::Migration[5.1]
 
     safety_assured do
       add_null_constraint(:accounts, :name, :if => %("accounts"."onboarding_state" = 'completed'))
-      add_null_constraint(:accounts, :email, :if => %("accounts"."onboarding_state" = 'completed'))
-      add_null_constraint(:accounts, :username, :if => %("accounts"."onboarding_state" = 'completed'))
-      add_unique_constraint(:accounts, :email, :if => %("accounts"."onboarding_state" = 'completed'))
-      add_unique_constraint(:accounts, :username, :if => %("accounts"."onboarding_state" = 'completed'))
+      add_unique_constraint(:accounts, :email)
+      add_unique_constraint(:accounts, :username)
     end
   end
 end

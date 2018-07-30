@@ -55,6 +55,10 @@ RSpec.shared_context("JSON:API requests") do
     json.fetch("data")
   end
 
+  def json_data_id
+    json_data.fetch("id")
+  end
+
   def json_data_attributes
     json_data.fetch("attributes")
   end

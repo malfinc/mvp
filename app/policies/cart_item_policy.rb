@@ -1,21 +1,21 @@
 class CartItemPolicy < ApplicationPolicy
   class Scope < ApplicationScope
     def resolve
-      return relation.where(:account => requester, :cart => requester.unfinished_cart) unless administrator?
+      return relation.where(:account => actor, :cart => actor.unfinished_cart) unless administrator?
 
       relation.none
     end
   end
 
   def show?
-    guests || users || administrator
+    only_logged_in
   end
 
   def create?
-    everyone
+    only_logged_in
   end
 
   def index?
-    everyone
+    only_logged_in
   end
 end

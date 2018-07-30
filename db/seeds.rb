@@ -6,11 +6,19 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-PaperTrail.controller_info = {
-  :context_id => SecureRandom.uuid
-}
-PaperTrail.request(:whodunnit => "The Seed") do
+PaperTrail.request(:whodunnit => Account::MACHINE_ID, :controller_info => {:group_id => SecureRandom.uuid(), :actor_id => nil}) do
   ActiveRecord::Base.transaction do
+    PaymentType.create([
+      {:name => "Cash"},
+      {:name => "Check"},
+      {:name => "Visa"},
+      {:name => "Discover Card"},
+      {:name => "Mastercard"},
+      {:name => "EBT/Foodstamps"},
+      {:name => "Giftcards"},
+      {:name => "Online Payments"},
+      {:name => "Bitcoin/Cryptocurrency"}
+    ])
     if Rails.env.production? && Account.count.zero?
       krainboltgreene = Account.create!(
         :username => "krainboltgreene",
@@ -18,9 +26,9 @@ PaperTrail.request(:whodunnit => "The Seed") do
         :email => "kurtis@rainbolt-greene.online",
         :password => SecureRandom.hex(32)
       )
-      krainboltgreene.convert!
-      krainboltgreene.complete!
-      krainboltgreene.spark!
+      administrator.confirm
+      administrator.complete!
+      krainboltgreene.upgrade_to_administrator!
     end
 
     if Rails.env.development?
@@ -30,19 +38,19 @@ PaperTrail.request(:whodunnit => "The Seed") do
         :email => "sally@example.com",
         :password => "password"
       )
-      administrator.convert!
+      administrator.confirm
       administrator.complete!
-      administrator.spark!
+      administrator.upgrade_to_administrator!
 
-      operator = Account.create!(
+      moderator = Account.create!(
         :username => "mark",
         :name => "Mark Muffalo",
         :email => "mark@example.com",
         :password => "password"
       )
-      operator.convert!
-      operator.complete!
-      operator.empower!
+      moderator.confirm
+      moderator.complete!
+      moderator.upgrade_to_moderator!
 
       buyer = Account.create!(
         :username => "calvin",
@@ -50,7 +58,7 @@ PaperTrail.request(:whodunnit => "The Seed") do
         :email => "calvin@example.com",
         :password => "password"
       )
-      buyer.convert!
+      buyer.confirm
       buyer.complete!
     end
   end

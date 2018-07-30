@@ -1,5 +1,5 @@
 class Payment < ApplicationRecord
-  PAPER_TRAIL_MODEL = "PublicVersion".freeze
+  PAPER_TRAIL_MODEL = "UuidVersion".freeze
   # NOTE: Ordered by preference
   TYPES = [
     "GiftCardPayment",

@@ -2,7 +2,7 @@ module Moderated
   extend(ActiveSupport::Concern)
 
   def contributors
-    Account.where(:id => public_versions.where.not(:actor_id => nil).select(:actor_id))
+    Account.where(:id => uuid_versions.where.not(:actor_id => nil).select(:actor_id))
   end
 
   private def allowed_to_publish?

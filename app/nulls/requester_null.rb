@@ -18,4 +18,8 @@ class RequesterNull < ApplicationNull
   def present?
     false
   end
+
+  def blank?
+    !present?
+  end
 end

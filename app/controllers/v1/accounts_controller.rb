@@ -1,21 +1,19 @@
 module V1
   class AccountsController < ::V1::ApplicationController
-    skip_before_action(:ensure_account_exists, :only => :create)
-
     discoverable(
       :version => "v1",
       :namespace => "accounts"
     )
 
     def index
+      authorize(policy_scope(Account))
+
       realization = JSONAPI::Realizer.index(
         AccountsIndexSchema.new(request.parameters).as_json || {},
         :headers => request.headers,
         :scope => policy_scope(Account),
         :type => :accounts
       )
-
-      authorize(policy_scope(Account))
 
       render(:json => serialize(realization))
     end
@@ -35,7 +33,7 @@ module V1
 
     def create
       realization = JSONAPI::Realizer.create(
-        AccountsCreateSchema.new(modified_parameters).as_json || {},
+        AccountsCreateSchema.new(request.parameters).as_json || {},
         :scope => policy_scope(Account),
         :headers => request.headers
       )
@@ -43,6 +41,8 @@ module V1
       authorize(realization.model)
 
       realization.model.save!
+
+      sign_in(realization.model)
 
       render(:json => serialize(realization), :status => :created)
     end
@@ -64,8 +64,8 @@ module V1
     private def modified_parameters
       upsert_parameter(
         {
-          ["id"] => {"me" => current_account.id},
-          ["data", "id"] => {"me" => current_account.id}
+          ["id"] => {"me" => if account_signed_in? then current_account.id end},
+          ["data", "id"] => {"me" => if account_signed_in? then current_account.id end}
         },
         request.parameters
       )

@@ -8,6 +8,8 @@ module V1
     def index
       authenticate_account!
 
+      authorize(policy_scope(CartItem))
+
       realization = JSONAPI::Realizer.index(
         CartItemsIndexSchema.new(request.parameters).as_json || {},
         :headers => request.headers,
@@ -15,7 +17,6 @@ module V1
         :type => :cart_items
       )
 
-      authorize(policy_scope(CartItem))
 
       render(:json => serialize(realization))
     end

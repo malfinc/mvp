@@ -6,11 +6,11 @@ class ProductPolicy < ApplicationPolicy
   end
 
   def index?
-    guests || users || administrators
+    only_logged_in
   end
 
   def show?
-    guests || users || administrators
+    only_logged_in
   end
 
   def update?

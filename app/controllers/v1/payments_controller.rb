@@ -6,14 +6,14 @@ module V1
     )
 
     def index
+      authorize(policy_scope(Payment))
+
       realization = JSONAPI::Realizer.index(
         PaymentsIndexSchema.new(request.parameters).as_json || {},
         :headers => request.headers,
         :scope => policy_scope(Payment),
         :type => :payments
       )
-
-      authorize(policy_scope(Payment))
 
       render(:json => serialize(realization))
     end

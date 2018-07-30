@@ -8,15 +8,18 @@ module V1
     before_bugsnag_notify(:assign_metadata_tab)
     after_action(:verify_authorized)
     after_action(:verify_policy_scoped)
-    before_action(:ensure_account_exists)
-    before_action(:ensure_cart_exists)
 
     private def pundit_user
       current_account
     end
 
     private def assign_paper_trail_context
-      PaperTrail.request.whodunnit = if account_signed_in? then current_account.email else "anonymous@system.local" end
+      if account_signed_in?
+        PaperTrail.request.whodunnit = current_account.email
+      else
+        PaperTrail.request.whodunnit = "anonymous@system.local"
+      end
+
       PaperTrail.request.controller_info = {
         :actor_id => if account_signed_in? then current_account.id end,
         :context_id => request.request_id
@@ -24,10 +27,12 @@ module V1
     end
 
     private def assign_user_context(report)
-      report.user = {
-        :email => current_account.email,
-        :id => current_account.id
-      }
+      if account_signed_in?
+        report.user = {
+          :email => current_account.email,
+          :id => current_account.id
+        }
+      end
     end
 
     private def assign_metadata_tab(report)
@@ -39,38 +44,52 @@ module V1
     end
 
     private def serialize(realization)
-      JSONAPI::Serializer.serialize(
-        if realization.respond_to?(:models) then realization.models else realization.model end,
-        :is_collection => realization.respond_to?(:models),
-        :meta => serialized_metadata,
-        :links => serialized_links,
-        :jsonapi => serialized_jsonapi,
-        :fields => if realization.fields.any? then realization.fields end,
-        :include => if realization.includes.any? then realization.includes end,
-        :namespace => ::V1
-      )
-    end
-
-    private def ensure_account_exists
-      unless account_signed_in?
-        sign_in(Account.create!)
+      if realization.respond_to?(:models)
+        serialize_models(realization)
+      else
+        serialize_model(realization)
       end
     end
 
-    private def ensure_cart_exists
-      cart_loaded_up?
+    private def serialize_model(realization)
+      JSONAPI::Serializer.serialize(
+        realization.model,
+        **serialize_options,
+        :fields => if realization.fields.any? then realization.fields end,
+        :include => if realization.includes.any? then realization.includes end,
+        :is_collection => false,
+        :context => default_context({
+          policy: policy(realization.model)
+        })
+      )
     end
 
-    private def cart_is_unfinished?
-      current_cart.present? && current_cart.unfinished?
+    private def serialize_models(realization)
+      JSONAPI::Serializer.serialize(
+        realization.models,
+        **serialize_options,
+        :fields => if realization.fields.any? then realization.fields end,
+        :include => if realization.includes.any? then realization.includes end,
+        :is_collection => true,
+        :context => default_context({
+          policy: realization.models.map(&method(:policy))
+        })
+      )
     end
 
-    private def cart_loaded_up?
-      current_cart.present?
+    private def serialize_options
+      {
+        :meta => serialized_metadata,
+        :links => serialized_links,
+        :jsonapi => serialized_jsonapi,
+        :namespace => ::V1
+      }
     end
 
     private def current_cart
-      @current_cart ||= current_account.unfinished_cart if account_signed_in?
+      if account_signed_in?
+        @current_cart ||= current_account.unfinished_cart
+      end
     end
 
     private def serialized_metadata
@@ -92,6 +111,13 @@ module V1
     private def serialized_jsonapi
       {
         :version => "1.0"
+      }
+    end
+
+    private def default_context(default)
+      {
+        **default,
+        **if respond_to?(:context) then context else {} end
       }
     end
 

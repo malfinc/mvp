@@ -24,12 +24,12 @@ RSpec.describe("billing-informations") do
     end
 
     context("with a unfinished cart and a signed-in account") do
-      let(:account) {Account.new}
-      let(:cart) {Cart.new(:checkout_state => "needs_billing_information", :account => account)}
+      let(:account) {create(:account, :confirmed, :completed)}
+
+      let(:cart) {create(:cart, :needs_billing_information, :account => account)}
       let(:authentication) {account.authentication_secret}
 
       before do
-        account.save!
         cart.save!
       end
 
