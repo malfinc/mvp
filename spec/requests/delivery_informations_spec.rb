@@ -24,14 +24,9 @@ RSpec.describe("delivery-informations") do
     end
 
     context("with a unfinished cart and a signed-in account") do
-      let(:account) {Account.new}
-      let(:cart) {Cart.new(:checkout_state => "needs_delivery_information", :account => account)}
+      let(:account) {create(:account, :confirmed, :completed)}
+      let(:cart) {create(:cart, checkout_state: :needs_billing_information, account: account)}
       let(:authentication) {account.authentication_secret}
-
-      before do
-        account.save!
-        cart.save!
-      end
 
       it("returns CREATED") do
         jsonapi_create

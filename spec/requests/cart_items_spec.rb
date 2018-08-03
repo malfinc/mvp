@@ -28,7 +28,8 @@ RSpec.describe("cart-items") do
         }
       end
       let(:product) {Product.create!(product_attributes)}
-      let(:account) {Account.last}
+      let(:account) {create(:account, :confirmed, :completed)}
+      let(:authentication) {account.authentication_secret}
 
       it("returns CREATED") do
         jsonapi_create
