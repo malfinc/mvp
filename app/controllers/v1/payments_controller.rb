@@ -9,7 +9,7 @@ module V1
       authorize(policy_scope(Payment))
 
       realization = JSONAPI::Realizer.index(
-        PaymentsIndexSchema.new(request.parameters).as_json || {},
+        PaymentsIndexSchema.new(request.parameters),
         :headers => request.headers,
         :scope => policy_scope(Payment),
         :type => :payments
@@ -20,7 +20,7 @@ module V1
 
     def show
       realization = JSONAPI::Realizer.show(
-        PaymentsShowSchema.new(request.parameters).as_json || {},
+        PaymentsShowSchema.new(request.parameters),
         :headers => request.headers,
         :scope => policy_scope(Payment),
         :type => :payments
@@ -35,7 +35,7 @@ module V1
       authenticate_account!
 
       realization = JSONAPI::Realizer.create(
-        PaymentsCreateSchema.new(request.parameters).as_json || {},
+        PaymentsCreateSchema.new(request.parameters),
         :scope => policy_scope(Payment),
         :headers => request.headers
       )

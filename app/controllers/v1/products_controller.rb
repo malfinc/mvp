@@ -9,7 +9,7 @@ module V1
       authorize(policy_scope(Product))
 
       realization = JSONAPI::Realizer.index(
-        ProductsIndexSchema.new(request.parameters).as_json || {},
+        ProductsIndexSchema.new(request.parameters),
         :headers => request.headers,
         :scope => policy_scope(Product),
         :type => :products
@@ -20,7 +20,7 @@ module V1
 
     def show
       realization = JSONAPI::Realizer.show(
-        ProductsShowSchema.new(request.parameters).as_json || {},
+        ProductsShowSchema.new(request.parameters),
         :headers => request.headers,
         :scope => policy_scope(Product),
         :type => :products

@@ -9,7 +9,7 @@ module V1
       authorize(policy_scope(DeliveryInformation))
 
       realization = JSONAPI::Realizer.index(
-        DeliveryInformationsIndexSchema.new(modified_parameters).as_json || {},
+        DeliveryInformationsIndexSchema.new(modified_parameters),
         :headers => request.headers,
         :scope => policy_scope(DeliveryInformation),
         :type => :delivery_information
@@ -21,7 +21,7 @@ module V1
 
     def show
       realization = JSONAPI::Realizer.show(
-        DeliveryInformationsShowSchema.new(modified_parameters).as_json || {},
+        DeliveryInformationsShowSchema.new(modified_parameters),
         :headers => request.headers,
         :scope => policy_scope(DeliveryInformation),
         :type => :delivery_informations
@@ -36,7 +36,7 @@ module V1
       authenticate_account!
 
       realization = JSONAPI::Realizer.create(
-        DeliveryInformationsCreateSchema.new(modified_parameters).as_json || {},
+        DeliveryInformationsCreateSchema.new(modified_parameters),
         :scope => policy_scope(DeliveryInformation),
         :headers => request.headers
       )
@@ -50,7 +50,7 @@ module V1
 
     def update
       realization = JSONAPI::Realizer.update(
-        DeliveryInformationsUpdateSchema.new(modified_parameters).as_json || {},
+        DeliveryInformationsUpdateSchema.new(modified_parameters),
         :scope => policy_scope(DeliveryInformation),
         :headers => request.headers
       )

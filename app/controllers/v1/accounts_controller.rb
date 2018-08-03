@@ -9,7 +9,7 @@ module V1
       authorize(policy_scope(Account))
 
       realization = JSONAPI::Realizer.index(
-        AccountsIndexSchema.new(request.parameters).as_json || {},
+        AccountsIndexSchema.new(modified_parameters),
         :headers => request.headers,
         :scope => policy_scope(Account),
         :type => :accounts
@@ -20,7 +20,7 @@ module V1
 
     def show
       realization = JSONAPI::Realizer.show(
-        AccountsShowSchema.new(modified_parameters).as_json || {},
+        AccountsShowSchema.new(modified_parameters),
         :headers => request.headers,
         :scope => policy_scope(Account),
         :type => :accounts
@@ -33,7 +33,7 @@ module V1
 
     def create
       realization = JSONAPI::Realizer.create(
-        AccountsCreateSchema.new(request.parameters).as_json || {},
+        AccountsCreateSchema.new(request.parameters),
         :scope => policy_scope(Account),
         :headers => request.headers
       )
@@ -49,7 +49,7 @@ module V1
 
     def update
       realization = JSONAPI::Realizer.update(
-        AccountsUpdateSchema.new(modified_parameters).as_json || {},
+        AccountsUpdateSchema.new(modified_parameters),
         :scope => policy_scope(Account),
         :headers => request.headers
       )

@@ -9,7 +9,7 @@ module V1
       authorize(policy_scope(BillingInformation))
 
       realization = JSONAPI::Realizer.index(
-        BillingInformationsIndexSchema.new(modified_parameters).as_json || {},
+        BillingInformationsIndexSchema.new(modified_parameters),
         :headers => request.headers,
         :scope => policy_scope(BillingInformation),
         :type => :billing_information
@@ -20,7 +20,7 @@ module V1
 
     def show
       realization = JSONAPI::Realizer.show(
-        BillingInformationsShowSchema.new(modified_parameters).as_json || {},
+        BillingInformationsShowSchema.new(modified_parameters),
         :headers => request.headers,
         :scope => policy_scope(BillingInformation),
         :type => :billing_informations
@@ -35,7 +35,7 @@ module V1
       authenticate_account!
 
       realization = JSONAPI::Realizer.create(
-        BillingInformationsCreateSchema.new(modified_parameters).as_json || {},
+        BillingInformationsCreateSchema.new(modified_parameters),
         :scope => policy_scope(BillingInformation),
         :headers => request.headers
       )
@@ -51,7 +51,7 @@ module V1
       authenticate_account!
 
       realization = JSONAPI::Realizer.update(
-        BillingInformationsUpdateSchema.new(modified_parameters).as_json || {},
+        BillingInformationsUpdateSchema.new(modified_parameters),
         :scope => policy_scope(BillingInformation),
         :headers => request.headers
       )

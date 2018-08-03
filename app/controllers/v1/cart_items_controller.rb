@@ -11,7 +11,7 @@ module V1
       authorize(policy_scope(CartItem))
 
       realization = JSONAPI::Realizer.index(
-        CartItemsIndexSchema.new(request.parameters).as_json || {},
+        CartItemsIndexSchema.new(request.parameters),
         :headers => request.headers,
         :scope => policy_scope(CartItem),
         :type => :cart_items
@@ -25,7 +25,7 @@ module V1
       authenticate_account!
 
       realization = JSONAPI::Realizer.show(
-        CartItemsShowSchema.new(request.parameters).as_json || {},
+        CartItemsShowSchema.new(request.parameters),
         :headers => request.headers,
         :scope => policy_scope(CartItem),
         :type => :cart_items
@@ -40,7 +40,7 @@ module V1
       authenticate_account!
 
       realization = JSONAPI::Realizer.create(
-        CartItemsCreateSchema.new(request.parameters).as_json || {},
+        CartItemsCreateSchema.new(request.parameters),
         :scope => policy_scope(CartItem),
         :headers => request.headers
       )
