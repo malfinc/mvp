@@ -1,7 +1,7 @@
 class Account < ApplicationRecord
   PAPER_TRAIL_MODEL = "UuidVersion".freeze
   MACHINE_ID = "machine@system.local".freeze
-  USERNAME_PATTERN = /\A[a-zA-Z0-9_-]+\z/i
+  USERNAME_PATTERN = /\A[a-z0-9_\-\.]+\z/i
   include(FriendlyId)
   include(AuditedTransitions)
 
