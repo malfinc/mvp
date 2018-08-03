@@ -2,8 +2,8 @@ FactoryBot.define do
   factory :account do
     name {Faker::Name.name}
     email {Faker::Internet.unique.email}
-    username {Faker::Internet.unique.user_name}
     password {Faker::Internet.unique.password}
+    username {Faker::Internet.unique.username()}
 
     trait :confirmed do
       after(:create, &:confirm)
