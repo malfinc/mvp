@@ -3,6 +3,10 @@ class RequesterNull < ApplicationNull
   attr_accessor(:role_state)
   attr_accessor(:onboarding_state)
 
+  def id
+    nil
+  end
+
   def role_state?(*)
     false
   end
