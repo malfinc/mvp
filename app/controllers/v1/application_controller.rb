@@ -45,34 +45,34 @@ module V1
 
     private def serialize(realization)
       if realization.respond_to?(:models)
-        serialize_models(realization)
+        serialize_models(realization.models, realization.fields, realization.includes)
       else
-        serialize_model(realization)
+        serialize_model(realization.model, realization.fields, realization.includes)
       end
     end
 
-    private def serialize_model(realization)
+    private def serialize_model(model, fields, includes)
       JSONAPI::Serializer.serialize(
-        realization.model,
+        model,
         **serialize_options,
-        :fields => if realization.fields.any? then realization.fields end,
-        :include => if realization.includes.any? then realization.includes end,
+        :fields => if fields.any? then fields end,
+        :include => if includes.any? then includes end,
         :is_collection => false,
         :context => default_context({
-          policy: policy(realization.model)
+          policy: policy(model)
         })
       )
     end
 
-    private def serialize_models(realization)
+    private def serialize_models(models, fields, includes)
       JSONAPI::Serializer.serialize(
-        realization.models,
+        models,
         **serialize_options,
-        :fields => if realization.fields.any? then realization.fields end,
-        :include => if realization.includes.any? then realization.includes end,
+        :fields => if fields.any? then fields end,
+        :include => if includes.any? then includes end,
         :is_collection => true,
         :context => default_context({
-          policy: realization.models.map(&method(:policy))
+          policy: models.map(&method(:policy))
         })
       )
     end
