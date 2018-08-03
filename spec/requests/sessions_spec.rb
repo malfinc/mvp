@@ -27,6 +27,10 @@ RSpec.describe("sessions") do
 
         expect(response).to(have_jsonapi_type("accounts"))
       end
+
+      it("updates the cookies with a session key") do
+        expect{jsonapi_create}.to(change{response&.cookies&.to_h}.from(nil).to(hash_including("_blank_api_rails_session" => a_kind_of(String))))
+      end
     end
   end
 end

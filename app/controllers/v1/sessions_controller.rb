@@ -6,31 +6,27 @@ module V1
     )
 
     def create
-      parameters = SessionsCreateSchema.new(request.parameters).as_json || {}
+      parameters = SessionsCreateSchema.new(request.parameters)
 
-      operation = LoginAccountOperation.(parameters)
+      operation = LoginAccountOperation.({
+        scope: policy_scope(Account, policy_scope_class: SessionPolicy::Scope),
+        shared: parameters.data.attributes.email,
+        secret: parameters.data.attributes.password
+      })
 
       authorize(operation.fetch(:account))
 
       sign_in("account", operation.fetch(:account))
 
-      render(:json => serialize_model(operation.account), :status => :created)
+      render(:json => serialize_model(operation.fetch(:account), [], []), :status => :created)
     end
 
     def destroy
       authenticate_account!
 
-      realization = JSONAPI::Realizer.create(
-        SessionsDestroySchema.new(request.parameters).as_json || {},
-        :scope => policy_scope(Session),
-        :headers => request.headers
-      )
+      sign_out(current_account)
 
-      authorize(realization.model)
-
-      AddToCartOperation.(:cart_item => realization.model)
-
-      render(:json => serialize(realization), :status => :created)
+      render(:json => serialize_model(current_account, [], []), :status => :ok)
     end
   end
 end

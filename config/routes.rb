@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   namespace(:v1) do
     resources(:accounts, :only => [:index, :show, :create, :update])
+    resources(:sessions, :only => [:create, :destroy])
     resources(:billing_informations, :path => "billing-informations", :only => [:index, :show, :create, :update])
     resources(:delivery_informations, :path => "delivery-informations", :only => [:index, :show, :create, :update])
     resources(:cart_items, :path => "cart-items", :only => [:index, :show, :create, :destroy])
