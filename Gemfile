@@ -54,7 +54,7 @@ gem("sprockets", "3.7.2")
 gem("redcarpet", "3.4.0")
 gem("google_places", "1.1.0")
 gem("bootsnap", "1.3.0", :require => false)
-gem("administrate-field-enum")
+gem("administrate-field-enum", "0.0.7")
 
 group :production do
   gem("newrelic_rpm", "5.2.0.345")

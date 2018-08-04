@@ -23,7 +23,7 @@ module Admin
     private def info_for_paper_trail
       {
         :actor_id => if account_signed_in? then current_account.id end,
-        :group_id => request.request_id
+        :context_id => request.request_id
       }
     end
 

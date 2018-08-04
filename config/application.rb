@@ -22,6 +22,7 @@ require("administrate/field/base")
 require("administrate/base_dashboard")
 require_relative("../lib/poutineer")
 require_relative("../lib/extensions/simple_form/array_input")
+require_relative("../lib/extensions/paper_trail/record_trail")
 require_relative("../lib/extensions/rails/console")
 
 module Poutineer

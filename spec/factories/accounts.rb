@@ -10,7 +10,7 @@ FactoryBot.define do
     end
 
     trait :completed do
-      after(:create, &:completed!)
+      after(:create, &:complete!)
     end
 
     trait :moderator do
