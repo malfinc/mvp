@@ -11,12 +11,4 @@ class ApplicationRecord < ActiveRecord::Base
   def morph
     becomes(public_send(self.class.inheritance_column).constantize)
   end
-
-  private def actor
-    PaperTrail.request.whodunnit
-  end
-
-  def actor_id
-    actor.id if actor.is_a?(Account)
-  end
 end

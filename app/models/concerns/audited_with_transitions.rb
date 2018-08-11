@@ -2,12 +2,12 @@ module AuditedWithTransitions
   extend(ActiveSupport::Concern)
 
   included do
+    include(Audited)
     attr_accessor(:transitions)
 
     has_paper_trail(
       :class_name => "Version",
       :meta => {
-        :actor_id => :actor_id,
         :transitions => :transitions
       }
     )
