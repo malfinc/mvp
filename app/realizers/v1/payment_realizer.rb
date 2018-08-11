@@ -5,7 +5,6 @@ module V1
     register(:payments, :class_name => "Payment", :adapter => :active_record)
 
     has_one(:account, :as => :accounts)
-    has_one(:cart, :as => :carts)
 
     has(:subtype)
     has(:source_id)

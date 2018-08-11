@@ -2,7 +2,7 @@ class Account < ApplicationRecord
   MACHINE_ID = "machine@system.local".freeze
   USERNAME_PATTERN = /\A[a-z0-9_\-\.]+\z/i
   include(FriendlyId)
-  include(AuditedTransitions)
+  include(AuditedWithTransitions)
 
   has_many(:payments)
 
@@ -36,7 +36,7 @@ class Account < ApplicationRecord
     event(:downgrade_to_user) do
       transition(:from => [:administrator], :to => :user)
     end
-    end
+
     after_transition(:on => :upgrade_to_administrator) do |record|
       record.after_transaction do
         AccountRoleMailer.with(:destination => record).upgraded_to_administrator.deliver_later

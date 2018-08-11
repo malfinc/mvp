@@ -110,158 +110,6 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
--- Name: bigint_versions; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.bigint_versions (
-    id bigint NOT NULL,
-    item_type text NOT NULL,
-    item_id bigint NOT NULL,
-    event text NOT NULL,
-    whodunnit text NOT NULL,
-    actor_id uuid,
-    context_id uuid NOT NULL,
-    transitions jsonb,
-    object json DEFAULT '{}'::json NOT NULL,
-    object_changes jsonb DEFAULT '{}'::jsonb NOT NULL,
-    created_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: bigint_versions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.bigint_versions_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: bigint_versions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.bigint_versions_id_seq OWNED BY public.bigint_versions.id;
-
-
---
--- Name: billing_informations; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.billing_informations (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
-    name text NOT NULL,
-    address text NOT NULL,
-    postal text NOT NULL,
-    city text NOT NULL,
-    state text NOT NULL,
-    account_id uuid NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: billing_informations_carts; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.billing_informations_carts (
-    billing_information_id uuid NOT NULL,
-    cart_id uuid NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: cart_items; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.cart_items (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
-    cart_id uuid NOT NULL,
-    product_id uuid NOT NULL,
-    price_cents integer NOT NULL,
-    price_currency text DEFAULT 'usd'::text NOT NULL,
-    discount_cents integer DEFAULT 0 NOT NULL,
-    discount_currency text DEFAULT 'usd'::text NOT NULL,
-    account_id uuid NOT NULL,
-    purchase_state text NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: carts; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.carts (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
-    account_id uuid NOT NULL,
-    delivery_information_id uuid,
-    billing_information_id uuid,
-    checkout_state text NOT NULL,
-    total_cents integer,
-    total_currency text DEFAULT 'usd'::text,
-    subtotal_cents integer,
-    subtotal_currency text DEFAULT 'usd'::text,
-    discount_cents integer,
-    discount_currency text DEFAULT 'usd'::text,
-    tax_cents integer,
-    tax_currency text DEFAULT 'usd'::text,
-    shipping_cents integer,
-    shipping_currency text DEFAULT 'usd'::text,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL,
-    CONSTRAINT carts_billing_information_id_null CHECK (((NOT (checkout_state = 'purchased'::text)) OR (billing_information_id IS NOT NULL))),
-    CONSTRAINT carts_delivery_information_id_null CHECK (((NOT (checkout_state = 'purchased'::text)) OR (delivery_information_id IS NOT NULL))),
-    CONSTRAINT carts_discount_cents_null CHECK (((NOT (checkout_state = 'purchased'::text)) OR (discount_cents IS NOT NULL))),
-    CONSTRAINT carts_discount_currency_null CHECK (((NOT (checkout_state = 'purchased'::text)) OR (discount_currency IS NOT NULL))),
-    CONSTRAINT carts_shipping_cents_null CHECK (((NOT (checkout_state = 'purchased'::text)) OR (shipping_cents IS NOT NULL))),
-    CONSTRAINT carts_shipping_currency_null CHECK (((NOT (checkout_state = 'purchased'::text)) OR (shipping_currency IS NOT NULL))),
-    CONSTRAINT carts_subtotal_cents_null CHECK (((NOT (checkout_state = 'purchased'::text)) OR (subtotal_cents IS NOT NULL))),
-    CONSTRAINT carts_subtotal_currency_null CHECK (((NOT (checkout_state = 'purchased'::text)) OR (subtotal_currency IS NOT NULL))),
-    CONSTRAINT carts_tax_cents_null CHECK (((NOT (checkout_state = 'purchased'::text)) OR (tax_cents IS NOT NULL))),
-    CONSTRAINT carts_tax_currency_null CHECK (((NOT (checkout_state = 'purchased'::text)) OR (tax_currency IS NOT NULL))),
-    CONSTRAINT carts_total_cents_null CHECK (((NOT (checkout_state = 'purchased'::text)) OR (total_cents IS NOT NULL))),
-    CONSTRAINT carts_total_currency_null CHECK (((NOT (checkout_state = 'purchased'::text)) OR (total_currency IS NOT NULL)))
-);
-
-
---
--- Name: carts_delivery_informations; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.carts_delivery_informations (
-    cart_id uuid NOT NULL,
-    delivery_information_id uuid NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
--- Name: delivery_informations; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.delivery_informations (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
-    name text NOT NULL,
-    address text NOT NULL,
-    postal text NOT NULL,
-    city text NOT NULL,
-    state text NOT NULL,
-    account_id uuid NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
 -- Name: friendly_id_slugs; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -345,30 +193,12 @@ CREATE TABLE public.gutentag_tags (
 --
 
 CREATE TABLE public.payment_types (
-    id bigint NOT NULL,
+    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
     name text NOT NULL,
+    moderation_state text NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
-
-
---
--- Name: payment_types_id_seq; Type: SEQUENCE; Schema: public; Owner: -
---
-
-CREATE SEQUENCE public.payment_types_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
---
--- Name: payment_types_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
---
-
-ALTER SEQUENCE public.payment_types_id_seq OWNED BY public.payment_types.id;
 
 
 --
@@ -394,25 +224,6 @@ CREATE TABLE public.payments (
 
 
 --
--- Name: products; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.products (
-    id uuid DEFAULT public.gen_random_uuid() NOT NULL,
-    name text NOT NULL,
-    slug text NOT NULL,
-    description text NOT NULL,
-    metadata jsonb DEFAULT '{}'::jsonb NOT NULL,
-    checksum text NOT NULL,
-    price_cents integer NOT NULL,
-    price_currency text DEFAULT 'usd'::text NOT NULL,
-    visibility_state text NOT NULL,
-    created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
-);
-
-
---
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -422,10 +233,10 @@ CREATE TABLE public.schema_migrations (
 
 
 --
--- Name: uuid_versions; Type: TABLE; Schema: public; Owner: -
+-- Name: versions; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.uuid_versions (
+CREATE TABLE public.versions (
     id bigint NOT NULL,
     item_type text NOT NULL,
     item_id uuid NOT NULL,
@@ -441,10 +252,10 @@ CREATE TABLE public.uuid_versions (
 
 
 --
--- Name: uuid_versions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: versions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
 
-CREATE SEQUENCE public.uuid_versions_id_seq
+CREATE SEQUENCE public.versions_id_seq
     START WITH 1
     INCREMENT BY 1
     NO MINVALUE
@@ -453,47 +264,10 @@ CREATE SEQUENCE public.uuid_versions_id_seq
 
 
 --
--- Name: uuid_versions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: versions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
 
-ALTER SEQUENCE public.uuid_versions_id_seq OWNED BY public.uuid_versions.id;
-
-
---
--- Name: versions; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW public.versions AS
- SELECT (uuid_versions.id)::text AS id,
-    uuid_versions.item_type,
-    (uuid_versions.item_id)::text AS item_id,
-    uuid_versions.event,
-    uuid_versions.whodunnit,
-    uuid_versions.actor_id,
-    uuid_versions.transitions,
-    uuid_versions.object_changes,
-    uuid_versions.created_at,
-    uuid_versions.context_id
-   FROM public.uuid_versions
-UNION
- SELECT (bigint_versions.id)::text AS id,
-    bigint_versions.item_type,
-    (bigint_versions.item_id)::text AS item_id,
-    bigint_versions.event,
-    bigint_versions.whodunnit,
-    bigint_versions.actor_id,
-    bigint_versions.transitions,
-    bigint_versions.object_changes,
-    bigint_versions.created_at,
-    bigint_versions.context_id
-   FROM public.bigint_versions;
-
-
---
--- Name: bigint_versions id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.bigint_versions ALTER COLUMN id SET DEFAULT nextval('public.bigint_versions_id_seq'::regclass);
+ALTER SEQUENCE public.versions_id_seq OWNED BY public.versions.id;
 
 
 --
@@ -511,17 +285,10 @@ ALTER TABLE ONLY public.gutentag_taggings ALTER COLUMN id SET DEFAULT nextval('p
 
 
 --
--- Name: payment_types id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: versions id; Type: DEFAULT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.payment_types ALTER COLUMN id SET DEFAULT nextval('public.payment_types_id_seq'::regclass);
-
-
---
--- Name: uuid_versions id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.uuid_versions ALTER COLUMN id SET DEFAULT nextval('public.uuid_versions_id_seq'::regclass);
+ALTER TABLE ONLY public.versions ALTER COLUMN id SET DEFAULT nextval('public.versions_id_seq'::regclass);
 
 
 --
@@ -554,54 +321,6 @@ ALTER TABLE ONLY public.accounts
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
-
-
---
--- Name: bigint_versions bigint_versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.bigint_versions
-    ADD CONSTRAINT bigint_versions_pkey PRIMARY KEY (id);
-
-
---
--- Name: billing_informations billing_informations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.billing_informations
-    ADD CONSTRAINT billing_informations_pkey PRIMARY KEY (id);
-
-
---
--- Name: cart_items cart_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.cart_items
-    ADD CONSTRAINT cart_items_pkey PRIMARY KEY (id);
-
-
---
--- Name: carts carts_account_id_unique; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.carts
-    ADD CONSTRAINT carts_account_id_unique UNIQUE (account_id) DEFERRABLE;
-
-
---
--- Name: carts carts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.carts
-    ADD CONSTRAINT carts_pkey PRIMARY KEY (id);
-
-
---
--- Name: delivery_informations delivery_informations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.delivery_informations
-    ADD CONSTRAINT delivery_informations_pkey PRIMARY KEY (id);
 
 
 --
@@ -645,14 +364,6 @@ ALTER TABLE ONLY public.payments
 
 
 --
--- Name: products products_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.products
-    ADD CONSTRAINT products_pkey PRIMARY KEY (id);
-
-
---
 -- Name: schema_migrations schema_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -661,11 +372,11 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
--- Name: uuid_versions uuid_versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: versions versions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.uuid_versions
-    ADD CONSTRAINT uuid_versions_pkey PRIMARY KEY (id);
+ALTER TABLE ONLY public.versions
+    ADD CONSTRAINT versions_pkey PRIMARY KEY (id);
 
 
 --
@@ -715,153 +426,6 @@ CREATE UNIQUE INDEX index_accounts_on_unlock_token ON public.accounts USING btre
 --
 
 CREATE INDEX index_accounts_on_username ON public.accounts USING btree (username);
-
-
---
--- Name: index_bigint_versions_on_actor_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_bigint_versions_on_actor_id ON public.bigint_versions USING btree (actor_id) WHERE (actor_id IS NOT NULL);
-
-
---
--- Name: index_bigint_versions_on_context_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_bigint_versions_on_context_id ON public.bigint_versions USING btree (context_id);
-
-
---
--- Name: index_bigint_versions_on_created_at; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_bigint_versions_on_created_at ON public.bigint_versions USING btree (created_at);
-
-
---
--- Name: index_bigint_versions_on_event; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_bigint_versions_on_event ON public.bigint_versions USING btree (event);
-
-
---
--- Name: index_bigint_versions_on_item_id_and_item_type; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_bigint_versions_on_item_id_and_item_type ON public.bigint_versions USING btree (item_id, item_type);
-
-
---
--- Name: index_billing_information_carts_on_join_columns; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_billing_information_carts_on_join_columns ON public.billing_informations_carts USING btree (billing_information_id, cart_id);
-
-
---
--- Name: index_billing_informations_carts_on_billing_information_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_billing_informations_carts_on_billing_information_id ON public.billing_informations_carts USING btree (billing_information_id);
-
-
---
--- Name: index_billing_informations_carts_on_cart_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_billing_informations_carts_on_cart_id ON public.billing_informations_carts USING btree (cart_id);
-
-
---
--- Name: index_billing_informations_on_account_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_billing_informations_on_account_id ON public.billing_informations USING btree (account_id);
-
-
---
--- Name: index_cart_items_on_account_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_cart_items_on_account_id ON public.cart_items USING btree (account_id);
-
-
---
--- Name: index_cart_items_on_cart_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_cart_items_on_cart_id ON public.cart_items USING btree (cart_id);
-
-
---
--- Name: index_cart_items_on_product_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_cart_items_on_product_id ON public.cart_items USING btree (product_id);
-
-
---
--- Name: index_cart_items_on_purchase_state; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_cart_items_on_purchase_state ON public.cart_items USING btree (purchase_state);
-
-
---
--- Name: index_carts_delivery_informations_on_cart_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_carts_delivery_informations_on_cart_id ON public.carts_delivery_informations USING btree (cart_id);
-
-
---
--- Name: index_carts_delivery_informations_on_delivery_information_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_carts_delivery_informations_on_delivery_information_id ON public.carts_delivery_informations USING btree (delivery_information_id);
-
-
---
--- Name: index_carts_on_account_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_carts_on_account_id ON public.carts USING btree (account_id);
-
-
---
--- Name: index_carts_on_billing_information_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_carts_on_billing_information_id ON public.carts USING btree (billing_information_id) WHERE (billing_information_id IS NOT NULL);
-
-
---
--- Name: index_carts_on_checkout_state; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_carts_on_checkout_state ON public.carts USING btree (checkout_state);
-
-
---
--- Name: index_carts_on_delivery_information_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_carts_on_delivery_information_id ON public.carts USING btree (delivery_information_id) WHERE (delivery_information_id IS NOT NULL);
-
-
---
--- Name: index_delivery_information_carts_on_join_columns; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_delivery_information_carts_on_join_columns ON public.carts_delivery_informations USING btree (delivery_information_id, cart_id);
-
-
---
--- Name: index_delivery_informations_on_account_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_delivery_informations_on_account_id ON public.delivery_informations USING btree (account_id);
 
 
 --
@@ -928,6 +492,13 @@ CREATE INDEX index_gutentag_tags_on_updated_at ON public.gutentag_tags USING btr
 
 
 --
+-- Name: index_payment_types_on_moderation_state; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_payment_types_on_moderation_state ON public.payment_types USING btree (moderation_state);
+
+
+--
 -- Name: index_payment_types_on_name; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -970,131 +541,46 @@ CREATE INDEX index_payments_on_subtype ON public.payments USING btree (subtype);
 
 
 --
--- Name: index_products_on_checksum; Type: INDEX; Schema: public; Owner: -
+-- Name: index_versions_on_actor_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_products_on_checksum ON public.products USING btree (checksum);
-
-
---
--- Name: index_products_on_slug; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_products_on_slug ON public.products USING btree (slug);
+CREATE INDEX index_versions_on_actor_id ON public.versions USING btree (actor_id) WHERE (actor_id IS NOT NULL);
 
 
 --
--- Name: index_products_on_visibility_state; Type: INDEX; Schema: public; Owner: -
+-- Name: index_versions_on_context_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_products_on_visibility_state ON public.products USING btree (visibility_state);
-
-
---
--- Name: index_uuid_versions_on_actor_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_uuid_versions_on_actor_id ON public.uuid_versions USING btree (actor_id) WHERE (actor_id IS NOT NULL);
+CREATE INDEX index_versions_on_context_id ON public.versions USING btree (context_id);
 
 
 --
--- Name: index_uuid_versions_on_context_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_versions_on_created_at; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_uuid_versions_on_context_id ON public.uuid_versions USING btree (context_id);
-
-
---
--- Name: index_uuid_versions_on_created_at; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_uuid_versions_on_created_at ON public.uuid_versions USING btree (created_at);
+CREATE INDEX index_versions_on_created_at ON public.versions USING btree (created_at);
 
 
 --
--- Name: index_uuid_versions_on_event; Type: INDEX; Schema: public; Owner: -
+-- Name: index_versions_on_event; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_uuid_versions_on_event ON public.uuid_versions USING btree (event);
-
-
---
--- Name: index_uuid_versions_on_item_id_and_item_type; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_uuid_versions_on_item_id_and_item_type ON public.uuid_versions USING btree (item_id, item_type);
+CREATE INDEX index_versions_on_event ON public.versions USING btree (event);
 
 
 --
--- Name: delivery_informations fk_rails_04842698b7; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: index_versions_on_item_id_and_item_type; Type: INDEX; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.delivery_informations
-    ADD CONSTRAINT fk_rails_04842698b7 FOREIGN KEY (account_id) REFERENCES public.accounts(id);
-
-
---
--- Name: billing_informations fk_rails_0ae4f22b90; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.billing_informations
-    ADD CONSTRAINT fk_rails_0ae4f22b90 FOREIGN KEY (account_id) REFERENCES public.accounts(id);
+CREATE INDEX index_versions_on_item_id_and_item_type ON public.versions USING btree (item_id, item_type);
 
 
 --
--- Name: payments fk_rails_2bc1cfea36; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: versions fk_rails_2e5ab7c04d; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY public.payments
-    ADD CONSTRAINT fk_rails_2bc1cfea36 FOREIGN KEY (cart_id) REFERENCES public.carts(id);
-
-
---
--- Name: billing_informations_carts fk_rails_314ea0ecbc; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.billing_informations_carts
-    ADD CONSTRAINT fk_rails_314ea0ecbc FOREIGN KEY (cart_id) REFERENCES public.carts(id);
-
-
---
--- Name: carts fk_rails_511bc15c1c; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.carts
-    ADD CONSTRAINT fk_rails_511bc15c1c FOREIGN KEY (delivery_information_id) REFERENCES public.delivery_informations(id);
-
-
---
--- Name: cart_items fk_rails_681a180e84; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.cart_items
-    ADD CONSTRAINT fk_rails_681a180e84 FOREIGN KEY (product_id) REFERENCES public.products(id);
-
-
---
--- Name: cart_items fk_rails_6cdb1f0139; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.cart_items
-    ADD CONSTRAINT fk_rails_6cdb1f0139 FOREIGN KEY (cart_id) REFERENCES public.carts(id);
-
-
---
--- Name: carts_delivery_informations fk_rails_6efe453fc7; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.carts_delivery_informations
-    ADD CONSTRAINT fk_rails_6efe453fc7 FOREIGN KEY (cart_id) REFERENCES public.carts(id);
-
-
---
--- Name: carts fk_rails_772f954818; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.carts
-    ADD CONSTRAINT fk_rails_772f954818 FOREIGN KEY (billing_information_id) REFERENCES public.billing_informations(id);
+ALTER TABLE ONLY public.versions
+    ADD CONSTRAINT fk_rails_2e5ab7c04d FOREIGN KEY (actor_id) REFERENCES public.accounts(id);
 
 
 --
@@ -1106,59 +592,11 @@ ALTER TABLE ONLY public.payments
 
 
 --
--- Name: uuid_versions fk_rails_8aa0e36113; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.uuid_versions
-    ADD CONSTRAINT fk_rails_8aa0e36113 FOREIGN KEY (actor_id) REFERENCES public.accounts(id);
-
-
---
--- Name: cart_items fk_rails_c0ea132c68; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.cart_items
-    ADD CONSTRAINT fk_rails_c0ea132c68 FOREIGN KEY (account_id) REFERENCES public.accounts(id);
-
-
---
 -- Name: gutentag_taggings fk_rails_cb73a18b77; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.gutentag_taggings
     ADD CONSTRAINT fk_rails_cb73a18b77 FOREIGN KEY (tag_id) REFERENCES public.gutentag_tags(id);
-
-
---
--- Name: bigint_versions fk_rails_da90abbf6a; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.bigint_versions
-    ADD CONSTRAINT fk_rails_da90abbf6a FOREIGN KEY (actor_id) REFERENCES public.accounts(id);
-
-
---
--- Name: carts_delivery_informations fk_rails_f16a9ea94b; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.carts_delivery_informations
-    ADD CONSTRAINT fk_rails_f16a9ea94b FOREIGN KEY (delivery_information_id) REFERENCES public.delivery_informations(id);
-
-
---
--- Name: carts fk_rails_f37446ef7b; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.carts
-    ADD CONSTRAINT fk_rails_f37446ef7b FOREIGN KEY (account_id) REFERENCES public.accounts(id);
-
-
---
--- Name: billing_informations_carts fk_rails_fc1ca91f0a; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.billing_informations_carts
-    ADD CONSTRAINT fk_rails_fc1ca91f0a FOREIGN KEY (billing_information_id) REFERENCES public.billing_informations(id);
 
 
 --
@@ -1175,17 +613,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171230031126'),
 ('20171231104815'),
 ('20171231104816'),
-('20180127234151'),
-('20180127234212'),
-('20180127234443'),
-('20180127234444'),
-('20180127234445'),
 ('20180127234446'),
-('20180128190453'),
-('20180128190504'),
 ('20180408203926'),
-('20180702062857'),
-('20180702062940'),
 ('20180702080347');
 
 

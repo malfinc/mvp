@@ -10,10 +10,6 @@ class ActorNull < ApplicationNull
     OpenStruct.new(:route_key => "accounts")
   end
 
-  def id
-    nil
-  end
-
   def role_state?(*)
     false
   end

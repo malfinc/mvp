@@ -18,7 +18,6 @@ class CreatePayments < ActiveRecord::Migration[5.1]
       table.index(:cart_id)
       table.index(:processing_state)
       table.foreign_key(:accounts, :column => :account_id)
-      table.foreign_key(:carts, :column => :cart_id)
     end
 
     safety_assured do

@@ -8,8 +8,10 @@ module V1
 
     private_class_method def self.policy_allows(name, type)
       define_method("allow_#{type}_#{name}?") do
-        if context.key?(:policy)
-          context.fetch(:policy).public_send("read_#{type}?", name)
+        if context.key?(:policy) && context.fetch(:policy).respond_to?("read_#{name}?")
+          context.fetch(:policy).public_send("read_#{name}?", name)
+        elsif context.key?(:policy)
+          nil
         else
           raise MissingContextPolicyError
         end
