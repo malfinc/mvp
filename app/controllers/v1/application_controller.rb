@@ -1,13 +1,35 @@
 module V1
   class ApplicationController < ::ApplicationController
+
     include(JSONAPI::Home)
     include(Pundit)
 
+    before_action(:reject_missing_content_type_header)
+    before_action(:reject_missing_accept_header)
+    before_action(:reject_incorrect_content_type_header)
+    before_action(:reject_incorrect_accept_header)
     before_action(:assign_paper_trail_context)
-    before_bugsnag_notify(:assign_user_context, :if => :account_signed_in?)
+    before_bugsnag_notify(:assign_user_context)
     before_bugsnag_notify(:assign_metadata_tab)
     after_action(:verify_authorized)
     after_action(:verify_policy_scoped)
+
+    private def reject_missing_content_type_header
+      return if request.body.size.zero?
+      raise MissingContentTypeHeaderError unless request.headers.key?("Content-Type")
+    end
+
+    private def reject_missing_accept_header
+      raise MissingAcceptHeaderError unless request.headers.key?("Accept")
+    end
+
+    private def reject_incorrect_content_type_header
+      raise IncorrectContentTypeHeaderError unless request.headers.fetch("Content-Type").include?(JSONAPI::MEDIA_TYPE)
+    end
+
+    private def reject_incorrect_accept_header
+      raise IncorrectAcceptHeaderError unless request.headers.fetch("Accept").include?(JSONAPI::MEDIA_TYPE)
+    end
 
     private def pundit_user
       current_account
@@ -27,12 +49,12 @@ module V1
     end
 
     private def assign_user_context(report)
-      if account_signed_in?
-        report.user = {
-          :email => current_account.email,
-          :id => current_account.id
-        }
-      end
+      return unless account_signed_in?
+
+      report.user = {
+        :email => current_account.email,
+        :id => current_account.id
+      }
     end
 
     private def assign_metadata_tab(report)

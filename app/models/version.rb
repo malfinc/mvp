@@ -1,12 +1,10 @@
-class Version < ApplicationRecord
-  self.primary_key = :id
+class Version < PaperTrail::Version
   belongs_to(:actor, :class_name => "Account", :optional => true)
-  belongs_to(:item, :polymorphic => true)
 
   # this isn't strictly necessary, but it will prevent
   # rails from calling save, which would fail anyway.
   def readonly?
-    true
+    persisted?
   end
 
   def actor

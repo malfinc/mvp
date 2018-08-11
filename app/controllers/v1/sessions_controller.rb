@@ -6,7 +6,7 @@ module V1
     )
 
     def create
-      parameters = SessionsCreateSchema.new(request.parameters)
+      parameters = Sessions::CreateSchema.new(request.parameters)
 
       operation = LoginAccountOperation.({
         scope: policy_scope(Account, policy_scope_class: SessionPolicy::Scope),

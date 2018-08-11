@@ -1,13 +1,11 @@
 class Payment < ApplicationRecord
-  PAPER_TRAIL_MODEL = "UuidVersion".freeze
   # NOTE: Ordered by preference
   TYPES = [
     "GiftCardPayment",
     "CreditPayment",
     "StripePayment"
   ].freeze
-
-  include(AuditedTransitions)
+  include(AuditedWithTransitions)
 
   belongs_to(:account)
   belongs_to(:cart)

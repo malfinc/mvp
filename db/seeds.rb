@@ -6,7 +6,7 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-PaperTrail.request(:whodunnit => Account::MACHINE_ID, :controller_info => {:group_id => SecureRandom.uuid(), :actor_id => nil}) do
+PaperTrail.request(:whodunnit => Account::MACHINE_ID, :controller_info => {:context_id => SecureRandom.uuid(), :actor_id => nil}) do
   ActiveRecord::Base.transaction do
     PaymentType.create([
       {:name => "Cash"},
@@ -19,6 +19,7 @@ PaperTrail.request(:whodunnit => Account::MACHINE_ID, :controller_info => {:grou
       {:name => "Online Payments"},
       {:name => "Bitcoin/Cryptocurrency"}
     ])
+
     if Rails.env.production? && Account.count.zero?
       krainboltgreene = Account.create!(
         :username => "krainboltgreene",
@@ -42,24 +43,14 @@ PaperTrail.request(:whodunnit => Account::MACHINE_ID, :controller_info => {:grou
       administrator.complete!
       administrator.upgrade_to_administrator!
 
-      moderator = Account.create!(
-        :username => "mark",
-        :name => "Mark Muffalo",
-        :email => "mark@example.com",
-        :password => "password"
-      )
-      moderator.confirm
-      moderator.complete!
-      moderator.upgrade_to_moderator!
-
-      buyer = Account.create!(
+      user = Account.create!(
         :username => "calvin",
         :name => "Calvin Klean",
         :email => "calvin@example.com",
         :password => "password"
       )
-      buyer.confirm
-      buyer.complete!
+      user.confirm
+      user.complete!
     end
   end
 end

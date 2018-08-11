@@ -1,13 +1,9 @@
 class Account < ApplicationRecord
-  PAPER_TRAIL_MODEL = "UuidVersion".freeze
   MACHINE_ID = "machine@system.local".freeze
   USERNAME_PATTERN = /\A[a-z0-9_\-\.]+\z/i
   include(FriendlyId)
   include(AuditedTransitions)
 
-  has_many(:carts)
-  has_many(:billing_informations)
-  has_many(:delivery_informations)
   has_many(:payments)
 
   friendly_id(:email, :use => [:slugged, :history], :slug_column => :username)
@@ -33,23 +29,13 @@ class Account < ApplicationRecord
   end
 
   state_machine(:role_state, :initial => :user) do
-    event(:upgrade_to_moderator) do
-      transition(:user => :moderator)
-    end
-
     event(:upgrade_to_administrator) do
       transition(:user => :administrator)
     end
 
     event(:downgrade_to_user) do
-      transition(:from => [:moderator, :administrator], :to => :user)
+      transition(:from => [:administrator], :to => :user)
     end
-
-    before_transition(:do => :version_transition)
-    after_transition(:on => :upgrade_to_moderator) do |record|
-      record.after_transaction do
-        AccountRoleMailer.with(:destination => record).upgraded_to_moderator.deliver_later
-      end
     end
     after_transition(:on => :upgrade_to_administrator) do |record|
       record.after_transaction do
@@ -70,11 +56,6 @@ class Account < ApplicationRecord
 
   validates_presence_of(:username, :if => :email_required?)
   validates_format_of(:username, :with => USERNAME_PATTERN, :if => :email_required?)
-
-  def unfinished_cart
-    @unfinished_cart ||= carts.where.not(:checkout_state => :completed).first || carts.create!
-  end
-  alias_method(:create_unfinished_cart, :unfinished_cart)
 
   private def generate_password
     assign_attributes(:password => SecureRandom.hex(60))

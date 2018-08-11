@@ -30,8 +30,18 @@ require_relative("support/contexts/jsonapi_requests")
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema!
 
+RSpec::Sidekiq.configure do |config|
+  # Clears all job queues before each example
+  config.clear_all_enqueued_jobs = true # default => true
+
+  # Whether to use terminal colours when outputting messages
+  config.enable_terminal_colours = true # default => true
+
+  # Warn when jobs are not enqueued to Redis but to a job array
+  config.warn_when_jobs_not_processed_by_sidekiq = true # default => true
+end
+
 RSpec.configure do |config|
-  config.include(FactoryBot::Syntax::Methods)
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -61,16 +71,42 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 
+  config.include(FactoryBot::Syntax::Methods)
   config.include(Devise::TestHelpers, :type => :controller)
   config.include(Warden::Test::Helpers, :type => :controller)
   config.include(Warden::Test::Helpers, :type => :request)
 
   config.before(:suite) do
-    Warden.test_mode!
+    PaperTrail.enabled = true
+  end
+
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :deletion
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.around do |example|
+    PaperTrail.request(:whodunnit => Account::MACHINE_ID, :controller_info => {:actor_id => nil, :context_id => SecureRandom.uuid()}) do
+      example.run
+    end
+  end
+
+  config.around(:each) do |example|
+    Sidekiq::Testing.inline! do
+      example.run
+    end
   end
 
   config.after(:each) do
     Warden.test_reset!
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
   end
 
   config.before(:each) do

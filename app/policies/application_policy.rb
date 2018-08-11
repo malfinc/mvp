@@ -4,7 +4,7 @@ class ApplicationPolicy
     attr_reader(:relation)
 
     def initialize(actor, relation)
-      @actor = actor || RequesterNull.new
+      @actor = actor || ActorNull.new
       @relation = relation
     end
 
@@ -29,7 +29,7 @@ class ApplicationPolicy
   attr_reader(:record)
 
   def initialize(actor, record)
-    @actor = actor || RequesterNull.new
+    @actor = actor || ActorNull.new
     @record = record
   end
 

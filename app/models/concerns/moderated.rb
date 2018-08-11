@@ -1,8 +1,8 @@
 module Moderated
   extend(ActiveSupport::Concern)
 
-  def contributors
-    Account.where(:id => uuid_versions.where.not(:actor_id => nil).select(:actor_id))
+  def contributor_usernames
+    contributors.pluck(:username).to_sentence
   end
 
   private def allowed_to_publish?
@@ -10,23 +10,25 @@ module Moderated
   end
 
   private def allowed_to_autopublish?
-    actor.role_state?(:administrator) || actor.role_state?(:moderator) || actor.role_state?(:verified)
+    actor.role_state?(:administrator)
   end
 
   private def allowed_to_deny?
-    actor.role_state?(:administrator) || actor.role_state?(:moderator)
+    actor.role_state?(:administrator)
   end
 
   private def allowed_to_approve?
-    actor.role_state?(:administrator) || actor.role_state?(:moderator)
+    actor.role_state?(:administrator)
   end
 
   private def allowed_to_remove?
-    actor.role_state?(:administrator) || actor.role_state?(:moderator)
+    actor.role_state?(:administrator)
   end
 
   included do
-    include(AuditedTransitions)
+    include(AuditedWithTransitions)
+
+    has_many :contributors, :through => :versions, :class_name => "Account", :source => :actor
 
     state_machine(:moderation_state, :initial => :draft) do
       event(:publish) do

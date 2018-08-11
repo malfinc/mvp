@@ -20,6 +20,7 @@ class RequestErrorHandlingOperation < ApplicationOperation
       Rails.logger.debug("#{state.exception.policy.class.name} did not allow #{state.exception.policy.actor.to_gid} to #{state.exception.query.gsub("?", "")} a #{state.exception.policy.record.class}")
     when ActiveRecord::RecordInvalid
       Rails.logger.error("#{state.exception.record.class.name} failed to save due to #{state.exception.record.errors.full_messages.to_sentence}")
+      Rails.logger.error(state.exception.record.attributes.as_json)
     else
       Rails.logger.error("#{state.exception.class.name} was raised due to #{state.exception.message.inspect}")
     end
@@ -27,69 +28,81 @@ class RequestErrorHandlingOperation < ApplicationOperation
   end
 
   schema(:render_output) do
+    field(:controller, :type => Types.Instance(ApplicationController))
     field(:exception, :type => Types.Instance(StandardError))
   end
   def render_output(state:)
     case state.exception
-    when JSONAPI::Realizer::Error::MissingAcceptHeader then drift(:to => :missing_accept_header)
-    when JSONAPI::Realizer::Error::InvalidAcceptHeader then drift(:to => :invalid_accept_header)
-    when JSONAPI::Realizer::Error::MalformedDataRootProperty then drift(:to => :malformed_data_root_property)
-    when Pundit::NotAuthorizedError then drift(:to => :access_not_authorized)
-    when ActiveRecord::RecordInvalid then drift(:to => :record_invalid)
-    when StateMachines::InvalidTransition then drift(:to => :invalid_transition)
-    when ApplicationError then drift(:to => :application_exception)
-    else drift(:to => :unhandled_exception)
+    when JSONAPI::Realizer::Error::MissingAcceptHeader then missing_accept_header(state.controller)
+    when JSONAPI::Realizer::Error::InvalidAcceptHeader then invalid_accept_header(state.controller)
+    when JSONAPI::Realizer::Error::MalformedDataRootProperty then malformed_data_root_property(state.controller)
+    when Pundit::NotAuthorizedError then access_not_authorized(state.controller)
+    when ActiveRecord::RecordInvalid then record_invalid(state.controller, state.exception)
+    when StateMachines::InvalidTransition then invalid_transition(state.controller)
+    when SmartParams::Error::InvalidPropertyType then invalid_property_type(state.controller, state.exception)
+    when ApplicationError then application_exception(state.controller, state.exception)
+    else unhandled_exception(state.controller)
     end
   end
 
-  schema(:record_invalid) do
-    field(:controller, :type => Types.Instance(ApplicationController))
-    field(:exception, :type => Types.Instance(StandardError))
-  end
-  def record_invalid(state:)
-    state.controller.render(:json => JSONAPI::Serializer.serialize_errors(state.exception.record.errors), :status => :unprocessable_entity)
-  end
-
-  schema(:application_exception) do
-    field(:controller, :type => Types.Instance(ApplicationController))
-    field(:exception, :type => Types.Instance(StandardError))
-  end
-  def application_exception(state:)
-    state.controller.render(:json => JSONAPI::Serializer.serialize_errors(state.exception.as_jsonapi_errors), :status => :unprocessable_entity)
+  private def record_invalid(controller, exception)
+    controller.render(
+      :json => JSONAPI::Serializer.serialize_errors(exception.record.errors),
+      :status => :unprocessable_entity
+    )
   end
 
-  schema(:malformed_data_root_property) do
-    field(:controller, :type => Types.Instance(ApplicationController))
-  end
-  def malformed_data_root_property(state:)
-    state.controller.head(:unprocessable_entity)
-  end
-
-  schema(:access_not_authorized) do
-    field(:controller, :type => Types.Instance(ApplicationController))
-  end
-  def access_not_authorized(state:)
-    state.controller.head(:unauthorized)
+  private def application_exception(controller, exception)
+    controller.render(
+      :json => JSONAPI::Serializer.serialize_errors(standard_jsonapi_error(exception)),
+      :status => :unprocessable_entity
+    )
   end
 
-  schema(:invalid_accept_header) do
-    field(:controller, :type => Types.Instance(ApplicationController))
-  end
-  def invalid_accept_header(state:)
-    state.controller.head(:not_acceptable)
+  private def malformed_data_root_property(controller)
+    controller.head(:unprocessable_entity)
   end
 
-  schema(:missing_accept_header) do
-    field(:controller, :type => Types.Instance(ApplicationController))
-  end
-  def missing_accept_header(state:)
-    state.controller.head(:not_acceptable)
+  private def access_not_authorized(controller)
+    controller.head(:unauthorized)
   end
 
-  schema(:unhandled_exception) do
-    field(:controller, :type => Types.Instance(ApplicationController))
+  private def invalid_accept_header(controller)
+    controller.head(:not_acceptable)
   end
-  def unhandled_exception(state:)
-    state.controller.head(:internal_server_error)
+
+  private def missing_accept_header(controller)
+    controller.head(:not_acceptable)
+  end
+
+  private def invalid_property_type(controller, exception)
+    controller.render(
+      :json => JSONAPI::Serializer.serialize_errors([
+        {
+          "title" => "Resource Schema Mismatch",
+          "code" => "resource_schema_mismatch",
+          "detail" => "The expected value at the pointer does not match the schema",
+          "source" => {
+            "expected-type" => exception.wanted.name,
+            "pointer" => "/#{exception.keychain.join("/")}"
+          }
+        }
+      ]),
+      :status => :unprocessable_entity
+    )
+  end
+
+  private def unhandled_exception(controller)
+    controller.head(:internal_server_error)
+  end
+
+  private def standard_jsonapi_error(exception)
+    [
+      {
+        "title" => exception.title,
+        "code" => exception.class.name.underscore,
+        "detail" => exception.detail
+      }
+    ]
   end
 end

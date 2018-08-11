@@ -402,9 +402,11 @@ Layout/SpaceInsideArrayLiteralBrackets:
 Layout/SpaceInsideBlockBraces:
   EnforcedStyle: no_space
   SupportedStyles:
+    - space
     - no_space
   EnforcedStyleForEmptyBraces: no_space
   SupportedStylesForEmptyBraces:
+    - space
     - no_space
   SpaceBeforeBlockParameters: false
   Description: Checks that block braces have or don't have surrounding space. For
@@ -419,6 +421,7 @@ Layout/SpaceInsideHashLiteralBraces:
     - compact
   EnforcedStyleForEmptyBraces: no_space
   SupportedStylesForEmptyBraces:
+    - space
     - no_space
   Description: Use spaces inside hash literal braces - or don't.
   StyleGuide: "#spaces-operators"
