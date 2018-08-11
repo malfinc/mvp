@@ -14,6 +14,9 @@
       },
     }
     ```
+  - Fix bad parse error (`{"data":}`) payload to match jsonapi
+  -
+
 ## Notes
 
 ### Making a new resource
