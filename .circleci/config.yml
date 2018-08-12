@@ -120,7 +120,7 @@ jobs:
       -
         run:
           name: "Load databsase schema"
-          command: "bundle exec rake db:create db:structure:load --trace"
+          command: "bundle exec rake db:create --trace"
   bundler_audit:
     docker:
       - *ruby_docker
@@ -171,6 +171,18 @@ jobs:
       - *bundler_restore
       -
         run:
+          name: "Adding postgresql to apt sources"
+          command: "sudo su -c \"echo 'deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main' >> /etc/apt/sources.list.d/pgdg.list\""
+      -
+        run:
+          name: "Fetching postgresql apt-key"
+          command: "wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -"
+      -
+        run:
+          name: "Installing postgres-client"
+          command: "sudo apt-get update && sudo apt-get install postgresql-client-10"
+      -
+        run:
           name: "Running RSpec"
           command: "bundle exec rspec --format RspecJunitFormatter --out ./tmp/rspec/rspec.xml --format progress $(circleci tests glob \"spec/**/*_spec.rb\" | circleci tests split --split-by=timings)"
       -
@@ -179,29 +191,6 @@ jobs:
       -
         store_artifacts:
           path: "tmp/rspec/"
-      -
-        store_artifacts:
-          path: "logs/"
-  jest:
-    docker:
-      - *node_docker
-      - *redis_docker
-    steps:
-      - *git_restore
-      - "checkout"
-      - *npm_restore
-      -
-        run:
-          name: "Running Jest"
-          command: "npm run test -- --runInBand --ci --testResultsProcessor='jest-junit'"
-          environment:
-            JEST_JUNIT_OUTPUT: "tmp/junit/js-test-results.xml"
-      -
-        store_test_results:
-          path: "tmp/junit/"
-      -
-        store_artifacts:
-          path: "tmp/junit/"
       -
         store_artifacts:
           path: "logs/"
