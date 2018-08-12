@@ -34,12 +34,12 @@ shared:
         REDIS_SIDEKIQ_CLIENT_POOL_SIZE: 2
         REDIS_SIDEKIQ_SERVER_POOL_SIZE: 2
     postgres: &postgres_docker
-      image: "circleci/postgres:10-alpine"
+      image: "circleci/postgres:10.4-alpine"
       environment:
         POSTGRES_DB: "poutineer_test"
         POSTGRES_USER: "poutineer"
     redis: &redis_docker
-      image: "redis:4.0"
+      image: "redis:3.2.12"
   caches:
     git_save: &git_save
       save_cache:
