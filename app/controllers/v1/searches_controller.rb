@@ -7,7 +7,7 @@ module V1
 
     def show
       realization = JSONAPI::Realizer.show(
-        Searches::ShowSchema.new(modified_parameters),
+        Searches::ShowSchema.new(request.parameters),
         :headers => request.headers,
         :scope => policy_scope(Search),
         :type => :accounts

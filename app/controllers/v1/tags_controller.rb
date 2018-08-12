@@ -9,7 +9,7 @@ module V1
       authorize(policy_scope(Tag))
 
       realization = JSONAPI::Realizer.index(
-        Tags::IndexSchema.new(modified_parameters),
+        Tags::IndexSchema.new(request.parameters),
         :headers => request.headers,
         :scope => policy_scope(Tag),
         :type => :accounts
@@ -20,7 +20,7 @@ module V1
 
     def show
       realization = JSONAPI::Realizer.show(
-        Tags::ShowSchema.new(modified_parameters),
+        Tags::ShowSchema.new(request.parameters),
         :headers => request.headers,
         :scope => policy_scope(Tag),
         :type => :accounts
