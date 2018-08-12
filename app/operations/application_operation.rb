@@ -3,8 +3,6 @@ class ApplicationOperation
 
   def around_steps(**)
     Rails.logger.tagged("operation-id=#{SecureRandom.uuid}") do
-      Rails.logger.debug("Started adding cart to product operation")
-
       yield
     end
   end
