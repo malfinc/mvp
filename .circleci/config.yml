@@ -2,7 +2,7 @@ version: 2
 shared:
   dockers:
     ruby: &ruby_docker
-      image: "circleci/ruby:2.5"
+      image: "circleci/ruby:2.5.0"
       environment:
         BUNDLE_JOBS: 8
         BUNDLE_PATH: "./vendor/bundle"
