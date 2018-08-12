@@ -1,5 +1,5 @@
 module V1
-  module Establishments
+  module Accounts
     class ShowSchema < V1::ApplicationSchema
       schema(:type => Strict::Hash) do
         field(:id, :type => Strict::String)

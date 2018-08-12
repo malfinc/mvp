@@ -1,5 +1,5 @@
 module V1
-  module Establishments
+  module Accounts
     class IndexSchema < V1::ApplicationSchema
       schema(:type => Strict::Hash) do
         field(:fields, :type => Strict::Array.of(Strict::String).optional)

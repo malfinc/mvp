@@ -1,5 +1,5 @@
 module V1
-  module Establishments
+  module Accounts
     class UpdateSchema < V1::ApplicationSchema
       schema(:type => Strict::Hash) do
         field(:data, :type => Strict::Hash) do
