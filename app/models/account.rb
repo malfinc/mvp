@@ -62,7 +62,7 @@ class Account < ApplicationRecord
   end
 
   private def generate_authentication_secret
-    assign_attributes(:authentication_secret => SecureRandom.hex(60))
+    assign_attributes(:authentication_secret => Devise.friendly_token)
   end
 
   private def email_required?
