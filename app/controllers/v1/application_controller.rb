@@ -24,6 +24,7 @@ module V1
     end
 
     private def reject_incorrect_content_type_header
+      return if request.body.size.zero?
       raise IncorrectContentTypeHeaderError unless request.headers.fetch("Content-Type").include?(JSONAPI::MEDIA_TYPE)
     end
 
