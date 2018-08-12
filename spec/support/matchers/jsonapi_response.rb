@@ -12,6 +12,34 @@ RSpec::Matchers.define(:have_pairing) do |expected_key, expected_value|
   end
 end
 
+RSpec::Matchers.define(:have_jsonapi_id) do |expected|
+  match do |actual|
+    Oj
+      .load(actual&.body.presence || "{}")
+      .fetch("data", {})
+      .fetch("id", nil) == expected
+  end
+
+  failure_message do |actual|
+    body = actual&.body
+    return "response had no body or was not a response" if body.blank?
+
+    native = Oj.load(body)
+    @actual = body
+    return "response was not valid json" if native.blank?
+
+    data = native["data"]
+    @actual = native
+    return "the payload didn't have the data attribute or was empty" if data.blank?
+
+    id = data["id"]
+    @actual = data
+    return "data.id property either didn't have a value or didn't exist" if id.blank?
+
+    "expected that the JSON:API response id #{id} would be #{expected}"
+  end
+end
+
 RSpec::Matchers.define(:have_jsonapi_type) do |expected|
   match do |actual|
     Oj

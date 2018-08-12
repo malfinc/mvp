@@ -11,22 +11,33 @@ RSpec.shared_context("JSON:API request") do
     post(
       path,
       :headers => default_headers.merge(try(:custom_headers) || {}),
-      :params => payload
+      :params => if try(:payload).present? then Oj.dump(payload) end
     )
   end
 
-  def payload
-    Oj.dump(
-      {
-        :data => {
-          :type => type.to_s,
-          :attributes => if try(:attributes).present? then attributes.compact end,
-          :relationships => if try(:relationships).present? then relationships.compact end
-        }.compact,
-        :metadata => if try(:metadata).present? then metadata.compact end,
-        :included => if try(:included).present? then included.compact end
-      }.compact.deep_stringify_keys
+  def jsonapi_fetch
+    get(
+      path,
+      :headers => default_headers.merge(try(:custom_headers) || {}),
+      :params => if try(:payload).present? then payload end
     )
+  end
+
+  def payload_data
+    {
+      :id => if try(:data_id).present? then data_id.to_s end,
+      :type => if try(:data_type).present? then data_type.to_s end,
+      :attributes => if try(:data_attributes).present? then data_attributes.compact end,
+      :relationships => if try(:data_relationships).present? then data_relationships.compact end
+    }.compact
+  end
+
+  def payload
+    {
+      :data => if payload_data.present? then payload_data end,
+      :metadata => if try(:payload_metadata).present? then payload_metadata.compact end,
+      :included => if try(:payload_included).present? then payload_included.compact end
+    }.compact.deep_stringify_keys
   end
 
   def relationship(id:, type:)

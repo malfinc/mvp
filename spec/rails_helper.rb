@@ -71,9 +71,6 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
 
   config.include(FactoryBot::Syntax::Methods)
-  config.include(Devise::TestHelpers, :type => :controller)
-  config.include(Warden::Test::Helpers, :type => :controller)
-  config.include(Warden::Test::Helpers, :type => :request)
 
   config.before(:suite) do
     PaperTrail.enabled = true
@@ -100,9 +97,31 @@ RSpec.configure do |config|
     end
   end
 
-  config.after(:each) do
-    Warden.test_reset!
+  config.before(:suite) do
+    PaperTrail.enabled = true
   end
+
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :deletion
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.around do |example|
+    PaperTrail.request(:whodunnit => Account::MACHINE_ID, :controller_info => {:actor_id => nil, :context_id => SecureRandom.uuid()}) do
+      example.run
+    end
+  end
+
+  config.around(:each) do |example|
+    Sidekiq::Testing.inline! do
+      example.run
+    end
+  end
+
 
   config.after(:each) do
     DatabaseCleaner.clean
