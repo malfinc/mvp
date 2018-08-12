@@ -10,27 +10,29 @@ shared:
         PGHOST: "127.0.0.1"
         PGUSER: "poutineer"
         PORT: 3000
+        RAILS_MASTER_KEY: "private"
         ORIGIN_ENCRYPTION_PRIVATE: "private"
         ORIGIN_ENCRYPTION_SALT: "salt"
-        RACK_ENV: "test"
-        RACK_TIMEOUT_SERVICE_TIMEOUT: 25
-        RAILS_EMAIL_HOST: "localhost"
-        RAILS_EMAIL_USER: "noreply"
         RAILS_ENV: "test"
-        RAILS_HOST: "localhost"
-        RAILS_MASTER_KEY: "private"
-        RAILS_MAX_THREADS: 2
-        RAILS_SESSION_PRIVATE: "private"
-        REDIS_CACHE_POOL_SIZE: 2
-        REDIS_CACHE_URL: "redis://localhost:6379/0"
-        REDIS_OBJECTS_POOL_SIZE: 2
-        REDIS_OBJECTS_URL: "redis://localhost:6379/1"
-        REDIS_SIDEKIQ_CLIENT_POOL_SIZE: 2
-        REDIS_SIDEKIQ_SERVER_POOL_SIZE: 2
-        REDIS_SIDEKIQ_URL: "redis://localhost:6379/2"
+        RACK_ENV: "test"
         WEB_CONCURRENCY: 2
+        RAILS_MAX_THREADS: 2
+        RACK_TIMEOUT_SERVICE_TIMEOUT: 25
         WWW_LOCATION: "localhost"
         HOME_LOCATION: "http://localhost:3001"
+        RAILS_EMAIL_HOST: "localhost"
+        RAILS_EMAIL_USER: "noreply"
+        RAILS_HOST: "localhost"
+        RAILS_SESSION_PRIVATE: "private"
+        REDIS_REDLOCK_URL: "redis://localhost:6379/0"
+        REDIS_REDLOCK_POOL_SIZE: 2
+        REDIS_CACHE_URL: "redis://localhost:6379/1"
+        REDIS_CACHE_POOL_SIZE: 2
+        REDIS_OBJECTS_URL: "redis://localhost:6379/2"
+        REDIS_OBJECTS_POOL_SIZE: 2
+        REDIS_SIDEKIQ_URL: "redis://localhost:6379/3"
+        REDIS_SIDEKIQ_CLIENT_POOL_SIZE: 2
+        REDIS_SIDEKIQ_SERVER_POOL_SIZE: 2
     postgres: &postgres_docker
       image: "circleci/postgres:10-alpine"
       environment:
