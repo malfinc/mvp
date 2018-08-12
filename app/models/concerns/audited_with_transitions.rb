@@ -3,6 +3,7 @@ module AuditedWithTransitions
 
   included do
     include(Audited)
+
     attr_accessor(:transitions)
 
     has_paper_trail(
