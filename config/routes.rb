@@ -4,9 +4,9 @@ Rails.application.routes.draw do
   mount(JSONAPI::Home::Engine, :at => "/")
 
   namespace(:v1) do
-    resources(:accounts, :only => [:index, :show, :create, :update])
-    resources(:sessions, :only => [:create, :destroy])
+    resources(:accounts, :only => [:index, :show, :create, :update, :destroy])
     resources(:payments, :only => [:index, :show, :create])
+    resources(:sessions, :only => [:create, :destroy])
     resources(:tags, :only => [:index, :show])
   end
 
