@@ -5,13 +5,19 @@
     "postdeploy": "bin/postdeploy"
   },
   "env": {
-    "WWW_LOCATION": {
+    "WWW_ORIGIN": {
+      "required": true
+    },
+    "ORIGIN_ORIGIN": {
+      "required": true
+    },
+    "HOME_ORIGIN": {
       "required": true
     },
     "RAILS_HOST": {
       "required": true
     },
-    "ORIGIN_ENCRYPTION_PRIVATE": {
+    "ORIGIN_ENCRYPTION_SECRET": {
       "generator": "secret"
     },
     "ORIGIN_ENCRYPTION_SALT": {
@@ -23,9 +29,6 @@
     "RAILS_MAX_THREADS": {
       "value": "5",
       "required": true
-    },
-    "RAILS_SESSION_PRIVATE": {
-      "generator": "secret"
     },
     "WEB_CONCURRENCY": {
       "value": "2",
@@ -41,16 +44,35 @@
       "value": "300",
       "required": true
     },
+    "REDIS_CACHE_URL": {
+      "required": true
+    },
     "REDIS_CACHE_POOL_SIZE": {
       "value": "2",
+      "required": true
+    },
+    "REDIS_OBJECTS_URL": {
       "required": true
     },
     "REDIS_OBJECTS_POOL_SIZE": {
       "value": "2",
       "required": true
     },
+    "REDIS_REDLOCK_URL": {
+      "required": true
+    },
     "REDIS_REDLOCK_POOL_SIZE": {
       "value": "2",
+      "required": true
+    },
+    "REDIS_ACTION_CABLE_URL": {
+      "required": true
+    },
+    "REDIS_ACTION_CABLE_POOL_SIZE": {
+      "value": "2",
+      "required": true
+    },
+    "REDIS_SIDEKIQ_URL": {
       "required": true
     },
     "REDIS_SIDEKIQ_SERVER_POOL_SIZE": {
@@ -61,19 +83,7 @@
       "value": "2",
       "required": true
     },
-    "REDIS_CACHE_URL": {
-      "required": true
-    },
-    "REDIS_OBJECTS_URL": {
-      "required": true
-    },
-    "REDIS_REDLOCK_URL": {
-      "required": true
-    },
-    "REDIS_SIDEKIQ_URL": {
-      "required": true
-    },
-    "RACK_SERVICE_TIMEOUT": {
+    "RACK_TIMEOUT_SERVICE_TIMEOUT": {
       "required": true
     },
     "HEROKU_APP_NAME": {

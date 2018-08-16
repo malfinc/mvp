@@ -276,7 +276,7 @@ Layout/IndentHeredoc:
   StyleGuide: "#squiggly-heredocs"
   Enabled: true
 Layout/SpaceInLambdaLiteral:
-  EnforcedStyle: require_space
+  EnforcedStyle: require_no_space
   SupportedStyles:
     - require_no_space
     - require_space
@@ -852,7 +852,7 @@ Style/InverseMethods:
     defined.
   Enabled: true
 Style/Lambda:
-  EnforcedStyle: line_count_dependent
+  EnforcedStyle: literal
   SupportedStyles:
     - line_count_dependent
     - lambda
@@ -874,6 +874,7 @@ Style/MethodCallWithArgsParentheses:
     - private
     - public
     - protected
+    - private_class_method
   Description: Use parentheses for method calls with arguments.
   StyleGuide: "#method-invocation-parens"
   Enabled: true

@@ -27,6 +27,6 @@ class ActorNull < ApplicationNull
   end
 
   def blank?
-    !present?
+    true
   end
 end

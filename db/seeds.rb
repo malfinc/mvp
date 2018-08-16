@@ -27,8 +27,8 @@ PaperTrail.request(:whodunnit => Account::MACHINE_ID, :controller_info => {:cont
         :email => "kurtis@rainbolt-greene.online",
         :password => SecureRandom.hex(32)
       )
-      administrator.confirm
-      administrator.complete!
+      krainboltgreene.confirm
+      krainboltgreene.complete!
       krainboltgreene.upgrade_to_administrator!
     end
 

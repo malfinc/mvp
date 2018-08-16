@@ -21,9 +21,11 @@ services:
       - REDIS_SIDEKIQ_URL=redis://redis-sidekiq:6379/1
       - REDIS_SIDEKIQ_SERVER_POOL_SIZE=10
       - REDIS_SIDEKIQ_CLIENT_POOL_SIZE=10
-      - REDIS_OBJECTS_URL=redis://redis-objects:6379/1
+      - REDIS_OBJECTS_URL=redis://redis-objects:6379/2
       - REDIS_OBJECTS_POOL_SIZE=20
-      - REDIS_REDLOCK_URL=redis://redis-redlock:6379/2
+      - REDIS_ACTION_CABLE_URL=redis://redis-objects:6379/3
+      - REDIS_ACTION_CABLE_POOL_SIZE=20
+      - REDIS_REDLOCK_URL=redis://redis-redlock:6379/4
       - REDIS_REDLOCK_POOL_SIZE=20
       - RAILS_MAX_THREADS=4
       - WEB_CONCURRENCY=2
@@ -34,9 +36,8 @@ services:
       - RAILS_HOST=origin.blank-api-rails.local
       - VIRTUAL_HOST=origin.blank-api-rails.local
       - BUGSNAG_API_PRIVATE
-      - ORIGIN_ENCRYPTION_PRIVATE
+      - ORIGIN_ENCRYPTION_SECRET
       - ORIGIN_ENCRYPTION_SALT
-      - RAILS_SESSION_PRIVATE
   postgres:
     image: postgres:9.6-alpine
     environment:

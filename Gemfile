@@ -7,7 +7,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem("rails", "5.2.0")
+gem("rails", "5.2.1")
 gem("oj", "3.6.5")
 gem("pg", "1.0.0")
 gem("puma", "3.12.0")
@@ -17,7 +17,6 @@ gem("redis-rails", "5.0.2")
 gem("connection_pool", "2.2.2")
 gem("rack-cors", "1.0.2")
 gem("rack-attack", "5.4.0")
-gem("redis-rack-cache", "2.0.2")
 gem("rack-authentication_bearer", "2.0.2")
 gem("secure_headers", "6.0.0")
 gem("sidekiq", "5.1.3")
@@ -46,7 +45,7 @@ gem("pry-doc", "0.13.4")
 gem("jsonapi-serializers", "1.0.1")
 gem("jsonapi-realizer", "4.4.0")
 gem("jsonapi-home", "1.1.3")
-gem("smart_params", "2.3.0")
+gem("smart_params", "2.3.1")
 gem("bugsnag", "6.8.0")
 gem("paper_trail", "9.2.0")
 gem("action_operation", "2.2.0")
@@ -87,4 +86,5 @@ group(:development) do
   gem("rubocop", "0.58.2", :require => false)
   gem("ruby-prof", "0.17.0", :require => false)
   gem("stackprof", "0.2.12", :require => false)
+  gem("addressable", "2.5.2", :require => false)
 end

@@ -2,7 +2,7 @@ module V1
   class TagsController < ::V1::ApplicationController
     discoverable(
       :version => "v1",
-      :namespace => "accounts"
+      :namespace => "tags"
     )
 
     def index
@@ -27,6 +27,8 @@ module V1
       )
 
       authorize(realization.model)
+
+      return unless stale?(:etag => realization.model)
 
       render(:json => serialize(realization))
     end

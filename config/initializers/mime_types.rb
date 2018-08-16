@@ -5,16 +5,13 @@
 
 Mime::Type.register("application/vnd.api+json", :json)
 
-ActionDispatch::Http::Parameters::DEFAULT_PARSERS[:json] = lambda do |body|
+ActionDispatch::Http::Parameters::DEFAULT_PARSERS[:json] = ->(body) do
   begin
     parsed_body = Oj.load(body) if body.present?
 
-    if parsed_body.is_a?(Hash)
-      parsed_body.with_indifferent_access
-    else
-      # TODO: Raise a specific exception
-      raise
-    end
+    raise(BadError) unless parsed_body.is_a?(Hash)
+
+    parsed_body.with_indifferent_access
   rescue JSON::ParserError => parse_exception
     # TODO: Handle parse error
     raise(parse_exception)

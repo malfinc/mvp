@@ -22,7 +22,7 @@ class LoginAccountOperation < ApplicationOperation
     field(:secret, :type => Types::Strict::String)
   end
   def validate_password(state:)
-    raise InvalidLoginError unless state.account.valid_password?(state.secret)
+    raise(InvalidLoginError) unless state.account.valid_password?(state.secret)
 
     fresh(
       :state => {

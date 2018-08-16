@@ -16,3 +16,4 @@
 .byebug_history
 .env
 proxy/default.conf
+config/master.key

@@ -10,26 +10,28 @@ shared:
         PGHOST: "127.0.0.1"
         PGUSER: "poutineer"
         PORT: 3000
-        RAILS_MASTER_KEY: "private"
-        ORIGIN_ENCRYPTION_PRIVATE: "private"
-        ORIGIN_ENCRYPTION_SALT: "salt"
+        RAILS_MASTER_KEY: "b2f6f2326268f8d9fe16908969359f12"
+        ORIGIN_ENCRYPTION_SECRET: "c312adc329d7c11c8bfc17d52f7269aceca1ef55372ae2586a1d3e3ae8304f7056e6b3b556fb5fdfdfe86566604f51b5636dd93b5522d08f29b8f3dd022104bd"
+        ORIGIN_ENCRYPTION_SALT: "c312adc329d7c11c8bfc17d52f7269aceca1ef55372ae2586a1d3e3ae8304f7056e6b3b556fb5fdfdfe86566604f51b5636dd93b5522d08f29b8f3dd022104bd"
         RAILS_ENV: "test"
         RACK_ENV: "test"
         WEB_CONCURRENCY: 2
         RAILS_MAX_THREADS: 2
         RACK_TIMEOUT_SERVICE_TIMEOUT: 25
-        WWW_LOCATION: "localhost"
         HOME_LOCATION: "http://localhost:3001"
+        WWW_ORIGIN: "localhost"
+        ORIGIN_ORIGIN: "http://localhost:3001"
         RAILS_EMAIL_HOST: "localhost"
         RAILS_EMAIL_USER: "noreply"
         RAILS_HOST: "localhost"
-        RAILS_SESSION_PRIVATE: "private"
         REDIS_REDLOCK_URL: "redis://localhost:6379/0"
         REDIS_REDLOCK_POOL_SIZE: 2
         REDIS_CACHE_URL: "redis://localhost:6379/1"
         REDIS_CACHE_POOL_SIZE: 2
         REDIS_OBJECTS_URL: "redis://localhost:6379/2"
         REDIS_OBJECTS_POOL_SIZE: 2
+        REDIS_ACTION_CABLE_URL: "redis://localhost:6379/2"
+        REDIS_ACTION_CABLE_POOL_SIZE: 2
         REDIS_SIDEKIQ_URL: "redis://localhost:6379/3"
         REDIS_SIDEKIQ_CLIENT_POOL_SIZE: 2
         REDIS_SIDEKIQ_SERVER_POOL_SIZE: 2

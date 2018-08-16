@@ -28,6 +28,8 @@ module V1
 
       authorize(realization.model)
 
+      return unless stale?(:etag => realization.model)
+
       render(:json => serialize(realization))
     end
 

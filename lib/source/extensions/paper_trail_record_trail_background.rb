@@ -1,5 +1,5 @@
 module PaperTrailRecordTrailBackground
-  def record_create()
+  def record_create
     return unless enabled?
 
     @in_after_callback = true

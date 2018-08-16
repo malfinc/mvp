@@ -8,11 +8,11 @@ module V1
     def create
       parameters = Sessions::CreateSchema.new(request.parameters)
 
-      operation = LoginAccountOperation.({
-        scope: policy_scope(Account, policy_scope_class: SessionPolicy::Scope),
-        shared: parameters.data.attributes.email,
-        secret: parameters.data.attributes.password
-      })
+      operation = LoginAccountOperation.(
+        :scope => policy_scope(Account, :policy_scope_class => SessionPolicy::Scope),
+        :shared => parameters.data.attributes.email,
+        :secret => parameters.data.attributes.password
+      )
 
       authorize(operation.fetch(:account))
 

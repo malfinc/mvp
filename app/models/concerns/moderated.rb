@@ -28,7 +28,7 @@ module Moderated
   included do
     include(AuditedWithTransitions)
 
-    has_many :contributors, :through => :versions, :class_name => "Account", :source => :actor
+    has_many(:contributors, :through => :versions, :class_name => "Account", :source => :actor)
 
     state_machine(:moderation_state, :initial => :draft) do
       event(:publish) do

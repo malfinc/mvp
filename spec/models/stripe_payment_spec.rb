@@ -7,11 +7,11 @@ RSpec.describe(StripePayment, :type => :model) do
     end
 
     pending("is valid") do
-      expect(model).to be_valid
+      expect(model).to(be_valid)
     end
 
     pending("saves to the database") do
-      expect(model).to be_persisted
+      expect(model).to(be_persisted)
     end
   end
 end

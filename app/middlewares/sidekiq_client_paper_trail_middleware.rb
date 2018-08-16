@@ -1,8 +1,8 @@
 class SidekiqClientPaperTrailMiddleware
   def call(_, job, _, _)
-    job["session_id"] ||= SecureRandom.uuid()
+    job["chain_id"] ||= SecureRandom.uuid()
 
-    Rails.logger.tagged("group=#{job.fetch("session_id")}") do
+    Rails.logger.tagged("chain=#{job.fetch("chain_id")}") do
       if PaperTrail.request.whodunnit.blank?
         Rails.logger.warn("No PaperTrail whodunnit available")
         return false

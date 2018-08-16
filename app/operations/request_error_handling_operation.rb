@@ -1,13 +1,7 @@
 class RequestErrorHandlingOperation < ApplicationOperation
   task(:write_to_log)
+  task(:notify_bugsnag)
   task(:render_output)
-  task(:missing_accept_header, :required => false)
-  task(:invalid_accept_header, :required => false)
-  task(:malformed_data_root_property, :required => false)
-  task(:access_not_authorized, :required => false)
-  task(:record_invalid, :required => false)
-  task(:application_exception, :required => false)
-  task(:unhandled_exception, :required => false)
 
   schema(:write_to_log) do
     field(:exception, :type => Types.Instance(StandardError))
@@ -17,7 +11,7 @@ class RequestErrorHandlingOperation < ApplicationOperation
     when StateMachines::InvalidTransition
       Rails.logger.debug("#{state.exception.object.class.name} failed to save due to #{state.exception.object.errors.full_messages.to_sentence}")
     when Pundit::NotAuthorizedError
-      Rails.logger.debug("#{state.exception.policy.class.name} did not allow #{state.exception.policy.actor.to_gid} to #{state.exception.query.gsub("?", "")} a #{state.exception.policy.record.class}")
+      Rails.logger.debug("#{state.exception.policy.class.name} did not allow #{state.exception.policy.actor.to_gid} to #{state.exception.query.delete("?")} a #{state.exception.policy.record.class}")
     when ActiveRecord::RecordInvalid
       Rails.logger.error("#{state.exception.record.class.name} failed to save due to #{state.exception.record.errors.full_messages.to_sentence}")
       Rails.logger.error(state.exception.record.attributes.as_json)
@@ -25,6 +19,33 @@ class RequestErrorHandlingOperation < ApplicationOperation
       Rails.logger.error("#{state.exception.class.name} was raised due to #{state.exception.message.inspect}")
     end
     Rails.logger.debug(state.exception.full_message)
+  end
+
+  schema(:notify_bugsnag) do
+    field(:controller, :type => Types.Instance(ApplicationController))
+    field(:exception, :type => Types.Instance(StandardError))
+  end
+  def notify_bugsnag(state:)
+    return unless Rails.env.production?
+    if state.controller.account_signed_in?
+      Bugsnag.before_notify_callbacks << ->(report) do
+        report.user = {
+          id: state.controller.current_account.id
+        }
+      end
+    end
+
+    Bugsnag.before_notify_callbacks << ->(report) do
+      report.add_tab(
+        :request,
+        :request_id => state.controller.request.request_id,
+        :session_id => if state.controller.account_signed_in? then state.controller.session.id end,
+        :operation_id => operation_id,
+        :step_id => step_id
+      )
+    end
+
+    Bugsnag.notify(state.exception)
   end
 
   schema(:render_output) do
@@ -38,6 +59,7 @@ class RequestErrorHandlingOperation < ApplicationOperation
     when JSONAPI::Realizer::Error::MalformedDataRootProperty then malformed_data_root_property(state.controller)
     when Pundit::NotAuthorizedError then access_not_authorized(state.controller)
     when ActiveRecord::RecordInvalid then record_invalid(state.controller, state.exception)
+    when ActiveRecord::RecordNotFound then record_not_found(state.controller)
     when StateMachines::InvalidTransition then invalid_transition(state.controller)
     when SmartParams::Error::InvalidPropertyType then invalid_property_type(state.controller, state.exception)
     when ApplicationError then application_exception(state.controller, state.exception)
@@ -50,6 +72,10 @@ class RequestErrorHandlingOperation < ApplicationOperation
       :json => JSONAPI::Serializer.serialize_errors(exception.record.errors),
       :status => :unprocessable_entity
     )
+  end
+
+  private def record_not_found(controller)
+    controller.head(:not_found)
   end
 
   private def application_exception(controller, exception)

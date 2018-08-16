@@ -13,7 +13,7 @@ module V1
         elsif context.key?(:policy)
           nil
         else
-          raise MissingContextPolicyError
+          raise(MissingContextPolicyError)
         end
       end
     end
@@ -28,11 +28,9 @@ module V1
 
     private_class_method def self.policy_scoped(association)
       ->(_) do
-        if context.key?(:policy)
-          context.fetch(:policy).public_send("related_#{association}", if block_given? then yield end)
-        else
-          raise MissingContextPolicyError
-        end
+        raise(MissingContextPolicyError) unless context.key?(:policy)
+
+        context.fetch(:policy).public_send("related_#{association}", if block_given? then yield end)
       end
     end
   end

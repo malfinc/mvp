@@ -1,14 +1,19 @@
 class ApplicationOperation
   include(ActionOperation)
 
+  attr_accessor :operation_id
+  attr_accessor :step_id
+
   def around_steps(**)
-    Rails.logger.tagged("operation-id=#{SecureRandom.uuid}") do
+    self.operation_id = SecureRandom.uuid
+    Rails.logger.tagged("operation-id=#{operation_id}") do
       yield
     end
   end
 
   def around_step(**)
-    Rails.logger.tagged("step-id=#{SecureRandom.uuid}") do
+    self.step_id = SecureRandom.uuid
+    Rails.logger.tagged("step-id=#{step_id}") do
       yield
     end
   end

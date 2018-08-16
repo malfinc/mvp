@@ -11,6 +11,7 @@ require("action_controller/railtie")
 require("action_mailer/railtie")
 require("action_view/railtie")
 require("action_cable/engine")
+require("active_storage/engine")
 # require "sprockets/railtie"
 # require "rails/test_unit/railtie"
 
@@ -26,8 +27,9 @@ module BlankApiRails
     config.load_defaults(5.1)
 
     # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration should go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded.
+    # Application configuration can go into files in config/initializers
+    # -- all .rb files in that directory are automatically loaded after loading
+    # the framework and any gems in your application.
 
     # Only loads a smaller set of middleware suitable for API only apps.
     # Middleware like session, flash, cookies can be added back manually.
@@ -46,10 +48,24 @@ module BlankApiRails
     config.action_controller.include_all_helpers = false
     config.active_record.schema_format = :sql
     config.active_job.queue_adapter = :sidekiq
+
+    # Set the application-level cache
     config.cache_store = [
-      :redis_store,
-      {:expires_in => 30.minutes, :pool => BlankApiRails::REDIS_CACHE_CONNECTION_POOL}
+      :redis_cache_store,
+      {
+        :driver => :hiredis,
+        :expires_in => 30.minutes,
+        :compress => true,
+        :redis => Poutineer::REDIS_CACHE_CONNECTION_POOL
+      }
     ]
+
+    # Set the http-level caching
+    config.action_controller.perform_caching = true
+    config.action_mailer.perform_caching = true
+    config.public_file_server.headers = {
+      "Cache-Control" => "public, max-age=#{Integer(1.week.seconds)}"
+    }
 
     # Uses the tags defined below to create logs that are easily grep-able.
     unless Rails.env.test?
@@ -60,18 +76,22 @@ module BlankApiRails
 
     # Each of the below adds one informational piece to each logline
     config.log_tags = [
-      -> (_request) {"time=#{Time.now.iso8601}"},
-      lambda do |request|
+      ->(_) do "time=#{Time.now.iso8601}" end,
+      ->(request) do
         "remote-ip=#{request.remote_ip}" if request.remote_ip
       end,
-      lambda do |request|
+      ->(request) do
         if request.cookie_jar.encrypted.try!(:[], config.session_options[:key]).try!(:[], "session_id")
           "session-id=#{request.cookie_jar.encrypted.try!(:[], config.session_options[:key]).try!(:[], "session_id")}"
         end
       end,
-      lambda do |request|
+      ->(request) do
         "context-id=#{request.request_id}" if request.request_id
       end
+    ]
+    config.action_cable.log_tags = [
+      :action_cable,
+      ->(request) {request.uuid}
     ]
 
     if ENV.fetch("HEROKU_APP_NAME", nil)

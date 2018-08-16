@@ -34,7 +34,7 @@ RSpec.shared_context("JSON:API request") do
 
   def payload
     {
-      :data => if payload_data.present? then payload_data end,
+      :data => payload_data.presence,
       :metadata => if try(:payload_metadata).present? then payload_metadata.compact end,
       :included => if try(:payload_included).present? then payload_included.compact end
     }.compact.deep_stringify_keys

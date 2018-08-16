@@ -4,7 +4,7 @@ class Account < ApplicationRecord
   include(FriendlyId)
   include(AuditedWithTransitions)
 
-  has_many(:payments)
+  has_many(:payments, :dependent => :destroy)
 
   friendly_id(:email, :use => [:slugged, :history], :slug_column => :username)
 
