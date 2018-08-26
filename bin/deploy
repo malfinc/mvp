@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 echo "- Deploying services" &&
-cd origin && bin/deploy $1 && cd -
+cd resources && bin/deploy $1 && cd -

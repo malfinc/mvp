@@ -1,6 +1,6 @@
 FROM ruby:2.5.0-stretch
 
-ENV APPLICATION /usr/lib/origin
+ENV APPLICATION /usr/lib/resources
 ENV RAILS_ENV production
 ENV PORT 3001
 

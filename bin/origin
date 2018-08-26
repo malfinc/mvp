@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-echo "- Executing on origin container" &&
-docker-compose exec origin "$@"
+echo "- Executing on resources container" &&
+docker-compose exec resources "$@"

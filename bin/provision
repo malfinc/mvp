@@ -5,7 +5,7 @@ bin/up postgres &&
 bin/up redis &&
 
 echo "- Creating database" &&
-bin/run origin bin/rake --trace db:create db:migrate
+bin/run resources bin/rake --trace db:create db:migrate
 
 echo "- Migrating database" &&
-bin/run origin bin/rake --trace db:migrate
+bin/run resources bin/rake --trace db:migrate

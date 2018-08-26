@@ -1,5 +1,5 @@
 {
-  "name": "blank-api-rails",
+  "name": "blankapirails",
   "description": "A blank rails api",
   "scripts": {
     "postdeploy": "bin/postdeploy"
@@ -8,7 +8,7 @@
     "WWW_ORIGIN": {
       "required": true
     },
-    "ORIGIN_ORIGIN": {
+    "RESOURCES_ORIGIN": {
       "required": true
     },
     "HOME_ORIGIN": {
@@ -17,10 +17,10 @@
     "RAILS_HOST": {
       "required": true
     },
-    "ORIGIN_ENCRYPTION_SECRET": {
+    "ENCRYPTION_SECRET": {
       "generator": "secret"
     },
-    "ORIGIN_ENCRYPTION_SALT": {
+    "ENCRYPTION_SALT": {
       "generator": "secret"
     },
     "RAILS_MASTER_KEY": {

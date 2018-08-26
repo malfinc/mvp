@@ -1,5 +1,12 @@
 ## TODO
 
+
+  - Copy over Procfile
+  - Rewrite app.json description
+  - Remove TODOs from readme
+  - Setup heroku vars
+  - Setup heroku addons
+  - Rewrite script: BlankApiRails blank-api-rails blank_api_rails
   - Fix JSONAPI serializer relationship links
     ``` json
     "relationships": {

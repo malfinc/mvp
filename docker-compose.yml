@@ -1,11 +1,11 @@
 version: '2'
 services:
-  origin:
+  resources:
     build:
       context: ./
-      dockerfile: Dockerfile.origin
+      dockerfile: Dockerfile.resources
     volumes:
-      - ./:/usr/lib/origin
+      - ./:/usr/lib/resources
     depends_on:
       - postgres
       - redis-sidekiq
@@ -31,33 +31,33 @@ services:
       - WEB_CONCURRENCY=2
       - RAILS_EMAIL_HOST=localhost
       - RAILS_EMAIL_USER=noreply
-      - ORIGIN_LOCATION=http://origin.blank-api-rails.local
-      - WWW_LOCATION=http://www.blank-api-rails.local
-      - RAILS_HOST=origin.blank-api-rails.local
-      - VIRTUAL_HOST=origin.blank-api-rails.local
+      - RESOURCES_ORIGIN=http://resources.blankapirails.local
+      - WWW_ORIGIN=http://www.blankapirails.local
+      - RAILS_HOST=resources.blankapirails.local
+      - VIRTUAL_HOST=resources.blankapirails.local
       - BUGSNAG_API_PRIVATE
-      - ORIGIN_ENCRYPTION_SECRET
-      - ORIGIN_ENCRYPTION_SALT
+      - ENCRYPTION_SECRET
+      - ENCRYPTION_SALT
   postgres:
     image: postgres:9.6-alpine
     environment:
-      - VIRTUAL_HOST=postgres.blank-api-rails.local
+      - VIRTUAL_HOST=postgres.blankapirails.local
   redis-sidekiq:
     image: redis:3.2.11-alpine
     environment:
-      - VIRTUAL_HOST=redis-sidekiq.blank-api-rails.local
+      - VIRTUAL_HOST=redis-sidekiq.blankapirails.local
   redis-objects:
     image: redis:3.2.11-alpine
     environment:
-      - VIRTUAL_HOST=redis-objects.blank-api-rails.local
+      - VIRTUAL_HOST=redis-objects.blankapirails.local
   redis-cache:
     image: redis:3.2.11-alpine
     environment:
-      - VIRTUAL_HOST=redis-cache.blank-api-rails.local
+      - VIRTUAL_HOST=redis-cache.blankapirails.local
   redis-redlock:
     image: redis:3.2.11-alpine
     environment:
-      - VIRTUAL_HOST=redis-redlock.blank-api-rails.local
+      - VIRTUAL_HOST=redis-redlock.blankapirails.local
   proxy:
     image: jwilder/nginx-proxy:alpine
     ports:

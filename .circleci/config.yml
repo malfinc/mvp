@@ -8,11 +8,11 @@ shared:
         BUNDLE_PATH: "./vendor/bundle"
         BUNDLE_RETRY: 2
         PGHOST: "127.0.0.1"
-        PGUSER: "poutineer"
+        PGUSER: "blankapirails"
         PORT: 3000
         RAILS_MASTER_KEY: "b2f6f2326268f8d9fe16908969359f12"
-        ORIGIN_ENCRYPTION_SECRET: "c312adc329d7c11c8bfc17d52f7269aceca1ef55372ae2586a1d3e3ae8304f7056e6b3b556fb5fdfdfe86566604f51b5636dd93b5522d08f29b8f3dd022104bd"
-        ORIGIN_ENCRYPTION_SALT: "c312adc329d7c11c8bfc17d52f7269aceca1ef55372ae2586a1d3e3ae8304f7056e6b3b556fb5fdfdfe86566604f51b5636dd93b5522d08f29b8f3dd022104bd"
+        ENCRYPTION_SECRET: "c312adc329d7c11c8bfc17d52f7269aceca1ef55372ae2586a1d3e3ae8304f7056e6b3b556fb5fdfdfe86566604f51b5636dd93b5522d08f29b8f3dd022104bd"
+        ENCRYPTION_SALT: "c312adc329d7c11c8bfc17d52f7269aceca1ef55372ae2586a1d3e3ae8304f7056e6b3b556fb5fdfdfe86566604f51b5636dd93b5522d08f29b8f3dd022104bd"
         RAILS_ENV: "test"
         RACK_ENV: "test"
         WEB_CONCURRENCY: 2
@@ -20,7 +20,7 @@ shared:
         RACK_TIMEOUT_SERVICE_TIMEOUT: 25
         HOME_LOCATION: "http://localhost:3001"
         WWW_ORIGIN: "localhost"
-        ORIGIN_ORIGIN: "http://localhost:3001"
+        RESOURCES_ORIGIN: "http://localhost:3001"
         RAILS_EMAIL_HOST: "localhost"
         RAILS_EMAIL_USER: "noreply"
         RAILS_HOST: "localhost"
@@ -38,34 +38,34 @@ shared:
     postgres: &postgres_docker
       image: "circleci/postgres:10.4-alpine"
       environment:
-        POSTGRES_DB: "poutineer_test"
-        POSTGRES_USER: "poutineer"
+        POSTGRES_DB: "blankapirails_test"
+        POSTGRES_USER: "blankapirails"
     redis: &redis_docker
       image: "redis:3.2.12"
   caches:
     git_save: &git_save
       save_cache:
-        key: "poutineer-v2-git-{{ .Branch }}-{{ .Revision }}"
+        key: "blankapirails-v2-git-{{ .Branch }}-{{ .Revision }}"
         paths:
           - ".git/"
     git_restore: &git_restore
       restore_cache:
         keys:
-          - "poutineer-v2-git-{{ .Branch }}-{{ .Revision }}"
-          - "poutineer-v2-git-{{ .Branch }}-"
-          - "poutineer-v2-git-"
+          - "blankapirails-v2-git-{{ .Branch }}-{{ .Revision }}"
+          - "blankapirails-v2-git-{{ .Branch }}-"
+          - "blankapirails-v2-git-"
     bundler_save: &bundler_save
       save_cache:
-        key: "poutineer-v2-bundler-{{ .Branch }}-{{ checksum \"Gemfile.lock\" }}"
+        key: "blankapirails-v2-bundler-{{ .Branch }}-{{ checksum \"Gemfile.lock\" }}"
         paths:
           - "./vendor/bundle"
           - "/usr/local/bundle/config"
     bundler_restore: &bundler_restore
       restore_cache:
         keys:
-          - "poutineer-v2-bundler-{{ .Branch }}-{{ checksum \"Gemfile.lock\" }}"
-          - "poutineer-v2-bundler-{{ .Branch }}-"
-          - "poutineer-v2-bundler-"
+          - "blankapirails-v2-bundler-{{ .Branch }}-{{ checksum \"Gemfile.lock\" }}"
+          - "blankapirails-v2-bundler-{{ .Branch }}-"
+          - "blankapirails-v2-bundler-"
 workflows:
   version: 2
   core:

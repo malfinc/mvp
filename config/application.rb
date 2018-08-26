@@ -56,7 +56,7 @@ module BlankApiRails
         :driver => :hiredis,
         :expires_in => 30.minutes,
         :compress => true,
-        :redis => Poutineer::REDIS_CACHE_CONNECTION_POOL
+        :redis => BlankApiRails::REDIS_CACHE_CONNECTION_POOL
       }
     ]
 

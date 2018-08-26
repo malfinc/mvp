@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
-echo "- Testing on origin container" &&
-docker-compose exec origin env RAILS_ENV=test bin/rspec "$@"
+echo "- Testing on resources container" &&
+docker-compose exec resources env RAILS_ENV=test bin/rspec "$@"
