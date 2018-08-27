@@ -86,7 +86,7 @@ module V1
     private def serialized_links
       {
         :discovery => {
-          :href => "/"
+          :href => ENV.fetch("DISCOVERY_ORIGIN")
         }
       }
     end
