@@ -5,6 +5,8 @@ module V1
 
     register(:accounts, :class_name => "Account", :adapter => :active_record)
 
+    has_many(:payments, as: :payments)
+
     has(:email)
   end
 end

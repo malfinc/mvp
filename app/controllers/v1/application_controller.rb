@@ -48,7 +48,7 @@ module V1
         :include => if includes.any? then includes end,
         :is_collection => false,
         :context => default_context(
-          :policy => policy(model)
+          :policy_finder => method(:policy)
         )
       )
     end
@@ -61,7 +61,7 @@ module V1
         :include => if includes.any? then includes end,
         :is_collection => true,
         :context => default_context(
-          :policy => models.map(&method(:policy))
+          :policy_finder => method(:policy_scope)
         )
       )
     end

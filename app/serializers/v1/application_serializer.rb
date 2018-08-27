@@ -6,15 +6,33 @@ module V1
       nil
     end
 
+    def self.has_many(name, options = {}, &block)
+      super(name, options.merge(:if => policy_allows_relation?(name)), &policy_scoped(name, &block))
+    end
+
+    def self.has_one(name, options = {}, &block)
+      super(name, options.merge(:if => policy_allows_relation?(name)), &policy_scoped(name, &block))
+    end
+
+    def self.attribute(name, options = {}, &block)
+      super(name, options.merge(:if => policy_allows_relation?(name)), &block)
+    end
+
     private_class_method def self.policy_allows(name, type)
-      define_method("allow_#{type}_#{name}?") do
-        if context.key?(:policy) && context.fetch(:policy).respond_to?("read_#{name}?")
-          context.fetch(:policy).public_send("read_#{name}?", name)
-        elsif context.key?(:policy)
-          nil
-        else
-          raise(MissingContextPolicyError)
-        end
+      define_method("allow_#{name}?") do
+        raise(MissingContextPolicyFinderError) unless context.key?(:policy_finder)
+
+        policy_finder = context.fetch(:policy_finder)
+
+        raise(MissingContextPolicyFinderError) unless policy_finder.kind_of?(Method) || policy_finder.kind_of?(Proc)
+
+        policy = policy_finder.(object)
+
+        raise(MissingContextPolicyFinderError) unless policy.present?
+
+        return false unless policy.respond_to?("read_#{name}?")
+
+        policy.public_send("read_#{name}?")
       end
     end
 
@@ -28,9 +46,21 @@ module V1
 
     private_class_method def self.policy_scoped(association)
       ->(_) do
-        raise(MissingContextPolicyError) unless context.key?(:policy)
+        raise(MissingContextPolicyFinderError) unless context.key?(:policy_finder)
 
-        context.fetch(:policy).public_send("related_#{association}", if block_given? then yield end)
+        policy_finder = context.fetch(:policy_finder)
+
+        raise(MissingContextPolicyFinderError) unless policy_finder.kind_of?(Method) || policy_finder.kind_of?(Proc)
+
+        policy_scope = policy_finder.(object)
+
+        raise(MissingContextPolicyFinderError) unless policy_scope.present?
+
+        if block_given?
+          yield(policy_scope.public_send("related_#{association}"))
+        else
+          policy_scope.public_send("related_#{association}")
+        end
       end
     end
   end

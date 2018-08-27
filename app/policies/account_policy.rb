@@ -23,7 +23,19 @@ class AccountPolicy < ApplicationPolicy
     only_logged_in
   end
 
-  def read_attribute_authentication_secret?
+  def read_username?
+    everyone
+  end
+
+  def read_name?
+    everyone
+  end
+
+  def read_payments?
+    everyone
+  end
+
+  def read_authentication_secret?
     (actor == record) || record.new_record?
   end
 

@@ -58,27 +58,23 @@ class ApplicationPolicy
   end
 
   def read_attribute?(name)
-    if respond_to?("read_attribute_#{name}?")
-      public_send("read_attribute_#{name}?")
+    if respond_to?("read_#{name}?")
+      public_send("read_#{name}?")
     else
       noone
     end
   end
 
   def write_attribute?(name)
-    if respond_to?("write_attribute_#{name}?")
-      public_send("write_attribute_#{name}?")
+    if respond_to?("write_#{name}?")
+      public_send("write_#{name}?")
     else
       noone
     end
   end
 
   private def read_relation?(association)
-    if record.public_send(association).model.policy_class.const_defined?("Scope")
-      record.public_send(association).model.policy_class.const_get("Scope").new(actor, record.public_send(association))
-    else
-      record.public_send(association).none
-    end
+    record.public_send(association).model.policy_class.const_defined?("Scope") && respond_to?("read_#{name}?")
   end
 
   private def completed
