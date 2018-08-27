@@ -2,6 +2,10 @@ module V1
   class ApplicationSerializer
     include(JSONAPI::Serializer)
 
+    def base_url
+      ENV.fetch("RESOURCES_ORIGIN")
+    end
+
     def relationship_related_link(_attribute_name)
       nil
     end
