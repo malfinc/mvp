@@ -1,0 +1,121 @@
+@startuml
+actor Seller order 10
+database MemoryDatabase order 20
+database BrowserDatabase order 30
+boundary BrowserClient order 40
+entity ProxyServer order 50
+database EdgeDatabase order 60
+entity ResourceServer order 70
+control SidekiqClient order 80
+entity SidekiqServer order 80
+database PostgresDatabase order 90
+
+activate SidekiqServer
+  loop 1 hour
+    SidekiqServer -> SidekiqServer : Process scheduled replication of views
+
+    activate PostgresDatabase
+      SidekiqServer -> PostgresDatabase : SELECT name FROM edge_views
+      PostgresDatabase --> SidekiqServer : status=PGRES_TUPLES_OK
+
+      loop edge_view
+        SidekiqServer -> PostgresDatabase : SELECT * FROM {name}
+        PostgresDatabase --> SidekiqServer : status=PGRES_TUPLES_OK
+      end
+    deactivate PostgresDatabase
+
+    activate EdgeDatabase
+      loop results
+        SidekiqServer -> EdgeDatabase : POST https://edge-database.example.com/{tenant}/{id}?batch=ok
+        EdgeDatabase --> SidekiqServer : 202 Accepted
+      end
+
+      SidekiqServer -> EdgeDatabase : POST https://edge-database.example.com/{tenant}/_ensure_full_commit
+      EdgeDatabase --> SidekiqServer : 200 OK
+    deactivate EdgeDatabase
+  end
+deactivate SidekiqServer
+
+activate Seller
+  Seller -> BrowserClient : Visit Seller Tool
+
+  activate BrowserClient
+    BrowserClient -> ProxyServer : GET http://seller.example.com
+    activate ProxyServer
+      ProxyServer --> BrowserClient : 200 OK
+    deactivate ProxyServer
+    BrowserClient --> Seller : Render Seller Tool
+    BrowserDatabase -> EdgeDatabase : Start Replicate
+    EdgeDatabase --> BrowserDatabase : Finish Replicate
+    MemoryDatabase -> BrowserDatabase : Start Replicate
+    BrowserDatabase --> MemoryDatabase : Finish Replicate
+  deactivate BrowserClient
+
+  Seller -> BrowserClient : Submits Price Changes
+
+  activate BrowserClient
+    loop product
+      BrowserClient -> BrowserClient : TRIGGER loading products/{id}
+      BrowserClient --> Seller : Show Loading Indicator
+    end
+
+    BrowserClient -> ResourceServer : POST http://resources.example.com/v1/bulk_products [[{id}, {cents}], ...]
+
+    activate ResourceServer
+      loop id
+        ResourceServer -> SidekiqClient : Enqueue ProductPriceChangeJob {id}
+        SidekiqClient --> ResourceServer : true
+      end
+    deactivate ResourceServer
+
+    ResourceServer -> BrowserClient : 200 OK
+  deactivate BrowserClient
+deactivate Seller
+
+activate SidekiqServer
+  SidekiqServer -> SidekiqServer : Processing ProductPriceChangeJob
+
+  activate PostgresDatabase
+    SidekiqServer -> PostgresDatabase : SELECT * FROM products WHERE id = {id}
+    PostgresDatabase --> SidekiqServer : status=PGRES_TUPLES_OK
+    SidekiqServer -> SidekiqServer : Price locking business logic
+    SidekiqServer -> PostgresDatabase : BEGIN
+    SidekiqServer -> PostgresDatabase : UPDATE products SET price_cents={cents} WHERE id = {id}
+    SidekiqServer -> PostgresDatabase : COMMIT
+    PostgresDatabase --> SidekiqServer : status=PGRES_TUPLES_OK
+  deactivate PostgresDatabase
+
+  SidekiqServer -> SidekiqServer : Start replicating relevent views
+
+  activate PostgresDatabase
+    SidekiqServer -> PostgresDatabase : SELECT name FROM edge_views WHERE topics @> {products}
+    PostgresDatabase --> SidekiqServer : status=PGRES_TUPLES_OK
+
+    loop edge_view
+      SidekiqServer -> PostgresDatabase : SELECT * FROM {name}
+      PostgresDatabase --> SidekiqServer : status=PGRES_TUPLES_OK
+    end
+  deactivate PostgresDatabase
+
+  activate EdgeDatabase
+    loop results
+      SidekiqServer -> EdgeDatabase : POST https://edge-database.example.com/{tenant}/{id}?batch=ok
+      EdgeDatabase --> SidekiqServer : 202 Accepted
+    end
+
+    SidekiqServer -> EdgeDatabase : POST https://edge-database.example.com/{tenant}/_ensure_full_commit
+    EdgeDatabase --> SidekiqServer : 200 OK
+
+    activate BrowserDatabase
+      EdgeDatabase -> BrowserDatabase : Start Live Replication
+      BrowserDatabase --> EdgeDatabase : Finish Live Replication
+      activate MemoryDatabase
+        BrowserDatabase -> MemoryDatabase : Start Live Replication
+        MemoryDatabase --> BrowserDatabase : Finish Live Replication
+      deactivate MemoryDatabase
+    deactivate BrowserDatabase
+  deactivate EdgeDatabase
+  BrowserClient -> BrowserClient : TRIGGER unloading products/{id}
+  BrowserClient --> Seller : Remove Loading Indicator
+deactivate SidekiqServer
+@enduml
