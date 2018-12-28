@@ -1,11 +1,7 @@
 source("https://rubygems.org")
+git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby("2.5.0")
-
-git_source(:github) do |repo_name|
-  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
-  "https://github.com/#{repo_name}.git"
-end
 
 gem("rails", "5.2.1")
 gem("oj", "3.6.5")
