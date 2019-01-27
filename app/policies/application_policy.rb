@@ -58,16 +58,16 @@ class ApplicationPolicy
   end
 
   def read_attribute?(name)
-    if respond_to?("read_#{name}?")
-      public_send("read_#{name}?")
+    if respond_to?("#{name}_readable?")
+      public_send("#{name}_readable?")
     else
       noone
     end
   end
 
   def write_attribute?(name)
-    if respond_to?("write_#{name}?")
-      public_send("write_#{name}?")
+    if respond_to?("#{name}_writable?")
+      public_send("#{name}_writable?")
     else
       noone
     end
@@ -114,10 +114,14 @@ class ApplicationPolicy
   end
 
   private def owner?
-    actor == record.author
+    record.respond_to?(:owner) && actor == record.owner
+  end
+
+  private def yourself?
+    actor == record
   end
 
   private def administrator?
-    account.role_state?(:administrator)
+    actor.role_state?(:administrator)
   end
 end

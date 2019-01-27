@@ -20,6 +20,11 @@ class Account < ApplicationRecord
   before_validation(:generate_password, :unless => :encrypted_password?)
   before_validation(:generate_authentication_secret, :unless => :authentication_secret?)
 
+  validates_inclusion_of(:onboarding_state, :in => ["converted", "completed"], :on => :update)
+  validates_inclusion_of(:role_state, :in => ["user", "administrator"], :on => :update)
+  validates_presence_of(:username, :if => :email_required?)
+  validates_format_of(:username, :with => USERNAME_PATTERN, :if => :email_required?)
+
   state_machine(:onboarding_state, :initial => :converted) do
     event(:complete) do
       transition(:from => :converted, :to => :completed)
@@ -37,25 +42,20 @@ class Account < ApplicationRecord
       transition(:from => [:administrator], :to => :user)
     end
 
+    before_transition(:do => :version_transition)
+
     after_transition(:on => :upgrade_to_administrator) do |record|
       record.after_transaction do
         AccountRoleMailer.with(:destination => record).upgraded_to_administrator.deliver_later
       end
     end
+
     after_transition(:on => :downgrade_to_user) do |record|
       record.after_transaction do
         AccountRoleMailer.with(:destination => record).downgraded_to_user.deliver_later
       end
     end
-    after_transition(:on => :despark) do |record|
-      record.after_transaction do
-        AccountRoleMailer.with(:destination => record).downgraded_to_user.deliver_later
-      end
-    end
   end
-
-  validates_presence_of(:username, :if => :email_required?)
-  validates_format_of(:username, :with => USERNAME_PATTERN, :if => :email_required?)
 
   private def generate_password
     assign_attributes(:password => SecureRandom.hex(60))

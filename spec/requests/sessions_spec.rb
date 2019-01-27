@@ -29,7 +29,7 @@ RSpec.describe("sessions", :type => :request) do
       end
 
       it("updates the cookies with a session key") do
-        expect {jsonapi_create}.to(change {response&.cookies&.to_h}.from(nil).to(hash_including("_blankapirails_session" => a_kind_of(String))))
+        expect {jsonapi_create}.to(change {response&.cookies&.to_h}.from(nil).to(hash_including("_blank_session" => a_kind_of(String))))
       end
     end
   end

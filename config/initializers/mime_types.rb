@@ -7,7 +7,7 @@ Mime::Type.register("application/vnd.api+json", :json)
 
 ActionDispatch::Http::Parameters::DEFAULT_PARSERS[:json] = ->(body) do
   begin
-    parsed_body = Oj.load(body) if body.present?
+    parsed_body = JSON.parse(body) if body.present?
 
     raise(BadError) unless parsed_body.is_a?(Hash)
 

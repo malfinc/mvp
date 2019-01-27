@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-echo "- Removing hostnames" &&
-sudo npm run hostile -- set "`docker-machine ip blankapirails`" redis.blankapirails.local &&
-sudo npm run hostile -- set "`docker-machine ip blankapirails`" postgres.blankapirails.local &&
-sudo npm run hostile -- set "`docker-machine ip blankapirails`" resources.blankapirails.local

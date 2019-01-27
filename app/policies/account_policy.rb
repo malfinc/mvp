@@ -23,23 +23,7 @@ class AccountPolicy < ApplicationPolicy
     only_logged_in
   end
 
-  def read_username?
-    everyone
-  end
-
-  def read_name?
-    everyone
-  end
-
-  def read_payments?
-    everyone
-  end
-
-  def read_authentication_secret?
-    (actor == record) || record.new_record?
-  end
-
-  def related_payments(payments = nil)
-    PaymentPolicy::Scope.new(actor, payments || record.payments).resolve
+  def name_readable?
+    administrator? || yourself? || owner? || record.new_record?
   end
 end

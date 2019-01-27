@@ -8,19 +8,15 @@ shared:
         BUNDLE_PATH: "./vendor/bundle"
         BUNDLE_RETRY: 2
         PGHOST: "127.0.0.1"
-        PGUSER: "blankapirails"
+        PGUSER: "postgres"
         PORT: 3000
-        RAILS_MASTER_KEY: "b2f6f2326268f8d9fe16908969359f12"
-        ENCRYPTION_SECRET: "c312adc329d7c11c8bfc17d52f7269aceca1ef55372ae2586a1d3e3ae8304f7056e6b3b556fb5fdfdfe86566604f51b5636dd93b5522d08f29b8f3dd022104bd"
-        ENCRYPTION_SALT: "c312adc329d7c11c8bfc17d52f7269aceca1ef55372ae2586a1d3e3ae8304f7056e6b3b556fb5fdfdfe86566604f51b5636dd93b5522d08f29b8f3dd022104bd"
         RAILS_ENV: "test"
-        RACK_ENV: "test"
         WEB_CONCURRENCY: 2
         RAILS_MAX_THREADS: 2
         RACK_TIMEOUT_SERVICE_TIMEOUT: 25
-        HOME_LOCATION: "http://localhost:3001"
         WWW_ORIGIN: "localhost"
         RESOURCES_ORIGIN: "http://localhost:3001"
+        HOME_ORIGIN: "http://localhost:3001"
         RAILS_EMAIL_HOST: "localhost"
         RAILS_EMAIL_USER: "noreply"
         RAILS_HOST: "localhost"
@@ -38,61 +34,65 @@ shared:
     postgres: &postgres_docker
       image: "circleci/postgres:10.4-alpine"
       environment:
-        POSTGRES_DB: "blankapirails_test"
-        POSTGRES_USER: "blankapirails"
+        POSTGRES_DB: "blank_test"
+        POSTGRES_USER: "blank"
     redis: &redis_docker
       image: "redis:3.2.12"
   caches:
     git_save: &git_save
       save_cache:
-        key: "blankapirails-v2-git-{{ .Branch }}-{{ .Revision }}"
+        key: "blank-v2-git-{{ .Branch }}-{{ .Revision }}"
         paths:
           - ".git/"
     git_restore: &git_restore
       restore_cache:
         keys:
-          - "blankapirails-v2-git-{{ .Branch }}-{{ .Revision }}"
-          - "blankapirails-v2-git-{{ .Branch }}-"
-          - "blankapirails-v2-git-"
+          - "blank-v2-git-{{ .Branch }}-{{ .Revision }}"
+          - "blank-v2-git-{{ .Branch }}-"
+          - "blank-v2-git-"
     bundler_save: &bundler_save
       save_cache:
-        key: "blankapirails-v2-bundler-{{ .Branch }}-{{ checksum \"Gemfile.lock\" }}"
+        key: "blank-v2-bundler-{{ .Branch }}-{{ checksum \"Gemfile.lock\" }}"
         paths:
           - "./vendor/bundle"
           - "/usr/local/bundle/config"
     bundler_restore: &bundler_restore
       restore_cache:
         keys:
-          - "blankapirails-v2-bundler-{{ .Branch }}-{{ checksum \"Gemfile.lock\" }}"
-          - "blankapirails-v2-bundler-{{ .Branch }}-"
-          - "blankapirails-v2-bundler-"
+          - "blank-v2-bundler-{{ .Branch }}-{{ checksum \"Gemfile.lock\" }}"
+          - "blank-v2-bundler-{{ .Branch }}-"
+          - "blank-v2-bundler-"
 workflows:
   version: 2
   core:
     jobs:
-      - "server_setup"
+      -
+        server_dependencies_setup:
+          context: "Rails Environment"
       -
         bundler_audit:
+          context: "Rails Environment"
           requires:
-            - "server_setup"
+            - "server_dependencies_setup"
       -
         brakeman:
+          context: "Rails Environment"
           requires:
-            - "server_setup"
+            - "server_dependencies_setup"
       -
         rubocop:
+          context: "Rails Environment"
           requires:
-            - "server_setup"
+            - "server_dependencies_setup"
       -
         rspec:
+          context: "Rails Environment"
           requires:
-            - "server_setup"
+            - "server_dependencies_setup"
 jobs:
-  server_setup:
+  server_dependencies_setup:
     docker:
       - *ruby_docker
-      - *postgres_docker
-      - *redis_docker
     steps:
       - *git_restore
       - "checkout"
@@ -103,6 +103,48 @@ jobs:
           name: "Install bundler dependencies"
           command: "bundle check || bundle install"
       - *bundler_save
+  bundler_audit:
+    docker:
+      - *ruby_docker
+    steps:
+      - *git_restore
+      - "checkout"
+      - *bundler_restore
+      -
+        run:
+          name: "Running bundler-audit"
+          command: "bundle exec bundler-audit check --update"
+  brakeman:
+    docker:
+      - *ruby_docker
+    steps:
+      - *git_restore
+      - "checkout"
+      - *bundler_restore
+      -
+        run:
+          name: "Running brakeman"
+          command: "bundle exec brakeman"
+  rubocop:
+    docker:
+      - *ruby_docker
+    steps:
+      - *git_restore
+      - "checkout"
+      - *bundler_restore
+      -
+        run:
+          name: "Running rubocop"
+          command: "bundle exec rubocop --config .rubocop/config.yml --lint"
+  rspec:
+    docker:
+      - *ruby_docker
+      - *postgres_docker
+      - *redis_docker
+    steps:
+      - *git_restore
+      - "checkout"
+      - *bundler_restore
       -
         run:
           name: "Database Healthcheck"
@@ -123,66 +165,6 @@ jobs:
         run:
           name: "Load databsase schema"
           command: "bundle exec rake db:create --trace"
-  bundler_audit:
-    docker:
-      - *ruby_docker
-      - *postgres_docker
-      - *redis_docker
-    steps:
-      - *git_restore
-      - "checkout"
-      - *bundler_restore
-      -
-        run:
-          name: "Running bundler-audit"
-          command: "bundle exec bundler-audit check --update"
-  brakeman:
-    docker:
-      - *ruby_docker
-      - *postgres_docker
-      - *redis_docker
-    steps:
-      - *git_restore
-      - "checkout"
-      - *bundler_restore
-      -
-        run:
-          name: "Running brakeman"
-          command: "bundle exec brakeman"
-  rubocop:
-    docker:
-      - *ruby_docker
-      - *postgres_docker
-      - *redis_docker
-    steps:
-      - *git_restore
-      - "checkout"
-      - *bundler_restore
-      -
-        run:
-          name: "Running rubocop"
-          command: "bundle exec rubocop --config .rubocop/config.yml --lint"
-  rspec:
-    docker:
-      - *ruby_docker
-      - *postgres_docker
-      - *redis_docker
-    steps:
-      - *git_restore
-      - "checkout"
-      - *bundler_restore
-      -
-        run:
-          name: "Adding postgresql to apt sources"
-          command: "sudo su -c \"echo 'deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main' >> /etc/apt/sources.list.d/pgdg.list\""
-      -
-        run:
-          name: "Fetching postgresql apt-key"
-          command: "wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -"
-      -
-        run:
-          name: "Installing postgres-client"
-          command: "sudo apt-get update && sudo apt-get install postgresql-client-10"
       -
         run:
           name: "Running RSpec"

@@ -4,6 +4,6 @@ class MalformedAuthenticationError < ApplicationError
   end
 
   def detail
-    "request's Authentication HTTP header is malformed"
+    "request Authentication Header is malformed"
   end
 end

@@ -4,6 +4,6 @@ class MissingAuthenticationError < ApplicationError
   end
 
   def detail
-    "request is missing authentication"
+    "request is missing Authentication Header"
   end
 end

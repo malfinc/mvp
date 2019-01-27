@@ -10,7 +10,7 @@ class ApplicationController < ActionController::API
     if account_signed_in?
       PaperTrail.request.whodunnit = current_account.email
     else
-      PaperTrail.request.whodunnit = "anonymous@system.local"
+      PaperTrail.request.whodunnit = Account::MACHINE_ID
     end
 
     PaperTrail.request.controller_info = {

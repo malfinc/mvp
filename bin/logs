@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-echo "- Showing logs" &&
-docker-compose logs --follow $1

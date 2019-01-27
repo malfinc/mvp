@@ -20,6 +20,21 @@ PaperTrail.request(:whodunnit => Account::MACHINE_ID, :controller_info => {:cont
       {:name => "Bitcoin/Cryptocurrency"}
     ])
 
+    if Rails.env.development? && ENV.key?("BENCHMARK")
+      1000.times.each do
+        FactoryBot.create(
+          :account,
+          *[
+            *15.times.map {[]},
+            *25.times.map {[:confirmed]},
+            *45.times.map {[:confirmed, :completed]},
+            *5.times.map {[:confirmed, :completed, :administrator]}
+          ].sample
+        )
+      end
+    end
+
+    # Setting up different types of accounts
     if Rails.env.production? && Account.count.zero?
       krainboltgreene = Account.create!(
         :username => "krainboltgreene",
@@ -51,6 +66,10 @@ PaperTrail.request(:whodunnit => Account::MACHINE_ID, :controller_info => {:cont
       )
       user.confirm
       user.complete!
+
+      PaperTrail.request(:whodunnit => administrator.email, :controller_info => {:context_id => SecureRandom.uuid(), :actor_id => administrator.id}) do
+        # Business logic
+      end
     end
   end
 end

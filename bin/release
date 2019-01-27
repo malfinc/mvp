@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-if [[ $NEW_RELIC_LICENSE_KEY ]]
-then
-  newrelic deployments
-fi
-bin/rake db:migrate db:seed

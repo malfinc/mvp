@@ -1,13 +1,11 @@
 Rails.application.routes.draw do
   devise_for(:accounts)
 
-  mount(JSONAPI::Home::Engine, :at => "/")
-
   namespace(:v1) do
     resources(:accounts, :only => [:index, :show, :create, :update, :destroy])
     resources(:payment_types, :only => [:index, :show])
-    resources(:payments, :only => [:index, :show, :create, :update, :destroy])
     resources(:payments, :only => [:index, :show, :create])
+    resources(:searches, :only => [:show, :create])
     resources(:sessions, :only => [:create, :destroy])
     resources(:tags, :only => [:index, :show])
   end

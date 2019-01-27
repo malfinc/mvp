@@ -1,21 +1,38 @@
 module V1
   class SearchesController < ::V1::ApplicationController
-    discoverable(
-      :version => "v1",
-      :namespace => "searches"
-    )
+    MODEL = ::Search
+    REALIZER = ::V1::SearchRealizer
+    MATERIALIZER = ::V1::SearchMaterializer
+    POLICY = SearchPolicy
+
+    def index
+      render(
+        :json => inline_jsonapi(
+          :schema => ::V1::Searches::IndexSchema,
+          :parameters => modified_parameters,
+        ),
+        :status => :ok
+      )
+    end
 
     def show
-      realization = JSONAPI::Realizer.show(
-        Searches::ShowSchema.new(request.parameters),
-        :headers => request.headers,
-        :scope => policy_scope(Search),
-        :type => :accounts
+      render(
+        :json => inline_jsonapi(
+          :schema => ::V1::Searches::ShowSchema,
+          :parameters => modified_parameters,
+        ),
+        :status => :ok
       )
+    end
 
-      authorize(realization.model)
-
-      render(:json => serialize(realization))
+    def create
+      render(
+        :json => inline_jsonapi(
+          :schema => ::V1::Searches::CreateSchema,
+          :parameters => modified_parameters,
+        ) {|model| model.save!},
+        :status => :created
+      )
     end
   end
 end

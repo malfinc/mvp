@@ -7,4 +7,4 @@ test:
 production:
   adapter: redis
   url: <%= ENV.fetch("REDIS_ACTION_CABLE_URL") %>
-  channel_prefix: blankapirails_production
+  channel_prefix: blank_production

@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-echo "- Executing on resources container" &&
-docker-compose exec resources "$@"

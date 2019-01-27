@@ -11,7 +11,7 @@ RSpec.shared_context("JSON:API request") do
     post(
       path,
       :headers => default_headers.merge(try(:custom_headers) || {}),
-      :params => if try(:payload).present? then Oj.dump(payload) end
+      :params => if try(:payload).present? then JSON.dump(payload) end
     )
   end
 
@@ -50,7 +50,7 @@ RSpec.shared_context("JSON:API request") do
   end
 
   def json
-    Oj.load(response.body)
+    JSON.parse(response.body)
   end
 
   def json_data

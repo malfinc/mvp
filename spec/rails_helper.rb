@@ -5,6 +5,7 @@ require(File.expand_path("../config/environment", __dir__))
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require("rspec/rails")
+# require("paper_trail/frameworks/rspec")
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -25,6 +26,7 @@ require("rspec/rails")
 require_relative("support/matchers/jsonapi_response")
 require_relative("support/contexts/jsonapi_request")
 require_relative("support/contexts/jsonapi_requests")
+require_relative("support/contexts/google_places_api")
 
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
@@ -35,7 +37,7 @@ RSpec::Sidekiq.configure do |config|
   config.clear_all_enqueued_jobs = true
 
   # Whether to use terminal colours when outputting messages
-  config.enable_terminal_colours = true
+  config.enable_terminal_colours = false
 
   # Warn when jobs are not enqueued to Redis but to a job array
   config.warn_when_jobs_not_processed_by_sidekiq = true
@@ -43,7 +45,7 @@ end
 
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.fixture_path = Rails.root.join("spec", "fixtures")
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
@@ -127,9 +129,9 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
-    BlankApiRails::REDIS_OBJECTS_CONNECTION_POOL.with(&:flushdb)
-    BlankApiRails::REDIS_SIDEKIQ_CLIENT_CONNECTION_POOL.with(&:flushdb)
-    BlankApiRails::REDIS_SIDEKIQ_SERVER_CONNECTION_POOL.with(&:flushdb)
-    BlankApiRails::REDIS_CACHE_CONNECTION_POOL.with(&:flushdb)
+    Blank::REDIS_OBJECTS_CONNECTION_POOL.with(&:flushdb)
+    Blank::REDIS_SIDEKIQ_CLIENT_CONNECTION_POOL.with(&:flushdb)
+    Blank::REDIS_SIDEKIQ_SERVER_CONNECTION_POOL.with(&:flushdb)
+    Blank::REDIS_CACHE_CONNECTION_POOL.with(&:flushdb)
   end
 end

@@ -11,7 +11,7 @@ class Search < ApplicationComputed
   end
 
   def results
-    Oj.load(super).map {|raw| RESULT_CLASS.new(**raw.symbolize_keys)} if super.present?
+    JSON.parse(super).map {|raw| RESULT_CLASS.new(**raw.symbolize_keys)} if super.present?
   end
 
   def result_total

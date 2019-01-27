@@ -14,8 +14,8 @@ end
 
 RSpec::Matchers.define(:have_jsonapi_id) do |expected|
   match do |actual|
-    Oj
-      .load(actual&.body.presence || "{}")
+    JSON
+      .parse(actual&.body.presence || "{}")
       .fetch("data", {})
       .fetch("id", nil) == expected
   end
@@ -24,7 +24,7 @@ RSpec::Matchers.define(:have_jsonapi_id) do |expected|
     body = actual&.body
     return "response had no body or was not a response" if body.blank?
 
-    native = Oj.load(body)
+    native = JSON.parse(body)
     @actual = body
     return "response was not valid json" if native.blank?
 
@@ -42,8 +42,8 @@ end
 
 RSpec::Matchers.define(:have_jsonapi_type) do |expected|
   match do |actual|
-    Oj
-      .load(actual&.body.presence || "{}")
+    JSON
+      .parse(actual&.body.presence || "{}")
       .fetch("data", {})
       .fetch("type", nil) == expected
   end
@@ -52,7 +52,7 @@ RSpec::Matchers.define(:have_jsonapi_type) do |expected|
     body = actual&.body
     return "response had no body or was not a response" if body.blank?
 
-    native = Oj.load(body)
+    native = JSON.parse(body)
     @actual = body
     return "response was not valid json" if native.blank?
 
@@ -72,8 +72,8 @@ RSpec::Matchers.define(:have_jsonapi_attributes) do |expected|
   match do |actual|
     values_match?(
       hash_including(expected),
-      Oj
-        .load(actual&.body.presence || "{}")
+      JSON
+        .parse(actual&.body.presence || "{}")
         .fetch("data", {})
         .fetch("attributes", {})
     )
@@ -83,7 +83,7 @@ RSpec::Matchers.define(:have_jsonapi_attributes) do |expected|
     body = actual&.body
     return "response had no body or was not a response" if body.blank?
 
-    native = Oj.load(body)
+    native = JSON.parse(body)
     @actual = body
     return "response was not valid json" if native.blank?
 
@@ -105,8 +105,8 @@ RSpec::Matchers.define(:have_jsonapi_related) do |expected_name, expected_relate
   match do |actual|
     values_match?(
       expected_related_data,
-      Oj
-        .load(actual&.body.presence || "{}")
+      JSON
+        .parse(actual&.body.presence || "{}")
         .fetch("data", {})
         .fetch("relationships", {})
         .fetch(expected_name, {})
@@ -118,7 +118,7 @@ RSpec::Matchers.define(:have_jsonapi_related) do |expected_name, expected_relate
     body = actual&.body
     return "response had no body or was not a response" if body.blank?
 
-    native = Oj.load(body)
+    native = JSON.parse(body)
     @actual = body
     return "response was not valid json" if native.blank?
 

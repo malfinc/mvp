@@ -54,56 +54,75 @@ class RequestErrorHandlingOperation < ApplicationOperation
   end
   def render_output(state:)
     case state.exception
-    when JSONAPI::Realizer::Error::MissingAcceptHeader then missing_accept_header(state.controller)
-    when JSONAPI::Realizer::Error::InvalidAcceptHeader then invalid_accept_header(state.controller)
-    when JSONAPI::Realizer::Error::MalformedDataRootProperty then malformed_data_root_property(state.controller)
-    when Pundit::NotAuthorizedError then access_not_authorized(state.controller)
+    when JSONAPI::Materializer::Error::InvalidAcceptHeader then not_acceptable(state.controller)
+    when JSONAPI::Materializer::Error::MissingAcceptHeader then not_acceptable(state.controller)
+    when JSONAPI::Materializer::Error::ResourceAttributeNotFound then bad_request(state.controller)
+    when JSONAPI::Materializer::Error::ResourceRelationshipNotFound then bad_request(state.controller)
+
+    when JSONAPI::Realizer::Error::InvalidContentTypeHeader then unsuported_media_type(state.controller)
+    when JSONAPI::Realizer::Error::MissingContentTypeHeader then unsuported_media_type(state.controller)
+    when JSONAPI::Realizer::Error::InvalidRootProperty then unprocessable_entity(state.controller)
+    when JSONAPI::Realizer::Error::MissingDataTypeProperty then unprocessable_entity(state.controller)
+    when JSONAPI::Realizer::Error::IncludeWithoutDataProperty then unprocessable_entity(state.controller)
+    when JSONAPI::Realizer::Error::ResourceAttributeNotFound then bad_request(state.controller)
+    when JSONAPI::Realizer::Error::ResourceRelationshipNotFound then bad_request(state.controller)
+
+    when Pundit::NotAuthorizedError then unauthorized(state.controller)
+
     when ActiveRecord::RecordInvalid then record_invalid(state.controller, state.exception)
-    when ActiveRecord::RecordNotFound then record_not_found(state.controller)
+    when ActiveRecord::RecordNotFound then not_found(state.controller)
+
     when StateMachines::InvalidTransition then invalid_transition(state.controller)
+
     when SmartParams::Error::InvalidPropertyType then invalid_property_type(state.controller, state.exception)
+
     when ApplicationError then application_exception(state.controller, state.exception)
-    else unhandled_exception(state.controller)
+
+    else internal_server_error(state.controller)
     end
   end
 
   private def record_invalid(controller, exception)
     controller.render(
-      :json => JSONAPI::Serializer.serialize_errors(exception.record.errors),
+      :json => exception.record.errors,
       :status => :unprocessable_entity
     )
   end
 
-  private def record_not_found(controller)
+  private def not_found(controller)
     controller.head(:not_found)
   end
 
   private def application_exception(controller, exception)
     controller.render(
-      :json => JSONAPI::Serializer.serialize_errors(standard_jsonapi_error(exception)),
+      :json => standard_jsonapi_error(exception),
       :status => :unprocessable_entity
     )
   end
 
-  private def malformed_data_root_property(controller)
+  private def unprocessable_entity(controller)
     controller.head(:unprocessable_entity)
   end
 
-  private def access_not_authorized(controller)
+  private def unsuported_media_type(controller)
+    controller.head(:unsupported_media_type)
+  end
+
+  private def bad_request(controller)
+    controller.head(:bad_request)
+  end
+
+  private def unauthorized(controller)
     controller.head(:unauthorized)
   end
 
-  private def invalid_accept_header(controller)
-    controller.head(:not_acceptable)
-  end
-
-  private def missing_accept_header(controller)
+  private def not_acceptable(controller)
     controller.head(:not_acceptable)
   end
 
   private def invalid_property_type(controller, exception)
     controller.render(
-      :json => JSONAPI::Serializer.serialize_errors([
+      :json => [
         {
           "title" => "Resource Schema Mismatch",
           "code" => "resource_schema_mismatch",
@@ -113,12 +132,12 @@ class RequestErrorHandlingOperation < ApplicationOperation
             "pointer" => "/#{exception.keychain.join("/")}"
           }
         }
-      ]),
+      ],
       :status => :unprocessable_entity
     )
   end
 
-  private def unhandled_exception(controller)
+  private def internal_server_error(controller)
     controller.head(:internal_server_error)
   end
 

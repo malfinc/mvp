@@ -1,36 +1,38 @@
 module V1
   class TagsController < ::V1::ApplicationController
-    discoverable(
-      :version => "v1",
-      :namespace => "tags"
-    )
+    MODEL = ::Tag
+    REALIZER = ::V1::TagRealizer
+    MATERIALIZER = ::V1::TagMaterializer
+    POLICY = TagPolicy
 
     def index
-      authorize(policy_scope(Tag))
-
-      realization = JSONAPI::Realizer.index(
-        Tags::IndexSchema.new(request.parameters),
-        :headers => request.headers,
-        :scope => policy_scope(Tag),
-        :type => :accounts
+      render(
+        :json => inline_jsonapi(
+          :schema => ::V1::Tags::IndexSchema,
+          :parameters => modified_parameters,
+        ),
+        :status => :ok
       )
-
-      render(:json => serialize(realization))
     end
 
     def show
-      realization = JSONAPI::Realizer.show(
-        Tags::ShowSchema.new(request.parameters),
-        :headers => request.headers,
-        :scope => policy_scope(Tag),
-        :type => :accounts
+      render(
+        :json => inline_jsonapi(
+          :schema => ::V1::Tags::ShowSchema,
+          :parameters => modified_parameters,
+        ),
+        :status => :ok
       )
+    end
 
-      authorize(realization.model)
-
-      return unless stale?(:etag => realization.model)
-
-      render(:json => serialize(realization))
+    def create
+      render(
+        :json => inline_jsonapi(
+          :schema => ::V1::Tags::CreateSchema,
+          :parameters => modified_parameters,
+        ) {|model| model.save!},
+        :status => :created
+      )
     end
   end
 end

@@ -24,7 +24,7 @@ RSpec.shared_context("JSON:API requests") do
   end
 
   def payload(id: nil, type:, attributes: nil, relationships: nil, metadata: nil, included: nil)
-    Oj.dump(
+    JSON.dump(
       {
         :data => {
           :id => id.presence,
@@ -48,7 +48,7 @@ RSpec.shared_context("JSON:API requests") do
   end
 
   def json
-    Oj.load(response.body)
+    JSON.parse(response.body)
   end
 
   def json_data

@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-
-echo "- Turning off" &&
-bin/hostdown &&
-bin/stop

@@ -201,7 +201,7 @@ Devise.setup do |config|
   # config.reset_password_keys = [:email]
 
   # Time interval you can reset your password with a reset password key.
-  # Don"t put a too small interval or your users won"t have the time to
+  # Don't put a too small interval or your users won't have the time to
   # change their passwords.
   config.reset_password_within = 6.hours
 
@@ -221,7 +221,7 @@ Devise.setup do |config|
 
   # ==> Scopes configuration
   # Turn scoped views on. Before rendering "sessions/new", it will first check for
-  # "users/sessions/new". It"s turned off by default because it"s slower if you
+  # "users/sessions/new". It's turned off by default because it's slower if you
   # are using only default views.
   config.scoped_views = true
 
@@ -258,7 +258,7 @@ Devise.setup do |config|
   #
   config.warden do |manager|
     # manager.intercept_401 = false
-    manager.strategies.add(:token, BlankApiRails::TokenStrategy)
+    manager.strategies.add(:token, Blank::TokenStrategy)
     manager.default_strategies(:scope => :account).unshift(:token)
   end
 

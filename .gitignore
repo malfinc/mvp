@@ -13,7 +13,15 @@
 !/log/.keep
 !/tmp/.keep
 
-.byebug_history
-.env
+# Ignore uploaded files in development
+/storage/*
+!/storage/.keep
+
+# We generate this on the fly for docker
 proxy/default.conf
-config/master.key
+
+# Ignore secret stuff
+/.env
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key

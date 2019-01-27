@@ -1,0 +1,3 @@
+# a_unique_job_name:
+#   class: JobJob
+#   cron: "* * * * *"

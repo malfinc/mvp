@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-echo "- Setting up network" &&
-npm install &&
-bin/hostup &&
-bin/latest

@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-echo "- Showing processes" &&
-docker-compose ps

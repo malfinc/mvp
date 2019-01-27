@@ -6,10 +6,10 @@ class SidekiqClientKillswitchMiddleware
   end
 
   private def kill_by_queue?(queue)
-    (ENV["SIDEKIQ_KILLSWITCH_QUEUES"] || "").split(",").include?(queue)
+    ENV.fetch("SIDEKIQ_KILLSWITCH_QUEUES", "").split(",").include?(queue)
   end
 
   private def kill_by_worker?(worker)
-    (ENV["SIDEKIQ_KILLSWITCH_WORKERS"] || "").split(",").include?(worker)
+    ENV.fetch("SIDEKIQ_KILLSWITCH_WORKERS", "").split(",").include?(worker)
   end
 end

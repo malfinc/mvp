@@ -8,7 +8,6 @@ class CreateVersions < ActiveRecord::Migration[5.1]
       table.uuid(:actor_id)
       table.uuid(:context_id, :null => false)
       table.jsonb(:transitions)
-      table.json(:object, :null => false, :default => {})
       table.jsonb(:object_changes, :null => false, :default => {})
       table.timestamp(:created_at, :null => false)
 

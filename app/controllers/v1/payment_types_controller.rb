@@ -1,36 +1,28 @@
 module V1
   class PaymentTypesController < ::V1::ApplicationController
-    discoverable(
-      :version => "v1",
-      :namespace => "payment-types"
-    )
+    MODEL = ::PaymentType
+    REALIZER = ::V1::PaymentTypeRealizer
+    MATERIALIZER = ::V1::PaymentTypeMaterializer
+    POLICY = PaymentTypePolicy
 
     def index
-      authorize(policy_scope(Diet))
-
-      realization = JSONAPI::Realizer.index(
-        PaymentTypes::IndexSchema.new(request.parameters),
-        :headers => request.headers,
-        :scope => policy_scope(PaymentType),
-        :type => :accounts
+      render(
+        :json => inline_jsonapi(
+          :schema => ::V1::PaymentTypes::IndexSchema,
+          :parameters => modified_parameters,
+        ),
+        :status => :ok
       )
-
-      render(:json => serialize(realization))
     end
 
     def show
-      realization = JSONAPI::Realizer.show(
-        PaymentTypes::ShowSchema.new(request.parameters),
-        :headers => request.headers,
-        :scope => policy_scope(PaymentType),
-        :type => :accounts
+      render(
+        :json => inline_jsonapi(
+          :schema => ::V1::PaymentTypes::ShowSchema,
+          :parameters => modified_parameters,
+        ),
+        :status => :ok
       )
-
-      authorize(realization.model)
-
-      return unless stale?(:etag => realization.model)
-
-      render(:json => serialize(realization))
     end
   end
 end

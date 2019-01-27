@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-echo "- Setting hostnames" &&
-sudo npm run hostile -- remove redis.blankapirails.local &&
-sudo npm run hostile -- remove postgres.blankapirails.local &&
-sudo npm run hostile -- remove resources.blankapirails.local

@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-echo "- Deploying services" &&
-docker-compose down --remove-orphans

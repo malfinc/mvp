@@ -1,7 +1,7 @@
 require("rails_helper")
 
 RSpec.describe(StripePayment, :type => :model) do
-  context("creating a record") do
+  xcontext("creating a record") do
     let(:model) do
       create(:stripe_payment)
     end

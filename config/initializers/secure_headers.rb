@@ -1,1 +1,1 @@
-SecureHeaders::Configuration.default
+# SecureHeaders::Configuration.default
