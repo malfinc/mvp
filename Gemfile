@@ -69,8 +69,8 @@ gem("paper_trail-background", "1.0.1")
 gem("pry-doc", "1.0.0")
 gem("pry-rails", "0.3.9")
 
-gem("jsonapi-realizer", "6.0.0.rc1")
-gem("jsonapi-materializer", "1.0.0.rc2")
+gem("jsonapi-realizer", "6.0.0.rc3")
+gem("jsonapi-materializer", "1.0.0.rc5")
 
 group(:production) do
   # gem("newrelic_rpm", "6.0.0.351") # TODO: Replace with elastic-ruby-apm
