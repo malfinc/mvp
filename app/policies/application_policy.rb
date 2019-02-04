@@ -57,16 +57,20 @@ class ApplicationPolicy
     Pundit.policy_scope!(actor, record.class)
   end
 
-  def read_attribute?(name)
-    if respond_to?("#{name}_readable?")
+  def readable?(type, name)
+    if type == :many && record.public_send(association).model.policy_class.const_defined?("Scope") && respond_to?("#{name}_readable?")
+      public_send("#{name}_readable?")
+    elsif respond_to?("#{name}_readable?")
       public_send("#{name}_readable?")
     else
       noone
     end
   end
 
-  def write_attribute?(name)
-    if respond_to?("#{name}_writable?")
+  def writable(type, name)
+    if type == :many && record.public_send(association).model.policy_class.const_defined?("Scope") && respond_to?("#{name}_readable?")
+      public_send("#{name}_writable?")
+    elsif respond_to?("#{name}_writable?")
       public_send("#{name}_writable?")
     else
       noone
@@ -74,7 +78,7 @@ class ApplicationPolicy
   end
 
   private def read_relation?(association)
-    record.public_send(association).model.policy_class.const_defined?("Scope") && respond_to?("read_#{name}?")
+
   end
 
   private def completed
@@ -106,6 +110,7 @@ class ApplicationPolicy
   end
 
   private def only_logged_out
+    binding.pry
     actor.blank?
   end
 
