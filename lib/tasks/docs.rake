@@ -19,7 +19,7 @@ namespace :docs do
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
       request = Net::HTTP::Get.new(url)
-      request["accept"] = "application/vnd.api+json"
+      request["Accept"] = "application/vnd.api+json"
 
       resource_mapping = JSON.parse(http.request(request).read_body)
         .fetch("data")
