@@ -1,5 +1,5 @@
 class PaymentType < ApplicationRecord
-  include(Moderated)
+  include(AuditedWithTransitions)
 
   has_and_belongs_to_many(:establishments)
 
