@@ -9,7 +9,7 @@ require("active_record/railtie")
 require("action_controller/railtie")
 require("action_mailer/railtie")
 require("action_view/railtie")
-require("action_cable/engine")
+# require("action_cable/engine")
 require("active_storage/engine")
 # require "sprockets/railtie"
 # require "rails/test_unit/railtie"
@@ -120,14 +120,6 @@ module BlankApiRails
          if request.request_id.present?
           "context-id=#{request.request_id}"
          end
-      end
-    ]
-
-    # These are the log tags we want to set for ActionCable
-    config.action_cable.log_tags = [
-      :action_cable,
-      ->(request) do
-        request.uuid
       end
     ]
 

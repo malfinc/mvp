@@ -26,8 +26,6 @@ shared:
         REDIS_CACHE_POOL_SIZE: 2
         REDIS_OBJECTS_URL: "redis://localhost:6379/2"
         REDIS_OBJECTS_POOL_SIZE: 2
-        REDIS_ACTION_CABLE_URL: "redis://localhost:6379/2"
-        REDIS_ACTION_CABLE_POOL_SIZE: 2
         REDIS_SIDEKIQ_URL: "redis://localhost:6379/3"
         REDIS_SIDEKIQ_CLIENT_POOL_SIZE: 2
         REDIS_SIDEKIQ_SERVER_POOL_SIZE: 2
