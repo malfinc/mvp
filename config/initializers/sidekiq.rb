@@ -1,5 +1,5 @@
 Sidekiq.configure_server do |config|
-  config.redis = Blank::REDIS_SIDEKIQ_SERVER_CONNECTION_POOL
+  config.redis = BlankApiRails::REDIS_SIDEKIQ_SERVER_CONNECTION
   config.logger = Rails.logger
   config.client_middleware do |chain|
     chain.add(SidekiqClientPaperTrailMiddleware)
@@ -14,7 +14,7 @@ Sidekiq.configure_server do |config|
 end
 
 Sidekiq.configure_client do |config|
-  config.redis = Blank::REDIS_SIDEKIQ_CLIENT_CONNECTION_POOL
+  config.redis = BlankApiRails::REDIS_SIDEKIQ_CLIENT_CONNECTION
   config.logger = Rails.logger
   config.client_middleware do |chain|
     chain.add(SidekiqClientPaperTrailMiddleware)

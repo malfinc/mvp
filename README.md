@@ -1,4 +1,4 @@
-# Blank
+# BlankApiRails
 
 ## Notes
 

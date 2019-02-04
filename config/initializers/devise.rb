@@ -258,7 +258,7 @@ Devise.setup do |config|
   #
   config.warden do |manager|
     # manager.intercept_401 = false
-    manager.strategies.add(:token, Blank::TokenStrategy)
+    manager.strategies.add(:token, BlankApiRails::TokenStrategy)
     manager.default_strategies(:scope => :account).unshift(:token)
   end
 

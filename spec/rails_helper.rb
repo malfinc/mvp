@@ -129,9 +129,9 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
-    Blank::REDIS_OBJECTS_CONNECTION_POOL.with(&:flushdb)
-    Blank::REDIS_SIDEKIQ_CLIENT_CONNECTION_POOL.with(&:flushdb)
-    Blank::REDIS_SIDEKIQ_SERVER_CONNECTION_POOL.with(&:flushdb)
-    Blank::REDIS_CACHE_CONNECTION_POOL.with(&:flushdb)
+    BlankApiRails::REDIS_OBJECTS_CONNECTION.with(&:flushdb)
+    BlankApiRails::REDIS_SIDEKIQ_CLIENT_CONNECTION.with(&:flushdb)
+    BlankApiRails::REDIS_SIDEKIQ_SERVER_CONNECTION.with(&:flushdb)
+    BlankApiRails::REDIS_CACHE_CONNECTION.with(&:flushdb)
   end
 end

@@ -24,7 +24,7 @@ require("ostruct")
 
 require_relative("../lib/source")
 
-module Blank
+module BlankApiRails
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults(5.2)
@@ -62,7 +62,7 @@ module Blank
     # Generate an SQL file based on the database
     config.active_record.schema_format = :sql
 
-    # Use Sidekiq for ActiveJob
+    # The ActiveJob adapter
     config.active_job.queue_adapter = :sidekiq
     # config.active_job.queue_name_prefix = "blank_#{Rails.env}"
 

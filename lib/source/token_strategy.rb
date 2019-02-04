@@ -1,4 +1,4 @@
-module Blank
+module BlankApiRails
   class TokenStrategy < Devise::Strategies::Base
     def valid?
       present? && !exception?

@@ -1,5 +1,5 @@
-module Blank
   REDIS_SIDEKIQ_SERVER_CONNECTION_POOL = ConnectionPool.new(:size => Integer(ENV.fetch("REDIS_SIDEKIQ_SERVER_POOL_SIZE")), :timeout => 5) do
+module BlankApiRails
     ::Redis.new(:driver => :hiredis, :url => ENV.fetch("REDIS_SIDEKIQ_URL"))
   end
   REDIS_SIDEKIQ_CLIENT_CONNECTION_POOL = ConnectionPool.new(:size => Integer(ENV.fetch("REDIS_SIDEKIQ_CLIENT_POOL_SIZE")), :timeout => 5) do
