@@ -124,11 +124,12 @@ class RequestErrorHandlingOperation < ApplicationOperation
     controller.render(
       :json => [
         {
-          "title" => "Resource Schema Mismatch",
-          "code" => "resource_schema_mismatch",
+          "title" => "Schema Mismatch",
+          "code" => "schema_mismatch",
           "detail" => "The expected value at the pointer does not match the schema",
           "source" => {
             "expected-type" => exception.wanted.name,
+            "given-type" => exception.raw.class.name,
             "pointer" => "/#{exception.keychain.join("/")}"
           }
         }
