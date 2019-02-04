@@ -110,8 +110,8 @@ module BlankApiRails
 
       # Log the session id of the request, if cookies exist
       ->(request) do
-        if request.cookie_jar&.encrypted&.fetch(config.session_options.fetch(:key))&.key?("session_id")
-          "session-id=#{request.cookie_jar.encrypted.fetch(config.session_options.fetch(:key)).fetch("session_id")}"
+        if request.cookie_jar&.signed&.encrypted.try!(:[], config.session_options.fetch(:key))&.key?("session_id")
+          "session-id=#{request.cookie_jar.signed.encrypted.fetch(config.session_options.fetch(:key)).fetch("session_id")}"
         end
       end,
 
