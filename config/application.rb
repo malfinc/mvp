@@ -63,7 +63,8 @@ module BlankApiRails
 
     # The ActiveJob adapter
     config.active_job.queue_adapter = :sidekiq
-    # config.active_job.queue_name_prefix = "blank_#{Rails.env}"
+    # A prefix for all queue names
+    # config.active_job.queue_name_prefix = ENV.fetch("ACTIVEJOB_QUEUE_PREFIX")
 
     # Cache mail views
     config.action_mailer.perform_caching = true
