@@ -12,17 +12,13 @@ namespace :docs do
   namespace :origin do
     desc "Generates documentation for the origin service based on production instance"
     task :generate do
-      require "uri"
-      require "addressable/uri"
-      require "net/http"
 
       url = URI("https://origin.blank.com/v1/jsonapi-home-resources")
-
-      http = Net::HTTP.new(url.host, url.port)
+      http = Down::NetHttp.new(url.host, url.port)
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
-      request = Net::HTTP::Get.new(url)
+      request = Down::NetHttp::Get.new(url)
       request["accept"] = "application/vnd.api+json"
 
       resource_mapping = JSON.parse(http.request(request).read_body)

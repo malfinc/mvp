@@ -18,8 +18,7 @@ require("active_storage/engine")
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-require("net/http")
-require("open-uri")
+require("addressable/uri")
 require("ostruct")
 
 require_relative("../lib/source")
