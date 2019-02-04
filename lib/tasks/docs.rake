@@ -12,8 +12,8 @@ namespace :docs do
   namespace :origin do
     desc "Generates documentation for the origin service based on production instance"
     task :generate do
+      url = URI("#{ENV.fetch("HOME_ORIGIN")}/v1/jsonapi-home-resources")
 
-      url = URI("https://origin.blank.com/v1/jsonapi-home-resources")
       http = Down::NetHttp.new(url.host, url.port)
       http.use_ssl = true
       http.verify_mode = OpenSSL::SSL::VERIFY_NONE
