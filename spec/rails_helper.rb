@@ -133,5 +133,6 @@ RSpec.configure do |config|
     BlankApiRails::REDIS_SIDEKIQ_CLIENT_CONNECTION.with(&:flushdb)
     BlankApiRails::REDIS_SIDEKIQ_SERVER_CONNECTION.with(&:flushdb)
     BlankApiRails::REDIS_CACHE_CONNECTION.with(&:flushdb)
+    BlankApiRails::REDIS_LOCK_CONNECTION.client.with(&:flushdb)
   end
 end

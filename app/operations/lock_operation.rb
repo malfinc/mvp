@@ -14,9 +14,7 @@ class LockOperation < ApplicationOperation
     when :soft
       fresh(
         :state => {
-          :lock => Blank::REDIS_REDLOCK_CONNECTION_POOL.with do |client|
-            client.lock(key(state.resource.to_gid, state.name), state.expires_in)
-          end
+          :lock => BlankApiRails::REDIS_LOCK_CONNECTION.lock(key(state.resource.to_gid, state.name), state.expires_in)
         }
       )
     else raise(ArgumentError, "unknown type of lock #{state.type}")

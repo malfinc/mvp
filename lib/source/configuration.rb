@@ -11,7 +11,9 @@ module BlankApiRails
   REDIS_CACHE_CONNECTION_POOL = ConnectionPool.new(:size => Integer(ENV.fetch("REDIS_CACHE_POOL_SIZE")), :timeout => 5) do
     ::Redis.new(:driver => :hiredis, :url => ENV.fetch("REDIS_CACHE_URL"))
   end
-  REDIS_REDLOCK_CONNECTION_POOL = ConnectionPool.new(:size => Integer(ENV.fetch("REDIS_REDLOCK_POOL_SIZE")), :timeout => 5) do
-    Redlock::Client.new([::Redis.new(:driver => :hiredis, :url => ENV.fetch("REDIS_REDLOCK_URL"))])
-  end
+  REDIS_LOCK_CONNECTION = Redlock::Client.new([
+    ConnectionPool::Wrapper.new(:size => Integer(ENV.fetch("REDIS_LOCK_POOL_SIZE")), :timeout => 5) do
+      ::Redis.new(:driver => :hiredis, :url => ENV.fetch("REDIS_LOCK_URL"))
+    end
+  ])
 end
