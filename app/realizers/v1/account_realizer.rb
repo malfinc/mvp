@@ -7,5 +7,6 @@ module V1
     has(:email)
     has(:name)
     has(:username)
+    has(:password)
   end
 end
