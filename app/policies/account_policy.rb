@@ -26,4 +26,8 @@ class AccountPolicy < ApplicationPolicy
   def name_readable?
     administrator? || yourself? || owner? || record.new_record?
   end
+
+  def email_readable?
+    administrator? || yourself? || owner?
+  end
 end
