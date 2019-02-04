@@ -1,1 +1,1 @@
-Pry.config.pager = false
+Pry.config.pager = true
