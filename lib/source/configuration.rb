@@ -1,19 +1,34 @@
 module BlankApiRails
-  REDIS_SIDEKIQ_SERVER_CONNECTION = ConnectionPool.new(:size => Integer(ENV.fetch("REDIS_SIDEKIQ_SERVER_POOL_SIZE")), :timeout => 5) do
-    ::Redis.new(:driver => :hiredis, :url => ENV.fetch("REDIS_SIDEKIQ_URL"))
   end
-  REDIS_SIDEKIQ_CLIENT_CONNECTION = ConnectionPool.new(:size => Integer(ENV.fetch("REDIS_SIDEKIQ_CLIENT_POOL_SIZE")), :timeout => 5) do
-    ::Redis.new(:driver => :hiredis, :url => ENV.fetch("REDIS_SIDEKIQ_URL"))
-  end
-  REDIS_OBJECTS_CONNECTION = ConnectionPool.new(:size => Integer(ENV.fetch("REDIS_OBJECTS_POOL_SIZE")), :timeout => 5) do
-    ::Redis.new(:driver => :hiredis, :url => ENV.fetch("REDIS_OBJECTS_URL"))
-  end
-  REDIS_CACHE_CONNECTION = ConnectionPool.new(:size => Integer(ENV.fetch("REDIS_CACHE_POOL_SIZE")), :timeout => 5) do
-    ::Redis.new(:driver => :hiredis, :url => ENV.fetch("REDIS_CACHE_URL"))
-  end
-  REDIS_LOCK_CONNECTION = Redlock::Client.new([
-    ConnectionPool::Wrapper.new(:size => Integer(ENV.fetch("REDIS_LOCK_POOL_SIZE")), :timeout => 5) do
-      ::Redis.new(:driver => :hiredis, :url => ENV.fetch("REDIS_LOCK_URL"))
+
+  def self.redis_sidekiq_server_connection
+    @redis_sidekiq_server_connection ||= ConnectionPool.new(:size => BlankApiRails.configuration.fetch_deep(:redis, :sidekiq_server, :pool), :timeout => 5) do
+      ::Redis.new(:driver => :hiredis, :url => ENV.fetch("REDIS_SIDEKIQ_URI"))
     end
-  ])
+  end
+
+  def self.redis_sidekiq_client_connection
+    @redis_sidekiq_client_connection ||= ConnectionPool.new(:size => BlankApiRails.configuration.fetch_deep(:redis, :sidekiq_client, :pool), :timeout => 5) do
+      ::Redis.new(:driver => :hiredis, :url => ENV.fetch("REDIS_SIDEKIQ_URI"))
+    end
+  end
+
+  def self.redis_objects_connection
+    @redis_objects_connection ||= ConnectionPool.new(:size => BlankApiRails.configuration.fetch_deep(:redis, :objects, :pool), :timeout => 5) do
+      ::Redis.new(:driver => :hiredis, :url => ENV.fetch("REDIS_OBJECTS_URL"))
+    end
+  end
+
+  def self.redis_cache_connection
+    @redis_cache_connection ||= ConnectionPool.new(:size => BlankApiRails.configuration.fetch_deep(:redis, :cache, :pool), :timeout => 5) do
+      ::Redis.new(:driver => :hiredis, :url => ENV.fetch("REDIS_CACHE_URL"))
+    end
+
+  def self.redis_lock_connection
+    @redis_lock_connection ||= Redlock::Client.new([
+      ConnectionPool::Wrapper.new(:size => BlankApiRails.configuration.fetch_deep(:redis, :lock, :pool), :timeout => 5) do
+        ::Redis.new(:driver => :hiredis, :url => ENV.fetch("REDIS_LOCK_URI"))
+      end
+    ])
+  end
 end

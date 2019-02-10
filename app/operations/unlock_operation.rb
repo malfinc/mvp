@@ -7,6 +7,6 @@ class UnlockOperation < ApplicationOperation
     field(:type, :type => Types::Strict::Symbol)
   end
   def delete(state:)
-    BlankApiRails::REDIS_LOCK_CONNECTION.unlock(state.lock)
+    BlankApiRails.redis_lock_connection.unlock(state.lock)
   end
 end

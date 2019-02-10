@@ -81,7 +81,7 @@ module BlankApiRails
         :driver => :hiredis,
         :expires_in => 30.minutes,
         :compress => true,
-        :redis => BlankApiRails::REDIS_CACHE_CONNECTION
+        :redis => BlankApiRails.redis_cache_connection
       }
     ]
 
