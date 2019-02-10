@@ -1,4 +1,6 @@
 module BlankApiRails
+  def self.configuration
+    Rails.application.credentials.public_send(Rails.env).with_indifferent_access
   end
 
   def self.redis_sidekiq_server_connection
@@ -23,6 +25,7 @@ module BlankApiRails
     @redis_cache_connection ||= ConnectionPool.new(:size => BlankApiRails.configuration.fetch_deep(:redis, :cache, :pool), :timeout => 5) do
       ::Redis.new(:driver => :hiredis, :url => ENV.fetch("REDIS_CACHE_URL"))
     end
+  end
 
   def self.redis_lock_connection
     @redis_lock_connection ||= Redlock::Client.new([
