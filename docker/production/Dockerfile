@@ -10,7 +10,6 @@ COPY bin/ bin/
 COPY config/ config/
 COPY db/ db/
 COPY lib/ lib/
-COPY storage/ storage/
 COPY vendor/ vendor/
 COPY config.ru config.ru
 COPY Rakefile Rakefile
