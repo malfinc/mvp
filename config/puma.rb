@@ -1,4 +1,4 @@
-require("dotenv/load") unless ENV["RAILS_ENV"] == "production"
+require("dotenv/load") unless ENV.fetch("RAILS_ENV", "development") == "production"
 
 # Puma can serve each request in a thread from an internal thread pool.
 # The `threads` method setting takes two numbers: a minimum and maximum.
@@ -17,7 +17,7 @@ port(Integer(ENV.fetch("PORT")))
 
 # Specifies the `environment` that Puma will run in.
 #
-environment(ENV.fetch("RAILS_ENV") {"development"})
+environment(ENV.fetch("RAILS_ENV", "development"))
 
 # Specifies the number of `workers` to boot in clustered mode.
 # Workers are forked webserver processes. If using threads and workers together
