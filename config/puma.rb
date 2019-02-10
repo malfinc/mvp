@@ -6,7 +6,10 @@ require("dotenv/load") unless ENV["RAILS_ENV"] == "production"
 # the maximum value specified for Puma. Default is set to 5 threads for minimum
 # and maximum; this matches the default thread size of Active Record.
 #
-threads(Integer(ENV.fetch("RAILS_MAX_THREADS")), Integer(ENV.fetch("RAILS_MAX_THREADS")))
+threads(
+  BlankApiRails.configuration.fetch_deep(:rails, :max_threads),
+  BlankApiRails.configuration.fetch_deep(:rails, :min_threads)
+)
 
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
 #
@@ -22,7 +25,7 @@ environment(ENV.fetch("RAILS_ENV") {"development"})
 # Workers do not work on JRuby or Windows (both of which do not support
 # processes).
 #
-workers(Integer(ENV.fetch("WEB_CONCURRENCY")))
+workers(Integer(BlankApiRails.configuration.fetch_deep(:rails, :web_concurrency)))
 
 # Use the `preload_app!` method when specifying a `workers` number.
 # This directive tells Puma to first boot the application and load code

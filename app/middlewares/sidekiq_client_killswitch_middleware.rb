@@ -6,10 +6,10 @@ class SidekiqClientKillswitchMiddleware
   end
 
   private def kill_by_queue?(queue)
-    ENV.fetch("SIDEKIQ_KILLSWITCH_QUEUES", "").split(",").include?(queue)
+    BlankApiRails.configuration.fetch_deep(:sidekiq, :killswitch, :queues).split(",").include?(queue)
   end
 
   private def kill_by_worker?(worker)
-    ENV.fetch("SIDEKIQ_KILLSWITCH_WORKERS", "").split(",").include?(worker)
+    BlankApiRails.configuration.fetch_deep(:sidekiq, :killswitch, :workers).split(",").include?(worker)
   end
 end

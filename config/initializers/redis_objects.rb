@@ -1,1 +1,1 @@
-Redis::Objects.redis = BlankApiRails::REDIS_OBJECTS_CONNECTION
+Redis::Objects.redis = BlankApiRails.redis_objects_connection

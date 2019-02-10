@@ -19,10 +19,10 @@ Rails.application.configure do
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
-  config.public_file_server.enabled = ENV.fetch("RAILS_SERVE_STATIC_FILES").present?
+  config.public_file_server.enabled = BlankApiRails.configuration.fetch_deep(:rails, :servce_static_files)
 
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  config.action_controller.asset_host = ENV.fetch("CDN_ORIGIN")
+  config.action_controller.asset_host = BlankApiRails.configuration.fetch(:cdn_origin)
 
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for Apache

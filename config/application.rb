@@ -64,7 +64,7 @@ module BlankApiRails
     # The ActiveJob adapter
     config.active_job.queue_adapter = :sidekiq
     # A prefix for all queue names
-    # config.active_job.queue_name_prefix = ENV.fetch("ACTIVEJOB_QUEUE_PREFIX")
+    # config.active_job.queue_name_prefix = BlankApiRails.configuration.fetch_deep(:activejob, :queue, :prefix)
 
     # Cache mail views
     config.action_mailer.perform_caching = true
@@ -123,28 +123,16 @@ module BlankApiRails
       end
     ]
 
-    # Review apps have specific domains that we can't replicate, yet
-    host = if ENV.key?("HEROKU_PARENT_APP_NAME")
-      "#{ENV.fetch("HEROKU_APP_NAME")}.herokuapp.com"
-    else
-      ENV.fetch("RAILS_HOST")
-    end
-
-    # We have an assigned port for production
-    port = unless Rails.env.production?
-      ENV.fetch("PORT")
-    end
-
     # Set the url options for controllers
     Rails.application.config.action_controller.default_url_options = {
-      :host => host,
-      :port => port
+      :host => BlankApiRails.configuration.fetch_deep(:rails, :host),
+      :port => ENV.fetch("PORT")
     }.compact
 
     # Set the url options for mailers
     Rails.application.config.action_mailer.default_url_options = {
-      :host => host,
-      :port => port
+      :host => BlankApiRails.configuration.fetch_deep(:rails, :host),
+      :port => ENV.fetch("PORT")
     }.compact
   end
 end

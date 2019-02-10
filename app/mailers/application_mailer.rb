@@ -1,5 +1,5 @@
 class ApplicationMailer < ActionMailer::Base
-  default(:from => "#{ENV.fetch("RAILS_EMAIL_USER")}@#{ENV.fetch("RAILS_EMAIL_HOST")}")
+  default(:from => BlankApiRails.configuration.fetch_deep(:rails, :email_default))
 
   layout("mailer")
 end
