@@ -1,0 +1,20 @@
+steps:
+  -
+    name: "gcr.io/cloud-builders/docker"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - |
+        docker pull gcr.io/experimental-works/blank-api-rails:latest || true
+  -
+    name: "gcr.io/cloud-builders/docker"
+    args:
+      - "build"
+      - "--cache-from"
+      - "gcr.io/experimental-works/blank-api-rails:latest"
+      - "-t"
+      - "gcr.io/experimental-works/blank-api-rails:latest"
+      - "."
+  images:
+    - "gcr.io/experimental-works/blank-api-rails:latest"
+  timeout: "3600s"

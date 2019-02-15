@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: blank-api-rails-production
+  labels:
+    app: blank-api-rails
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blank-api-rails
+  template:
+    metadata:
+      labels:
+        app: blank-api-rails
+    spec:
+      containers:
+        -
+          name: blank-api-rails
+          image: gcr.io/experimental-works/blank-api-rails:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          env:
+            -
+              name: DATABASE_URI
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: DATABASE_URI
+            -
+              name: RAILS_MASTER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-secrets
+                  key: RAILS_MASTER_KEY

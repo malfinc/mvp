@@ -1,0 +1,10 @@
+dependencies:
+  - name: postgresql
+    version: 10.6.0
+    repository: stable/postgresql
+  - name: redis
+    version: 4.0.12
+    repository: stable/redis
+  - name: minio
+    version: RELEASE.2019-01-16T21-44-08Z
+    repository: stable/minio

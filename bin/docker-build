@@ -1,0 +1,15 @@
+#!/bin/bash
+
+source .env.docker-build
+
+RAILS_MASTER_KEY=`cat config/master.key`
+
+docker build \
+  --file docker/production/Dockerfile \
+  --build-arg RAILS_MASTER_KEY=$RAILS_MASTER_KEY \
+  --build-arg DATABASE_URI=$DATABASE_URI \
+  --build-arg REDIS_SIDEKIQ_URI=$REDIS_SIDEKIQ_URI \
+  --build-arg REDIS_OBJECTS_URI=$REDIS_OBJECTS_URI \
+  --build-arg REDIS_CACHE_URI=$REDIS_CACHE_URI \
+  --build-arg REDIS_LOCK_URI=$REDIS_LOCK_URI \
+  .
