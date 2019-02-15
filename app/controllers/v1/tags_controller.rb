@@ -1,6 +1,6 @@
 module V1
   class TagsController < ::V1::ApplicationController
-    MODEL = ::Tag
+    MODEL = Gutentag::Tag
     REALIZER = ::V1::TagRealizer
     MATERIALIZER = ::V1::TagMaterializer
     POLICY = TagPolicy

@@ -13,7 +13,7 @@ class Payment < ApplicationRecord
   monetize(:paid_cents)
   monetize(:restitution_cents, :allow_nil => true)
 
-  enum :type, TYPES
+  enum type: TYPES
 
   validates_presence_of(:subtype)
   validates_inclusion_of(:subtype, :in => TYPES)
