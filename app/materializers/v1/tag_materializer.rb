@@ -2,6 +2,6 @@ module V1
   class TagMaterializer < ::V1::ApplicationMaterializer
     type(:tags)
 
-    has(:name, :visible => :readable?)
+    has(:name)
   end
 end

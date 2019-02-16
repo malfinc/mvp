@@ -57,29 +57,6 @@ class ApplicationPolicy
     Pundit.policy_scope!(actor, record.class)
   end
 
-  def readable?(type, name)
-    if type == :many && record.public_send(association).model.policy_class.const_defined?("Scope") && respond_to?("#{name}_readable?")
-      public_send("#{name}_readable?")
-    elsif respond_to?("#{name}_readable?")
-      public_send("#{name}_readable?")
-    else
-      noone
-    end
-  end
-
-  def writable(type, name)
-    if type == :many && record.public_send(association).model.policy_class.const_defined?("Scope") && respond_to?("#{name}_readable?")
-      public_send("#{name}_writable?")
-    elsif respond_to?("#{name}_writable?")
-      public_send("#{name}_writable?")
-    else
-      noone
-    end
-  end
-
-  private def read_relation?(association)
-
-  end
 
   private def completed
     actor.onboarding_state?(:completed)

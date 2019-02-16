@@ -2,17 +2,17 @@ module V1
   class PaymentMaterializer < ::V1::ApplicationMaterializer
     type(:payments)
 
-    has(:subtype, :visible => :readable?)
-    has(:source_id, :visible => :readable?)
-    has(:paid, :visible => :readable?)
-    has(:paid_cents, :visible => :readable?)
-    has(:paid_currency, :visible => :readable?)
-    has(:restitution, :visible => :readable?)
-    has(:restitution_cents, :visible => :readable?)
-    has(:restitution_currency, :visible => :readable?)
-    has(:processing_state, :visible => :readable?)
+    has(:subtype)
+    has(:source_id)
+    has(:paid)
+    has(:paid_cents)
+    has(:paid_currency)
+    has(:restitution)
+    has(:restitution_cents)
+    has(:restitution_currency)
+    has(:processing_state)
 
-    has_one(:account, :class_name => "Account", :visible => :readable_relationship?)
-    has_one(:cart, :class_name => "Cart", :visible => :readable_relationship?)
+    has_one(:account, :class_name => "Account")
+    has_one(:cart, :class_name => "Cart")
   end
 end

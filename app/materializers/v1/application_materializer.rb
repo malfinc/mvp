@@ -4,8 +4,5 @@ module V1
 
     include(JSONAPI::Materializer::Resource)
 
-    def readable?(attribute)
-      context.policy.(object).readable?(attribute.from)
-    end
   end
 end

@@ -7,7 +7,7 @@ module V1
     after_action(:verify_authorized)
     after_action(:verify_policy_scoped)
 
-    private def inline_jsonapi(model: self.class.const_get("MODEL"), schema:, realizer: self.class.const_get("REALIZER"), materializer: self.class.const_get("MATERIALIZER"), intent: nil, scope: nil, policy_scope_class: nil, parameters: nil, context: {:policy => ->(object) {self.class.const_get("POLICY").new(current_account, object)}})
+    private def inline_jsonapi(model: self.class.const_get("MODEL"), schema:, realizer: self.class.const_get("REALIZER"), materializer: self.class.const_get("MATERIALIZER"), intent: nil, scope: nil, policy_scope_class: nil, parameters: nil)
       @intent = intent || @_action_name
       @schema = schema
       @payload = @schema.new(parameters || request.parameters)
@@ -28,8 +28,7 @@ module V1
         :intent => @intent,
         :parameters => @payload,
         :headers => @headers,
-        :scope => @policy_scope,
-        :context => context || {}
+        :scope => @policy_scope
       )
 
       if params.key?(:id)
@@ -40,8 +39,7 @@ module V1
         if block_given? then yield(@realization.object) end
 
         @materializer.new(
-          **@realization,
-          :context => context || {}
+          **@realization
         )
       else
         authorize(@policy_scope)
@@ -49,8 +47,7 @@ module V1
         if block_given? then yield(@realization.object) end
 
         @materializer.new(
-          **@realization,
-          :context => context || {}
+          **@realization
         )
       end
     end
