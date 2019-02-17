@@ -13,7 +13,7 @@ steps:
       - "gcr.io/$PROJECT_ID/blank-api-rails:latest"
       - "-t"
       - "gcr.io/$PROJECT_ID/blank-api-rails:latest"
-      - "--from"
+      - "--file"
       - "./docker/production/Dockerfile"
       - "."
   images:
