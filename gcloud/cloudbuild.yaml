@@ -1,6 +1,7 @@
 ---
 images:
   - "gcr.io/experimental-works/blank-api-rails:latest"
+  - "gcr.io/experimental-works/blank-api-rails:$SHORT_SHA"
 timeout: "5m"
 steps:
   -
