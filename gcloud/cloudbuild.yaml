@@ -14,7 +14,7 @@ steps:
     entrypoint: "sh"
     args:
       - "-c"
-      - "bin/docker-cloudbuild $SHORT_SHA"
+      - "bin/docker-cloudbuild"
     env:
       - "SHORT_SHA=$SHORT_SHA"
       - "PROJECT_ID=$PROJECT_ID"
