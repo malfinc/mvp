@@ -2,6 +2,9 @@
 
 source .env.docker-build
 
+echo $SHORT_SHA
+echo $1
+
 docker build \
   --cache-from gcr.io/experimental-works/blank-api-rails:latest \
   --tag gcr.io/experimental-works/blank-api-rails:latest \
