@@ -1,6 +1,6 @@
 ---
 images:
-  - "gcr.io/$$PROJECT_ID/blank-api-rails:latest"
+  - "gcr.io/experimental-works/blank-api-rails:latest"
 timeout: "5m"
 steps:
   -
@@ -8,7 +8,7 @@ steps:
     entrypoint: "sh"
     args:
       - "-c"
-      - "docker pull gcr.io/$$PROJECT_ID/blank-api-rails:latest || exit 0"
+      - "docker pull gcr.io/experimental-works/blank-api-rails:latest || exit 0"
   -
     name: "gcr.io/cloud-builders/docker"
     args:
@@ -17,6 +17,6 @@ steps:
       - "RAILS_MASTER_KEY"
 secrets:
   -
-    kmsKeyName: "projects/$$PROJECT_ID/locations/global/keyRings/build-secrets/cryptoKeys/RAILS_MASTER_KEY"
+    kmsKeyName: "projects/experimental-works/locations/global/keyRings/build-secrets/cryptoKeys/RAILS_MASTER_KEY"
     secretEnv:
       RAILS_MASTER_KEY: "CiQACNX132sxiLVZiqIzp486GA7HrSnh3AQ/z4OqJbUnKQigrBwSSgA1CizuIAUxsww8YjL2Tz/fjydb11MQ2Z7Z8gAYAGaf0rWvSNTRn4fxZpp8/z18Cwq8y2Tm3WTUQ7SLo/zRmNoHzKd6vX8AyZ4D"
