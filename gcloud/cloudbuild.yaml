@@ -11,7 +11,9 @@ steps:
       - "docker pull gcr.io/experimental-works/blank-api-rails:latest || exit 0"
   -
     name: "gcr.io/cloud-builders/docker"
+    entrypoint: "sh"
     args:
+      - "-c"
       - "bin/docker-cloudbuild"
     secretEnv:
       - "RAILS_MASTER_KEY"
