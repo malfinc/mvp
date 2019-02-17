@@ -10,61 +10,10 @@ namespace :db do
       current_account
     end
 
-    def serialize_options
-      {
-        :meta => serialized_metadata,
-        :links => serialized_links,
-        :jsonapi => serialized_jsonapi,
-        :namespace => ::V1
-      }
-    end
-
-    def serialized_metadata
-      {
-        :api => {
-          :version => "1"
-        }
-      }
-    end
-
-    def serialized_links
-      {
-        :discovery => {
-          :href => ENV.fetch("DISCOVERY_ORIGIN")
-        }
-      }
-    end
-
-    def serialized_jsonapi
-      {
-        :version => "1.0"
-      }
-    end
-
-    def default_context(default)
-      {
-        **default,
-        **if respond_to?(:context) then context else {} end
-      }
-    end
-
-    def serialize_models(models, fields, includes)
-      JSONAPI::Serializer.serialize(
-        models,
-        **serialize_options,
-        :fields => if fields.any? then fields end,
-        :include => if includes.any? then includes end,
-        :is_collection => true,
-        :context => default_context(
-          :policy_finder => method(:policy)
-        )
-      )
-    end
-
     models = Account.all
     fields = {:accounts => ["name"]}
     includes = ["payments"]
-    puts serialize_models(models, fields, includes)
+    puts serialize(models, fields, includes)
 
     # require 'uri'
     # require 'net/http'
