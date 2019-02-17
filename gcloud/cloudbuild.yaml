@@ -14,7 +14,7 @@ steps:
     entrypoint: "sh"
     args:
       - "-c"
-      - "bin/docker-cloudbuild"
+      - "bin/docker-cloudbuild $$SHORT_SHA"
     secretEnv:
       - "RAILS_MASTER_KEY"
 secrets:
