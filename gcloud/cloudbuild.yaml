@@ -1,10 +1,14 @@
+---
+images:
+  - "gcr.io/$PROJECT_ID/blank-api-rails:latest"
+timeout: "5m"
 steps:
   -
     name: "gcr.io/cloud-builders/docker"
     entrypoint: "sh"
     args:
       - "-c"
-      - "docker pull gcr.io/$PROJECT_ID/blank-api-rails:latest || true"
+      - "docker pull gcr.io/$PROJECT_ID/blank-api-rails:latest || exit 0"
   -
     name: "gcr.io/cloud-builders/docker"
     args:
@@ -16,6 +20,3 @@ steps:
       - "--file"
       - "./docker/production/Dockerfile"
       - "."
-  images:
-    - "gcr.io/$PROJECT_ID/blank-api-rails:latest"
-  timeout: "3600s"
