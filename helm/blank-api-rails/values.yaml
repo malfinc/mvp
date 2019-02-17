@@ -1,7 +1,7 @@
-# Default values for my-rails-app
+# Default values for blank-api-rails
 replicaCount: 1
 image:
-  repository: us.gcr.io/experimental-works/blank-rails-api
+  repository: us.gcr.io/experimental-works/blank-api-rails
   tag: 1.0.0
   pullPolicy: IfNotPresent
 resources:
