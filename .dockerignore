@@ -10,5 +10,6 @@ tmp/
 vendor/bundle/
 node_modules/
 
+config/master.key
 .DS_Store
 .env
