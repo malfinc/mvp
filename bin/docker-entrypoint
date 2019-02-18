@@ -1,11 +1,3 @@
 #!/bin/bash
 
-# Lots of buildpacks use $HOME in their variables instead of the app directory
-export HOME=$WORKSPACE
-
-# Load environment variables set by the buildpacks
-for file in /app/.profile.d/*; do
-  source $file
-done
-
 $@
