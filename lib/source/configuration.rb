@@ -1,5 +1,7 @@
 module BlankApiRails
   def self.configuration
+    raise StandardError, "credentials are empty" if Rails.application.credentials.public_send(Rails.env).nil?
+
     Rails.application.credentials.public_send(Rails.env).with_indifferent_access
   end
 
