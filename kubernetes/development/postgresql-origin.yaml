@@ -1,0 +1,108 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgresql-origin-deployment
+  labels:
+    app: postgresql-origin
+    layer: database
+    role: origin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgresql-origin
+      layer: database
+      role: origin
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: postgresql-origin
+        layer: database
+        role: origin
+    spec:
+      containers:
+        -
+          name: postgresql-origin
+          image: postgres:10.6
+          imagePullPolicy: IfNotPresent
+          ports:
+            -
+              containerPort: 5432
+          volumeMounts:
+            -
+              name: postgresql-origin-volume-data
+              mountPath: /var/lib/postgresql/data
+          env:
+            -
+              name: POSTGRES_USER
+              value: postgres
+            -
+              name: POSTGRES_PASSWORD
+              value: postgres
+            -
+              name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+      volumes:
+        -
+          name: postgresql-origin-volume-data
+          persistentVolumeClaim:
+            claimName: postgresql-origin-persistent-volume-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql-origin-service
+  labels:
+    app: postgresql-origin
+    layer: database
+    role: origin
+spec:
+  ports:
+    -
+      name: postgresql-origin
+      port: 5432
+      targetPort: 5432
+  selector:
+    app: postgresql-origin
+    layer: database
+    role: origin
+  type: ClusterIP
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgresql-origin-persistent-volume
+  labels:
+    app: postgresql-origin
+    layer: database
+    role: origin
+spec:
+  storageClassName: manual
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+    path: /tmp/postgresql/data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgresql-origin-persistent-volume-claim
+  labels:
+    app: postgresql-origin
+    layer: database
+    role: origin
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: manual
+  resources:
+    requests:
+      storage: 1Gi
