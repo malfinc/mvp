@@ -13,7 +13,7 @@ ENV PORT 3000
 
 WORKDIR /home/application/
 
-RUN curl -s --location https://github.com/heroku/heroku-buildpack-ruby/archive/master.tar.gz | tar -xzC /tmp/
+RUN curl -s --location https://github.com/heroku/heroku-buildpack-ruby/archive/master.tar.gz | tar -xzC .
 
 COPY config.ru config.ru
 COPY Rakefile Rakefile
@@ -26,8 +26,10 @@ COPY config/ config/
 COPY db/ db/
 COPY app/ app/
 
-RUN /tmp/heroku-buildpack-ruby-master/bin/detect /home/application/ && /tmp/heroku-buildpack-ruby-master/bin/compile /home/application/ /tmp/cache /tmp/env
+RUN heroku-buildpack-ruby-master/bin/detect /home/application/
+RUN heroku-buildpack-ruby-master/bin/compile /home/application/ /tmp/cache /tmp/env
 
+RUN rm -rf heroku-buildpack-ruby-master
 
 FROM heroku/heroku:18
 
@@ -42,7 +44,7 @@ WORKDIR /home/application/
 
 VOLUME /home/application/
 
-COPY --from=build /home/application/ /home/application/
+COPY --chown=application --from=build /home/application/ /home/application/
 
 EXPOSE $PORT
 
