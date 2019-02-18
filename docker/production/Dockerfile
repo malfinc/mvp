@@ -1,4 +1,4 @@
-FROM heroku/heroku:18-build
+FROM heroku/heroku:18-build as build
 
 ARG RAILS_MASTER_KEY
 ARG DATABASE_URI
@@ -7,16 +7,13 @@ ARG REDIS_OBJECTS_URI
 ARG REDIS_CACHE_URI
 ARG REDIS_LOCK_URI
 
-ENV WORKDIR /var/www/application/
-ENV STACK heroku-18
 ENV RAILS_ENV production
+ENV STACK heroku-18
 ENV PORT 3000
 
-WORKDIR $WORKDIR
+WORKDIR /home/application/
 
-VOLUME $WORKDIR
-
-EXPOSE $PORT
+RUN curl -s --location https://github.com/heroku/heroku-buildpack-ruby/archive/master.tar.gz | tar -xzC /tmp/
 
 COPY config.ru config.ru
 COPY Rakefile Rakefile
@@ -29,13 +26,25 @@ COPY config/ config/
 COPY db/ db/
 COPY app/ app/
 
-RUN curl -s --location https://github.com/heroku/heroku-buildpack-ruby/archive/master.tar.gz | tar -xzC /tmp/
+RUN /tmp/heroku-buildpack-ruby-master/bin/detect /home/application/ && /tmp/heroku-buildpack-ruby-master/bin/compile /home/application/ /tmp/cache /tmp/env
 
-RUN cd /tmp/heroku-buildpack-ruby-master/ && bin/detect $WORKDIR && bin/compile $WORKDIR /tmp/cache /tmp/env
 
-RUN rm -r /tmp/heroku-buildpack-ruby-master/
+FROM heroku/heroku:18
 
-RUN apt-get clean
+ENV RAILS_ENV production
+ENV PORT 3000
+
+RUN useradd --create-home application
+
+USER application
+
+WORKDIR /home/application/
+
+VOLUME /home/application/
+
+COPY --from=build /home/application/ /home/application/
+
+EXPOSE $PORT
 
 SHELL ["bin/docker-entrypoint"]
 
