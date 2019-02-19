@@ -1,3 +1,3 @@
 #!/bin/bash
 
-cat kubernetes/development/**/*.yaml | kubectl replace --force -f -
+find "./kubernetes/development/" -name '*.yaml' -exec cat {} \; | kubectl replace --force -f -
