@@ -104,13 +104,8 @@ metadata:
     role: resources
 spec:
   completions: 1
+  backoffLimit: 1
   template:
-    metadata:
-      name: application-database-migration
-      labels:
-        app: blank-api-rails
-        layer: server
-        role: resources
     spec:
       restartPolicy: Never
       containers:
@@ -118,8 +113,7 @@ spec:
           name: application-database-migration
           image: gcr.io/experimental-works/blank-api-rails:latest
           args:
-            - "bin"
-            - "rake"
+            - "bin/rake"
             - "db:create"
             - "db:migrate"
           env:
