@@ -26,6 +26,9 @@ spec:
         layer: server
         role: resources
     spec:
+      imagePullSecrets:
+        -
+          name: gcr-json-key
       containers:
         -
           name: application
@@ -39,13 +42,13 @@ spec:
               name: DATABASE_URI
               valueFrom:
                 secretKeyRef:
-                  name: app-secrets
+                  name: application-secret
                   key: DATABASE_URI
             -
               name: RAILS_MASTER_KEY
               valueFrom:
                 secretKeyRef:
-                  name: app-secrets
+                  name: application-secret
                   key: RAILS_MASTER_KEY
 ---
 apiVersion: v1
@@ -151,11 +154,11 @@ spec:
               name: DATABASE_URI
               valueFrom:
                 secretKeyRef:
-                  name: app-secrets
+                  name: application-secret
                   key: DATABASE_URI
             -
               name: RAILS_MASTER_KEY
               valueFrom:
                 secretKeyRef:
-                  name: app-secrets
+                  name: application-secret
                   key: RAILS_MASTER_KEY

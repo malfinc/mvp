@@ -41,7 +41,7 @@ spec:
               name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  key: app-secrets
+                  key: application-secret
                   name: POSTGRES_PASSWORD
             -
               name: PGDATA
