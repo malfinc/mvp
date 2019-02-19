@@ -84,66 +84,15 @@ metadata:
     layer: server
     role: resources
 spec:
-  ports:
-    -
-      name: dynamic
-      port: 3000
-      targetPort: 3000
+  type: LoadBalancer
   selector:
     app: blank-api-rails
-    layer: server
-    role: resources
-  type: NodePort
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: application-ingress-ipv4
-  labels:
-    app: blank-api-rails
-    layer: server
-    role: resources
-spec:
-  rules:
+  ports:
     -
-      host: localhost
-      http:
-        paths:
-          -
-            path: /*
-            backend:
-              serviceName: application-service
-              servicePort: 3000
-  tls:
-    -
-      secretName: application-tls
-      hosts:
-        - localhost
----
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: application-ingress-ipv6
-  labels:
-    app: blank-api-rails
-    layer: server
-    role: resources
-spec:
-  rules:
-    -
-      host: localhost
-      http:
-        paths:
-        -
-          path: /*
-          backend:
-            serviceName: application-service
-            servicePort: 3000
-  tls:
-    -
-      secretName: application-tls
-      hosts:
-        - localhost
+      name: http
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
 ---
 apiVersion: batch/v1
 kind: Job
