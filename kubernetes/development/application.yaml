@@ -42,13 +42,37 @@ spec:
               name: DATABASE_URI
               valueFrom:
                 secretKeyRef:
-                  name: application-secret
+                  name: application-secrets
                   key: DATABASE_URI
+            -
+              name: REDIS_SIDEKIQ_URI
+              valueFrom:
+                secretKeyRef:
+                  name: application-secrets
+                  key: REDIS_SIDEKIQ_URI
+            -
+              name: REDIS_OBJECTS_URI
+              valueFrom:
+                secretKeyRef:
+                  name: application-secrets
+                  key: REDIS_OBJECTS_URI
+            -
+              name: REDIS_CACHE_URI
+              valueFrom:
+                secretKeyRef:
+                  name: application-secrets
+                  key: REDIS_CACHE_URI
+            -
+              name: REDIS_LOCK_URI
+              valueFrom:
+                secretKeyRef:
+                  name: application-secrets
+                  key: REDIS_LOCK_URI
             -
               name: RAILS_MASTER_KEY
               valueFrom:
                 secretKeyRef:
-                  name: application-secret
+                  name: application-secrets
                   key: RAILS_MASTER_KEY
 ---
 apiVersion: v1
@@ -154,11 +178,35 @@ spec:
               name: DATABASE_URI
               valueFrom:
                 secretKeyRef:
-                  name: application-secret
+                  name: application-secrets
                   key: DATABASE_URI
+            -
+              name: REDIS_SIDEKIQ_URI
+              valueFrom:
+                secretKeyRef:
+                  name: application-secrets
+                  key: REDIS_SIDEKIQ_URI
+            -
+              name: REDIS_OBJECTS_URI
+              valueFrom:
+                secretKeyRef:
+                  name: application-secrets
+                  key: REDIS_OBJECTS_URI
+            -
+              name: REDIS_CACHE_URI
+              valueFrom:
+                secretKeyRef:
+                  name: application-secrets
+                  key: REDIS_CACHE_URI
+            -
+              name: REDIS_LOCK_URI
+              valueFrom:
+                secretKeyRef:
+                  name: application-secrets
+                  key: REDIS_LOCK_URI
             -
               name: RAILS_MASTER_KEY
               valueFrom:
                 secretKeyRef:
-                  name: application-secret
+                  name: application-secrets
                   key: RAILS_MASTER_KEY
