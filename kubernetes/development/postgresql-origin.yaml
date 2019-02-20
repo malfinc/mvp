@@ -4,16 +4,13 @@ kind: Deployment
 metadata:
   name: postgresql-origin-deployment
   labels:
-    app: postgresql-origin
-    layer: database
-    role: origin
+    service: postgresql-origin
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgresql-origin
-      layer: database
-      role: origin
+      service: postgresql-origin
+      role: database
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -22,9 +19,8 @@ spec:
   template:
     metadata:
       labels:
-        app: postgresql-origin
-        layer: database
-        role: origin
+        service: postgresql-origin
+        role: database
     spec:
       containers:
         -
@@ -59,9 +55,8 @@ kind: Service
 metadata:
   name: postgresql-origin-service
   labels:
-    app: postgresql-origin
-    layer: database
-    role: origin
+    service: postgresql-origin
+    role: database
 spec:
   ports:
     -
@@ -69,9 +64,8 @@ spec:
       port: 5432
       targetPort: 5432
   selector:
-    app: postgresql-origin
-    layer: database
-    role: origin
+    service: postgresql-origin
+    role: database
   type: ClusterIP
 ---
 apiVersion: v1
@@ -79,9 +73,7 @@ kind: PersistentVolume
 metadata:
   name: postgresql-origin-persistent-volume
   labels:
-    app: postgresql-origin
-    layer: database
-    role: origin
+    service: postgresql-origin
 spec:
   storageClassName: manual
   capacity:
@@ -96,9 +88,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: postgresql-origin-persistent-volume-claim
   labels:
-    app: postgresql-origin
-    layer: database
-    role: origin
+    service: postgresql-origin
 spec:
   accessModes:
     - ReadWriteMany

@@ -2,11 +2,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: application
+  name: resource-api-deployment
   labels:
-    app: blank-api-rails
-    layer: server
-    role: resources
+    service: resource-api
 spec:
   strategy:
     type: RollingUpdate
@@ -16,26 +14,25 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: blank-api-rails
-      layer: server
-      role: resources
+      service: resource-api
+      role: http-api
   template:
     metadata:
       labels:
-        app: blank-api-rails
-        layer: server
-        role: resources
+        service: resource-api
+        role: http-api
     spec:
       imagePullSecrets:
         -
           name: gcr-json-key
       containers:
         -
-          name: application
+          name: resource-api
           image: gcr.io/experimental-works/blank-api-rails:latest
           imagePullPolicy: Always
           ports:
             -
+              name: http
               containerPort: 3000
           env:
             -
@@ -78,15 +75,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: application-service
+  name: resource-api-service
   labels:
-    app: blank-api-rails
-    layer: server
-    role: resources
+    service: resource-api
+    role: http-api
 spec:
   type: LoadBalancer
   selector:
-    app: blank-api-rails
+    service: resource-api
   ports:
     -
       name: http
@@ -97,11 +93,10 @@ spec:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: application-database-migration
+  name: resource-api-job-database-migration
   labels:
-    app: blank-api-rails
-    layer: server
-    role: resources
+    service: resource-api
+    role: postdeploy
 spec:
   completions: 1
   backoffLimit: 1
@@ -110,7 +105,7 @@ spec:
       restartPolicy: Never
       containers:
         -
-          name: application-database-migration
+          name: resource-api-database-migration
           image: gcr.io/experimental-works/blank-api-rails:latest
           args:
             - "bin/rake"
