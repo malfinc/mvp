@@ -80,7 +80,7 @@ metadata:
   name: ambassador-admin-service
   labels:
     service: ambassador-admin
-    role: application
+    role: dashboard
 spec:
   type: NodePort
   ports:
@@ -103,10 +103,15 @@ metadata:
       name:  resource-api-mapping
       prefix: /api/
       service: resource-api-service
+      ---
+      apiVersion: ambassador/v1
+      kind:  Mapping
+      name:  kubernetes-dashboard-mapping
+      prefix: /k8s/
+      service: kubernetes-dashboard-service
 spec:
   selector:
-    service: resource-api
-    role: http-api
+    access: external
   ports:
     -
       name: ambassador-router-service

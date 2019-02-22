@@ -58,6 +58,7 @@ metadata:
     service: postgresql-origin
     role: database
 spec:
+  type: ClusterIP
   ports:
     -
       name: postgresql-origin
@@ -66,7 +67,6 @@ spec:
   selector:
     service: postgresql-origin
     role: database
-  type: ClusterIP
 ---
 apiVersion: v1
 kind: PersistentVolume

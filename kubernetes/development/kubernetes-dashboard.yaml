@@ -1,0 +1,89 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubernetes-dashboard-deployment
+  namespace: kube-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: kubernetes-dashboard
+      role: browser-dashboard
+  template:
+    metadata:
+      labels:
+        service: kubernetes-dashboard
+        role: browser-dashboard
+    spec:
+      containers:
+        -
+          name: kubernetes-dashboard
+          image: "k8s.gcr.io/kubernetes-dashboard-amd64:v1.10.1"
+          args:
+            - "--auto-generate-certificates"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8443
+              scheme: HTTPS
+            initialDelaySeconds: 30
+            timeoutSeconds: 30
+          ports:
+            -
+              containerPort: 8443
+          volumeMounts:
+            -
+              mountPath: /certs
+              name: kubernetes-dashboard-certs
+            -
+              mountPath: /tmp
+              name: tmp-volume
+      serviceAccountName: kubernetes-dashboard
+      tolerations:
+        -
+          effect: NoSchedule
+          key: node-role.kubernetes.io/master
+      volumes:
+        -
+          name: kubernetes-dashboard-certs
+          secret:
+            secretName: kubernetes-dashboard-secret-certs
+        -
+          emptyDir: {}
+          name: tmp-volume
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: kubernetes-dashboard-service
+  namespace: kube-system
+  labels:
+    service: kubernetes-dashboard
+    access: external
+    role: browser-dashboard
+spec:
+  ports:
+    -
+      name: http
+      port: 80
+      targetPort: 8443
+  selector:
+    service: kubernetes-dashboard
+    role: browser-dashboard
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kubernetes-dashboard-secret-csrf
+  namespace: kube-system
+type: Opaque
+data:
+  csrf: ""
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kubernetes-dashboard-secret-certs
+  namespace: kube-system
+type: Opaque
