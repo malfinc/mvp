@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgresql-origin-deployment
+  name: postgresql-origin
   labels:
     service: postgresql-origin
 spec:
@@ -32,28 +32,28 @@ spec:
               containerPort: 5432
           volumeMounts:
             -
-              name: postgresql-origin-volume-data
+              name: postgresql-origin-data
               mountPath: /var/lib/postgresql/data
           env:
             -
-              name: POSTGRES_USER
-              value: postgres
-            -
               name: POSTGRES_PASSWORD
-              value: postgres
+              valueFrom:
+                secretKeyRef:
+                  name: runtime-secrets
+                  key: POSTGRES_PASSWORD
             -
               name: PGDATA
               value: /var/lib/postgresql/data/pgdata
       volumes:
         -
-          name: postgresql-origin-volume-data
+          name: postgresql-origin-data
           persistentVolumeClaim:
-            claimName: postgresql-origin-persistent-volume-claim
+            claimName: postgresql-origin-data
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: postgresql-origin-service
+  name: postgresql-origin
   labels:
     service: postgresql-origin
     role: database
@@ -71,7 +71,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: postgresql-origin-persistent-volume
+  name: postgresql-origin-data
   labels:
     service: postgresql-origin
 spec:
@@ -86,7 +86,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgresql-origin-persistent-volume-claim
+  name: postgresql-origin-data
   labels:
     service: postgresql-origin
 spec:

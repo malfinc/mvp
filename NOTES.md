@@ -20,7 +20,7 @@ Setup the GCP:
 Setup k8s clusters:
 
     gcloud services enable container.googleapis.com
-    gcloud beta container clusters create blank-cluster-production --enable-cloud-logging --enable-cloud-monitoring --enable-autoupgrade --enable-autoscaling --min-nodes=3 --max-nodes=5 --machine-type=g1-small --scopes=default,compute-rw,storage-rw --database-encryption-key projects/experimental-works/locations/global/keyRings/blank-api-rails/cryptoKeys/application-secrets
+    gcloud beta container clusters create blank-cluster-production --enable-cloud-logging --enable-cloud-monitoring --enable-autoupgrade --enable-autoscaling --min-nodes=3 --max-nodes=5 --machine-type=g1-small --scopes=default,compute-rw,storage-rw --database-encryption-key projects/experimental-works/locations/global/keyRings/blank-api-rails/cryptoKeys/runtime-secrets
     gcloud container clusters get-credentials blank-cluster-production
 
 Setup ip addresses:
@@ -45,32 +45,21 @@ Create a gcloud keyring:
 
 Create a gcloud key:
 
-    gcloud kms keys create application-secrets --location global --keyring blank-api-rails --purpose encryption --project experimental-works
+    gcloud kms keys create runtime-secrets --location global --keyring blank-api-rails --purpose encryption --project experimental-works
 
-Give GCloud CloudBuilder permission to decrypt the application-secrets key:
+Give GCloud CloudBuilder permission to decrypt the runtime-secrets key:
 
-  gcloud kms keys add-iam-policy-binding application-secrets --location global --keyring blank-api-rails --member serviceAccount:760958921243@cloudbuild.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter --project experimental-works
+    gcloud kms keys add-iam-policy-binding runtime-secrets --location global --keyring blank-api-rails --member serviceAccount:760958921243@cloudbuild.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter --project experimental-works
 
-Give GCloud GKE permission to decrypt the application-secrets key:
+Give GCloud GKE permission to decrypt the runtime-secrets key:
 
-    gcloud kms keys add-iam-policy-binding application-secrets --location global --keyring blank-api-rails --member serviceAccount:service-760958921243@container-engine-robot.iam.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter --project experimental-works
+    gcloud kms keys add-iam-policy-binding runtime-secrets --location global --keyring blank-api-rails --member serviceAccount:service-760958921243@container-engine-robot.iam.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter --project experimental-works
 
-Give Docker for Desktop permission to decrypt the application-secrets key:
+Give Docker for Desktop permission to decrypt the runtime-secrets key:
 
-    gcloud kms keys add-iam-policy-binding application-secrets --location global --keyring blank-api-rails --member serviceAccount:docker-for-desktop@experimental-works.iam.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter --project experimental-works
+    gcloud kms keys add-iam-policy-binding runtime-secrets --location global --keyring blank-api-rails --member serviceAccount:docker-for-desktop@experimental-works.iam.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter --project experimental-works
 
 To store a secret environment variable you can:
 
-    cat config/master.key | gcloud kms encrypt --plaintext-file=- --ciphertext-file=- --location global --keyring blank-api-rails --key application-secrets | base64
-
-Run the migrations:
-
-    kubectl apply -f kubernetes/production/jobs/database-migration.yml
-
-I don't know?
-
-    kubectl expose deployment blank-api-rails --name blank-api-rails-production --type LoadBalancer --protocol TCP --port 80 --target-port 3000
-
-Replace all configs
-
-    kubectl replace --force -f kubernetes/development/application.yaml
+    cat config/master.key | gcloud kms encrypt --plaintext-file=- --ciphertext-file=- --location global --keyring blank-api-rails --key runtime-secrets | base64
+    date | md5 | gcloud kms encrypt --plaintext-file=- --ciphertext-file=- --location global --keyring blank-api-rails --key runtime-secrets | base64

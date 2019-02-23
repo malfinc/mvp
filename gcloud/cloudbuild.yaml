@@ -23,6 +23,6 @@ steps:
       - "RAILS_MASTER_KEY"
 secrets:
   -
-    kmsKeyName: "projects/experimental-works/locations/global/keyRings/blank-api-rails/cryptoKeys/application-secrets"
+    kmsKeyName: "projects/experimental-works/locations/global/keyRings/blank-api-rails/cryptoKeys/runtime-secrets"
     secretEnv:
       RAILS_MASTER_KEY: "CiQALYc+q9UWcq3393OZXLPsPSkK858pPbauNJaOZsmomeHaJcwSSgCedma4YMFBtcajg+xN0Uw3nta7svJ3r0dAZP3996f4TH9xE91G7fZT85xG1aHX1bP46zeGglm5tDY1GvitDxhzXrOdR9cLFx4L"

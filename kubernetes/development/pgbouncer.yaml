@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: pgbouncer-deployment
+  name: pgbouncer
   labels:
     service: pgbouncer
 spec:
@@ -10,7 +10,7 @@ spec:
   selector:
     matchLabels:
       service: pgbouncer
-      role: balancer
+      role: load-balancer
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -20,7 +20,7 @@ spec:
     metadata:
       labels:
         service: pgbouncer
-        role: balancer
+        role: load-balancer
     spec:
       containers:
         -
@@ -29,26 +29,52 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             -
-              containerPort: 5431
+              containerPort: 5432
           env:
             -
-              name: DATABASE_URL
-              value: "postgresql://postgres@postgresql-origin-service:5432/blank-api-rails_development"
+              name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: runtime-secrets
+                  key: POSTGRES_PASSWORD
+            -
+              name: DB_HOST
+              value: "postgresql-origin"
+            -
+              name: POOL_MODE
+              value: session
+            -
+              name: MAX_CLIENT_CONN
+              value: "100"
+            -
+              name: SERVER_RESET_QUERY
+              value: DISCARD ALL
+          livenessProbe:
+            tcpSocket:
+              port: 5432
+            periodSeconds: 60
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - "/bin/sh"
+                  - "-c"
+                  - "killall -INT pgbouncer && sleep 120"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: pgbouncer-service
+  name: pgbouncer
   labels:
     service: pgbouncer
-    role: balancer
+    role: load-balancer
 spec:
   type: ClusterIP
   ports:
     -
       name: pgbouncer
       port: 5431
-      targetPort: 5431
+      targetPort: 5432
   selector:
     service: pgbouncer
-    role: balancer
+    role: load-balancer

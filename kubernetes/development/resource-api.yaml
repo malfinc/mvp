@@ -2,16 +2,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: resource-api-deployment
+  name: resource-api
   labels:
     service: resource-api
 spec:
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
       maxSurge: 1
       maxUnavailable: 0
-  replicas: 1
   selector:
     matchLabels:
       service: resource-api
@@ -31,7 +31,6 @@ spec:
         -
           name: resource-api
           image: gcr.io/experimental-works/blank-api-rails:latest
-          imagePullPolicy: IfNotPresent
           ports:
             -
               name: http
@@ -41,28 +40,28 @@ spec:
               name: RAILS_MASTER_KEY
               valueFrom:
                 secretKeyRef:
-                  name: application-secrets
+                  name: runtime-secrets
                   key: RAILS_MASTER_KEY
             -
               name: DATABASE_URI
-              value: "postgresql://postgres@pgbouncer-service:5431/blank-api-rails_development"
+              value: "postgresql://postgres:postgres@pgbouncer:5431/blank-api-rails_development"
             -
               name: REDIS_SIDEKIQ_URI
-              value: "redis://localhost:6789/1"
+              value: "redis://redis:6789/1"
             -
               name: REDIS_OBJECTS_URI
-              value: "redis://localhost:6789/2"
+              value: "redis://redis:6789/2"
             -
               name: REDIS_CACHE_URI
-              value: "redis://localhost:6789/3"
+              value: "redis://redis:6789/3"
             -
               name: REDIS_LOCK_URI
-              value: "redis://localhost:6789/4"
+              value: "redis://redis:6789/4"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: resource-api-service
+  name: resource-api
   labels:
     service: resource-api
     role: http-api
@@ -80,7 +79,7 @@ spec:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: resource-api-job-database-migration
+  name: resource-api-database-migration
   labels:
     service: resource-api
     role: postdeploy
@@ -94,34 +93,52 @@ spec:
         role: postdeploy
     spec:
       restartPolicy: Never
+      imagePullSecrets:
+        -
+          name: gcr-json-key
       containers:
         -
           name: resource-api-database-migration
           image: gcr.io/experimental-works/blank-api-rails:latest
-          imagePullPolicy: IfNotPresent
           args:
             - "bin/rake"
             - "db:create"
             - "db:migrate"
+            - "db:seed"
           env:
             -
               name: RAILS_MASTER_KEY
               valueFrom:
                 secretKeyRef:
-                  name: application-secrets
+                  name: runtime-secrets
                   key: RAILS_MASTER_KEY
             -
               name: DATABASE_URI
-              value: "postgresql://postgres@pgbouncer-service:5431/blank-api-rails_development"
+              value: "postgresql://postgres@pgbouncer:5431/blank-api-rails_development"
+            -
+              name: DATABASE_HOST
+              value: "pgbouncer"
+            -
+              name: DATABASE_USER
+              value: "postgres"
+            -
+              name: DATABASE_NAME
+              value: "postgres"
+            -
+              name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: runtime-secrets
+                  key: POSTGRES_PASSWORD
             -
               name: REDIS_SIDEKIQ_URI
-              value: "redis://localhost:6789/1"
+              value: "redis://redis:6789/1"
             -
               name: REDIS_OBJECTS_URI
-              value: "redis://localhost:6789/2"
+              value: "redis://redis:6789/2"
             -
               name: REDIS_CACHE_URI
-              value: "redis://localhost:6789/3"
+              value: "redis://redis:6789/3"
             -
               name: REDIS_LOCK_URI
-              value: "redis://localhost:6789/4"
+              value: "redis://redis:6789/4"
