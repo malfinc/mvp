@@ -43,20 +43,20 @@ spec:
                   name: runtime-secrets
                   key: RAILS_MASTER_KEY
             -
-              name: DATABASE_HOST
+              name: POSTGRES_HOST
               value: "pgbouncer"
             -
-              name: DATABASE_USER
+              name: POSTGRES_USERNAME
               value: "postgres"
             -
-              name: DATABASE_NAME
-              value: "postgres"
-            -
-              name: DATABASE_PASSWORD
+              name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: runtime-secrets
                   key: POSTGRES_PASSWORD
+            -
+              name: POSTGRES_DATABASE
+              value: "blank-api-rails_development"
             -
               name: REDIS_SIDEKIQ_URI
               value: "redis://redis:6789/1"
@@ -125,20 +125,20 @@ spec:
                   name: runtime-secrets
                   key: RAILS_MASTER_KEY
             -
-              name: DATABASE_HOST
+              name: POSTGRES_HOST
               value: "pgbouncer"
             -
-              name: DATABASE_USER
+              name: POSTGRES_USERNAME
               value: "postgres"
             -
-              name: DATABASE_NAME
-              value: "postgres"
-            -
-              name: DATABASE_PASSWORD
+              name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: runtime-secrets
                   key: POSTGRES_PASSWORD
+            -
+              name: POSTGRES_DATABASE
+              value: "blank-api-rails_development"
             -
               name: REDIS_SIDEKIQ_URI
               value: "redis://redis:6789/1"

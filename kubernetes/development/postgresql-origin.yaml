@@ -62,7 +62,7 @@ spec:
   ports:
     -
       name: postgresql-origin
-      port: 5432
+      port: 5430
       targetPort: 5432
   selector:
     service: postgresql-origin

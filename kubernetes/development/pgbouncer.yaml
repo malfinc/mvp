@@ -44,6 +44,9 @@ spec:
               name: DB_HOST
               value: "postgresql-origin"
             -
+              name: DB_PORT
+              value: "5430"
+            -
               name: POOL_MODE
               value: session
             -
@@ -76,7 +79,7 @@ spec:
   ports:
     -
       name: pgbouncer
-      port: 5431
+      port: 5432
       targetPort: 5432
   selector:
     service: pgbouncer
