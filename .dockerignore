@@ -2,7 +2,7 @@
 
 db/dumps/
 docs/
-helm/
+charts/
 kubernetes/
 log/
 storage/
