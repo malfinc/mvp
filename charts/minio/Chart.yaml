@@ -1,0 +1,23 @@
+apiVersion: v1
+appVersion: RELEASE.2019-01-16T21-44-08Z
+description: Minio is a high performance distributed object storage server, designed
+  for large-scale private cloud infrastructure.
+home: https://minio.io
+icon: https://www.minio.io/img/logo_160x160.png
+keywords:
+- storage
+- object-storage
+- S3
+maintainers:
+- email: hello@acale.ph
+  name: Acaleph
+- email: dev@minio.io
+  name: Minio
+- email: nitish@min.io
+  name: nitisht
+- email: sid@min.io
+  name: wlan0
+name: minio
+sources:
+- https://github.com/minio/minio
+version: 2.4.1
