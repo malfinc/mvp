@@ -41,25 +41,25 @@ Setup GCP to handle our docker images:
 
 Create a gcloud keyring:
 
-    gcloud kms keyrings create blank-api-rails --location global --project experimental-works
+    gcloud kms keyrings create runtime-secrets --location global --project experimental-works
 
-Create a gcloud key:
+Create a gcloud key for every environment variable needing security:
 
-    gcloud kms keys create runtime-secrets --location global --keyring blank-api-rails --purpose encryption --project experimental-works
+    gcloud kms keys create RAILS_MASTER_KEY --location global --keyring runtime-secrets --purpose encryption --project experimental-works
+    gcloud kms keys create POSTGRES_PASSWORD --location global --keyring runtime-secrets --purpose encryption --project experimental-works
 
-Give GCloud CloudBuilder permission to decrypt the runtime-secrets key:
+Give various service accounts access to these keys:
 
-    gcloud kms keys add-iam-policy-binding runtime-secrets --location global --keyring blank-api-rails --member serviceAccount:760958921243@cloudbuild.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter --project experimental-works
-
-Give GCloud GKE permission to decrypt the runtime-secrets key:
-
-    gcloud kms keys add-iam-policy-binding runtime-secrets --location global --keyring blank-api-rails --member serviceAccount:service-760958921243@container-engine-robot.iam.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter --project experimental-works
-
-Give Docker for Desktop permission to decrypt the runtime-secrets key:
-
-    gcloud kms keys add-iam-policy-binding runtime-secrets --location global --keyring blank-api-rails --member serviceAccount:docker-for-desktop@experimental-works.iam.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter --project experimental-works
+    gcloud kms keys add-iam-policy-binding RAILS_MASTER_KEY --location global --keyring runtime-secrets --member serviceAccount:760958921243@cloudbuild.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter --project experimental-works
+    gcloud kms keys add-iam-policy-binding POSTGRES_PASSWORD --location global --keyring runtime-secrets --member serviceAccount:760958921243@cloudbuild.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter --project experimental-works
+    gcloud kms keys add-iam-policy-binding RAILS_MASTER_KEY --location global --keyring runtime-secrets --member serviceAccount:service-760958921243@container-engine-robot.iam.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter --project experimental-works
+    gcloud kms keys add-iam-policy-binding POSTGRES_PASSWORD --location global --keyring runtime-secrets --member serviceAccount:service-760958921243@container-engine-robot.iam.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter --project experimental-works
+    gcloud kms keys add-iam-policy-binding RAILS_MASTER_KEY --location global --keyring runtime-secrets --member serviceAccount:docker-for-desktop@experimental-works.iam.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter --project experimental-works
+    gcloud kms keys add-iam-policy-binding POSTGRES_PASSWORD --location global --keyring runtime-secrets --member serviceAccount:docker-for-desktop@experimental-works.iam.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter --project experimental-works
 
 To store a secret environment variable you can:
 
-    cat config/master.key | gcloud kms encrypt --plaintext-file=- --ciphertext-file=- --location global --keyring blank-api-rails --key runtime-secrets | base64
-    date | md5 | gcloud kms encrypt --plaintext-file=- --ciphertext-file=- --location global --keyring blank-api-rails --key runtime-secrets | base64
+    cat config/master.key | gcloud kms encrypt --plaintext-file=- --ciphertext-file=- --location global --keyring runtime-secrets --key RAILS_MASTER_KEY | base64
+    date | md5 | gcloud kms encrypt --plaintext-file=- --ciphertext-file=- --location global --keyring runtime-secrets --key POSTGRES_PASSWORD | base64
+
+You'll want to store the result of the above inside cloudbuild's variables list.

@@ -24,10 +24,10 @@ steps:
       - "POSTGRES_PASSWORD"
 secrets:
   -
-    kmsKeyName: "projects/experimental-works/locations/global/keyRings/blank-api-rails/cryptoKeys/runtime-secrets"
+    kmsKeyName: "projects/experimental-works/locations/global/keyRings/runtime-secrets/cryptoKeys/RAILS_MASTER_KEY"
     secretEnv:
-      RAILS_MASTER_KEY: "CiQAjmV6AFe9ciJCynFhShFHMvMmpP4ZviKOO5pkL9p7+eMQrz8SSgDhwJn0MF7aDXEWejthbwEIH0vKHz2AiQqlKXIgi18xsHDJceThMQj7udc9lp5wwH6TMmcX6uM44ErohAe5naayCrkKPeOcK714"
+      RAILS_MASTER_KEY: "CiQAv4r4rbz+DqwG50RczSsYsPvhTMfKTaZkLrYQhOxjdGflkhgSSgAS+5ji/huCXu+gB+6lfen1YXsYjQP1hgYfsMQgRtISB7u6VYkR42omj+YEG2EtDObwdps8tuQDvcG3qUhyE96V7cEUC/Ps0vXt"
   -
-    kmsKeyName: "projects/experimental-works/locations/global/keyRings/blank-api-rails/cryptoKeys/runtime-secrets"
+    kmsKeyName: "projects/experimental-works/locations/global/keyRings/runtime-secrets/cryptoKeys/POSTGRES_PASSWORD"
     secretEnv:
-      POSTGRES_PASSWORD: "CiQAjmV6AIB4WpOSs878w32fg7X5cnhdkFhnGQffKlu4Eahh0YoSSgDhwJn0ehZ3jgzW+kRaxZuj33xjEhzmouzwEHO5SX0CUVZbj9xBVNpX0Gy/XE6fPLrUFb7qfGs5SaM8HcFQG9OakJp8mr63MSKt"
+      POSTGRES_PASSWORD: "CiQAMdiWKf5E85MMhj+Ri4AgIbUy0YMrNZuIL+2jBg3ryVWQbWoSSgCFJJUIMaUzOa9UxcGXtw6NwaeUfw688/EQPNmNfGrxmJVSQwYl5AfAvOZT3RL4nOh8LUmzBGNxompGyVlRP15KUgc/ZHxytdRS"
