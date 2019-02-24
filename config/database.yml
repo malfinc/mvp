@@ -3,9 +3,9 @@ default: &default
   <% if ENV.key?("DATABASE_URI") %>
   url: <%= ENV.fetch("DATABASE_URI") %>
   <% else %>
-  host: <% ENV.fetch("DATABASE_HOST") %>
-  password: <% ENV.fetch("DATABASE_PASSWORD") %>
-  db_name: <% ENV.fetch("DATABASE_NAME") %>
+  host: <%= ENV.fetch("DATABASE_HOST") %>
+  password: <%= ENV.fetch("DATABASE_PASSWORD") %>
+  db_name: <%= ENV.fetch("DATABASE_NAME") %>
   <% end %>
   encoding: unicode
   # For details on connection pooling, see Rails configuration guide
