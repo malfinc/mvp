@@ -38,20 +38,3 @@ spec:
   - name: ambassador-router
     port: 80
     targetPort: http
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: ambassador-admin
-  labels:
-    service: ambassador-admin
-    role: browser-dashboard
-spec:
-  type: NodePort
-  ports:
-    -
-      name: ambassador-admin
-      port: 8877
-      targetPort: 8877
-  selector:
-    service: ambassador-admin
