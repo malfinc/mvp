@@ -1,0 +1,14 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgresql-origin-data
+  labels:
+    service: postgresql-origin
+spec:
+  accessModes:
+  - ReadWriteMany
+  storageClassName: manual
+  resources:
+    requests:
+      storage: 1Gi

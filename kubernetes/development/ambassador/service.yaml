@@ -1,0 +1,57 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ambassador-router
+  labels:
+    service: ambassador
+  annotations:
+    getambassador.io/config: |
+      ---
+      apiVersion: ambassador/v1
+      kind:  Mapping
+      name:  resource-api
+      prefix: /resources/
+      service: resource-api.default
+      ---
+      apiVersion: ambassador/v1
+      kind:  Mapping
+      name:  kubernetes-dashboard
+      prefix: /kubernetes-dashboard/
+      service: kubernetes-dashboard.kube-system
+      ---
+      apiVersion: ambassador/v1
+      kind:  Mapping
+      name:  grafana
+      prefix: /grafana/
+      service: grafana.default
+      ---
+      apiVersion: ambassador/v1
+      kind:  Mapping
+      name:  metabase
+      prefix: /metabase/
+      service: metabase.default
+spec:
+  selector:
+    access: external
+  ports:
+  - name: ambassador-router
+    port: 80
+    targetPort: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ambassador-admin
+  labels:
+    service: ambassador-admin
+    role: browser-dashboard
+spec:
+  type: NodePort
+  ports:
+    -
+      name: ambassador-admin
+      port: 8877
+      targetPort: 8877
+  selector:
+    service: ambassador-admin
