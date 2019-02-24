@@ -22,6 +22,9 @@ module RailsConsoleAccountAccess
     }
 
     super(*arguments)
+  rescue PG::ConnectionBad => exception
+    puts exception
+    super(*arguments)
   end
 end
 
