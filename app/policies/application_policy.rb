@@ -87,7 +87,6 @@ class ApplicationPolicy
   end
 
   private def only_logged_out
-    binding.pry
     actor.blank?
   end
 
