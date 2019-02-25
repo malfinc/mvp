@@ -6,7 +6,7 @@ Setup so we can pull from gcloud's docker registry:
     gcloud projects add-iam-policy-binding experimental-works --member serviceAccount:docker-for-desktop@experimental-works.iam.gserviceaccount.com --role roles/iam.serviceAccountTokenCreator
     gcloud projects add-iam-policy-binding experimental-works --member serviceAccount:docker-for-desktop@experimental-works.iam.gserviceaccount.com --role roles/viewer
 
-Create credentials for the gcloud service account:
+Create credentials for the gcloud service account for non-GKE development:
 
     gcloud iam service-accounts keys create ./tmp/gcloud-key.json --iam-account docker-for-desktop@experimental-works.iam.gserviceaccount.com
     kubectl create secret docker-registry gcr-json-key --docker-server=gcr.io --docker-username=_json_key --docker-password="$(cat ./tmp/gcloud-key.json)" --docker-email=docker-for-desktop@experimental-works.iam.gserviceaccount.com
@@ -63,3 +63,7 @@ To store a secret environment variable you can:
     date | md5 | gcloud kms encrypt --plaintext-file=- --ciphertext-file=- --location global --keyring runtime-secrets --key POSTGRES_PASSWORD | base64
 
 You'll want to store the result of the above inside cloudbuild's variables list.
+
+This generates a pgbouncer md5 hash for userlists:
+
+    echo "md5$(printf "{{password}}{{username}}" | openssl md5)"
