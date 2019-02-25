@@ -42,7 +42,7 @@ spec:
               name: runtime-secrets
               key: POSTGRES_PASSWORD
         - name: POSTGRES_DATABASE
-          value: blank-api-rails_development
+          value: blank-api-rails_production
         - name: REDIS_SIDEKIQ_URI
           value: redis://redis-origin:6789/1
         - name: REDIS_OBJECTS_URI
