@@ -50,10 +50,10 @@ spec:
         - name: POSTGRES_DATABASE
           value: blank-api-rails_development
         - name: REDIS_SIDEKIQ_URI
-          value: redis://redis:6789/1
+          value: redis://redis-origin:6789/1
         - name: REDIS_OBJECTS_URI
-          value: redis://redis:6789/2
+          value: redis://redis-origin:6789/2
         - name: REDIS_CACHE_URI
-          value: redis://redis:6789/3
+          value: redis://redis-origin:6789/3
         - name: REDIS_LOCK_URI
-          value: redis://redis:6789/4
+          value: redis://redis-origin:6789/4
