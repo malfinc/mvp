@@ -10,9 +10,9 @@ metadata:
       ---
       apiVersion: ambassador/v1
       kind:  Mapping
-      name:  resource-api
+      name:  resources-api
       prefix: /resources/
-      service: resource-api.default
+      service: resources-api.default
       ---
       apiVersion: ambassador/v1
       kind:  Mapping

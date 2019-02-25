@@ -2,9 +2,9 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: resource-api-database-migration
+  name: resources-api-database-migration
   labels:
-    service: resource-api
+    service: resources-api
     role: postdeploy
 spec:
   completions: 1
@@ -12,14 +12,14 @@ spec:
   template:
     metadata:
       labels:
-        service: resource-api
+        service: resources-api
         role: postdeploy
     spec:
       restartPolicy: Never
       imagePullSecrets:
       - name: gcr-json-key
       containers:
-      - name: resource-api-database-migration
+      - name: resources-api-database-migration
         image: gcr.io/experimental-works/blank-api-rails:latest
         args:
         - bin/rake

@@ -2,9 +2,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: resource-api
+  name: resources-api
   labels:
-    service: resource-api
+    service: resources-api
 spec:
   replicas: 1
   strategy:
@@ -14,20 +14,20 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-      service: resource-api
+      service: resources-api
       role: http-api
       access: external
   template:
     metadata:
       labels:
-        service: resource-api
+        service: resources-api
         role: http-api
         access: external
     spec:
       imagePullSecrets:
       - name: gcr-json-key
       containers:
-      - name: resource-api
+      - name: resources-api
         image: gcr.io/experimental-works/blank-api-rails:latest
         ports:
         - name: http
