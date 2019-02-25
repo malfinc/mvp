@@ -1,0 +1,87 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+  labels:
+    service: grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: grafana
+      role: browser-dashboard
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        service: grafana
+        role: browser-dashboard
+    spec:
+      containers:
+        -
+          name: grafana
+          image: "grafana/grafana:5.4.3"
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            -
+              name: config
+              mountPath: "/etc/grafana/grafana.ini"
+              subPath: grafana.ini
+            # -
+            #   name: ldap
+            #   mountPath: "/etc/grafana/ldap.toml"
+            #   subPath: ldap.toml
+            -
+              name: storage
+              mountPath: "/var/lib/grafana"
+          ports:
+            -
+              name: service
+              containerPort: 80
+              protocol: TCP
+            -
+              name: grafana
+              containerPort: 3000
+              protocol: TCP
+          env:
+            -
+              name: GF_SECURITY_ADMIN_USER
+              valueFrom:
+                secretKeyRef:
+                  name: runtime-secrets
+                  key: GF_SECURITY_ADMIN_USER
+            -
+              name: GF_SECURITY_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: runtime-secrets
+                  key: GF_SECURITY_ADMIN_PASSWORD
+          livenessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /api/health
+              port: 3000
+            initialDelaySeconds: 60
+            timeoutSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+      volumes:
+        -
+          name: config
+          configMap:
+            name: grafana
+        # -
+        #   name: ldap
+        #   secret:
+        #     secretName: runtime-secrets
+        #     items:
+        #       -
+        #         key: LDAP_TOML
+        #         path: ldap.toml
+        -
+          name: storage
+          emptyDir: {}
