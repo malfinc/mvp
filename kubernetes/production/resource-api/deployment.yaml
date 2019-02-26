@@ -1,0 +1,59 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: resources-api
+  labels:
+    service: resources-api
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      service: resources-api
+      role: http-api
+      access: external
+  template:
+    metadata:
+      labels:
+        service: resources-api
+        role: http-api
+        access: external
+    spec:
+      imagePullSecrets:
+      - name: gcr-json-key
+      containers:
+      - name: resources-api
+        image: gcr.io/experimental-works/blank-api-rails:latest
+        ports:
+        - name: http
+          containerPort: 3000
+        env:
+        - name: RAILS_MASTER_KEY
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: RAILS_MASTER_KEY
+        - name: POSTGRES_HOST
+          value: pgbouncer
+        - name: POSTGRES_USERNAME
+          value: postgres
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: POSTGRES_PASSWORD
+        - name: POSTGRES_DATABASE
+          value: blank-api-rails_production
+        - name: REDIS_SIDEKIQ_URI
+          value: redis://redis-origin:6789/1
+        - name: REDIS_OBJECTS_URI
+          value: redis://redis-origin:6789/2
+        - name: REDIS_CACHE_URI
+          value: redis://redis-origin:6789/3
+        - name: REDIS_LOCK_URI
+          value: redis://redis-origin:6789/4
