@@ -33,8 +33,6 @@ spec:
         - name: admin
           containerPort: 8877
         env:
-        - name: STATSD_ENABLED
-          value: 'true'
         - name: AMBASSADOR_NAMESPACE
           valueFrom:
             fieldRef:
