@@ -13,22 +13,32 @@ metadata:
       name:  resources-api
       prefix: /resources/
       service: resources-api.default
+      diagnostics:
+        enabled: false
       ---
       apiVersion: ambassador/v1
       kind:  Mapping
       name:  grafana
       prefix: /grafana/
       service: grafana.default
+      diagnostics:
+        enabled: false
       ---
       apiVersion: ambassador/v1
       kind:  Mapping
       name:  metabase
       prefix: /metabase/
       service: metabase.default
+      diagnostics:
+        enabled: false
 spec:
+  type: LoadBalancer
   selector:
     access: external
   ports:
-  - name: ambassador-router
+  - name: ambassador-http-router
     port: 80
     targetPort: http
+  - name: ambassador-https-router
+    port: 443
+    targetPort: https
