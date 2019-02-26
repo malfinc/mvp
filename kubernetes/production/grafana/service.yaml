@@ -6,12 +6,12 @@ metadata:
   labels:
     service: grafana
     role: browser-dashboard
+    access: external
 spec:
   type: ClusterIP
   ports:
     -
-      name: service
-      protocol: TCP
+      name: http
       port: 80
       targetPort: 3000
   selector:

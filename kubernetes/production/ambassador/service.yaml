@@ -2,11 +2,18 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: ambassador-router
+  name: ambassador
   labels:
     service: ambassador
+    role: service-mesh
   annotations:
     getambassador.io/config: |
+      ---
+      apiVersion: ambassador/v1
+      kind:  Mapping
+      name:  root
+      prefix: /
+      service: metabase.default
       ---
       apiVersion: ambassador/v1
       kind:  Mapping
@@ -28,11 +35,12 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-    access: external
+    service: ambassador
+    role: service-mesh
   ports:
-  - name: ambassador-http-router
+  - name: http
     port: 80
-    targetPort: http
-  - name: ambassador-https-router
-    port: 443
-    targetPort: https
+    targetPort: 80
+  # - name: https
+  #   port: 443
+  #   targetPort: 443

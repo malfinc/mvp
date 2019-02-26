@@ -28,8 +28,7 @@ spec:
       - name: resources-api
         image: gcr.io/experimental-works/blank-api-rails:latest
         ports:
-        - name: http
-          containerPort: 3000
+        - containerPort: 3000
         env:
         - name: RAILS_MASTER_KEY
           valueFrom:

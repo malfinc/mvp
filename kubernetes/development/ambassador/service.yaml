@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: ambassador-router
+  name: ambassador
   labels:
     service: ambassador
   annotations:
@@ -17,6 +17,6 @@ spec:
   selector:
     access: external
   ports:
-  - name: ambassador-router
+  - name: ambassador
     port: 80
     targetPort: http

@@ -6,11 +6,12 @@ metadata:
   labels:
     service: ambassador-admin
     role: browser-dashboard
+    access: external
 spec:
   type: NodePort
   ports:
-  - name: ambassador-admin
+  - name: admin
     port: 8877
-    targetPort: 8877
+    targetPort: admin
   selector:
-    service: ambassador-admin
+    service: ambassador

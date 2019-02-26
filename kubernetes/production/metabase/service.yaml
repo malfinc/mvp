@@ -6,12 +6,12 @@ metadata:
   labels:
     service: metabase
     role: browser-dashboard
+    access: external
 spec:
   type: ClusterIP
   ports:
     -
-      name: metabase
-      protocol: TCP
+      name: metabase-http
       port: 80
       targetPort: 3000
   selector:

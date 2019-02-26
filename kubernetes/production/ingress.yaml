@@ -1,0 +1,17 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ipv4
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: blank-cluster-production
+spec:
+  rules:
+  - http:
+      paths:
+      - backend:
+          serviceName: ambassador
+          servicePort: http
+      # - backend:
+      #     serviceName: ambassador
+      #     servicePort: 443

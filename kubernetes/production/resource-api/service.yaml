@@ -12,5 +12,6 @@ spec:
   selector:
     service: resources-api
   ports:
-  - port: 80
+  - name: resources-api-http
+    port: 80
     targetPort: 3000
