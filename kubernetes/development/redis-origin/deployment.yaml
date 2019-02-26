@@ -27,7 +27,7 @@ spec:
         image: redis:5.0.3
         imagePullPolicy: IfNotPresent
         ports:
-        - containerPort: 6789
+        - containerPort: 
         volumeMounts:
         - name: redis-origin-data
           mountPath: "/data/"
