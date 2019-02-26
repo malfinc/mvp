@@ -1,4 +1,0 @@
-apiVersion: v1
-description: A blank rails api
-version: 1.0.0
-name: blank-api-rails
