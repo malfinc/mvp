@@ -13,39 +13,42 @@ spec:
       role: service-mesh
   template:
     metadata:
-      annotations:
-        sidecar.istio.io/inject: 'false'
-        consul.hashicorp.com/connect-inject: 'false'
       labels:
         service: ambassador
         role: service-mesh
+        checksum/config: 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b
     spec:
       restartPolicy: Always
+      securityContext:
+        runAsUser: 8888
+      serviceAccountName: ambassador
       containers:
-      - name: ambassador
-        image: quay.io/datawire/ambassador:0.50.2
-        imagePullPolicy: IfNotPresent
-        ports:
-        - name: http
-          containerPort: 80
-        - name: https
-          containerPort: 443
-        - name: admin
-          containerPort: 8877
-        env:
-        - name: AMBASSADOR_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        livenessProbe:
-          httpGet:
-            path: "/ambassador/v0/check_alive"
-            port: 8877
-          initialDelaySeconds: 30
-          periodSeconds: 3
-        readinessProbe:
-          httpGet:
-            path: "/ambassador/v0/check_ready"
-            port: 8877
-          initialDelaySeconds: 30
-          periodSeconds: 3
+        - name: ambassador
+          image: "quay.io/datawire/ambassador:0.50.3"
+          imagePullPolicy: IfNotPresent
+          ports:
+          - name: http
+            containerPort: 80
+          - name: https
+            containerPort: 443
+          - name: admin
+            containerPort: 8877
+          env:
+            - name: AMBASSADOR_ID
+              value: "default"
+            - name: AMBASSADOR_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          livenessProbe:
+            httpGet:
+              path: /ambassador/v0/check_alive
+              port: admin
+            initialDelaySeconds: 30
+            periodSeconds: 3
+          readinessProbe:
+            httpGet:
+              path: /ambassador/v0/check_ready
+              port: admin
+            initialDelaySeconds: 30
+            periodSeconds: 3
