@@ -13,24 +13,18 @@ metadata:
       name:  resources-api
       prefix: /resources/
       service: resources-api.default
-      diagnostics:
-        enabled: false
       ---
       apiVersion: ambassador/v1
       kind:  Mapping
       name:  grafana
       prefix: /grafana/
       service: grafana.default
-      diagnostics:
-        enabled: false
       ---
       apiVersion: ambassador/v1
       kind:  Mapping
       name:  metabase
       prefix: /metabase/
       service: metabase.default
-      diagnostics:
-        enabled: false
 spec:
   type: LoadBalancer
   selector:
