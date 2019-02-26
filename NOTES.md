@@ -1,4 +1,4 @@
-Setup so we can pull from gcloud's docker registry:
+gcr-json-keySetup so we can pull from gcloud's docker registry inside of docker for desktop:
 
     gcloud components install docker-credential-gcr
     docker-credential-gcr configure-docker
@@ -17,10 +17,15 @@ Setup the GCP:
     gcloud config set compute/zone us-west1-a
     gcloud config set compute/region us-west1
 
+Create a gcloud keyring and key for encrypting the cluster:
+
+    gcloud kms keyrings create cluster-secrets --location global --project experimental-works
+    gcloud kms keys create database-encryption --location global --keyring cluster-secrets --purpose encryption --project experimental-works
+
 Setup k8s clusters:
 
     gcloud services enable container.googleapis.com
-    gcloud beta container clusters create blank-cluster-production --enable-cloud-logging --enable-cloud-monitoring --enable-autoupgrade --enable-autoscaling --min-nodes=3 --max-nodes=5 --machine-type=g1-small --scopes=default,compute-rw,storage-rw --database-encryption-key projects/experimental-works/locations/global/keyRings/blank-api-rails/cryptoKeys/runtime-secrets
+    gcloud beta container clusters create blank-cluster-production --enable-cloud-logging --enable-cloud-monitoring --enable-autoupgrade --enable-autoscaling --min-nodes=3 --max-nodes=5 --machine-type=g1-small --scopes=default,compute-rw,storage-rw --database-encryption-key projects/experimental-works/locations/global/keyRings/cluster-secrets/cryptoKeys/database-encryption
     gcloud container clusters get-credentials blank-cluster-production
 
 Setup ip addresses:

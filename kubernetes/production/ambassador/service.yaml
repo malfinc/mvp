@@ -16,12 +16,6 @@ metadata:
       ---
       apiVersion: ambassador/v1
       kind:  Mapping
-      name:  kubernetes-dashboard
-      prefix: /kubernetes-dashboard/
-      service: kubernetes-dashboard.kube-system
-      ---
-      apiVersion: ambassador/v1
-      kind:  Mapping
       name:  grafana
       prefix: /grafana/
       service: grafana.default

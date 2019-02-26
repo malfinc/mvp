@@ -16,8 +16,6 @@ spec:
         role: postdeploy
     spec:
       restartPolicy: Never
-      imagePullSecrets:
-      - name: gcr-json-key
       containers:
       - name: resources-api-database-migration
         image: gcr.io/experimental-works/blank-api-rails:latest

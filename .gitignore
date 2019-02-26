@@ -25,4 +25,4 @@ proxy/default.conf
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
-/kubernetes/development/runtime-secrets.yaml
+/kubernetes/*/runtime-secrets.yaml
