@@ -51,11 +51,57 @@ spec:
             secretKeyRef:
               name: runtime-secrets
               key: SENTRY_URI
-        - name: REDIS_SIDEKIQ_URI
-          value: redis://redis-origin:6379/1
-        - name: REDIS_OBJECTS_URI
-          value: redis://redis-origin:6379/2
-        - name: REDIS_CACHE_URI
-          value: redis://redis-origin:6379/3
-        - name: REDIS_LOCK_URI
-          value: redis://redis-origin:6379/4
+        - name: REDIS_SIDEKIQ_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: REDIS_SIDEKIQ_PASSWORD
+        - name: REDIS_SIDEKIQ_HOST
+          value: redis-origin.default
+        - name: REDIS_SIDEKIQ_PORT
+          value: '6379'
+        - name: REDIS_SIDEKIQ_SERVER_POOL
+          value: '10'
+        - name: REDIS_SIDEKIQ_CLIENT_POOL
+          value: '10'
+        - name: REDIS_SIDEKIQ_DATABASE
+          value: '1'
+        - name: REDIS_OBJECTS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: REDIS_OBJECTS_PASSWORD
+        - name: REDIS_OBJECTS_HOST
+          value: redis-origin.default
+        - name: REDIS_OBJECTS_PORT
+          value: '6379'
+        - name: REDIS_OBJECTS_POOL
+          value: '10'
+        - name: REDIS_OBJECTS_DATABASE
+          value: '2'
+        - name: REDIS_CACHE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: REDIS_CACHE_PASSWORD
+        - name: REDIS_CACHE_HOST
+          value: redis-origin.default
+        - name: REDIS_CACHE_PORT
+          value: '6379'
+        - name: REDIS_CACHE_POOL
+          value: '10'
+        - name: REDIS_CACHE_DATABASE
+          value: '3'
+        - name: REDIS_LOCK_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: REDIS_LOCK_PASSWORD
+        - name: REDIS_LOCK_HOST
+          value: redis-origin.default
+        - name: REDIS_LOCK_PORT
+          value: '6379'
+        - name: REDIS_LOCK_POOL
+          value: '10'
+        - name: REDIS_LOCK_DATABASE
+          value: '4'
