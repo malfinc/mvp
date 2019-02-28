@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 require "yaml"
 
-Dir["kubernetes/development/**/*.yaml"].
+Dir["kubernetes/**/*.yaml"].
   map{|path| [path, File.read(path)]}.
   map{|(path, content)| [path, YAML.load(content)]}.
   map{|(path, configuration)| [path, YAML.dump(configuration)]}.
