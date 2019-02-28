@@ -36,21 +36,26 @@ spec:
               name: runtime-secrets
               key: RAILS_MASTER_KEY
         - name: POSTGRES_HOST
-          value: pgbouncer
+          value: pgbouncer.default
         - name: POSTGRES_USERNAME
-          value: postgres
+          value: application
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
               name: runtime-secrets
-              key: POSTGRES_PASSWORD
+              key: POSTGRES_APPLICATION_PASSWORD
         - name: POSTGRES_DATABASE
-          value: blank-api-rails_production
+          value: resources
+        - name: SENTRY_URI
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: SENTRY_URI
         - name: REDIS_SIDEKIQ_URI
-          value: redis://redis-origin:/1
+          value: redis://redis-origin:6379/1
         - name: REDIS_OBJECTS_URI
-          value: redis://redis-origin:/2
+          value: redis://redis-origin:6379/2
         - name: REDIS_CACHE_URI
-          value: redis://redis-origin:/3
+          value: redis://redis-origin:6379/3
         - name: REDIS_LOCK_URI
-          value: redis://redis-origin:/4
+          value: redis://redis-origin:6379/4

@@ -12,6 +12,3 @@ spec:
       - backend:
           serviceName: ambassador
           servicePort: http
-      # - backend:
-      #     serviceName: ambassador
-      #     servicePort: 443

@@ -9,7 +9,7 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - name: pgbouncer
+  - name: pgbouncer-postgres
     port: 5432
     targetPort: 5432
   selector:

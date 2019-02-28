@@ -9,7 +9,7 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - name: postgresql-origin
+  - name: postgresql-postgres
     port: 5430
     targetPort: 5432
   selector:

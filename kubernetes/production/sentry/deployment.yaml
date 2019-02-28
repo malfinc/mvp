@@ -1,0 +1,115 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sentry-web
+  labels:
+    service: sentry
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      service: sentry
+      role: browser-application
+      access: external
+  template:
+    metadata:
+      labels:
+        service: sentry
+        role: browser-application
+        access: external
+    spec:
+      containers:
+      - name: sentry
+        image: sentry:9.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 9000
+        volumeMounts:
+        - name: config
+          mountPath: "/etc/sentry"
+          readOnly: true
+        - name: sentry-data
+          mountPath: "/var/lib/sentry/files"
+        env:
+        - name: SENTRY_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: SENTRY_SECRET
+        - name: SENTRY_DB_NAME
+          value: sentry
+        - name: SENTRY_DB_USER
+          value: sentry
+        - name: SENTRY_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: POSTGRES_SENTRY_PASSWORD
+        - name: SENTRY_POSTGRES_HOST
+          value: pgbouncer.default
+        - name: SENTRY_POSTGRES_PORT
+          value: '5432'
+        - name: SENTRY_REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: REDIS_SENTRY_PASSWORD
+        - name: SENTRY_REDIS_HOST
+          value: redis.default
+        - name: SENTRY_REDIS_PORT
+          value: '6379'
+        - name: SENTRY_EMAIL_HOST
+          value: smtp
+        - name: SENTRY_EMAIL_PORT
+          value: '25'
+        - name: SENTRY_EMAIL_USER
+          value: sentry
+        - name: SENTRY_EMAIL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: SENTRY_EMAIL_PASSWORD
+        - name: SENTRY_EMAIL_USE_TLS
+          value: 'false'
+        - name: SENTRY_SERVER_EMAIL
+          value: sentry@blank-api-rails.com
+        - name: GITHUB_APP_ID
+          value: ''
+        - name: GITHUB_API_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: GITHUB_API_SENTRY_SECRET
+        livenessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: "/_health/"
+            port: 9000
+            scheme: HTTP
+          initialDelaySeconds: 50
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 2
+        readinessProbe:
+          failureThreshold: 10
+          httpGet:
+            path: "/_health/"
+            port: 9000
+            scheme: HTTP
+          initialDelaySeconds: 50
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 2
+      volumes:
+      - name: config
+        configMap:
+          name: sentry-config
+      - name: sentry-data
+        persistentVolumeClaim:
+          claimName: sentry
