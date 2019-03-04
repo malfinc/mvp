@@ -4,7 +4,7 @@ kind: ConfigMap
 metadata:
   name: postgresql-origin-configuration
   labels:
-    service: grafana
+    service: postgresq-l-origin
 data:
   postgresql.conf: |-
     listen_addresses = '*'
@@ -37,7 +37,7 @@ kind: ConfigMap
 metadata:
   name: postgresql-origin-initializers
   labels:
-    service: grafana
+    service: postgresql-origin
 data:
   enable-extensions.sql: |-
     CREATE EXTENSION IF NOT EXISTS "pg_stat_statements";

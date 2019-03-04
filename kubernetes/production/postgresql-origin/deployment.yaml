@@ -74,3 +74,6 @@ spec:
       - name: postgresql-origin-configuration
         configMap:
           name: postgresql-origin-configuration
+      - name: postgresql-origin-initializers
+        configMap:
+          name: postgresql-origin-initializers
