@@ -32,6 +32,12 @@ metadata:
       name:  metabase
       prefix: /metabase/
       service: metabase.default
+      ---
+      apiVersion: ambassador/v1
+      kind: Mapping
+      name: kubernetes-dashboard
+      prefix: "/kubernetes-dashboard/"
+      service: kubernetes-dashboard.kube-system
 spec:
   type: LoadBalancer
   selector:

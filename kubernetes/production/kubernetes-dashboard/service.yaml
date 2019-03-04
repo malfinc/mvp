@@ -1,0 +1,19 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: kubernetes-dashboard
+  namespace: kube-system
+  labels:
+    service: kubernetes-dashboard
+    role: browser-application
+    access: external
+spec:
+  type: ClusterIP
+  selector:
+    service: kubernetes-dashboard
+    role: browser-application
+  ports:
+  - name: kubernetes-http
+    port: 80
+    targetPort: 9090
