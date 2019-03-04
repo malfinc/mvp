@@ -1,10 +1,10 @@
 class SidekiqServerPaperTrailMiddleware
   def call(_, job, _)
     if job.key?("cron")
-      whodunnit = Account::MACHINE_ID
+      whodunnit = Account::MACHINE_EMAIL
       metadata = {
         "context_id" => SecureRandom.uuid(),
-        "actor_id" => SecureRandom.uuid()
+        "actor_id" => Account::MACHINE_ID
       }
     else
       paper_trail = job.fetch("paper_trail")

@@ -1,6 +1,8 @@
 class Account < ApplicationRecord
-  MACHINE_ID = "machine@system.local".freeze
+  MACHINE_ID = "917cfb59-03a8-46be-a15b-364893a15bd9".freeze
+  MACHINE_EMAIL = "machine@system.local".freeze
   USERNAME_PATTERN = /\A[a-z0-9_\-\.]+\z/i
+
   include(FriendlyId)
   include(AuditedWithTransitions)
 

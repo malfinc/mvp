@@ -88,7 +88,7 @@ RSpec.configure do |config|
   end
 
   config.around do |example|
-    PaperTrail.request(:whodunnit => Account::MACHINE_ID, :controller_info => {:actor_id => nil, :context_id => SecureRandom.uuid()}) do
+    PaperTrail.request(:whodunnit => Account::MACHINE_EMAIL, :controller_info => {:actor_id => Account::MACHINE_ID, :context_id => SecureRandom.uuid()}) do
       example.run
     end
   end
@@ -113,7 +113,7 @@ RSpec.configure do |config|
   end
 
   config.around do |example|
-    PaperTrail.request(:whodunnit => Account::MACHINE_ID, :controller_info => {:actor_id => nil, :context_id => SecureRandom.uuid()}) do
+    PaperTrail.request(:whodunnit => Account::MACHINE_EMAIL, :controller_info => {:actor_id => Account::MACHINE_ID, :context_id => SecureRandom.uuid()}) do
       example.run
     end
   end

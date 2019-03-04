@@ -6,7 +6,7 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-PaperTrail.request(:whodunnit => Account::MACHINE_ID, :controller_info => {:context_id => SecureRandom.uuid(), :actor_id => nil}) do
+PaperTrail.request(:whodunnit => Account::MACHINE_EMAIL, :controller_info => {:context_id => SecureRandom.uuid(), :actor_id => Account::MACHINE_ID}) do
   ActiveRecord::Base.transaction do
     PaymentType.create([
       {:name => "Cash"},

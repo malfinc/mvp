@@ -7,12 +7,7 @@ class ApplicationController < ActionController::API
   etag {current_account&.id}
 
   private def assign_paper_trail_context
-    if account_signed_in?
-      PaperTrail.request.whodunnit = current_account.email
-    else
-      PaperTrail.request.whodunnit = Account::MACHINE_ID
-    end
-
+    PaperTrail.request.whodunnit = if account_signed_in? then current_account.email end
     PaperTrail.request.controller_info = {
       :actor_id => if account_signed_in? then current_account.id end,
       :context_id => request.request_id
