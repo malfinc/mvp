@@ -1,13 +1,9 @@
 default: &default
   adapter: postgresql
-  <% if ENV.key?("POSTGRES_URI") %>
-  url: <%= ENV.fetch("POSTGRES_URI") %>
-  <% else %>
-  host: <%= ENV.fetch("POSTGRES_HOST") %>
-  username: <%= ENV.fetch("POSTGRES_USERNAME") %>
-  password: <%= ENV.fetch("POSTGRES_PASSWORD") %>
-  database: <%= ENV.fetch("POSTGRES_DATABASE") %>
-  <% end %>
+  host: <%= ENV.fetch("POSTGRES_HOST", "none") %>
+  username: <%= ENV.fetch("POSTGRES_USERNAME", "") %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD", "") %>
+  database: <%= ENV.fetch("POSTGRES_DATABASE", "none") %>
   encoding: unicode
   # For details on connection pooling, see Rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling

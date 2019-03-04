@@ -1,16 +1,9 @@
 #!/bin/bash
 
-source .env.docker-build
-
 docker build \
   --cache-from gcr.io/$PROJECT_ID/blank-api-rails:latest \
   --tag gcr.io/$PROJECT_ID/blank-api-rails:latest \
   --tag gcr.io/$PROJECT_ID/blank-api-rails:$SHORT_SHA \
   --file ./docker/production/Dockerfile \
-  --build-arg RAILS_MASTER_KEY=$RAILS_MASTER_KEY \
-  --build-arg POSTGRES_URI=$POSTGRES_URI \
-  --build-arg REDIS_SIDEKIQ_URI=$REDIS_SIDEKIQ_URI \
-  --build-arg REDIS_OBJECTS_URI=$REDIS_OBJECTS_URI \
-  --build-arg REDIS_CACHE_URI=$REDIS_CACHE_URI \
-  --build-arg REDIS_LOCK_URI=$REDIS_LOCK_URI \
+  --build-arg RAILS_MASTER_KEY=$RAILS_MASTER_KEY
   .

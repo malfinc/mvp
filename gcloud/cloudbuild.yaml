@@ -21,13 +21,8 @@ steps:
       - "PROJECT_ID=$PROJECT_ID"
     secretEnv:
       - "RAILS_MASTER_KEY"
-      - "POSTGRES_PASSWORD"
 secrets:
   -
     kmsKeyName: "projects/experimental-works/locations/global/keyRings/runtime-secrets/cryptoKeys/RAILS_MASTER_KEY"
     secretEnv:
       RAILS_MASTER_KEY: "CiQAv4r4rbz+DqwG50RczSsYsPvhTMfKTaZkLrYQhOxjdGflkhgSSgAS+5ji/huCXu+gB+6lfen1YXsYjQP1hgYfsMQgRtISB7u6VYkR42omj+YEG2EtDObwdps8tuQDvcG3qUhyE96V7cEUC/Ps0vXt"
-  -
-    kmsKeyName: "projects/experimental-works/locations/global/keyRings/runtime-secrets/cryptoKeys/POSTGRES_PASSWORD"
-    secretEnv:
-      POSTGRES_PASSWORD: "CiQAMdiWKf5E85MMhj+Ri4AgIbUy0YMrNZuIL+2jBg3ryVWQbWoSSgCFJJUIMaUzOa9UxcGXtw6NwaeUfw688/EQPNmNfGrxmJVSQwYl5AfAvOZT3RL4nOh8LUmzBGNxompGyVlRP15KUgc/ZHxytdRS"

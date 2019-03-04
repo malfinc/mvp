@@ -1,30 +1,40 @@
 module RailsConsoleAccountAccess
   def initialize(*arguments)
-    if Account.exists? && Rails.env.production?
-      Rails.logger.info("Welcome! What is your email?")
-      email = gets.chomp
+    unless ActiveRecord::Base.connected? && Account.exists?
+      PaperTrail.request.whodunnit = Account::MACHINE_EMAIL
+      PaperTrail.request.controller_info = {
+        :context_id => SecureRandom.uuid(),
+        :actor_id => Account::MACHINE_ID
+      }
 
-      raise(NoConsoleAuthenticationProvidedException) if email.blank?
-
-      actor = Account.find_by!(:email => email)
-
-      Rails.logger.info("What is your password?")
-    elsif Account.exists?
-      actor = Account.with_role_state(:administrator).last
-    else
-      actor = ActorNull.new
+      return super(*arguments)
     end
 
-    PaperTrail.request.whodunnit = actor.email
-    PaperTrail.request.controller_info = {
-      :context_id => SecureRandom.uuid(),
-      :actor_id => actor.id
-    }
+    if Account.exists? && Rails.env.production?
+      Rails.logger.info("Welcome! What is your email?")
 
-    super(*arguments)
-  rescue PG::ConnectionBad => exception
-    puts exception
-    super(*arguments)
+      email = gets.chomp
+
+      raise("no email provided") if email.blank?
+
+      actor = Account.find_by(:email => email)
+
+      raise("incorrect or bad email") unless actor.present?
+
+      Rails.logger.info("What is your password?")
+
+      password = gets.chomp
+
+      raise("incorrect or bad password") unless Devise.secure_compare(actor.encrypted_password, password)
+
+      PaperTrail.request.whodunnit = actor.email
+      PaperTrail.request.controller_info = {
+        :context_id => SecureRandom.uuid(),
+        :actor_id => actor.id
+      }
+
+      return super(*arguments)
+    end
   end
 end
 
