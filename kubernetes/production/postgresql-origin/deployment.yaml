@@ -37,12 +37,34 @@ spec:
           mountPath: "/var/lib/postgresql/data/"
         - name: postgresql-origin-configuration
           mountPath: "/var/lib/postgresql/configuration/"
+        - name: postgresql-origin-initializers
+          mountPath: "/docker-entrypoint-initdb.d/"
         env:
         - name: POSTGRES_PASSWORD
           valueFrom:
             secretKeyRef:
               name: runtime-secrets
-              key: POSTGRES_PASSWORD
+              key: POSTGRES_SUPERUSER_PASSWORD
+        - name: POSTGRES_PGBOUNCER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: POSTGRES_PGBOUNCER_PASSWORD
+        - name: POSTGRES_APPLICATION_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: POSTGRES_APPLICATION_PASSWORD
+        - name: POSTGRES_METABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: POSTGRES_METABASE_PASSWORD
+        - name: POSTGRES_SENTRY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: POSTGRES_SENTRY_PASSWORD
         - name: PGDATA
           value: "/var/lib/postgresql/data/"
       volumes:
@@ -50,5 +72,5 @@ spec:
         persistentVolumeClaim:
           claimName: postgresql-origin-data
       - name: postgresql-origin-configuration
-        secret:
-          secretName: postgresql-origin-configuration
+        configMap:
+          name: postgresql-origin-configuration

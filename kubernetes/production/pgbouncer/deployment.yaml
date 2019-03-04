@@ -45,5 +45,5 @@ spec:
               - killall -INT pgbouncer && sleep 120
       volumes:
       - name: pgbouncer-configuration
-        secret:
-          secretName: pgbouncer-configuration
+        configMap:
+          name: pgbouncer-configuration

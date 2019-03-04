@@ -1,17 +1,16 @@
 ---
 apiVersion: v1
-kind: Secret
+kind: ConfigMap
 metadata:
   name: pgbouncer-configuration
   labels:
     service: pgbouncer
-type: Opaque
-stringData:
+data:
   userlist.txt: |-
     "postgres" "md55cdcea2a7997be60d6c6dcf82e9480b2"
-    "application" "md55cdcea2a7997be60d6c6dcf82e9480b2"
-    "sentry" "md55cdcea2a7997be60d6c6dcf82e9480b2"
-    "metabase" "md55cdcea2a7997be60d6c6dcf82e9480b2"
+    "application" "md5e687960cfde6f6b1f358e5fac7dc6cbc"
+    "sentry" "md571ca91609ca7c44cffa43bb79312f013"
+    "metabase" "md54ed97638e32af44a93943d258859fb9a"
   pgbouncer.ini: |-
     [databases]
     * = host=postgresql-origin port=5430 auth_user=postgres
@@ -19,15 +18,11 @@ stringData:
     [pgbouncer]
     listen_addr = 0.0.0.0
     listen_port = 5432
-
     auth_type = md5
     auth_file = /etc/pgbouncer/userlist.txt
-
     logfile = /dev/stdout
-
     admin_users = postgres
     stats_users = postgres
-
     default_pool_size = 20
     max_client_conn = 100
     max_db_connections = 0
