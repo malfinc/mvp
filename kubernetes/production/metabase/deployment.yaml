@@ -23,30 +23,30 @@ spec:
         imagePullPolicy: IfNotPresent
         env:
         - name: MB_JETTY_HOST
-          value: 0.0.0.0
+          value: "0.0.0.0"
         - name: MB_JETTY_PORT
-          value: '3000'
+          value: "3000"
         - name: MB_DB_TYPE
-          value: postgres
+          value: "postgres"
         - name: MB_DB_DBNAME
-          value: metabase
+          value: "metabase"
         - name: MB_DB_PASS
           valueFrom:
             secretKeyRef:
               name: runtime-secrets
               key: POSTGRES_METABASE_PASSWORD
         - name: MB_DB_HOST
-          value: pgbouncer.default
+          value: "pgbouncer.default"
         - name: MB_DB_PORT
-          value: 5432
+          value: "5432"
         - name: MB_PASSWORD_COMPLEXITY
-          value: normal
+          value: "normal"
         - name: MB_PASSWORD_LENGTH
-          value: '12'
+          value: "12"
         - name: JAVA_TIMEZONE
-          value: UTC
+          value: "UTC"
         - name: MB_EMOJI_IN_LOGS
-          value: 'true'
+          value: "true"
         ports:
         - containerPort: 3000
         livenessProbe:
