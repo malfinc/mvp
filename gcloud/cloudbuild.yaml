@@ -1,28 +1,35 @@
 ---
 images:
-  - "gcr.io/experimental-works/blank-api-rails:latest"
-  - "gcr.io/experimental-works/blank-api-rails:$SHORT_SHA"
+- "gcr.io/$PROJECT_ID/blank-api-rails:latest"
+- "gcr.io/$PROJECT_ID/blank-api-rails:$SHORT_SHA"
 timeout: "5m"
 steps:
-  -
-    name: "gcr.io/cloud-builders/docker"
-    entrypoint: "sh"
-    args:
-      - "-c"
-      - "docker pull gcr.io/experimental-works/blank-api-rails:latest || exit 0"
-  -
-    name: "gcr.io/cloud-builders/docker"
-    entrypoint: "sh"
-    args:
-      - "-c"
-      - "bin/docker-cloudbuild"
-    env:
-      - "SHORT_SHA=$SHORT_SHA"
-      - "PROJECT_ID=$PROJECT_ID"
-    secretEnv:
-      - "RAILS_MASTER_KEY"
+- name: "gcr.io/cloud-builders/docker"
+  entrypoint: "sh"
+  args:
+  - "-c"
+  - "docker pull gcr.io/$PROJECT_ID/blank-api-rails:latest || exit 0"
+- name: "gcr.io/cloud-builders/docker"
+  entrypoint: "sh"
+  args:
+  - "-c"
+  - "bin/docker-cloudbuild"
+  env:
+  - "SHORT_SHA=$SHORT_SHA"
+  - "PROJECT_ID=$PROJECT_ID"
+  secretEnv:
+  - "RAILS_MASTER_KEY"
+- name: gcr.io/cloud-builders/kubectl
+  args:
+  - set
+  - image
+  - deployment
+  - resources-api
+  - resources-api=gcr.io/$PROJECT_ID/blank-api-rails:$SHORT_SHA
+  env:
+  - "CLOUDSDK_COMPUTE_ZONE=us-west1-a"
+  - "CLOUDSDK_CONTAINER_CLUSTER=blank-cluster-production"
 secrets:
-  -
-    kmsKeyName: "projects/experimental-works/locations/global/keyRings/runtime-secrets/cryptoKeys/RAILS_MASTER_KEY"
-    secretEnv:
-      RAILS_MASTER_KEY: "CiQAv4r4rbz+DqwG50RczSsYsPvhTMfKTaZkLrYQhOxjdGflkhgSSgAS+5ji/huCXu+gB+6lfen1YXsYjQP1hgYfsMQgRtISB7u6VYkR42omj+YEG2EtDObwdps8tuQDvcG3qUhyE96V7cEUC/Ps0vXt"
+- kmsKeyName: "projects/experimental-works/locations/global/keyRings/runtime-secrets/cryptoKeys/RAILS_MASTER_KEY"
+  secretEnv:
+    RAILS_MASTER_KEY: "CiQAv4r4rbz+DqwG50RczSsYsPvhTMfKTaZkLrYQhOxjdGflkhgSSgAS+5ji/huCXu+gB+6lfen1YXsYjQP1hgYfsMQgRtISB7u6VYkR42omj+YEG2EtDObwdps8tuQDvcG3qUhyE96V7cEUC/Ps0vXt"
