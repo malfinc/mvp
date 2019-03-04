@@ -55,13 +55,8 @@ spec:
           value: pgbouncer.default
         - name: SENTRY_POSTGRES_PORT
           value: '5432'
-        - name: SENTRY_REDIS_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: runtime-secrets
-              key: REDIS_SENTRY_PASSWORD
         - name: SENTRY_REDIS_HOST
-          value: redis.default
+          value: redis-origin.default
         - name: SENTRY_REDIS_PORT
           value: '6379'
         - name: SENTRY_EMAIL_HOST
