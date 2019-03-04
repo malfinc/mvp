@@ -6,5 +6,5 @@ RAILS_MASTER_KEY=`cat config/master.key`
 
 docker build \
   --file ./docker/production/Dockerfile \
-  --build-arg RAILS_MASTER_KEY=$RAILS_MASTER_KEY
+  --build-arg RAILS_MASTER_KEY=$RAILS_MASTER_KEY \
   .
