@@ -11,11 +11,9 @@ Create credentials for the gcloud service account for non-GKE development:
     gcloud iam service-accounts keys create ./tmp/gcloud-key.json --iam-account docker-for-desktop@experimental-works.iam.gserviceaccount.com
     kubectl create secret docker-registry gcr-json-key --docker-server=gcr.io --docker-username=_json_key --docker-password="$(cat ./tmp/gcloud-key.json)" --docker-email=docker-for-desktop@experimental-works.iam.gserviceaccount.com
 
-Setup the GCP:
+Setup the Google Cloud project:
 
     gcloud projects create --set-as-default experimental-works
-    gcloud config set compute/zone us-west1-a
-    gcloud config set compute/region us-west1
 
 Create a gcloud keyring and key for encrypting the cluster:
 
@@ -24,9 +22,7 @@ Create a gcloud keyring and key for encrypting the cluster:
 
 Setup k8s clusters:
 
-    gcloud services enable container.googleapis.com
-    gcloud beta container clusters create blank-cluster-production --enable-cloud-logging --enable-cloud-monitoring --enable-autoupgrade --enable-autoscaling --min-nodes=3 --max-nodes=5 --machine-type=g1-small --scopes=default,compute-rw,storage-rw --database-encryption-key projects/experimental-works/locations/global/keyRings/cluster-secrets/cryptoKeys/database-encryption
-    gcloud container clusters get-credentials blank-cluster-production
+    bin/gcloud-cluster-setup
 
 Setup ip addresses:
 
@@ -37,7 +33,7 @@ Setup ip addresses:
 
 Then point zone file to those ip addresses.
 
-Setup GCP to handle our docker images:
+Setup GCP to handle our docker images (???):
 
     gcloud services enable containerregistry.googleapis.com
     gcloud services enable cloudbuild.googleapis.com
@@ -48,19 +44,9 @@ Create a gcloud keyring:
 
     gcloud kms keyrings create runtime-secrets --location global --project experimental-works
 
-Create a gcloud key for every environment variable needing security:
+Create a gcloud key for every environment variable needing security and give various service accounts access to these keys:
 
-    gcloud kms keys create RAILS_MASTER_KEY --location global --keyring runtime-secrets --purpose encryption --project experimental-works
-    gcloud kms keys create POSTGRES_PASSWORD --location global --keyring runtime-secrets --purpose encryption --project experimental-works
-
-Give various service accounts access to these keys:
-
-    gcloud kms keys add-iam-policy-binding RAILS_MASTER_KEY --location global --keyring runtime-secrets --member serviceAccount:760958921243@cloudbuild.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter --project experimental-works
-    gcloud kms keys add-iam-policy-binding POSTGRES_PASSWORD --location global --keyring runtime-secrets --member serviceAccount:760958921243@cloudbuild.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter --project experimental-works
-    gcloud kms keys add-iam-policy-binding RAILS_MASTER_KEY --location global --keyring runtime-secrets --member serviceAccount:service-760958921243@container-engine-robot.iam.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter --project experimental-works
-    gcloud kms keys add-iam-policy-binding POSTGRES_PASSWORD --location global --keyring runtime-secrets --member serviceAccount:service-760958921243@container-engine-robot.iam.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter --project experimental-works
-    gcloud kms keys add-iam-policy-binding RAILS_MASTER_KEY --location global --keyring runtime-secrets --member serviceAccount:docker-for-desktop@experimental-works.iam.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter --project experimental-works
-    gcloud kms keys add-iam-policy-binding POSTGRES_PASSWORD --location global --keyring runtime-secrets --member serviceAccount:docker-for-desktop@experimental-works.iam.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter --project experimental-works
+    bin/gcloud-secrets-setup
 
 To store a secret environment variable you can:
 

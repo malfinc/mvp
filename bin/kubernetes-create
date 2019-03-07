@@ -1,3 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env ruby
 
-kubectl create --recursive -f ./kubernetes/$@
+ARGV.
+  map {|argument| argument.split("/").compact}.
+  map {|parts| File.join("kubernetes", *parts)}.
+  map {|glob| Dir[glob]}.
+  flatten.
+  each do |path|
+    system("kubectl create --recursive --filename=#{path}")
+  end

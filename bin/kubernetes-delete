@@ -1,3 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env ruby
 
-kubectl delete --recursive -f ./kubernetes/$@
+ARGV.
+  map {|argument| argument.split("/").compact}.
+  map {|parts| File.join("kubernetes", *parts)}.
+  map {|glob| Dir[glob]}.
+  flatten.
+  each do |path|
+    system("kubectl delete --recursive --filename=#{path}")
+  end
