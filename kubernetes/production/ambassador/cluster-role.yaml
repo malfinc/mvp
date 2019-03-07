@@ -1,4 +1,3 @@
----
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
@@ -6,24 +5,24 @@ metadata:
   labels:
     group: ambassador
 rules:
-- apiGroups:
-  - ''
-  resources:
-  - namespaces
-  - services
-  - secrets
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - ''
-  resources:
-  - configmaps
-  verbs:
-  - create
-  - update
-  - patch
-  - get
-  - list
-  - watch
+  - apiGroups:
+      - ""
+    resources:
+      - namespaces
+      - services
+      - secrets
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - configmaps
+    verbs:
+      - create
+      - update
+      - patch
+      - get
+      - list
+      - watch

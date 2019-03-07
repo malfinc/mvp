@@ -1,4 +1,3 @@
----
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -17,37 +16,37 @@ spec:
     spec:
       restartPolicy: Never
       containers:
-      - name: sentry-database-initialize
-        image: sentry:9.0
-        command:
-        - sentry
-        - upgrade
-        - "--noinput"
-        env:
-        - name: SENTRY_SECRET_KEY
-          valueFrom:
-            secretKeyRef:
-              name: runtime-secrets
-              key: SENTRY_SECRET
-        - name: SENTRY_DB_NAME
-          value: sentry
-        - name: SENTRY_DB_USER
-          value: sentry
-        - name: SENTRY_DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: runtime-secrets
-              key: POSTGRES_SENTRY_PASSWORD
-        - name: SENTRY_POSTGRES_HOST
-          value: pgbouncer.default
-        - name: SENTRY_POSTGRES_PORT
-          value: '5432'
-        - name: SENTRY_REDIS_HOST
-          value: redis-origin.default
-        - name: SENTRY_REDIS_PORT
-          value: '6379'
-        - name: SENTRY_REDIS_DATABASE
-          value: '4'
+        - name: sentry-database-initialize
+          image: sentry:9.0
+          command:
+            - sentry
+            - upgrade
+            - "--noinput"
+          env:
+            - name: SENTRY_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: runtime-secrets
+                  key: SENTRY_SECRET
+            - name: SENTRY_DB_NAME
+              value: sentry
+            - name: SENTRY_DB_USER
+              value: sentry
+            - name: SENTRY_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: runtime-secrets
+                  key: POSTGRES_SENTRY_PASSWORD
+            - name: SENTRY_POSTGRES_HOST
+              value: pgbouncer.default
+            - name: SENTRY_POSTGRES_PORT
+              value: "5432"
+            - name: SENTRY_REDIS_HOST
+              value: redis-origin.default
+            - name: SENTRY_REDIS_PORT
+              value: "6379"
+            - name: SENTRY_REDIS_DATABASE
+              value: "4"
 ---
 apiVersion: batch/v1
 kind: Job
@@ -67,44 +66,44 @@ spec:
     spec:
       restartPolicy: Never
       containers:
-      - name: user-create-job
-        image: sentry:9.0
-        command:
-        - sentry
-        - createuser
-        - "--no-input"
-        - "--email"
-        - admin@sentry.local
-        - "--superuser"
-        - "--password"
-        - "$(SENTRY_USER_PASSWORD)"
-        env:
-        - name: SENTRY_USER_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: runtime-secrets
-              key: SENTRY_USER_PASSWORD
-        - name: SENTRY_SECRET_KEY
-          valueFrom:
-            secretKeyRef:
-              name: runtime-secrets
-              key: SENTRY_SECRET
-        - name: SENTRY_DB_NAME
-          value: sentry
-        - name: SENTRY_DB_USER
-          value: sentry
-        - name: SENTRY_DB_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: runtime-secrets
-              key: POSTGRES_SENTRY_PASSWORD
-        - name: SENTRY_POSTGRES_HOST
-          value: pgbouncer.default
-        - name: SENTRY_POSTGRES_PORT
-          value: '5432'
-        - name: SENTRY_REDIS_HOST
-          value: redis-origin.default
-        - name: SENTRY_REDIS_PORT
-          value: '6379'
-        - name: SENTRY_REDIS_DATABASE
-          value: '4'
+        - name: user-create-job
+          image: sentry:9.0
+          command:
+            - sentry
+            - createuser
+            - "--no-input"
+            - "--email"
+            - admin@sentry.local
+            - "--superuser"
+            - "--password"
+            - "$(SENTRY_USER_PASSWORD)"
+          env:
+            - name: SENTRY_USER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: runtime-secrets
+                  key: SENTRY_USER_PASSWORD
+            - name: SENTRY_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: runtime-secrets
+                  key: SENTRY_SECRET
+            - name: SENTRY_DB_NAME
+              value: sentry
+            - name: SENTRY_DB_USER
+              value: sentry
+            - name: SENTRY_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: runtime-secrets
+                  key: POSTGRES_SENTRY_PASSWORD
+            - name: SENTRY_POSTGRES_HOST
+              value: pgbouncer.default
+            - name: SENTRY_POSTGRES_PORT
+              value: "5432"
+            - name: SENTRY_REDIS_HOST
+              value: redis-origin.default
+            - name: SENTRY_REDIS_PORT
+              value: "6379"
+            - name: SENTRY_REDIS_DATABASE
+              value: "4"

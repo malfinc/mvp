@@ -1,4 +1,3 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -23,27 +22,27 @@ spec:
         role: load-balancer
     spec:
       containers:
-      - name: pgbouncer
-        image: edoburu/pgbouncer:1.9.0
-        imagePullPolicy: IfNotPresent
-        ports:
-        - containerPort: 5432
-        volumeMounts:
-        - name: pgbouncer-configuration
-          mountPath: "/etc/pgbouncer"
-          readOnly: true
-        livenessProbe:
-          tcpSocket:
-            port: 5432
-          periodSeconds: 60
-        lifecycle:
-          preStop:
-            exec:
-              command:
-              - "/bin/sh"
-              - "-c"
-              - killall -INT pgbouncer && sleep 120
+        - name: pgbouncer
+          image: edoburu/pgbouncer:1.9.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - name: pgbouncer-configuration
+              mountPath: "/etc/pgbouncer"
+              readOnly: true
+          livenessProbe:
+            tcpSocket:
+              port: 5432
+            periodSeconds: 60
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - "/bin/sh"
+                  - "-c"
+                  - killall -INT pgbouncer && sleep 120
       volumes:
-      - name: pgbouncer-configuration
-        configMap:
-          name: pgbouncer-configuration
+        - name: pgbouncer-configuration
+          configMap:
+            name: pgbouncer-configuration

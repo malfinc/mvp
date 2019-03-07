@@ -1,4 +1,3 @@
----
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
@@ -10,6 +9,6 @@ roleRef:
   kind: ClusterRole
   name: ambassador
 subjects:
-- name: ambassador
-  namespace: default
-  kind: ServiceAccount
+  - name: ambassador
+    namespace: default
+    kind: ServiceAccount
