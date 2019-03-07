@@ -4,7 +4,7 @@ kind: ConfigMap
 metadata:
   name: grafana
   labels:
-    service: grafana
+    group: grafana
 data:
   grafana.ini: |
     [analytics]

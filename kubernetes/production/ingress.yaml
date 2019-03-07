@@ -4,11 +4,8 @@ kind: Ingress
 metadata:
   name: ipv4
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: blank-cluster-production
+    kubernetes.io/ingress.global-static-ip-name: "blank-cluster-production-ipv4"
 spec:
-  rules:
-  - http:
-      paths:
-      - backend:
-          serviceName: ambassador
-          servicePort: http
+  backend:
+    serviceName: ambassador
+    servicePort: ambassador-http

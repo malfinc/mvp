@@ -4,7 +4,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: postgresql-origin-data
   labels:
-    service: postgresql-origin
+    group: postgresql-origin
 spec:
   accessModes:
   - ReadWriteMany

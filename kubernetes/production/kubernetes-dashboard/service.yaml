@@ -1,18 +1,17 @@
 ---
-kind: Service
 apiVersion: v1
+kind: Service
 metadata:
   name: kubernetes-dashboard
   namespace: kube-system
   labels:
-    service: kubernetes-dashboard
+    group: kubernetes-dashboard
     role: browser-application
     access: external
 spec:
   type: ClusterIP
   selector:
-    service: kubernetes-dashboard
-    role: browser-application
+    group: kubernetes-dashboard
   ports:
   - name: kubernetes-http
     port: 80

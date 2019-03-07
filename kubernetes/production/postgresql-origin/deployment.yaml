@@ -4,22 +4,22 @@ kind: Deployment
 metadata:
   name: postgresql-origin
   labels:
-    service: postgresql-origin
+    group: postgresql-origin
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      service: postgresql-origin
-      role: database
   strategy:
+    type: RollingUpdate
     rollingUpdate:
       maxSurge: 1
       maxUnavailable: 0
-    type: RollingUpdate
+  selector:
+    matchLabels:
+      group: postgresql-origin
+      role: database
   template:
     metadata:
       labels:
-        service: postgresql-origin
+        group: postgresql-origin
         role: database
     spec:
       containers:

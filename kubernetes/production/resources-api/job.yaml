@@ -4,15 +4,15 @@ kind: Job
 metadata:
   name: resources-api-database-migration
   labels:
-    service: resources-api
+    group: resources-api
     role: postdeploy
 spec:
   completions: 1
-  backoffLimit: 1
+  backoffLimit: 0
   template:
     metadata:
       labels:
-        service: resources-api
+        group: resources-api
         role: postdeploy
     spec:
       restartPolicy: Never
@@ -21,7 +21,6 @@ spec:
         image: gcr.io/experimental-works/blank-api-rails:latest
         args:
         - bin/rake
-        - db:create
         - db:migrate
         - db:seed
         env:

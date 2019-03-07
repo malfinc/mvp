@@ -4,17 +4,22 @@ kind: Deployment
 metadata:
   name: ambassador
   labels:
-    service: ambassador
+    group: ambassador
 spec:
   replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
   selector:
     matchLabels:
-      service: ambassador
+      group: ambassador
       role: service-mesh
   template:
     metadata:
       labels:
-        service: ambassador
+        group: ambassador
         role: service-mesh
     spec:
       restartPolicy: Always
@@ -27,8 +32,6 @@ spec:
         - containerPort: 80
         - containerPort: 8877
         env:
-        - name: AMBASSADOR_SINGLE_NAMESPACE
-          value: 'true'
         - name: AMBASSADOR_ID
           value: default
         - name: AMBASSADOR_NAMESPACE
@@ -38,12 +41,12 @@ spec:
         livenessProbe:
           httpGet:
             path: "/ambassador/v0/check_alive"
-            port: admin
+            port: 8877
           initialDelaySeconds: 30
           periodSeconds: 3
         readinessProbe:
           httpGet:
             path: "/ambassador/v0/check_ready"
-            port: admin
+            port: 8877
           initialDelaySeconds: 30
           periodSeconds: 3

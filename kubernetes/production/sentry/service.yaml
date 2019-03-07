@@ -4,13 +4,13 @@ kind: Service
 metadata:
   name: sentry
   labels:
-    service: sentry
+    group: sentry
     role: browser-application
     access: external
 spec:
   type: ClusterIP
   selector:
-    service: sentry
+    group: sentry
   ports:
   - name: sentry-http
     port: 80

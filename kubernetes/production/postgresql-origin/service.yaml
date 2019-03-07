@@ -4,14 +4,13 @@ kind: Service
 metadata:
   name: postgresql-origin
   labels:
-    service: postgresql-origin
+    group: postgresql-origin
     role: database
 spec:
   type: ClusterIP
+  selector:
+    group: postgresql-origin
   ports:
   - name: postgresql-postgres
     port: 5430
     targetPort: 5432
-  selector:
-    service: postgresql-origin
-    role: database

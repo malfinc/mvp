@@ -4,45 +4,70 @@ kind: Service
 metadata:
   name: ambassador
   labels:
-    service: ambassador
+    group: ambassador
     role: service-mesh
   annotations:
-    getambassador.io/config: |
+    getambassador.io/config: |-
       ---
       apiVersion: ambassador/v1
       kind:  Mapping
-      name:  root
+      name:  healthcheck
       prefix: /
-      service: metabase.default
+      service: ambassador.default
+      rewrite: /ambassador/v0/check_alive
+      ---
+      apiVersion: ambassador/v1
+      kind: Mapping
+      name: kubernetes-dashboard
+      prefix: /
+      host: kubernetes-dashboard.difference-engineers.com
+      service: kubernetes-dashboard.kube-system
+      ---
+      apiVersion: ambassador/v1
+      kind: Mapping
+      name: ambassador-admin
+      prefix: /
+      host: ambassador-admin.difference-engineers.com
+      service: ambassador-admin.default:8877
       ---
       apiVersion: ambassador/v1
       kind:  Mapping
       name:  resources-api
-      prefix: /resources/
+      prefix: /
+      host: resources.difference-engineers.com
       service: resources-api.default
       ---
       apiVersion: ambassador/v1
       kind:  Mapping
       name:  grafana
-      prefix: /grafana/
+      prefix: /
+      host: grafana.difference-engineers.com
       service: grafana.default
       ---
       apiVersion: ambassador/v1
       kind:  Mapping
       name:  metabase
-      prefix: /metabase/
+      prefix: /
+      host: metabase.difference-engineers.com
       service: metabase.default
       ---
       apiVersion: ambassador/v1
       kind: Mapping
-      name: kubernetes-dashboard
-      prefix: "/kubernetes-dashboard/"
-      service: kubernetes-dashboard.kube-system
+      name: sentry
+      prefix: /
+      host: sentry.difference-engineers.com
+      service: sentry.default
+      ---
+      apiVersion: ambassador/v1
+      kind: Mapping
+      name: sidekiq-monitor
+      prefix: /
+      host: sidekiq.difference-engineers.com
+      service: sidekiq-monitor.default
 spec:
   type: LoadBalancer
   selector:
-    service: ambassador
-    role: service-mesh
+    group: ambassador
   ports:
   - name: ambassador-http
     port: 80

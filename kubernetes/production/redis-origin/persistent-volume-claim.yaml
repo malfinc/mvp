@@ -4,7 +4,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: redis-origin-data
   labels:
-    service: redis-origin
+    group: redis-origin
 spec:
   accessModes:
   - ReadWriteMany

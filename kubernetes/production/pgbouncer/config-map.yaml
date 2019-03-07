@@ -4,9 +4,10 @@ kind: ConfigMap
 metadata:
   name: pgbouncer-configuration
   labels:
-    service: pgbouncer
+    group: pgbouncer
 data:
   userlist.txt: |-
+    "pgbouncer" "md5006ffbf531f38332a8504871f029dec7"
     "postgres" "md55cdcea2a7997be60d6c6dcf82e9480b2"
     "application" "md5e687960cfde6f6b1f358e5fac7dc6cbc"
     "sentry" "md571ca91609ca7c44cffa43bb79312f013"

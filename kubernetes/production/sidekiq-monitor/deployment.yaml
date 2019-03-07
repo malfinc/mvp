@@ -1,0 +1,55 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sidekiq-monitor
+  labels:
+    group: sidekiq-monitor
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      group: sidekiq-monitor
+      role: browser-application
+  template:
+    metadata:
+      labels:
+        group: sidekiq-monitor
+        role: browser-application
+    spec:
+      containers:
+      - name: sidekiq-monitor
+        image: joshjhall/sidekiq-monitor:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 9292
+        env:
+        - name: RAILS_ENV
+          value: production
+        - name: REDIS_URL
+          value: redis://redis-origin.default:6379/5
+        livenessProbe:
+          failureThreshold: 5
+          httpGet:
+            path: "/"
+            port: 9292
+            scheme: HTTP
+          initialDelaySeconds: 50
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 2
+        readinessProbe:
+          failureThreshold: 10
+          httpGet:
+            path: "/"
+            port: 9292
+            scheme: HTTP
+          initialDelaySeconds: 50
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 2

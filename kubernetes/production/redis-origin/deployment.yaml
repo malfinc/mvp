@@ -4,28 +4,31 @@ kind: Deployment
 metadata:
   name: redis-origin
   labels:
-    service: redis-origin
+    group: redis-origin
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      service: redis-origin
-      role: database
   strategy:
+    type: RollingUpdate
     rollingUpdate:
       maxSurge: 1
       maxUnavailable: 0
-    type: RollingUpdate
+  selector:
+    matchLabels:
+      group: redis-origin
+      role: database
   template:
     metadata:
       labels:
-        service: redis-origin
+        group: redis-origin
         role: database
     spec:
       containers:
       - name: redis-origin
-        image: redis:5.0.3
+        image: redis:5.0.3-alpine
         imagePullPolicy: IfNotPresent
+        command:
+          - "redis-server"
+          - "/usr/local/etc/redis/redis.conf"
         ports:
         - containerPort: 6379
         volumeMounts:

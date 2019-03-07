@@ -4,22 +4,22 @@ kind: Deployment
 metadata:
   name: pgbouncer
   labels:
-    service: pgbouncer
+    group: pgbouncer
 spec:
   replicas: 1
-  selector:
-    matchLabels:
-      service: pgbouncer
-      role: load-balancer
   strategy:
+    type: RollingUpdate
     rollingUpdate:
       maxSurge: 1
       maxUnavailable: 0
-    type: RollingUpdate
+  selector:
+    matchLabels:
+      group: pgbouncer
+      role: load-balancer
   template:
     metadata:
       labels:
-        service: pgbouncer
+        group: pgbouncer
         role: load-balancer
     spec:
       containers:

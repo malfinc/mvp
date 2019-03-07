@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: resources-api
   labels:
-    service: resources-api
+    group: resources-api
 spec:
   replicas: 1
   strategy:
@@ -14,15 +14,13 @@ spec:
       maxUnavailable: 0
   selector:
     matchLabels:
-      service: resources-api
+      group: resources-api
       role: http-api
-      access: external
   template:
     metadata:
       labels:
-        service: resources-api
+        group: resources-api
         role: http-api
-        access: external
     spec:
       containers:
       - name: resources-api

@@ -4,7 +4,7 @@ kind: ClusterRole
 metadata:
   name: ambassador
   labels:
-    service: ambassador
+    group: ambassador
 rules:
 - apiGroups:
   - ''

@@ -4,41 +4,38 @@ kind: Deployment
 metadata:
   name: metabase
   labels:
-    service: metabase
+    group: metabase
 spec:
   replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
   selector:
     matchLabels:
-      service: metabase
+      group: metabase
       role: browser-application
   template:
     metadata:
       labels:
-        service: metabase
+        group: metabase
         role: browser-application
     spec:
       containers:
       - name: metabase
-        image: metabase/metabase:v0.30.1
+        image: metabase/metabase:v0.31.2
         imagePullPolicy: IfNotPresent
         env:
         - name: MB_JETTY_HOST
           value: "0.0.0.0"
         - name: MB_JETTY_PORT
           value: "3000"
-        - name: MB_DB_TYPE
-          value: "postgres"
-        - name: MB_DB_DBNAME
-          value: "metabase"
-        - name: MB_DB_PASS
+        - name: MB_DB_CONNECTION_URI
           valueFrom:
             secretKeyRef:
               name: runtime-secrets
-              key: POSTGRES_METABASE_PASSWORD
-        - name: MB_DB_HOST
-          value: "pgbouncer.default"
-        - name: MB_DB_PORT
-          value: "5432"
+              key: POSTGRES_METABASE_URI
         - name: MB_PASSWORD_COMPLEXITY
           value: "normal"
         - name: MB_PASSWORD_LENGTH
@@ -63,4 +60,3 @@ spec:
           initialDelaySeconds: 30
           timeoutSeconds: 3
           periodSeconds: 5
-        resources: {}

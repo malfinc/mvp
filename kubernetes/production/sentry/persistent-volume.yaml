@@ -4,7 +4,7 @@ kind: PersistentVolume
 metadata:
   name: sentry-data
   labels:
-    service: sentry
+    group: sentry
 spec:
   storageClassName: manual
   capacity:
@@ -12,4 +12,4 @@ spec:
   accessModes:
   - ReadWriteMany
   hostPath:
-    path: "/tmp/sentry/data"
+    path: "/tmp/sentry/"

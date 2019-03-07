@@ -4,14 +4,13 @@ kind: Service
 metadata:
   name: redis-origin
   labels:
-    service: redis
+    group: redis-origin
     role: database
 spec:
   type: ClusterIP
+  selector:
+    group: redis-origin
   ports:
-  - name: redis-http
+  - name: redis-tcp
     port: 6379
     targetPort: 6379
-  selector:
-    service: redis
-    role: database

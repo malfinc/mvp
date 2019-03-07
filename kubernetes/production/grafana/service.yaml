@@ -4,15 +4,14 @@ kind: Service
 metadata:
   name: grafana
   labels:
-    service: grafana
+    group: grafana
     role: browser-application
     access: external
 spec:
   type: ClusterIP
+  selector:
+    group: grafana
   ports:
   - name: grafana-http
     port: 80
     targetPort: 3000
-  selector:
-    service: grafana
-    role: browser-application

@@ -4,14 +4,16 @@ kind: Job
 metadata:
   name: sentry-database-initialize
   labels:
-    service: sentry
+    group: sentry
+    role: postdeploy
 spec:
+  completions: 1
+  backoffLimit: 0
   template:
     metadata:
-      name: release-name-db-init
       labels:
-        app: release-name-sentry
-        release: release-name
+        group: sentry
+        role: postdeploy
     spec:
       restartPolicy: Never
       containers:
@@ -44,55 +46,24 @@ spec:
           value: redis-origin.default
         - name: SENTRY_REDIS_PORT
           value: '6379'
-        - name: SENTRY_EMAIL_HOST
-          value: smtp
-        - name: SENTRY_EMAIL_PORT
-          value: '25'
-        - name: SENTRY_EMAIL_USER
-          value: sentry
-        - name: SENTRY_EMAIL_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: runtime-secrets
-              key: SENTRY_EMAIL_PASSWORD
-        - name: SENTRY_EMAIL_USE_TLS
-          value: 'false'
-        - name: SENTRY_SERVER_EMAIL
-          value: sentry@blank-api-rails.com
-        - name: GITHUB_APP_ID
-          value: ''
-        - name: GITHUB_API_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: runtime-secrets
-              key: GITHUB_API_SENTRY_SECRET
-        volumeMounts:
-        - mountPath: "/etc/sentry"
-          name: config
-          readOnly: true
-      volumes:
-      - name: config
-        configMap:
-          name: sentry-configuration
+        - name: SENTRY_REDIS_DATABASE
+          value: '4'
 ---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: release-name-user-create
+  name: sentry-user-creation
   labels:
-    app: release-name-sentry
-    chart: sentry-1.3.0
-    release: release-name
-    heritage: Tiller
-  annotations:
-    helm.sh/hook: post-install
-    helm.sh/hook-weight: '5'
+    group: sentry-user-creation
+    role: postdeploy
 spec:
+  completions: 1
+  backoffLimit: 0
   template:
     metadata:
-      name: sentry-user-creation
       labels:
-        service: sentry
+        group: sentry
+        role: postdeploy
     spec:
       restartPolicy: Never
       containers:
@@ -135,33 +106,5 @@ spec:
           value: redis-origin.default
         - name: SENTRY_REDIS_PORT
           value: '6379'
-        - name: SENTRY_EMAIL_HOST
-          value: smtp
-        - name: SENTRY_EMAIL_PORT
-          value: '25'
-        - name: SENTRY_EMAIL_USER
-          value: sentry
-        - name: SENTRY_EMAIL_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: runtime-secrets
-              key: SENTRY_EMAIL_PASSWORD
-        - name: SENTRY_EMAIL_USE_TLS
-          value: 'false'
-        - name: SENTRY_SERVER_EMAIL
-          value: sentry@blank-api-rails.com
-        - name: GITHUB_APP_ID
-          value: ''
-        - name: GITHUB_API_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: runtime-secrets
-              key: GITHUB_API_SENTRY_SECRET
-        volumeMounts:
-        - mountPath: "/etc/sentry"
-          name: config
-          readOnly: true
-      volumes:
-      - name: config
-        configMap:
-          name: sentry-configuration
+        - name: SENTRY_REDIS_DATABASE
+          value: '4'

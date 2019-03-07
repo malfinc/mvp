@@ -4,7 +4,7 @@ kind: ConfigMap
 metadata:
   name: postgresql-origin-configuration
   labels:
-    service: postgresq-l-origin
+    group: postgresql-origin
 data:
   postgresql.conf: |-
     listen_addresses = '*'
@@ -42,17 +42,21 @@ data:
   enable-extensions.sql: |-
     CREATE EXTENSION IF NOT EXISTS "pg_stat_statements";
     CREATE EXTENSION IF NOT EXISTS "pgaudit";
-  create-users-and-groups.sql: |-
-    CREATE USER "application" LOGIN PASSWORD '$POSTGRES_APPLICATION_PASSWORD';
-    CREATE DATABASE "resources";
-    GRANT ALL PRIVILEGES ON DATABASE "resources" TO "application";
+  create-users-and-groups.sh: |-
+    #!/bin/bash
+    set -e
+    psql -v ON_ERROR_STOP=1 --username "postgres" --dbname "$POSTGRES_DB" <<-EOSQL
+      CREATE USER "application" LOGIN SUPERUSER PASSWORD '$POSTGRES_APPLICATION_PASSWORD';
+      CREATE DATABASE "resources";
+      GRANT ALL PRIVILEGES ON DATABASE "resources" TO "application";
 
-    CREATE USER "pgbouncer" PASSWORD '$POSTGRES_PGBOUNCER_PASSWORD';
+      CREATE USER "pgbouncer" SUPERUSER PASSWORD '$POSTGRES_PGBOUNCER_PASSWORD';
 
-    CREATE USER "sentry" PASSWORD '$POSTGRES_SENTRY_PASSWORD';
-    CREATE DATABASE "sentry";
-    GRANT ALL PRIVILEGES ON DATABASE "sentry" TO "sentry";
+      CREATE USER "sentry" SUPERUSER PASSWORD '$POSTGRES_SENTRY_PASSWORD';
+      CREATE DATABASE "sentry";
+      GRANT ALL PRIVILEGES ON DATABASE "sentry" TO "sentry";
 
-    CREATE USER "metabase" PASSWORD '$POSTGRES_METABASE_PASSWORD;
-    CREATE DATABASE "metabase";
-    GRANT ALL PRIVILEGES ON DATABASE "metabase" TO "metabase";
+      CREATE USER "metabase" SUPERUSER PASSWORD '$POSTGRES_METABASE_PASSWORD';
+      CREATE DATABASE "metabase";
+      GRANT ALL PRIVILEGES ON DATABASE "metabase" TO "metabase";
+    EOSQL

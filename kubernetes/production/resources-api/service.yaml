@@ -4,13 +4,13 @@ kind: Service
 metadata:
   name: resources-api
   labels:
-    service: resources-api
+    group: resources-api
     role: http-api
     access: external
 spec:
   type: ClusterIP
   selector:
-    service: resources-api
+    group: resources-api
   ports:
   - name: resources-api-http
     port: 80
