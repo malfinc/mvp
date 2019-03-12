@@ -35,6 +35,7 @@ metadata:
       prefix: /
       host: resources.difference-engineers.com
       service: resources-api.default
+      rewrite: /ambassador/v0/diag/
       ---
       apiVersion: ambassador/v1
       kind:  Mapping
