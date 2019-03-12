@@ -9,20 +9,19 @@
 
 # Ignore all logfiles and tempfiles.
 /log/*
-/tmp/*
 !/log/.keep
+/tmp/*
 !/tmp/.keep
+/node_modules/
+/coverage/
+/.nyc_output/
 
 # Ignore uploaded files in development
 /storage/*
 !/storage/.keep
 
-# We generate this on the fly for docker
-proxy/default.conf
-
-# Ignore secret stuff
+# Ignore secret data
 /.env
-
-# Ignore master key for decrypting credentials and more.
 /config/master.key
 /kubernetes/*/runtime-secrets.yaml
+/kubernetes/test/

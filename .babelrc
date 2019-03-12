@@ -1,0 +1,14 @@
+{
+  "presets": [
+    ["@emotion/babel-preset-css-prop", {"sourceMap": true}],
+    "@babel/preset-typescript",
+    "@babel/react",
+    ["@babel/env", {"useBuiltIns": "usage"}],
+    "minify"
+  ],
+  "plugins": [
+    ["module-resolver", {"alias": {"^@internal/(.+)$": "./@internal/\\1"}}],
+    "@babel/plugin-syntax-dynamic-import",
+    "annotate-console-log"
+  ]
+}
