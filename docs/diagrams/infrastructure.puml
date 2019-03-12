@@ -1,0 +1,28 @@
+@startuml
+boundary Internet
+entity Ambassador
+entity PGBouncer
+entity ResourceServer
+entity Grafana
+entity AmbassadorAdmin
+entity KubernetesDashboard
+entity Sentry
+entity Metabase
+database PostgresqlOrigin
+database RedisOrigin
+database CouchDB
+
+Internet -> Ambassador
+Ambassador -> AmbassadorAdmin
+Ambassador -> KubernetesDashboard
+Ambassador -> Sentry
+Ambassador -> Metabase
+Ambassador -> Grafana
+ResourceServer -> PGBouncer
+ResourceServer -> RedisOrigin
+ResourceServer -> CouchDB
+Metabase -> PGBouncer
+Sentry -> PGBouncer
+Grafana -> PGBouncer
+PGBouncer -> PostgresqlOrigin
+@enduml
