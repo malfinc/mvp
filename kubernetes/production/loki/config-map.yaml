@@ -1,0 +1,40 @@
+# Source: loki/templates/loki/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: loki
+  labels:
+    app: loki
+    chart: loki-0.1.0
+    release: release-name
+    heritage: Tiller
+data:
+  loki.yaml: |
+    auth_enabled: false
+
+    server:
+      http_listen_port: 3100
+
+    limits_config:
+      enforce_metric_name: false
+
+    ingester:
+      lifecycler:
+        ring:
+          store: inmemory
+          replication_factor: 1
+      chunk_idle_period: 15m
+    schema_config:
+      configs:
+      - from: 0
+        store: boltdb
+        object_store: filesystem
+        schema: v9
+        index:
+          prefix: index_
+          period: 168h
+    storage_config:
+      boltdb:
+        directory: /data/loki/index
+      filesystem:
+        directory: /data/loki/chunks
