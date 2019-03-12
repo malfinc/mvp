@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  postgresql:
+    image: "postgresql:11.2-alpine"
+    volume:
+      - "./docker-compose/postgresql/data:/var/lib/postgresql/data"
+      - "./docker-compose/postgresql/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/"
+    env:
+      POSTGRES_PASSWORD: "password"
+  redis:
+    image: "redis:5.0.3-alpine"
