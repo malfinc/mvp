@@ -15,6 +15,8 @@
 /node_modules/
 /coverage/
 /.nyc_output/
+/docker-compose/postgres/data
+/docker-compose/redis/data
 
 # Ignore uploaded files in development
 /storage/*
