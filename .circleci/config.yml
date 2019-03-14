@@ -7,15 +7,15 @@ shared:
         BUNDLE_JOBS: 8
         BUNDLE_PATH: "./vendor/bundle"
         BUNDLE_RETRY: 2
-        PGHOST: "127.0.0.1"
-        PGUSER: "postgres"
+        POSTGRES_HOST: "127.0.0.1"
+        POSTGRES_USER: "postgres"
         PORT: 3000
         RAILS_ENV: "test"
     postgres: &postgres_docker
       image: "circleci/postgres:10.4-alpine"
       environment:
-        POSTGRES_DB: "blank-api-rails_test"
-        POSTGRES_USER: "blank-api-rails"
+        POSTGRES_DB: "application"
+        POSTGRES_USER: "postgres"
     redis: &redis_docker
       image: "redis:3.2.12"
   caches:
