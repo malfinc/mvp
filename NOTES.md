@@ -27,8 +27,8 @@ Setup k8s clusters:
 Setup ip addresses:
 
     gcloud services enable compute.googleapis.com
-    gcloud compute addresses create blank-api-rails-ipv4-address --global --ip-version IPV4
-    gcloud compute addresses create blank-api-rails-ipv6-address --global --ip-version IPV6
+    gcloud compute addresses create poutineer-ipv4-address --global --ip-version IPV4
+    gcloud compute addresses create poutineer-ipv6-address --global --ip-version IPV6
     gcloud compute addresses list
 
 Then point zone file to those ip addresses.

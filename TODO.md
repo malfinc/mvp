@@ -23,3 +23,6 @@
 0. ELK or Loki?
 0. Server context???
 0. 404/500 html page
+0. redis-backed gem
+0. active_record-local_postgres_cli
+0. pundit-not_authorized_error_message

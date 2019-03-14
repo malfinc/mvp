@@ -1,0 +1,44 @@
+:root {
+  --primary: #f85c8b;
+  --secondary: #f8c95c;
+}
+
+html, body {
+  height: 100%;
+}
+
+main#application {
+  padding-top: 25px;
+  height: 100%;
+}
+
+main#application.page.splash {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.page-title {
+  color: white;
+  text-transform: uppercase;
+  font-size: 78px;
+}
+
+.page-title strong {
+  background-color: var(--secondary);
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+.link-primary {
+  text-decoration: underline var(--secondary);
+}
+
+.btn-primary:hover {
+  background-color: var(--pink);
+  border-color: var(--pink);
+}

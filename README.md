@@ -1,4 +1,4 @@
-# BlankApiRails
+# Poutineer
 
 ## Notes
 

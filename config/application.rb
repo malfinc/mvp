@@ -23,7 +23,7 @@ require("ostruct")
 
 require_relative("../lib/source")
 
-module BlankApiRails
+module Poutineer
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults(5.2)
@@ -64,7 +64,7 @@ module BlankApiRails
     # The ActiveJob adapter
     config.active_job.queue_adapter = :sidekiq
     # A prefix for all queue names
-    # config.active_job.queue_name_prefix = BlankApiRails.configuration.fetch_deep(:activejob, :queue, :prefix)
+    # config.active_job.queue_name_prefix = Poutineer.configuration.fetch_deep(:activejob, :queue, :prefix)
 
     # Cache mail views
     config.action_mailer.perform_caching = true
@@ -81,7 +81,7 @@ module BlankApiRails
         :driver => :hiredis,
         :expires_in => 30.minutes,
         :compress => true,
-        :redis => BlankApiRails.redis_cache_connection
+        :redis => Poutineer.redis_cache_connection
       }
     ]
 
@@ -125,13 +125,13 @@ module BlankApiRails
 
     # Set the url options for controllers
     Rails.application.config.action_controller.default_url_options = {
-      :host => BlankApiRails.configuration.fetch_deep(:rails, :host),
+      :host => Poutineer.configuration.fetch_deep(:rails, :host),
       :port => ENV.fetch("PORT")
     }.compact
 
     # Set the url options for mailers
     Rails.application.config.action_mailer.default_url_options = {
-      :host => BlankApiRails.configuration.fetch_deep(:rails, :host),
+      :host => Poutineer.configuration.fetch_deep(:rails, :host),
       :port => ENV.fetch("PORT")
     }.compact
   end

@@ -18,7 +18,7 @@ namespace :db do
     # require 'uri'
     # require 'net/http'
     #
-    # url = URI("http://localhost:32792/blank-browser-react/accounts-1")
+    # url = URI("http://localhost:32792/poutineer/accounts-1")
     #
     # http = Net::HTTP.new(url.host, url.port)
     #

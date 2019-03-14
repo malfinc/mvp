@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: resources-api
-          image: gcr.io/experimental-works/blank-api-rails:latest
+          image: gcr.io/experimental-works/poutineer:latest
           ports:
             - containerPort: 3000
           env:

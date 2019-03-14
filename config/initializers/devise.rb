@@ -12,7 +12,7 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = BlankApiRails.configuration.fetch_deep(:devise, :email_default)
+  config.mailer_sender = Poutineer.configuration.fetch_deep(:devise, :email_default)
 
   # Configure the class responsible to send e-mails.
   # config.mailer = "Devise::Mailer"
@@ -258,7 +258,7 @@ Devise.setup do |config|
   #
   config.warden do |manager|
     # manager.intercept_401 = false
-    manager.strategies.add(:token, BlankApiRails::TokenStrategy)
+    manager.strategies.add(:token, Poutineer::TokenStrategy)
     manager.default_strategies(:scope => :account).unshift(:token)
   end
 

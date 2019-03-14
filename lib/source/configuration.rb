@@ -1,4 +1,4 @@
-module BlankApiRails
+module Poutineer
   def self.configuration
     raise StandardError, "credentials are empty" if Rails.application.credentials.public_send(Rails.env).nil?
 
@@ -38,7 +38,7 @@ module BlankApiRails
   end
 
   def self.redis_pool_size(name)
-    BlankApiRails.configuration.fetch_deep(:redis, name, :pool)
+    Poutineer.configuration.fetch_deep(:redis, name, :pool)
   end
 
   def self.redis_configuration(name)

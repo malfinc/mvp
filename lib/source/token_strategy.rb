@@ -1,4 +1,4 @@
-module BlankApiRails
+module Poutineer
   class TokenStrategy < Devise::Strategies::Base
     def valid?
       present? && !exception?

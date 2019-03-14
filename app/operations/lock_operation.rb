@@ -14,7 +14,7 @@ class LockOperation < ApplicationOperation
     when :soft
       fresh(
         :state => {
-          :lock => BlankApiRails.redis_lock_connection.lock(key(state.resource.to_gid, state.name), state.expires_in)
+          :lock => Poutineer.redis_lock_connection.lock(key(state.resource.to_gid, state.name), state.expires_in)
         }
       )
     else raise(ArgumentError, "unknown type of lock #{state.type}")

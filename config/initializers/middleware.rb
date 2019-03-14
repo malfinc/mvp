@@ -1,6 +1,6 @@
-BlankApiRails::Application.config.middleware.tap do |middleware|
+Poutineer::Application.config.middleware.tap do |middleware|
   middleware.insert_before(Warden::Manager, ActionDispatch::Cookies)
-  middleware.insert_before(Warden::Manager, ActionDispatch::Session::CookieStore, :key => BlankApiRails.configuration.fetch_deep(:rails, :cookie_key), :expire_after => 14.days)
+  middleware.insert_before(Warden::Manager, ActionDispatch::Session::CookieStore, :key => Poutineer.configuration.fetch_deep(:rails, :cookie_key), :expire_after => 14.days)
   middleware.insert_before(Warden::Manager, Rack::AuthenticationBearer, &Base64.method(:urlsafe_decode64))
   middleware.use(Rack::Deflater)
   middleware.use(Rack::Attack)

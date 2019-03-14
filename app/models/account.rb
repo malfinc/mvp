@@ -6,6 +6,9 @@ class Account < ApplicationRecord
   include(FriendlyId)
   include(AuditedWithTransitions)
 
+  has_many(:recipes, :dependent => :destroy, :foreign_key => :author_id, :inverse_of => :author)
+  has_many(:reviews, :dependent => :destroy, :foreign_key => :author_id, :inverse_of => :author)
+  has_many(:critiques, :dependent => :destroy, :foreign_key => :author_id, :inverse_of => :author)
   has_many(:payments, :dependent => :destroy)
 
   friendly_id(:email, :use => [:slugged, :history], :slug_column => :username)
@@ -36,12 +39,16 @@ class Account < ApplicationRecord
   end
 
   state_machine(:role_state, :initial => :user) do
+    event(:upgrade_to_moderator) do
+      transition(:user => :moderator)
+    end
+
     event(:upgrade_to_administrator) do
       transition(:user => :administrator)
     end
 
     event(:downgrade_to_user) do
-      transition(:from => [:administrator], :to => :user)
+      transition(:from => [:administrator, :moderator], :to => :user)
     end
 
     before_transition(:do => :version_transition)
@@ -49,6 +56,12 @@ class Account < ApplicationRecord
     after_transition(:on => :upgrade_to_administrator) do |record|
       record.after_transaction do
         AccountRoleMailer.with(:destination => record).upgraded_to_administrator.deliver_later
+      end
+    end
+
+    after_transition(:on => :upgrade_to_moderator) do |record|
+      record.after_transaction do
+        AccountRoleMailer.with(:destination => record).upgraded_to_moderator.deliver_later
       end
     end
 

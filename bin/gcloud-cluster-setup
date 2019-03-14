@@ -3,7 +3,7 @@
 gcloud config set compute/zone us-west1-a &&
 gcloud config set compute/region us-west1 &&
 gcloud services enable container.googleapis.com &&
-gcloud beta container clusters create blank-cluster-production \
+gcloud beta container clusters create poutineer-production \
   --enable-cloud-logging \
   --enable-cloud-monitoring \
   --enable-autoupgrade \
@@ -13,5 +13,5 @@ gcloud beta container clusters create blank-cluster-production \
   --machine-type=n1-standard-1 \
   --scopes=default,compute-rw,storage-rw \
   --database-encryption-key projects/experimental-works/locations/global/keyRings/cluster-secrets/cryptoKeys/database-encryption &&
-gcloud compute addresses create blank-cluster-production-ipv4 --global --ip-version IPV4 &&
-gcloud container clusters get-credentials blank-cluster-production
+gcloud compute addresses create poutineer-production-ipv4 --global --ip-version IPV4 &&
+gcloud container clusters get-credentials poutineer-production

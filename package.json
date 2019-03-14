@@ -1,8 +1,8 @@
 {
-  "name": "blank-browser-react",
+  "name": "poutineer",
   "version": "1.0.0",
   "private": true,
-  "description": "A blank browser react application",
+  "description": "The frontend application for Poutineer",
   "keywords": [],
   "contributors": [
     {
@@ -12,9 +12,9 @@
     }
   ],
   "license": "MIT",
-  "homepage": "https://github.com/krainboltgreene/blank-browser-react#readme",
-  "repository": "github:krainboltgreene/blank-browser-react",
-  "bugs": "https://github.com/krainboltgreene/blank-browser-react/issues",
+  "homepage": "https://github.com/Poutineer/mvp#readme",
+  "repository": "github:Poutineer/mvp",
+  "bugs": "https://github.com/Poutineer/mvp/issues",
   "browserslist": "> 0.25%, not dead",
   "jest": {
     "transform": {

@@ -2,6 +2,15 @@ class AccountRoleMailer < ApplicationMailer
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
   #
+  #   en.account_role_mailer.upgraded_to_moderator.subject
+  #
+  def upgraded_to_moderator
+    mail(:to => params.fetch(:destination).email)
+  end
+
+  # Subject can be set in your I18n file at config/locales/en.yml
+  # with the following lookup:
+  #
   #   en.account_role_mailer.upgraded_to_administrator.subject
   #
   def upgraded_to_administrator

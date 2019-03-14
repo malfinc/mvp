@@ -17,55 +17,50 @@ shared:
         POSTGRES_DB: "application"
         POSTGRES_USER: "postgres"
     redis: &redis_docker
-      image: "redis:3.2.12"
+      image: "redis:5.0.3"
   caches:
     git_save: &git_save
       save_cache:
-        key: "blank-api-rails-v1-git-{{ .Branch }}-{{ .Revision }}"
+        key: "poutineer-v1-git-{{ .Branch }}-{{ .Revision }}"
         paths:
           - ".git/"
     git_restore: &git_restore
       restore_cache:
         keys:
-          - "blank-api-rails-v1-git-{{ .Branch }}-{{ .Revision }}"
-          - "blank-api-rails-v1-git-{{ .Branch }}-"
-          - "blank-api-rails-v1-git-"
+          - "poutineer-v1-git-{{ .Branch }}-{{ .Revision }}"
+          - "poutineer-v1-git-{{ .Branch }}-"
+          - "poutineer-v1-git-"
     bundler_save: &bundler_save
       save_cache:
-        key: "blank-api-rails-v1-bundler-{{ .Branch }}-{{ checksum \"Gemfile.lock\" }}"
+        key: 'poutineer-v1-bundler-{{ .Branch }}-{{ checksum "Gemfile.lock" }}'
         paths:
           - "./vendor/bundle"
           - "/usr/local/bundle/config"
     bundler_restore: &bundler_restore
       restore_cache:
         keys:
-          - "blank-api-rails-v1-bundler-{{ .Branch }}-{{ checksum \"Gemfile.lock\" }}"
-          - "blank-api-rails-v1-bundler-{{ .Branch }}-"
-          - "blank-api-rails-v1-bundler-"
+          - 'poutineer-v1-bundler-{{ .Branch }}-{{ checksum "Gemfile.lock" }}'
+          - "poutineer-v1-bundler-{{ .Branch }}-"
+          - "poutineer-v1-bundler-"
 workflows:
   version: 2
   core:
     jobs:
-      -
-        server_dependencies_setup:
+      - server_dependencies_setup:
           context: "Rails Environment"
-      -
-        bundler_audit:
+      - bundler_audit:
           context: "Rails Environment"
           requires:
             - "server_dependencies_setup"
-      -
-        brakeman:
+      - brakeman:
           context: "Rails Environment"
           requires:
             - "server_dependencies_setup"
-      -
-        rubocop:
+      - rubocop:
           context: "Rails Environment"
           requires:
             - "server_dependencies_setup"
-      -
-        rspec:
+      - rspec:
           context: "Rails Environment"
           requires:
             - "server_dependencies_setup"
@@ -78,8 +73,7 @@ jobs:
       - "checkout"
       - *git_save
       - *bundler_restore
-      -
-        run:
+      - run:
           name: "Install bundler dependencies"
           command: "bundle check || bundle install"
       - *bundler_save
@@ -90,8 +84,7 @@ jobs:
       - *git_restore
       - "checkout"
       - *bundler_restore
-      -
-        run:
+      - run:
           name: "Running bundler-audit"
           command: "bundle exec bundler-audit check --update"
   brakeman:
@@ -101,8 +94,7 @@ jobs:
       - *git_restore
       - "checkout"
       - *bundler_restore
-      -
-        run:
+      - run:
           name: "Running brakeman"
           command: "bundle exec brakeman"
   rubocop:
@@ -112,8 +104,7 @@ jobs:
       - *git_restore
       - "checkout"
       - *bundler_restore
-      -
-        run:
+      - run:
           name: "Running rubocop"
           command: "bundle exec rubocop --config .rubocop/config.yml --lint"
   rspec:
@@ -125,36 +116,27 @@ jobs:
       - *git_restore
       - "checkout"
       - *bundler_restore
-      -
-        run:
+      - run:
           name: "Database Healthcheck"
           command: "dockerize -wait tcp://localhost:5432 -timeout 1m"
-      -
-        run:
+      - run:
           name: "Adding postgresql to apt sources"
-          command: "sudo su -c \"echo 'deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main' >> /etc/apt/sources.list.d/pgdg.list\""
-      -
-        run:
+          command: 'sudo su -c "echo ''deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main'' >> /etc/apt/sources.list.d/pgdg.list"'
+      - run:
           name: "Fetching postgresql apt-key"
           command: "wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -"
-      -
-        run:
+      - run:
           name: "Installing postgres-client"
           command: "sudo apt-get update && sudo apt-get install postgresql-client-10"
-      -
-        run:
+      - run:
           name: "Load databsase schema"
           command: "bundle exec rake db:create --trace"
-      -
-        run:
+      - run:
           name: "Running RSpec"
-          command: "bundle exec rspec --format RspecJunitFormatter --out ./tmp/rspec/rspec.xml --format progress $(circleci tests glob \"spec/**/*_spec.rb\" | circleci tests split --split-by=timings)"
-      -
-        store_test_results:
+          command: 'bundle exec rspec --format RspecJunitFormatter --out ./tmp/rspec/rspec.xml --format progress $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)'
+      - store_test_results:
           path: "tmp/rspec/"
-      -
-        store_artifacts:
+      - store_artifacts:
           path: "tmp/rspec/"
-      -
-        store_artifacts:
+      - store_artifacts:
           path: "logs/"

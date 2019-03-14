@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: ipv4
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: "blank-cluster-production-ipv4"
+    kubernetes.io/ingress.global-static-ip-name: "poutineer-production-ipv4"
 spec:
   backend:
     serviceName: ambassador
