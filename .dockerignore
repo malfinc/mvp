@@ -9,6 +9,11 @@ storage/
 tmp/
 vendor/bundle/
 node_modules/
+.jest/
+.rubocop/
+.storybook/
+docker-compose/
+gcloud/
 
 config/master.key
 .DS_Store
