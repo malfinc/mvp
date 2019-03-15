@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
         - name: resources-api
-          image: gcr.io/experimental-works/poutineer:latest
+          image: gcr.io/poutineer/resources:latest
           ports:
             - containerPort: 3000
           env:

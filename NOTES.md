@@ -3,22 +3,22 @@ gcr-json-keySetup so we can pull from gcloud's docker registry inside of docker 
     gcloud components install docker-credential-gcr
     docker-credential-gcr configure-docker
     gcloud iam service-accounts create docker-for-desktop --display-name "Handles all Docker for desktop services"
-    gcloud projects add-iam-policy-binding experimental-works --member serviceAccount:docker-for-desktop@experimental-works.iam.gserviceaccount.com --role roles/iam.serviceAccountTokenCreator
-    gcloud projects add-iam-policy-binding experimental-works --member serviceAccount:docker-for-desktop@experimental-works.iam.gserviceaccount.com --role roles/viewer
+    gcloud projects add-iam-policy-binding poutineer --member serviceAccount:docker-for-desktop@poutineer.iam.gserviceaccount.com --role roles/iam.serviceAccountTokenCreator
+    gcloud projects add-iam-policy-binding poutineer --member serviceAccount:docker-for-desktop@poutineer.iam.gserviceaccount.com --role roles/viewer
 
 Create credentials for the gcloud service account for non-GKE development:
 
-    gcloud iam service-accounts keys create ./tmp/gcloud-key.json --iam-account docker-for-desktop@experimental-works.iam.gserviceaccount.com
-    kubectl create secret docker-registry gcr-json-key --docker-server=gcr.io --docker-username=_json_key --docker-password="$(cat ./tmp/gcloud-key.json)" --docker-email=docker-for-desktop@experimental-works.iam.gserviceaccount.com
+    gcloud iam service-accounts keys create ./tmp/gcloud-key.json --iam-account docker-for-desktop@poutineer.iam.gserviceaccount.com
+    kubectl create secret docker-registry gcr-json-key --docker-server=gcr.io --docker-username=_json_key --docker-password="$(cat ./tmp/gcloud-key.json)" --docker-email=docker-for-desktop@poutineer.iam.gserviceaccount.com
 
 Setup the Google Cloud project:
 
-    gcloud projects create --set-as-default experimental-works
+    gcloud projects create --set-as-default poutineer
 
 Create a gcloud keyring and key for encrypting the cluster:
 
-    gcloud kms keyrings create cluster-secrets --location global --project experimental-works
-    gcloud kms keys create database-encryption --location global --keyring cluster-secrets --purpose encryption --project experimental-works
+    gcloud kms keyrings create cluster-secrets --location global --project poutineer
+    gcloud kms keys create database-encryption --location global --keyring cluster-secrets --purpose encryption --project poutineer
 
 Setup k8s clusters:
 
@@ -42,7 +42,7 @@ Setup GCP to handle our docker images (???):
 
 Create a gcloud keyring:
 
-    gcloud kms keyrings create runtime-secrets --location global --project experimental-works
+    gcloud kms keyrings create runtime-secrets --location global --project poutineer
 
 Create a gcloud key for every environment variable needing security and give various service accounts access to these keys:
 
