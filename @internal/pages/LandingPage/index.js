@@ -7,7 +7,7 @@ import {Anchor} from "@internal/elements"
 export default function LandingPage () {
   return <Page subtitle="Welcome!" data-component="LandingPage" hasHeader={false}>
     <PageHeader>
-      Blank Browser React <i className="fas fa-lock"></i>
+      Poutineer <i className="fas fa-lock"></i>
     </PageHeader>
 
     <Anchor kind="primary" href="/sign-up">
