@@ -72,6 +72,8 @@ gem("pry-rails", "0.3.9")
 gem("jsonapi-realizer", "6.0.0.rc3")
 gem("jsonapi-materializer", "1.0.0.rc6")
 
+gem("google_places", "1.2.0")
+
 group(:production) do
   # gem("newrelic_rpm", "6.0.0.351") # TODO: Replace with elastic-ruby-apm
 end
