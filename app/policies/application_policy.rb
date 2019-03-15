@@ -57,7 +57,6 @@ class ApplicationPolicy
     Pundit.policy_scope!(actor, record.class)
   end
 
-
   private def completed
     actor.onboarding_state?(:completed)
   end

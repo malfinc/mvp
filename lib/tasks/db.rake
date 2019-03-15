@@ -1,5 +1,5 @@
-namespace :db do
-  task :replicate => :environment do
+namespace(:db) do
+  task(:replicate => :environment) do
     include(Pundit)
 
     def current_account
@@ -13,7 +13,7 @@ namespace :db do
     models = Account.all
     fields = {:accounts => ["name"]}
     includes = ["payments"]
-    puts serialize(models, fields, includes)
+    puts(serialize(models, fields, includes))
 
     # require 'uri'
     # require 'net/http'

@@ -5,7 +5,7 @@ Rails.application.configure do
   config.after_initialize do
     Bullet.enable = true
     Bullet.rails_logger = true
-    Bullet.raise = true # raise an error if n+1 query occurs
+    Bullet.raise = true
   end
 
   # The test environment is used exclusively to run your application's
@@ -22,7 +22,7 @@ Rails.application.configure do
   # Configure public file server for tests with Cache-Control for performance.
   config.public_file_server.enabled = true
   config.public_file_server.headers = {
-    "Cache-Control" => "public, max-age=#{Integer(1.hour.seconds)}"
+    "Cache-Control" => "public, max-age=#{Integer(1.hour.seconds)}",
   }
 
   # Show full error reports and disable caching.

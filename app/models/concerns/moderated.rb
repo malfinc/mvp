@@ -1,5 +1,5 @@
 module Moderated
-  extend ActiveSupport::Concern
+  extend(ActiveSupport::Concern)
 
   def contributors
     Account.where(:id => public_versions.where.not(:actor_id => nil).select(:actor_id))
@@ -26,26 +26,26 @@ module Moderated
   end
 
   included do
-    include AuditedTransitions
+    include(AuditedTransitions)
 
-    state_machine :moderation_state, :initial => :draft do
-      event :publish do
-        transition :draft => :queued, :if => :allowed_to_publish?
+    state_machine(:moderation_state, :initial => :draft) do
+      event(:publish) do
+        transition(:draft => :queued, :if => :allowed_to_publish?)
       end
 
-      event :deny do
-        transition :queued => :draft, :if => :allowed_to_deny?
+      event(:deny) do
+        transition(:queued => :draft, :if => :allowed_to_deny?)
       end
 
-      event :remove do
-        transition :published => :draft, :if => :allowed_to_remove?
+      event(:remove) do
+        transition(:published => :draft, :if => :allowed_to_remove?)
       end
 
-      event :approve do
-        transition :queued => :published, :if => :allowed_to_approve?
+      event(:approve) do
+        transition(:queued => :published, :if => :allowed_to_approve?)
       end
 
-      before_transition :do => :version_transition
+      before_transition(:do => :version_transition)
     end
   end
 end

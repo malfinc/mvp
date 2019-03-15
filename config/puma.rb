@@ -8,7 +8,7 @@ require("dotenv/load") unless ENV.fetch("RAILS_ENV", "development") == "producti
 #
 threads(
   Poutineer.configuration.fetch_deep(:rails, :max_threads),
-  Poutineer.configuration.fetch_deep(:rails, :min_threads)
+  Poutineer.configuration.fetch_deep(:rails, :min_threads),
 )
 
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.

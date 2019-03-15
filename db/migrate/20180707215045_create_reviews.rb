@@ -1,6 +1,6 @@
 class CreateReviews < ActiveRecord::Migration[5.1]
   def change
-    create_table :reviews, :id => :uuid do |table|
+    create_table(:reviews, :id => :uuid) do |table|
       table.uuid(:author_id, :null => false)
       table.text(:body, :null => false)
       table.text(:moderation_state, :null => false)

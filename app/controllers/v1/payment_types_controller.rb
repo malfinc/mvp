@@ -11,7 +11,7 @@ module V1
           :schema => ::V1::PaymentTypes::IndexSchema,
           :parameters => modified_parameters,
         ),
-        :status => :ok
+        :status => :ok,
       )
     end
 
@@ -21,7 +21,7 @@ module V1
           :schema => ::V1::PaymentTypes::ShowSchema,
           :parameters => modified_parameters,
         ),
-        :status => :ok
+        :status => :ok,
       )
     end
   end

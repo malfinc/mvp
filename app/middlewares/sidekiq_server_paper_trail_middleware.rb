@@ -4,7 +4,7 @@ class SidekiqServerPaperTrailMiddleware
       whodunnit = Account::MACHINE_EMAIL
       metadata = {
         "context_id" => SecureRandom.uuid(),
-        "actor_id" => Account::MACHINE_ID
+        "actor_id" => Account::MACHINE_ID,
       }
     else
       paper_trail = job.fetch("paper_trail")

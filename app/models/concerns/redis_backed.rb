@@ -25,7 +25,7 @@ module RedisBacked
             public_send(:updated_at=, Time.zone.now) if respond_to?(:updated_at)
             instance_variable_set(
               "@#{name}",
-              Redis::Value.new(redis_field_key(name), redis_field_redis(name), redis_options(name))
+              Redis::Value.new(redis_field_key(name), redis_field_redis(name), redis_options(name)),
             )
           end
         end

@@ -11,7 +11,7 @@ module V1
           :schema => ::V1::Accounts::IndexSchema,
           :parameters => modified_parameters,
         ),
-        :status => :ok
+        :status => :ok,
       )
     end
 
@@ -21,7 +21,7 @@ module V1
           :schema => ::V1::Accounts::ShowSchema,
           :parameters => modified_parameters,
         ),
-        :status => :ok
+        :status => :ok,
       )
     end
 
@@ -30,8 +30,8 @@ module V1
         :json => inline_jsonapi(
           :schema => ::V1::Accounts::CreateSchema,
           :parameters => modified_parameters,
-        ) { |model| model.save! && sign_in(model) },
-        :status => :created
+        ) {|model| model.save! && sign_in(model)},
+        :status => :created,
       )
     end
 
@@ -40,8 +40,8 @@ module V1
         :json => inline_jsonapi(
           :schema => ::V1::Accounts::UpdateSchema,
           :parameters => modified_parameters,
-        ) { |model| model.save! && sign_in(model) },
-        :status => :ok
+        ) {|model| model.save! && sign_in(model)},
+        :status => :ok,
       )
     end
 
@@ -49,9 +49,9 @@ module V1
       upsert_parameter(
         {
           ["id"] => {"me" => if account_signed_in? then current_account.id end},
-          ["data", "id"] => {"me" => if account_signed_in? then current_account.id end}
+          ["data", "id"] => {"me" => if account_signed_in? then current_account.id end},
         },
-        request.parameters
+        request.parameters,
       )
     end
   end

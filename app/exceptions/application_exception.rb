@@ -1,3 +1,2 @@
 class ApplicationException < RuntimeError
-
 end

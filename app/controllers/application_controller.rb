@@ -10,7 +10,7 @@ class ApplicationController < ActionController::API
     PaperTrail.request.whodunnit = if account_signed_in? then current_account.email end
     PaperTrail.request.controller_info = {
       :actor_id => if account_signed_in? then current_account.id end,
-      :context_id => request.request_id
+      :context_id => request.request_id,
     }
   end
 
@@ -18,7 +18,7 @@ class ApplicationController < ActionController::API
     return unless account_signed_in?
 
     report.user = {
-      :id => current_account.id
+      :id => current_account.id,
     }
   end
 
@@ -26,7 +26,7 @@ class ApplicationController < ActionController::API
     report.add_tab(
       :request,
       :request_id => request.request_id,
-      :session_id => if account_signed_in? then session.id end
+      :session_id => if account_signed_in? then session.id end,
     )
   end
 

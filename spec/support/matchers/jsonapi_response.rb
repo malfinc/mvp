@@ -14,10 +14,10 @@ end
 
 RSpec::Matchers.define(:have_jsonapi_id) do |expected|
   match do |actual|
-    JSON
-      .parse(actual&.body.presence || "{}")
-      .fetch("data", {})
-      .fetch("id", nil) == expected
+    JSON.
+      parse(actual&.body.presence || "{}").
+      fetch("data", {}).
+      fetch("id", nil) == expected
   end
 
   failure_message do |actual|
@@ -42,10 +42,10 @@ end
 
 RSpec::Matchers.define(:have_jsonapi_type) do |expected|
   match do |actual|
-    JSON
-      .parse(actual&.body.presence || "{}")
-      .fetch("data", {})
-      .fetch("type", nil) == expected
+    JSON.
+      parse(actual&.body.presence || "{}").
+      fetch("data", {}).
+      fetch("type", nil) == expected
   end
 
   failure_message do |actual|
@@ -72,10 +72,10 @@ RSpec::Matchers.define(:have_jsonapi_attributes) do |expected|
   match do |actual|
     values_match?(
       hash_including(expected),
-      JSON
-        .parse(actual&.body.presence || "{}")
-        .fetch("data", {})
-        .fetch("attributes", {})
+      JSON.
+        parse(actual&.body.presence || "{}").
+        fetch("data", {}).
+        fetch("attributes", {}),
     )
   end
 
@@ -105,12 +105,12 @@ RSpec::Matchers.define(:have_jsonapi_related) do |expected_name, expected_relate
   match do |actual|
     values_match?(
       expected_related_data,
-      JSON
-        .parse(actual&.body.presence || "{}")
-        .fetch("data", {})
-        .fetch("relationships", {})
-        .fetch(expected_name, {})
-        .fetch("data", nil)
+      JSON.
+        parse(actual&.body.presence || "{}").
+        fetch("data", {}).
+        fetch("relationships", {}).
+        fetch(expected_name, {}).
+        fetch("data", nil),
     )
   end
 

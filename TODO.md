@@ -26,3 +26,4 @@
 0. redis-backed gem
 0. active_record-local_postgres_cli
 0. pundit-not_authorized_error_message
+0. Setup sentry agent

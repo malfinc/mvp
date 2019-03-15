@@ -12,7 +12,7 @@ RSpec.describe("sessions", :type => :request) do
       let(:data_attributes) do
         {
           :email => account.email,
-          :password => account.password
+          :password => account.password,
         }
       end
 

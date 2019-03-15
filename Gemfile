@@ -1,5 +1,5 @@
 source("https://rubygems.org")
-git_source(:github) { |repo| "https://github.com/#{repo}.git" }
+git_source(:github) {|repo| "https://github.com/#{repo}.git"}
 
 ruby("2.5.1")
 
@@ -48,7 +48,7 @@ gem("activerecord-like", "2.2")
 gem("activerecord-safer_migrations", "2.0.0")
 gem("ar_after_transaction", "0.5.0")
 gem("ar_transaction_changes", "1.1.3")
-gem("baby_squeel", "1.3.1") # TODO: Replace with sentry
+gem("baby_squeel", "1.3.1")
 gem("ransack", "2.1.1")
 gem("migration_data", "0.3.1")
 gem("money-rails", "1.13.1")

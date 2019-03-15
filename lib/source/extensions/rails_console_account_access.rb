@@ -4,7 +4,7 @@ module RailsConsoleAccountAccess
       PaperTrail.request.whodunnit = Account::MACHINE_EMAIL
       PaperTrail.request.controller_info = {
         :context_id => SecureRandom.uuid(),
-        :actor_id => Account::MACHINE_ID
+        :actor_id => Account::MACHINE_ID,
       }
 
       return super(*arguments)
@@ -15,26 +15,28 @@ module RailsConsoleAccountAccess
 
       email = gets.chomp
 
-      raise("no email provided") if email.blank?
+      raise(StandardError, "no email provided") if email.blank?
 
       actor = Account.find_by(:email => email)
 
-      raise("incorrect or bad email") unless actor.present?
+      raise(StandardError, "incorrect or bad email") if actor.blank?
 
       Rails.logger.info("What is your password?")
 
       password = gets.chomp
 
-      raise("incorrect or bad password") unless Devise.secure_compare(actor.encrypted_password, password)
+      raise(StandardError, "incorrect or bad password") unless Devise.secure_compare(actor.encrypted_password, password)
 
       PaperTrail.request.whodunnit = actor.email
       PaperTrail.request.controller_info = {
         :context_id => SecureRandom.uuid(),
-        :actor_id => actor.id
+        :actor_id => actor.id,
       }
 
       return super(*arguments)
     end
+
+    super(*arguments)
   end
 end
 

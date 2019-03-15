@@ -1,2 +1,1 @@
-namespace :redis do
-end
+namespace(:redis) {}

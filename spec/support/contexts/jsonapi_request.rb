@@ -3,7 +3,7 @@ RSpec.shared_context("JSON:API request") do
     {
       "Accept" => "application/vnd.api+json",
       "Content-Type" => if try(:payload).present? then "application/vnd.api+json" end,
-      "Authentication" => if try(:authentication).present? then "Bearer #{Base64.urlsafe_encode64(authentication)}" end
+      "Authentication" => if try(:authentication).present? then "Bearer #{Base64.urlsafe_encode64(authentication)}" end,
     }.compact
   end
 
@@ -11,7 +11,7 @@ RSpec.shared_context("JSON:API request") do
     post(
       path,
       :headers => default_headers.merge(try(:custom_headers) || {}),
-      :params => if try(:payload).present? then JSON.dump(payload) end
+      :params => if try(:payload).present? then JSON.dump(payload) end,
     )
   end
 
@@ -19,7 +19,7 @@ RSpec.shared_context("JSON:API request") do
     get(
       path,
       :headers => default_headers.merge(try(:custom_headers) || {}),
-      :params => if try(:payload).present? then payload end
+      :params => if try(:payload).present? then payload end,
     )
   end
 
@@ -28,7 +28,7 @@ RSpec.shared_context("JSON:API request") do
       :id => if try(:data_id).present? then data_id.to_s end,
       :type => if try(:data_type).present? then data_type.to_s end,
       :attributes => if try(:data_attributes).present? then data_attributes.compact end,
-      :relationships => if try(:data_relationships).present? then data_relationships.compact end
+      :relationships => if try(:data_relationships).present? then data_relationships.compact end,
     }.compact
   end
 
@@ -36,7 +36,7 @@ RSpec.shared_context("JSON:API request") do
     {
       :data => payload_data.presence,
       :metadata => if try(:payload_metadata).present? then payload_metadata.compact end,
-      :included => if try(:payload_included).present? then payload_included.compact end
+      :included => if try(:payload_included).present? then payload_included.compact end,
     }.compact.deep_stringify_keys
   end
 
@@ -44,8 +44,8 @@ RSpec.shared_context("JSON:API request") do
     {
       :data => {
         :id => id,
-        :type => type
-      }
+        :type => type,
+      },
     }
   end
 

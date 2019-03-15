@@ -1,8 +1,8 @@
 class ApplicationOperation
   include(ActionOperation)
 
-  attr_accessor :operation_id
-  attr_accessor :step_id
+  attr_accessor(:operation_id)
+  attr_accessor(:step_id)
 
   def around_steps(**)
     self.operation_id = SecureRandom.uuid

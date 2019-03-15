@@ -3,7 +3,7 @@ RSpec.shared_context("JSON:API requests") do
     {
       "Accept" => "application/vnd.api+json",
       "Content-Type" => if content.present? then "application/vnd.api+json" end,
-      "Authentication" => if authentication.present? then "Bearer #{Base64.urlsafe_encode64(authentication)}" end
+      "Authentication" => if authentication.present? then "Bearer #{Base64.urlsafe_encode64(authentication)}" end,
     }.compact
   end
 
@@ -11,7 +11,7 @@ RSpec.shared_context("JSON:API requests") do
     put(
       path,
       :headers => default_headers(:content => true, :authentication => authentication).merge(custom_headers || {}),
-      :params => payload(:id => id, :type => type, **data)
+      :params => payload(:id => id, :type => type, **data),
     )
   end
 
@@ -19,7 +19,7 @@ RSpec.shared_context("JSON:API requests") do
     post(
       path,
       :headers => default_headers(:content => true, :authentication => authentication).merge(custom_headers || {}),
-      :params => payload(:type => type, **data)
+      :params => payload(:type => type, **data),
     )
   end
 
@@ -30,11 +30,11 @@ RSpec.shared_context("JSON:API requests") do
           :id => id.presence,
           :type => type,
           :attributes => if attributes.present? then attributes.compact end,
-          :relationships => if relationships.present? then relationships.compact end
+          :relationships => if relationships.present? then relationships.compact end,
         }.compact,
         :metadata => if metadata.present? then metadata.compact end,
-        :included => if included.present? then included.compact end
-      }.compact.deep_stringify_keys
+        :included => if included.present? then included.compact end,
+      }.compact.deep_stringify_keys,
     )
   end
 
@@ -42,8 +42,8 @@ RSpec.shared_context("JSON:API requests") do
     {
       :data => {
         :id => id,
-        :type => type
-      }
+        :type => type,
+      },
     }
   end
 

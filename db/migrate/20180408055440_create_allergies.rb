@@ -1,6 +1,6 @@
 class CreateAllergies < ActiveRecord::Migration[5.1]
   def change
-    create_table :allergies, :id => :bigint do |table|
+    create_table(:allergies, :id => :bigint) do |table|
       table.text(:name, :null => false)
       table.timestamps
 

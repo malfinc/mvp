@@ -1,6 +1,6 @@
 module Poutineer
   def self.configuration
-    raise StandardError, "credentials are empty" if Rails.application.credentials.public_send(Rails.env).nil?
+    raise(StandardError, "credentials are empty") if Rails.application.credentials.public_send(Rails.env).nil?
 
     Rails.application.credentials.public_send(Rails.env).with_indifferent_access
   end
@@ -33,7 +33,7 @@ module Poutineer
     @redis_lock_connection ||= Redlock::Client.new([
       ConnectionPool::Wrapper.new(:size => redis_pool_size(:lock), :timeout => 5) do
         Redis.new(:driver => :hiredis, **redis_configuration(:lock))
-      end
+      end,
     ])
   end
 
@@ -44,7 +44,7 @@ module Poutineer
   def self.redis_configuration(name)
     {
       :host => ENV.fetch("REDIS_#{name.to_s.upcase}_HOST", "none"),
-      :database => ENV.fetch("REDIS_#{name.to_s.upcase}_DATABASE", "0")
+      :database => ENV.fetch("REDIS_#{name.to_s.upcase}_DATABASE", "0"),
     }
   end
 end

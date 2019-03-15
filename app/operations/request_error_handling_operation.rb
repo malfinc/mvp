@@ -1,6 +1,6 @@
 class RequestErrorHandlingOperation < ApplicationOperation
   task(:write_to_log)
-  task(:notify_bugsnag)
+  task(:notify_exception_service)
   task(:render_output)
 
   schema(:write_to_log) do
@@ -21,31 +21,32 @@ class RequestErrorHandlingOperation < ApplicationOperation
     Rails.logger.debug(state.exception.full_message)
   end
 
-  schema(:notify_bugsnag) do
+  schema(:notify_exception_service) do
     field(:controller, :type => Types.Instance(ApplicationController))
     field(:exception, :type => Types.Instance(StandardError))
   end
-  def notify_bugsnag(state:)
+  def notify_exception_service
     return unless Rails.env.production?
-    if state.controller.account_signed_in?
-      Bugsnag.before_notify_callbacks << ->(report) do
-        report.user = {
-          id: state.controller.current_account.id
-        }
-      end
-    end
 
-    Bugsnag.before_notify_callbacks << ->(report) do
-      report.add_tab(
-        :request,
-        :request_id => state.controller.request.request_id,
-        :session_id => if state.controller.account_signed_in? then state.controller.session.id end,
-        :operation_id => operation_id,
-        :step_id => step_id
-      )
-    end
-
-    Bugsnag.notify(state.exception)
+    # if state.controller.account_signed_in?
+    #   Bugsnag.before_notify_callbacks << ->(report) do
+    #     report.user = {
+    #       :id => state.controller.current_account.id
+    #     }
+    #   end
+    # end
+    #
+    # Bugsnag.before_notify_callbacks << ->(report) do
+    #   report.add_tab(
+    #     :request,
+    #     :request_id => state.controller.request.request_id,
+    #     :session_id => if state.controller.account_signed_in? then state.controller.session.id end,
+    #     :operation_id => operation_id,
+    #     :step_id => step_id
+    #   )
+    # end
+    #
+    # Bugsnag.notify(state.exception)
   end
 
   schema(:render_output) do
@@ -85,7 +86,7 @@ class RequestErrorHandlingOperation < ApplicationOperation
   private def record_invalid(controller, exception)
     controller.render(
       :json => exception.record.errors,
-      :status => :unprocessable_entity
+      :status => :unprocessable_entity,
     )
   end
 
@@ -96,7 +97,7 @@ class RequestErrorHandlingOperation < ApplicationOperation
   private def application_exception(controller, exception)
     controller.render(
       :json => standard_jsonapi_error(exception),
-      :status => :unprocessable_entity
+      :status => :unprocessable_entity,
     )
   end
 
@@ -130,11 +131,11 @@ class RequestErrorHandlingOperation < ApplicationOperation
           "source" => {
             "expected-type" => exception.wanted.name,
             "given-type" => exception.raw.class.name,
-            "pointer" => "/#{exception.keychain.join("/")}"
-          }
-        }
+            "pointer" => "/#{exception.keychain.join("/")}",
+          },
+        },
       ],
-      :status => :unprocessable_entity
+      :status => :unprocessable_entity,
     )
   end
 
@@ -147,8 +148,8 @@ class RequestErrorHandlingOperation < ApplicationOperation
       {
         "title" => exception.title,
         "code" => exception.class.name.underscore,
-        "detail" => exception.detail
-      }
+        "detail" => exception.detail,
+      },
     ]
   end
 end

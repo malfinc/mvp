@@ -4,11 +4,11 @@ module AuditedWithTransitions
   private def version_transition(transition)
     assign_attributes(:transitions => transitions || {})
     assign_attributes(
-      :transitions => transitions
-        .with_indifferent_access
-        .merge(
-          transition.attribute => transitions.fetch(transition.attribute, []).push(transition.event)
-        )
+      :transitions => transitions.
+        with_indifferent_access.
+        merge(
+          transition.attribute => transitions.fetch(transition.attribute, []).push(transition.event),
+        ),
     )
   end
 
@@ -21,7 +21,7 @@ module AuditedWithTransitions
   class_methods do
     private def paper_trail_meta
       {
-        :transitions => :transitions
+        :transitions => :transitions,
       }
     end
   end

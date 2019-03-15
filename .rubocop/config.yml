@@ -145,7 +145,7 @@ Layout/DefEndAlignment:
   Description: Align ends corresponding to defs correctly.
   Enabled: true
 Layout/DotPosition:
-  EnforcedStyle: leading
+  EnforcedStyle: trailing
   SupportedStyles:
     - leading
     - trailing
@@ -252,7 +252,8 @@ Layout/IndentArray:
   Enabled: true
 Layout/IndentAssignment:
   IndentationWidth:
-  Description: Checks the indentation of the first line of the right-hand-side of
+  Description:
+    Checks the indentation of the first line of the right-hand-side of
     a multi-line assignment.
   Enabled: true
 Layout/IndentHash:
@@ -288,7 +289,8 @@ Layout/MultilineArrayBraceLayout:
     - symmetrical
     - new_line
     - same_line
-  Description: Checks that the closing brace in an array literal is either on the
+  Description:
+    Checks that the closing brace in an array literal is either on the
     same line as the last array element, or a new line.
   Enabled: true
 Layout/MultilineAssignmentLayout:
@@ -312,7 +314,8 @@ Layout/MultilineHashBraceLayout:
     - symmetrical
     - new_line
     - same_line
-  Description: Checks that the closing brace in a hash literal is either on the same
+  Description:
+    Checks that the closing brace in a hash literal is either on the same
     line as the last hash element, or a new line.
   Enabled: true
 Layout/MultilineMethodCallBraceLayout:
@@ -321,7 +324,8 @@ Layout/MultilineMethodCallBraceLayout:
     - symmetrical
     - new_line
     - same_line
-  Description: Checks that the closing brace in a method call is either on the same
+  Description:
+    Checks that the closing brace in a method call is either on the same
     line as the last method argument, or a new line.
   Enabled: true
 Layout/MultilineMethodCallIndentation:
@@ -331,7 +335,8 @@ Layout/MultilineMethodCallIndentation:
     - indented
     - indented_relative_to_receiver
   IndentationWidth:
-  Description: Checks indentation of method calls with the dot operator that span
+  Description:
+    Checks indentation of method calls with the dot operator that span
     more than one line.
   Enabled: true
 Layout/MultilineMethodDefinitionBraceLayout:
@@ -340,7 +345,8 @@ Layout/MultilineMethodDefinitionBraceLayout:
     - symmetrical
     - new_line
     - same_line
-  Description: Checks that the closing brace in a method definition is either on the
+  Description:
+    Checks that the closing brace in a method definition is either on the
     same line as the last method parameter, or a new line.
   Enabled: true
 Layout/MultilineOperationIndentation:
@@ -363,7 +369,8 @@ Layout/SpaceAroundEqualsInParameterDefault:
   SupportedStyles:
     - space
     - no_space
-  Description: Checks that the equals signs in parameter default assignments have
+  Description:
+    Checks that the equals signs in parameter default assignments have
     or don't have surrounding space depending on configuration.
   StyleGuide: "#spaces-around-equals"
   Enabled: true
@@ -385,7 +392,8 @@ Layout/SpaceBeforeBlockBraces:
   Enabled: true
 Layout/SpaceBeforeFirstArg:
   AllowForAlignment: true
-  Description: Checks that exactly one space is used between a method name and the
+  Description:
+    Checks that exactly one space is used between a method name and the
     first argument for method calls without parentheses.
   Enabled: true
 Layout/SpaceInsideArrayLiteralBrackets:
@@ -409,7 +417,8 @@ Layout/SpaceInsideBlockBraces:
     - space
     - no_space
   SpaceBeforeBlockParameters: false
-  Description: Checks that block braces have or don't have surrounding space. For
+  Description:
+    Checks that block braces have or don't have surrounding space. For
     blocks taking parameters, checks that the left brace has or doesn't have trailing
     space.
   Enabled: true
@@ -584,7 +593,8 @@ Naming/UncommunicativeBlockParamName:
   AllowNamesEndingInNumbers: true
   AllowedNames: []
   ForbiddenNames: []
-  Description: Checks for block parameter names that contain capital letters, end
+  Description:
+    Checks for block parameter names that contain capital letters, end
     in numbers, or do not meet a minimal length.
   Enabled: true
 Naming/UncommunicativeMethodParamName:
@@ -595,12 +605,13 @@ Naming/UncommunicativeMethodParamName:
     - id
     - to
     - by
-    - 'on'
+    - "on"
     - in
     - at
     - "_"
   ForbiddenNames: []
-  Description: Checks for method parameter names that contain capital letters, end
+  Description:
+    Checks for method parameter names that contain capital letters, end
     in numbers, or do not meet a minimal length.
   Enabled: true
 Naming/VariableName:
@@ -681,7 +692,8 @@ Style/BlockDelimiters:
     - lambda
     - proc
     - it
-  Description: Avoid using {...} for multi-line blocks (multiline chaining is always
+  Description:
+    Avoid using {...} for multi-line blocks (multiline chaining is always
     ugly). Prefer {...} over do...end for single-line blocks.
   StyleGuide: "#single-line-blocks"
   Enabled: true
@@ -736,7 +748,8 @@ Style/CommentAnnotation:
     - OPTIMIZE
     - HACK
     - REVIEW
-  Description: Checks formatting of special comments (TODO, FIXME, OPTIMIZE, HACK,
+  Description:
+    Checks formatting of special comments (TODO, FIXME, OPTIMIZE, HACK,
     REVIEW).
   StyleGuide: "#annotate-keywords"
   Enabled: true
@@ -747,13 +760,14 @@ Style/ConditionalAssignment:
     - assign_inside_condition
   SingleLineConditionsOnly: true
   IncludeTernaryExpressions: true
-  Description: Use the return value of `if` and `case` statements for assignment to
+  Description:
+    Use the return value of `if` and `case` statements for assignment to
     a variable and variable comparison instead of assigning that variable inside of
     each branch.
   Enabled: true
 Style/Copyright:
   Notice: "^Copyright (\\(c\\) )?2[0-9]{3} .+"
-  AutocorrectNotice: ''
+  AutocorrectNotice: ""
   Description: Include a copyright notice in each file before any code.
   Enabled: false
 Style/DocumentationMethod:
@@ -810,7 +824,8 @@ Style/FrozenStringLiteralComment:
     - when_needed
     - always
     - never
-  Description: Add the frozen_string_literal comment to the top of files to help transition
+  Description:
+    Add the frozen_string_literal comment to the top of files to help transition
     from Ruby 2.3.0 to Ruby 3.0.
   Enabled: true
 Style/GlobalVars:
@@ -833,8 +848,9 @@ Style/HashSyntax:
     - ruby19_no_mixed_keys
   UseHashRocketsWithSymbolValues: false
   PreferHashRocketsForNonAlnumEndingSymbols: false
-  Description: 'Prefer Ruby 1.9 hash syntax { a: 1, b: 2 } over 1.8 syntax { :a =>
-    1, :b => 2 }.'
+  Description:
+    "Prefer Ruby 1.9 hash syntax { a: 1, b: 2 } over 1.8 syntax { :a =>
+    1, :b => 2 }."
   StyleGuide: "#hash-literals"
   Enabled: true
 Style/InverseMethods:
@@ -848,7 +864,8 @@ Style/InverseMethods:
   InverseBlocks:
     :select: :reject
     :select!: :reject!
-  Description: Use the inverse method instead of `!.method` if an inverse method is
+  Description:
+    Use the inverse method instead of `!.method` if an inverse method is
     defined.
   Enabled: true
 Style/Lambda:
@@ -901,7 +918,8 @@ Style/MissingElse:
     - if
     - case
     - both
-  Description: Require if/case expressions to have an else branches. If enabled, it
+  Description:
+    Require if/case expressions to have an else branches. If enabled, it
     is recommended that Style/UnlessElse and Style/EmptyElse be enabled. This will
     conflict with Style/EmptyElse if Style/EmptyElse is configured to style "both"
   Enabled: false
@@ -956,7 +974,8 @@ Style/NestedParenthesizedCalls:
     - raise_error
     - respond_to
     - start_with
-  Description: Parenthesize method calls which are nested inside the argument list
+  Description:
+    Parenthesize method calls which are nested inside the argument list
     of another parenthesized method call.
   Enabled: true
 Style/Next:
@@ -994,7 +1013,8 @@ Style/NumericPredicate:
     - comparison
   Exclude:
     - spec/**/*
-  Description: Checks for the use of predicate- or comparison methods for numeric
+  Description:
+    Checks for the use of predicate- or comparison methods for numeric
     comparisons.
   StyleGuide: "#predicate-methods"
   AutoCorrect: false
@@ -1007,6 +1027,7 @@ Style/OptionHash:
     - params
     - parameters
   Description: Don't use option hashes when you can use keyword arguments.
+  Severity: warning
   Enabled: true
 Style/ParenthesesAroundCondition:
   AllowSafeAssignment: true
@@ -1085,7 +1106,8 @@ Style/SafeNavigation:
     - presence
     - try
     - try!
-  Description: This cop transforms usages of a method call safeguarded by a check
+  Description:
+    This cop transforms usages of a method call safeguarded by a check
     for the existence of the object to safe navigation (`&.`).
   Enabled: true
 Style/Semicolon:
@@ -1105,11 +1127,11 @@ Style/SignalException:
 Style/SingleLineBlockParams:
   Methods:
     - reduce:
-      - acc
-      - elem
+        - acc
+        - elem
     - inject:
-      - acc
-      - elem
+        - acc
+        - elem
   Description: Enforces the names of some block params.
   Enabled: true
 Style/SingleLineMethods:
@@ -1147,7 +1169,8 @@ Style/StringLiteralsInInterpolation:
   SupportedStyles:
     - single_quotes
     - double_quotes
-  Description: Checks if uses of quotes inside expressions in interpolated strings
+  Description:
+    Checks if uses of quotes inside expressions in interpolated strings
     match the configured preference.
   Enabled: true
 Style/StringMethods:
@@ -1180,7 +1203,7 @@ Style/TernaryParentheses:
   Description: Checks for use of parentheses around ternary conditions.
   Enabled: true
 Style/TrailingCommaInArguments:
-  EnforcedStyleForMultiline: no_comma
+  EnforcedStyleForMultiline: comma
   SupportedStylesForMultiline:
     - comma
     - consistent_comma
@@ -1189,7 +1212,7 @@ Style/TrailingCommaInArguments:
   StyleGuide: "#no-trailing-params-comma"
   Enabled: true
 Style/TrailingCommaInArrayLiteral:
-  EnforcedStyleForMultiline: no_comma
+  EnforcedStyleForMultiline: comma
   SupportedStylesForMultiline:
     - comma
     - consistent_comma
@@ -1198,7 +1221,7 @@ Style/TrailingCommaInArrayLiteral:
   StyleGuide: "#no-trailing-array-commas"
   Enabled: true
 Style/TrailingCommaInHashLiteral:
-  EnforcedStyleForMultiline: no_comma
+  EnforcedStyleForMultiline: comma
   SupportedStylesForMultiline:
     - comma
     - consistent_comma
@@ -1242,45 +1265,52 @@ Style/WordArray:
   StyleGuide: "#percent-w"
   Enabled: true
 Style/YodaCondition:
-  EnforcedStyle: all_comparison_operators
+  EnforcedStyle: forbid_for_all_comparison_operators
   SupportedStyles:
-    - all_comparison_operators
-    - equality_operators_only
+    - forbid_for_all_comparison_operators
   Description: Do not use literals as the first operand of a comparison.
   Reference: https://en.wikipedia.org/wiki/Yoda_conditions
   Enabled: true
 Metrics/AbcSize:
   Max: 15
-  Description: A calculated magnitude based on number of assignments, branches, and
+  Severity: warning
+  Description:
+    A calculated magnitude based on number of assignments, branches, and
     conditions.
   Reference: http://c2.com/cgi/wiki?AbcMetric
   Enabled: true
 Metrics/BlockLength:
   CountComments: false
+  Severity: warning
   Max: 25
   ExcludedMethods: []
   Description: Avoid long blocks with many lines.
   Enabled: false
 Metrics/BlockNesting:
   CountBlocks: false
+  Severity: warning
   Max: 3
   Description: Avoid excessive block nesting
   StyleGuide: "#three-is-the-number-thou-shalt-count"
   Enabled: false
 Metrics/ClassLength:
   CountComments: false
+  Severity: warning
   Max: 100
   Description: Avoid classes longer than 100 lines of code.
   Enabled: false
 Metrics/CyclomaticComplexity:
   Max: 6
-  Description: A complexity metric that is strongly correlated to the number of test
+  Severity: warning
+  Description:
+    A complexity metric that is strongly correlated to the number of test
     cases needed to validate a method.
   Enabled: true
 Metrics/LineLength:
   Max: 80
   AllowHeredoc: true
   AllowURI: true
+  Severity: warning
   URISchemes:
     - http
     - https
@@ -1291,6 +1321,7 @@ Metrics/LineLength:
   Enabled: false
 Metrics/MethodLength:
   CountComments: false
+  Severity: warning
   Max: 10
   Description: Avoid methods longer than 10 lines of code.
   StyleGuide: "#short-methods"
@@ -1298,17 +1329,21 @@ Metrics/MethodLength:
 Metrics/ModuleLength:
   CountComments: false
   Max: 100
+  Severity: warning
   Description: Avoid modules longer than 100 lines of code.
   Enabled: false
 Metrics/ParameterLists:
   Max: 5
   CountKeywordArgs: true
+  Severity: warning
   Description: Avoid parameter lists longer than three or four parameters.
   StyleGuide: "#too-many-params"
   Enabled: false
 Metrics/PerceivedComplexity:
   Max: 7
-  Description: A complexity metric geared towards measuring complexity for a human
+  Severity: warning
+  Description:
+    A complexity metric geared towards measuring complexity for a human
     reader.
   Enabled: true
 Lint/AssignmentInCondition:
@@ -1343,7 +1378,8 @@ Lint/SafeNavigationConsistency:
     - presence
     - try
     - try!
-  Description: Check to make sure that if safe navigation is used for a method call
+  Description:
+    Check to make sure that if safe navigation is used for a method call
     in an `&&` or `||` condition that safe navigation is used for all method calls
     on that same object.
   Enabled: true
@@ -1369,7 +1405,8 @@ Lint/Void:
   Enabled: true
 Performance/DoubleStartEndWith:
   IncludeActiveSupportAliases: false
-  Description: Use `str.{start,end}_with?(x, ..., y, ...)` instead of `str.{start,end}_with?(x,
+  Description:
+    Use `str.{start,end}_with?(x, ..., y, ...)` instead of `str.{start,end}_with?(x,
     ...) || str.{start,end}_with?(y, ...)`.
   Enabled: true
 Performance/RedundantMerge:
@@ -1409,7 +1446,9 @@ Rails/BulkChangeTable:
 Rails/CreateTableWithTimestamps:
   Include:
     - db/migrate/*.rb
-  Description: Checks the migration for which timestamps are not included when creating
+  Severity: warning
+  Description:
+    Checks the migration for which timestamps are not included when creating
     a new table.
   Enabled: true
 Rails/Date:
@@ -1417,7 +1456,8 @@ Rails/Date:
   SupportedStyles:
     - strict
     - flexible
-  Description: Checks the correct usage of date aware methods, such as Date.today,
+  Description:
+    Checks the correct usage of date aware methods, such as Date.today,
     Date.current etc.
   Enabled: true
 Rails/Delegate:
@@ -1442,7 +1482,8 @@ Rails/Exit:
     - lib/**/*.rb
   Exclude:
     - lib/**/*.rake
-  Description: Favor `fail`, `break`, `return`, etc. over `exit` in application or
+  Description:
+    Favor `fail`, `break`, `return`, etc. over `exit` in application or
     library code outside of Rake files to avoid exits during unit testing or running
     in production.
   Enabled: true
@@ -1492,7 +1533,8 @@ Rails/InverseOf:
 Rails/LexicallyScopedActionFilter:
   Include:
     - app/controllers/**/*.rb
-  Description: Checks that methods specified in the filter's `only` or `except` options
+  Description:
+    Checks that methods specified in the filter's `only` or `except` options
     are explicitly defined in the controller.
   StyleGuide: https://github.com/rubocop-hq/rails-style-guide#lexically-scoped-action-filter
   Enabled: true
@@ -1586,7 +1628,8 @@ Rails/SkipsModelValidations:
     - update_column
     - update_columns
     - update_counters
-  Description: Use methods that skips model validations with caution. See reference
+  Description:
+    Use methods that skips model validations with caution. See reference
     for more information.
   Reference: http://guides.rubyonrails.org/active_record_validations.html#skipping-validations
   Enabled: true
@@ -1617,7 +1660,8 @@ Bundler/DuplicatedGem:
     - "**/Gemfile"
     - "**/gems.rb"
 Bundler/InsecureProtocolSource:
-  Description: The source `:gemcutter`, `:rubygems` and `:rubyforge` are deprecated
+  Description:
+    The source `:gemcutter`, `:rubygems` and `:rubyforge` are deprecated
     because HTTP requests are insecure. Please change your source to 'https://rubygems.org'
     if possible, or 'http://rubygems.org' if not.
   Enabled: true
@@ -1626,13 +1670,15 @@ Bundler/InsecureProtocolSource:
     - "**/Gemfile"
     - "**/gems.rb"
 Gemspec/DuplicatedAssignment:
-  Description: An attribute assignment method calls should be listed only once in
+  Description:
+    An attribute assignment method calls should be listed only once in
     a gemspec.
   Enabled: true
   Include:
     - "**/*.gemspec"
 Gemspec/RequiredRubyVersion:
-  Description: Checks that `required_ruby_version` of gemspec and `TargetRubyVersion`
+  Description:
+    Checks that `required_ruby_version` of gemspec and `TargetRubyVersion`
     of .rubocop.yml are equal.
   Enabled: true
   Include:
@@ -1654,13 +1700,14 @@ Layout/CommentIndentation:
   Description: Indentation of comments.
   Enabled: true
 Layout/ConditionPosition:
-  Description: Checks for condition placed in a confusing position relative to the
+  Description:
+    Checks for condition placed in a confusing position relative to the
     keyword.
   StyleGuide: "#same-line-condition"
   Enabled: true
 Layout/ElseAlignment:
   Description: Align elses and elsifs correctly.
-  Enabled: true
+  Enabled: false
 Layout/EmptyLineAfterMagicComment:
   Description: Add an empty line after magic comments to separate them from code.
   StyleGuide: "#separate-magic-comments-from-code"
@@ -1689,7 +1736,8 @@ Layout/EmptyLinesAroundMethodBody:
   StyleGuide: "#empty-lines-around-bodies"
   Enabled: true
 Layout/InitialIndentation:
-  Description: Checks the indentation of the first non-blank non-comment line in a
+  Description:
+    Checks the indentation of the first non-blank non-comment line in a
     file.
   Enabled: true
 Layout/LeadingBlankLines:
@@ -1714,7 +1762,8 @@ Layout/SpaceAfterComma:
   StyleGuide: "#spaces-operators"
   Enabled: true
 Layout/SpaceAfterMethodName:
-  Description: Do not put a space between a method name and the opening parenthesis
+  Description:
+    Do not put a space between a method name and the opening parenthesis
     in a method definition.
   StyleGuide: "#parens-no-spaces"
   Enabled: true
@@ -1749,17 +1798,20 @@ Layout/SpaceInsideRangeLiteral:
   StyleGuide: "#no-space-inside-range-literals"
   Enabled: true
 Lint/AmbiguousBlockAssociation:
-  Description: Checks for ambiguous block association with method when param passed
+  Description:
+    Checks for ambiguous block association with method when param passed
     without parentheses.
   StyleGuide: "#syntax"
   Enabled: true
 Lint/AmbiguousOperator:
-  Description: Checks for ambiguous operators in the first argument of a method invocation
+  Description:
+    Checks for ambiguous operators in the first argument of a method invocation
     without parentheses.
   StyleGuide: "#method-invocation-parens"
   Enabled: true
 Lint/AmbiguousRegexpLiteral:
-  Description: Checks for ambiguous regexp literals in the first argument of a method
+  Description:
+    Checks for ambiguous regexp literals in the first argument of a method
     invocation without parentheses.
   Enabled: true
 Lint/BigDecimalNew:
@@ -1769,7 +1821,8 @@ Lint/BooleanSymbol:
   Description: Check for `:true` and `:false` symbols.
   Enabled: true
 Lint/CircularArgumentReference:
-  Description: Default values in optional keyword arguments and optional ordinal arguments
+  Description:
+    Default values in optional keyword arguments and optional ordinal arguments
     should not refer back to the name of the argument.
   Enabled: true
 Lint/Debugger:
@@ -1827,11 +1880,13 @@ Lint/HandleExceptions:
   StyleGuide: "#dont-hide-exceptions"
   Enabled: true
 Lint/ImplicitStringConcatenation:
-  Description: Checks for adjacent string literals on the same line, which could better
+  Description:
+    Checks for adjacent string literals on the same line, which could better
     be represented as a single string literal.
   Enabled: true
 Lint/IneffectiveAccessModifier:
-  Description: Checks for attempts to use `private` or `protected` to set the visibility
+  Description:
+    Checks for attempts to use `private` or `protected` to set the visibility
     of a class method, which does not work.
   Enabled: true
 Lint/InterpolationCheck:
@@ -1844,7 +1899,8 @@ Lint/LiteralInInterpolation:
   Description: Checks for literals used in interpolation.
   Enabled: true
 Lint/Loop:
-  Description: Use Kernel#loop with break rather than begin/end/until or begin/end/while
+  Description:
+    Use Kernel#loop with break rather than begin/end/until or begin/end/while
     for post-loop tests.
   StyleGuide: "#loop-with-break"
   Enabled: true
@@ -1859,14 +1915,16 @@ Lint/NestedPercentLiteral:
   Description: Checks for nested percent literals.
   Enabled: true
 Lint/NextWithoutAccumulator:
-  Description: Do not omit the accumulator when calling `next` in a `reduce`/`inject`
+  Description:
+    Do not omit the accumulator when calling `next` in a `reduce`/`inject`
     block.
   Enabled: true
 Lint/NonLocalExitFromIterator:
   Description: Do not use return in iterator to cause non-local exit.
   Enabled: true
 Lint/OrderedMagicComments:
-  Description: Checks the proper ordering of magic comments and whether a magic comment
+  Description:
+    Checks the proper ordering of magic comments and whether a magic comment
     is not placed before a shebang.
   Enabled: true
 Lint/ParenthesesAsGroupedExpression:
@@ -1880,7 +1938,8 @@ Lint/PercentSymbolArray:
   Description: Checks for unwanted commas and colons in %i/%I literals.
   Enabled: true
 Lint/RandOne:
-  Description: Checks for `rand(1)` calls. Such calls always return `0` and most likely
+  Description:
+    Checks for `rand(1)` calls. Such calls always return `0` and most likely
     a mistake.
   Enabled: true
 Lint/RedundantWithIndex:
@@ -1890,7 +1949,8 @@ Lint/RedundantWithObject:
   Description: Checks for redundant `with_object`.
   Enabled: true
 Lint/RegexpAsCondition:
-  Description: Do not use regexp literal as a condition. The regexp literal matches
+  Description:
+    Do not use regexp literal as a condition. The regexp literal matches
     `$_` implicitly.
   Enabled: true
 Lint/RequireParentheses:
@@ -1913,7 +1973,8 @@ Lint/ShadowedException:
   Description: Avoid rescuing a higher level exception before a lower level exception.
   Enabled: true
 Lint/ShadowingOuterLocalVariable:
-  Description: Do not use the same name as outer local variable for block arguments
+  Description:
+    Do not use the same name as outer local variable for block arguments
     or block local variables.
   Enabled: true
 Lint/StringConversionInInterpolation:
@@ -1930,8 +1991,9 @@ Lint/UnifiedInteger:
   Description: Use Integer instead of Fixnum or Bignum
   Enabled: true
 Lint/UnneededCopDisableDirective:
-  Description: 'Checks for rubocop:disable comments that can be removed. Note: this
-    cop is not disabled when disabling all cops. It must be explicitly disabled.'
+  Description:
+    "Checks for rubocop:disable comments that can be removed. Note: this
+    cop is not disabled when disabling all cops. It must be explicitly disabled."
   Enabled: true
 Lint/UnneededCopEnableDirective:
   Description: Checks for rubocop:enable comments that can be removed.
@@ -1946,7 +2008,8 @@ Lint/UnreachableCode:
   Description: Unreachable code.
   Enabled: true
 Lint/UriEscapeUnescape:
-  Description: "`URI.escape` method is obsolete and should not be used. Instead, use
+  Description:
+    "`URI.escape` method is obsolete and should not be used. Instead, use
     `CGI.escape`, `URI.encode_www_form` or `URI.encode_www_form_component` depending
     on your specific use case. Also `URI.unescape` method is obsolete and should not
     be used. Instead, use `CGI.unescape`, `URI.decode_www_form` or `URI.decode_www_form_component`
@@ -2000,11 +2063,13 @@ Performance/Caller:
   Description: Use `caller(n..n)` instead of `caller`.
   Enabled: true
 Performance/CaseWhenSplat:
-  Description: Place `when` conditions that use splat at the end of the list of `when`
+  Description:
+    Place `when` conditions that use splat at the end of the list of `when`
     branches.
   Enabled: true
 Performance/Casecmp:
-  Description: Use `casecmp` rather than `downcase ==`, `upcase ==`, `== downcase`,
+  Description:
+    Use `casecmp` rather than `downcase ==`, `upcase ==`, `== downcase`,
     or `== upcase`..
   Reference: https://github.com/JuanitoFatas/fast-ruby#stringcasecmp-vs-stringdowncase---code
   Enabled: true
@@ -2012,12 +2077,14 @@ Performance/CompareWithBlock:
   Description: Use `sort_by(&:foo)` instead of `sort { |a, b| a.foo <=> b.foo }`.
   Enabled: true
 Performance/Count:
-  Description: Use `count` instead of `select...size`, `reject...size`, `select...count`,
+  Description:
+    Use `count` instead of `select...size`, `reject...size`, `select...count`,
     `reject...count`, `select...length`, and `reject...length`.
   SafeMode: true
   Enabled: true
 Performance/Detect:
-  Description: Use `detect` instead of `select.first`, `find_all.first`, `select.last`,
+  Description:
+    Use `detect` instead of `select.first`, `find_all.first`, `select.last`,
     and `find_all.last`.
   Reference: https://github.com/JuanitoFatas/fast-ruby#enumerabledetect-vs-enumerableselectfirst-code
   SafeMode: true
@@ -2031,7 +2098,8 @@ Performance/FixedSize:
   Description: Do not compute the size of statically sized objects except in constants
   Enabled: true
 Performance/FlatMap:
-  Description: Use `Enumerable#flat_map` instead of `Enumerable#map...Array#flatten(1)`
+  Description:
+    Use `Enumerable#flat_map` instead of `Enumerable#map...Array#flatten(1)`
     or `Enumberable#collect..Array#flatten(1)`
   Reference: https://github.com/JuanitoFatas/fast-ruby#enumerablemaparrayflatten-vs-enumerableflat_map-code
   Enabled: true
@@ -2052,14 +2120,16 @@ Performance/RedundantBlockCall:
   Reference: https://github.com/JuanitoFatas/fast-ruby#proccall-and-block-arguments-vs-yieldcode
   Enabled: true
 Performance/RedundantMatch:
-  Description: Use `=~` instead of `String#match` or `Regexp#match` in a context where
+  Description:
+    Use `=~` instead of `String#match` or `Regexp#match` in a context where
     the returned `MatchData` is not needed.
   Enabled: true
 Performance/RedundantSortBy:
   Description: Use `sort` instead of `sort_by { |x| x }`.
   Enabled: true
 Performance/RegexpMatch:
-  Description: Use `match?` instead of `Regexp#match`, `String#match`, `Symbol#match`,
+  Description:
+    Use `match?` instead of `Regexp#match`, `String#match`, `Symbol#match`,
     `Regexp#===`, or `=~` when `MatchData` is not used.
   Enabled: true
 Performance/ReverseEach:
@@ -2071,18 +2141,21 @@ Performance/Sample:
   Reference: https://github.com/JuanitoFatas/fast-ruby#arrayshufflefirst-vs-arraysample-code
   Enabled: true
 Performance/Size:
-  Description: Use `size` instead of `count` for counting the number of elements in
+  Description:
+    Use `size` instead of `count` for counting the number of elements in
     `Array` and `Hash`.
   Reference: https://github.com/JuanitoFatas/fast-ruby#arraylength-vs-arraysize-vs-arraycount-code
   Enabled: true
 Performance/StartWith:
-  Description: Use `start_with?` instead of a regex match anchored to the beginning
+  Description:
+    Use `start_with?` instead of a regex match anchored to the beginning
     of a string.
   Reference: https://github.com/JuanitoFatas/fast-ruby#stringmatch-vs-stringstart_withstringend_with-code-start-code-end
   AutoCorrect: false
   Enabled: true
 Performance/StringReplacement:
-  Description: Use `tr` instead of `gsub` when you are replacing the same number of
+  Description:
+    Use `tr` instead of `gsub` when you are replacing the same number of
     characters. Use `delete` instead of `gsub` when you are deleting characters.
   Reference: https://github.com/JuanitoFatas/fast-ruby#stringgsub-vs-stringtr-code
   Enabled: true
@@ -2094,19 +2167,22 @@ Performance/UnfreezeString:
   Description: Use unary plus to get an unfrozen string literal.
   Enabled: true
 Performance/UnneededSort:
-  Description: Use `min` instead of `sort.first`, `max_by` instead of `sort_by...last`,
+  Description:
+    Use `min` instead of `sort.first`, `max_by` instead of `sort_by...last`,
     etc.
   Enabled: true
 Performance/UriDefaultParser:
   Description: Use `URI::DEFAULT_PARSER` instead of `URI::Parser.new`.
   Enabled: true
 Rails/ActiveRecordAliases:
-  Description: 'Avoid Active Record aliases: Use `update` instead of `update_attributes`.
-    Use `update!` instead of `update_attributes!`.'
+  Description:
+    "Avoid Active Record aliases: Use `update` instead of `update_attributes`.
+    Use `update!` instead of `update_attributes!`."
   Enabled: true
 Rails/ActiveSupportAliases:
-  Description: 'Avoid ActiveSupport aliases of standard ruby methods: `String#starts_with?`,
-    `String#ends_with?`, `Array#append`, `Array#prepend`.'
+  Description:
+    "Avoid ActiveSupport aliases of standard ruby methods: `String#starts_with?`,
+    `String#ends_with?`, `Array#append`, `Array#prepend`."
   Enabled: true
 Rails/ApplicationJob:
   Description: Check that jobs subclass ApplicationJob.
@@ -2121,7 +2197,8 @@ Rails/EnvironmentComparison:
   Description: Favor `Rails.env.production?` over `Rails.env == 'production'`
   Enabled: true
 Rails/HttpPositionalArguments:
-  Description: Use keyword arguments instead of positional arguments in http method
+  Description:
+    Use keyword arguments instead of positional arguments in http method
     calls.
   Enabled: true
   Include:
@@ -2134,7 +2211,8 @@ Rails/PluralizationGrammar:
   Description: Checks for incorrect grammar when using methods like `3.day.ago`.
   Enabled: true
 Rails/Presence:
-  Description: Checks code that can be written more easily using `Object#presence`
+  Description:
+    Checks code that can be written more easily using `Object#presence`
     defined by Active Support.
   Enabled: true
 Rails/RedundantReceiverInWithOptions:
@@ -2147,13 +2225,15 @@ Security/Eval:
   Description: The use of eval represents a serious security risk.
   Enabled: true
 Security/JSONLoad:
-  Description: Prefer usage of `JSON.parse` over `JSON.load` due to potential security
+  Description:
+    Prefer usage of `JSON.parse` over `JSON.load` due to potential security
     issues. See reference for more information.
   Reference: http://ruby-doc.org/stdlib-2.3.0/libdoc/json/rdoc/JSON.html#method-i-load
   Enabled: true
   AutoCorrect: false
 Security/MarshalLoad:
-  Description: Avoid using of `Marshal.load` or `Marshal.restore` due to potential
+  Description:
+    Avoid using of `Marshal.load` or `Marshal.restore` due to potential
     security issues. See reference for more information.
   Reference: http://ruby-doc.org/core-2.3.3/Marshal.html#module-Marshal-label-Security+considerations
   Enabled: true
@@ -2161,7 +2241,8 @@ Security/Open:
   Description: The use of Kernel#open represents a serious security risk.
   Enabled: true
 Security/YAMLLoad:
-  Description: Prefer usage of `YAML.safe_load` over `YAML.load` due to potential
+  Description:
+    Prefer usage of `YAML.safe_load` over `YAML.load` due to potential
     security issues. See reference for more information.
   Reference: https://ruby-doc.org/stdlib-2.3.3/libdoc/yaml/rdoc/YAML.html#module-YAML-label-Security
   Enabled: true
@@ -2198,11 +2279,11 @@ Style/ClassVars:
   StyleGuide: "#no-class-vars"
   Enabled: true
 Style/ColonMethodCall:
-  Description: 'Do not use :: for method call.'
+  Description: "Do not use :: for method call."
   StyleGuide: "#double-colons"
   Enabled: true
 Style/ColonMethodDefinition:
-  Description: 'Do not use :: for defining class methods.'
+  Description: "Do not use :: for defining class methods."
   StyleGuide: "#colon-method-definition"
   Enabled: true
 Style/CommentedKeyword:
@@ -2217,7 +2298,8 @@ Style/DefWithParentheses:
   StyleGuide: "#method-parens"
   Enabled: true
 Style/Dir:
-  Description: Use the `__dir__` method to retrieve the canonicalized absolute path
+  Description:
+    Use the `__dir__` method to retrieve the canonicalized absolute path
     to the current file.
   Enabled: true
 Style/Documentation:
@@ -2231,7 +2313,8 @@ Style/DoubleNegation:
   StyleGuide: "#no-bang-bang"
   Enabled: true
 Style/EachForSimpleLoop:
-  Description: Use `Integer#times` for a simple loop which iterates a fixed number
+  Description:
+    Use `Integer#times` for a simple loop which iterates a fixed number
     of times.
   Enabled: true
 Style/EachWithObject:
@@ -2259,7 +2342,8 @@ Style/EndBlock:
   StyleGuide: "#no-END-blocks"
   Enabled: true
 Style/EvalWithLocation:
-  Description: Pass `__FILE__` and `__LINE__` to `eval` method, as they are used by
+  Description:
+    Pass `__FILE__` and `__LINE__` to `eval` method, as they are used by
     backtraces.
   Enabled: true
 Style/EvenOdd:
@@ -2269,12 +2353,9 @@ Style/EvenOdd:
 Style/ExpandPathArguments:
   Description: Use `expand_path(__dir__)` instead of `expand_path('..', __FILE__)`.
   Enabled: true
-Style/FlipFlop:
-  Description: Checks for flip flops
-  StyleGuide: "#no-flip-flops"
-  Enabled: true
 Style/IdenticalConditionalBranches:
-  Description: Checks that conditional statements do not have an identical line at
+  Description:
+    Checks that conditional statements do not have an identical line at
     the end of each branch, which can validly be moved out of the conditional.
   Enabled: true
 Style/IfInsideElse:
@@ -2296,7 +2377,8 @@ Style/InfiniteLoop:
   StyleGuide: "#infinite-loop"
   Enabled: true
 Style/LineEndConcatenation:
-  Description: Use \ instead of + or << to concatenate two string literals at line
+  Description:
+    Use \ instead of + or << to concatenate two string literals at line
     end.
   Enabled: true
 Style/MethodMissingSuper:
@@ -2304,7 +2386,8 @@ Style/MethodMissingSuper:
   StyleGuide: "#no-method-missing"
   Enabled: true
 Style/MinMax:
-  Description: Use `Enumerable#minmax` instead of `Enumerable#min` and `Enumerable#max`
+  Description:
+    Use `Enumerable#minmax` instead of `Enumerable#min` and `Enumerable#max`
     in conjunction.'
   Enabled: true
 Style/MissingRespondToMissing:
@@ -2327,11 +2410,12 @@ Style/MultilineIfThen:
   StyleGuide: "#no-then"
   Enabled: true
 Style/MultilineTernaryOperator:
-  Description: 'Avoid multi-line ?: (the ternary operator); use if/unless instead.'
+  Description: "Avoid multi-line ?: (the ternary operator); use if/unless instead."
   StyleGuide: "#no-multiline-ternary"
   Enabled: true
 Style/MultipleComparison:
-  Description: Avoid comparing a variable with multiple items in a conditional, use
+  Description:
+    Avoid comparing a variable with multiple items in a conditional, use
     Array#include? instead.
   Enabled: true
 Style/MutableConstant:
@@ -2362,7 +2446,8 @@ Style/OneLineConditional:
   StyleGuide: "#ternary-operator"
   Enabled: false
 Style/OptionalArguments:
-  Description: Checks for optional arguments that do not appear at the end of the
+  Description:
+    Checks for optional arguments that do not appear at the end of the
     argument list
   StyleGuide: "#optional-arguments"
   Enabled: true
@@ -2371,7 +2456,8 @@ Style/OrAssignment:
   StyleGuide: "#double-pipe-for-uninit"
   Enabled: true
 Style/ParallelAssignment:
-  Description: Check for simple usages of parallel assignment. It will only warn when
+  Description:
+    Check for simple usages of parallel assignment. It will only warn when
     the number of variables matches on both sides of the assignment.
   StyleGuide: "#parallel-assignment"
   Enabled: true
@@ -2384,7 +2470,8 @@ Style/Proc:
   StyleGuide: "#proc"
   Enabled: true
 Style/RandomWithOffset:
-  Description: Prefer to use ranges when generating random numbers instead of integers
+  Description:
+    Prefer to use ranges when generating random numbers instead of integers
     with offsets.
   StyleGuide: "#random-numbers"
   Enabled: true
@@ -2414,7 +2501,8 @@ Style/RescueModifier:
   StyleGuide: "#no-rescue-modifiers"
   Enabled: true
 Style/SelfAssignment:
-  Description: Checks for places where self-assignment shorthand should have been
+  Description:
+    Checks for places where self-assignment shorthand should have been
     used.
   StyleGuide: "#self-assignment"
   Enabled: true
@@ -2442,7 +2530,8 @@ Style/TrailingMethodEndStatement:
   Description: Checks for trailing end statement on line of method body.
   Enabled: true
 Style/TrailingUnderscoreVariable:
-  Description: Checks for the usage of unneeded trailing underscores at the end of
+  Description:
+    Checks for the usage of unneeded trailing underscores at the end of
     parallel variable assignment.
   AllowNamedUnderscoreVariables: true
   Enabled: true
@@ -2464,11 +2553,13 @@ Style/UnneededPercentQ:
   StyleGuide: "#percent-q"
   Enabled: true
 Style/UnpackFirst:
-  Description: Checks for accessing the first element of `String#unpack` instead of
+  Description:
+    Checks for accessing the first element of `String#unpack` instead of
     using `unpack1`
   Enabled: true
 Style/VariableInterpolation:
-  Description: Don't interpolate global, instance and class variables directly in
+  Description:
+    Don't interpolate global, instance and class variables directly in
     strings.
   StyleGuide: "#curlies-interpolate"
   Enabled: true
@@ -2485,7 +2576,7 @@ Style/WhileUntilModifier:
   StyleGuide: "#while-as-a-modifier"
   Enabled: true
 Style/ZeroLengthPredicate:
-  Description: 'Use #empty? when testing for objects of length 0.'
+  Description: "Use #empty? when testing for objects of length 0."
   Enabled: true
 Layout/EmptyLineAfterGuardClause:
   Description: Add empty line after guard clause.
@@ -2497,12 +2588,18 @@ Layout/FirstHashElementLineBreak:
   Description: Checks for a line break before the first element in a multi-line hash.
   Enabled: true
 Layout/FirstMethodArgumentLineBreak:
-  Description: Checks for a line break before the first argument in a multi-line method
+  Description:
+    Checks for a line break before the first argument in a multi-line method
     call.
   Enabled: true
 Layout/FirstMethodParameterLineBreak:
-  Description: Checks for a line break before the first parameter in a multi-line
+  Description:
+    Checks for a line break before the first parameter in a multi-line
     method parameter definition.
+  Enabled: true
+Lint/FlipFlop:
+  Description: Checks for flip flops
+  StyleGuide: "#no-flip-flops"
   Enabled: true
 Lint/NumberConversion:
   Description: Checks unsafe usage of number conversion methods.
@@ -2510,16 +2607,19 @@ Lint/NumberConversion:
 Rails:
   Enabled: true
 Rails/SaveBang:
-  Description: Identifies possible cases where Active Record save! or related should
+  Description:
+    Identifies possible cases where Active Record save! or related should
     be used.
   StyleGuide: https://github.com/rubocop-hq/rails-style-guide#save-bang
   Enabled: true
 Style/AutoResourceCleanup:
-  Description: Suggests the usage of an auto resource cleanup version of a method
+  Description:
+    Suggests the usage of an auto resource cleanup version of a method
     (if available).
   Enabled: true
 Style/ImplicitRuntimeError:
-  Description: Use `raise` or `fail` with an explicit exception class and message,
+  Description:
+    Use `raise` or `fail` with an explicit exception class and message,
     rather than just a message.
   Enabled: true
 Style/InlineComment:
@@ -2530,7 +2630,8 @@ Style/MethodCalledOnDoEndBlock:
   StyleGuide: "#single-line-blocks"
   Enabled: false
 Style/Send:
-  Description: Prefer `Object#__send__` or `Object#public_send` to `send`, as `send`
+  Description:
+    Prefer `Object#__send__` or `Object#public_send` to `send`, as `send`
     may overlap with existing methods.
   StyleGuide: "#prefer-public-send"
   Enabled: true

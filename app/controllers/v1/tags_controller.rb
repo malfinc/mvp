@@ -11,7 +11,7 @@ module V1
           :schema => ::V1::Tags::IndexSchema,
           :parameters => modified_parameters,
         ),
-        :status => :ok
+        :status => :ok,
       )
     end
 
@@ -21,7 +21,7 @@ module V1
           :schema => ::V1::Tags::ShowSchema,
           :parameters => modified_parameters,
         ),
-        :status => :ok
+        :status => :ok,
       )
     end
 
@@ -30,8 +30,9 @@ module V1
         :json => inline_jsonapi(
           :schema => ::V1::Tags::CreateSchema,
           :parameters => modified_parameters,
-        ) {|model| model.save!},
-        :status => :created
+          &:save!
+        ),
+        :status => :created,
       )
     end
   end

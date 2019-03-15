@@ -12,8 +12,8 @@ class LoginAccountOperation < ApplicationOperation
     fresh(
       :state => {
         :account => state.scope.find_for_database_authentication(:email => state.shared) || raise(InvalidLoginError),
-        :secret => state.secret
-      }
+        :secret => state.secret,
+      },
     )
   end
 
@@ -26,8 +26,8 @@ class LoginAccountOperation < ApplicationOperation
 
     fresh(
       :state => {
-        :account => state.account
-      }
+        :account => state.account,
+      },
     )
   end
 end

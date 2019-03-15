@@ -1,6 +1,6 @@
 class CreateRecipes < ActiveRecord::Migration[5.1]
   def change
-    create_table :recipes, :id => :uuid do |table|
+    create_table(:recipes, :id => :uuid) do |table|
       table.text(:name, :null => false)
       table.citext(:slug, :null => false)
       table.citext(:moderation_state, :null => false)

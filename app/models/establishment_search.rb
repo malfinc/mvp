@@ -1,10 +1,10 @@
 class EstablishmentSearch < ApplicationComputed
-  include RedisBacked
+  include(RedisBacked)
 
-  redis_value :query, :expiration => 1.day
-  redis_value :results, :expiration => 1.day
+  redis_value(:query, :expiration => 1.day)
+  redis_value(:results, :expiration => 1.day)
 
-  validates_presence_of :query
+  validates_presence_of(:query)
 
   def results=(value)
     super(value.map(&GooglePlaceResult.method(:serialize)).to_json)

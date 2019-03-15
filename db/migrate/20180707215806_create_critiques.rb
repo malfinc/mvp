@@ -1,6 +1,6 @@
 class CreateCritiques < ActiveRecord::Migration[5.1]
   def change
-    create_table :critiques, :id => :bigint do |table|
+    create_table(:critiques, :id => :bigint) do |table|
       table.uuid(:author_id, :null => false)
       table.uuid(:review_id, :null => false)
       table.bigint(:question_id, :null => false)

@@ -5,7 +5,7 @@ RSpec.describe(SubmissionDecorator) do
   let(:submission) {Submission.new(:id => "#{model.class.name}-#{model.id}", :subject => model)}
   let(:decorator) {described_class.new(submission)}
 
-  context "when the submission is an establishment" do
+  context("when the submission is an establishment") do
     let(:model) {build(:establishment)}
 
     describe("#submitter") do

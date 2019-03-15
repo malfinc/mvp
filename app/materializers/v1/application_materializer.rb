@@ -3,6 +3,5 @@ module V1
     @abstract_class = true
 
     include(JSONAPI::Materializer::Resource)
-
   end
 end

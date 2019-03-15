@@ -8,11 +8,11 @@ class RecipeDecorator < ApplicationDecorator
           :no_links => true,
           :no_styles => true,
           :no_images => true,
-          :hard_warp => true
-        )
+          :hard_warp => true,
+        ),
       ).render(
-        object.description
-      )
+        object.description,
+      ),
     ).html_safe
   end
 

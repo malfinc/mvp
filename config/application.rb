@@ -71,7 +71,7 @@ module Poutineer
 
     # Set cache control headers for all assets served from rails
     config.public_file_server.headers = {
-      "Cache-Control" => "public, max-age=#{Integer(1.week.seconds)}"
+      "Cache-Control" => "public, max-age=#{Integer(1.week.seconds)}",
     }
 
     # Set the application-level cache
@@ -81,14 +81,14 @@ module Poutineer
         :driver => :hiredis,
         :expires_in => 30.minutes,
         :compress => true,
-        :redis => Poutineer.redis_cache_connection
-      }
+        :redis => Poutineer.redis_cache_connection,
+      },
     ]
 
     unless Rails.env.test?
       # Set a tag-based logger to STDOUT
       config.logger = ActiveSupport::TaggedLogging.new(
-        ActiveSupport::Logger.new(STDOUT)
+        ActiveSupport::Logger.new(STDOUT),
       )
     end
 
@@ -117,22 +117,22 @@ module Poutineer
 
       # Log the request id of the request, supplied by the infrastructure
       ->(request) do
-         if request.request_id.present?
+        if request.request_id.present?
           "context-id=#{request.request_id}"
-         end
-      end
+        end
+      end,
     ]
 
     # Set the url options for controllers
     Rails.application.config.action_controller.default_url_options = {
       :host => Poutineer.configuration.fetch_deep(:rails, :host),
-      :port => ENV.fetch("PORT")
+      :port => ENV.fetch("PORT"),
     }.compact
 
     # Set the url options for mailers
     Rails.application.config.action_mailer.default_url_options = {
       :host => Poutineer.configuration.fetch_deep(:rails, :host),
-      :port => ENV.fetch("PORT")
+      :port => ENV.fetch("PORT"),
     }.compact
   end
 end

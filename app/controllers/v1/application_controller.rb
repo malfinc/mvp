@@ -12,44 +12,32 @@ module V1
       @schema = schema
       @payload = @schema.new(parameters || request.parameters)
       @record_scope = scope || model
-      @policy_scope = if policy_scope_class
-        policy_scope(@record_scope, :policy_scope_class => policy_scope_class)
+      if policy_scope_class
+        @policy_scope = policy_scope(@record_scope, :policy_scope_class => policy_scope_class)
       else
-        policy_scope(@record_scope)
+        @policy_scope = policy_scope(@record_scope)
       end
       @headers = request.headers
       @realizer = realizer
-      @materializer = if @intent == "index"
-        materializer.const_get("Collection")
+      if @intent == "index"
+        @materializer = materializer.const_get("Collection")
       else
-        materializer
+        @materializer = materializer
       end
       @realization = @realizer.new(
         :intent => @intent,
         :parameters => @payload,
         :headers => @headers,
-        :scope => @policy_scope
+        :scope => @policy_scope,
       )
 
-      if params.key?(:id)
-        authorize(@realization.object)
+      return unless params.key?(:id) && stale?(:etag => @realization.object)
 
-        return unless stale?(:etag => @realization.object)
+      if block_given? then yield(@realization.object) end
 
-        if block_given? then yield(@realization.object) end
+      if params.key?(:id) then authorize(@realization.object) else authorize(@policy_scope) end
 
-        @materializer.new(
-          **@realization
-        )
-      else
-        authorize(@policy_scope)
-
-        if block_given? then yield(@realization.object) end
-
-        @materializer.new(
-          **@realization
-        )
-      end
+      @materializer.new(**@realization)
     end
 
     private def pundit_user
@@ -63,7 +51,7 @@ module V1
             accumulated_mapping.deep_merge(
               keychain.reverse.reduce(after) do |accumulated, key|
                 {key => accumulated}
-              end
+              end,
             )
           else
             accumulated_mapping

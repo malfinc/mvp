@@ -5,7 +5,7 @@ class SidekiqClientPaperTrailMiddleware
     Rails.logger.tagged("chain=#{job.fetch("chain_id")}") do
       job["paper_trail"] ||= {
         "whodunnit" => PaperTrail.request.whodunnit,
-        "metadata" => PaperTrail.request.controller_info
+        "metadata" => PaperTrail.request.controller_info,
       }
 
       yield

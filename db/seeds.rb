@@ -19,7 +19,7 @@ PaperTrail.request(:whodunnit => Account::MACHINE_EMAIL, :controller_info => {:c
       {:name => "LowLactose"},
       {:name => "LowSalt"},
       {:name => "Vegan"},
-      {:name => "Vegetarian"}
+      {:name => "Vegetarian"},
     ])
     Allergy.create([
       {:name => "Cow's Milk"},
@@ -31,7 +31,7 @@ PaperTrail.request(:whodunnit => Account::MACHINE_EMAIL, :controller_info => {:c
       {:name => "Soy"},
       {:name => "Wheat"},
       {:name => "Rice"},
-      {:name => "Fruit"}
+      {:name => "Fruit"},
     ])
     PaymentType.create([
       {:name => "Cash"},
@@ -42,21 +42,22 @@ PaperTrail.request(:whodunnit => Account::MACHINE_EMAIL, :controller_info => {:c
       {:name => "EBT/Foodstamps"},
       {:name => "Giftcards"},
       {:name => "Online Payments"},
-      {:name => "Bitcoin/Cryptocurrency"}
+      {:name => "Bitcoin/Cryptocurrency"},
     ])
 
-    Question.create!({:body => "Did the poutine have real cheese curds?", :kind => "pick_one"}).tap do |question|
+    Question.create!(:body => "Did the poutine have real cheese curds?", :kind => "pick_one").tap do |question|
       question.answers.create!([
         {:body => "Yes"},
-        {:body => "No"}
+        {:body => "No"},
       ])
     end
-    Question.create!({:body => "Did the cheese curds squeak when bitten?", :kind => "pick_one"}).tap do |question|
+    Question.create!(:body => "Did the cheese curds squeak when bitten?", :kind => "pick_one").tap do |question|
       question.answers.create!([
         {:body => "Very sparse"},
         {:body => "A handful"},
-        {:body => "A solid layer"}
+        {:body => "A solid layer"},
       ])
+    end
 
     if Rails.env.development? && ENV.key?("BENCHMARK")
       1000.times.each do
@@ -66,8 +67,8 @@ PaperTrail.request(:whodunnit => Account::MACHINE_EMAIL, :controller_info => {:c
             *15.times.map {[]},
             *25.times.map {[:confirmed]},
             *45.times.map {[:confirmed, :completed]},
-            *5.times.map {[:confirmed, :completed, :administrator]}
-          ].sample
+            *5.times.map {[:confirmed, :completed, :administrator]},
+          ].sample,
         )
       end
     end
@@ -78,7 +79,7 @@ PaperTrail.request(:whodunnit => Account::MACHINE_EMAIL, :controller_info => {:c
         :username => "krainboltgreene",
         :name => "Kurtis Rainbolt-Greene",
         :email => "kurtis@rainbolt-greene.online",
-        :password => SecureRandom.hex(32)
+        :password => SecureRandom.hex(32),
       )
       krainboltgreene.confirm
       krainboltgreene.complete!
@@ -90,7 +91,7 @@ PaperTrail.request(:whodunnit => Account::MACHINE_EMAIL, :controller_info => {:c
         :username => "sally",
         :name => "Sally Stuthers",
         :email => "sally@example.com",
-        :password => "password"
+        :password => "password",
       )
       administrator.confirm
       administrator.complete!
@@ -100,7 +101,7 @@ PaperTrail.request(:whodunnit => Account::MACHINE_EMAIL, :controller_info => {:c
         :username => "mark",
         :name => "Mark Muffalo",
         :email => "mark@example.com",
-        :password => "password"
+        :password => "password",
       )
       moderator.confirm
       moderator.complete!
@@ -110,7 +111,7 @@ PaperTrail.request(:whodunnit => Account::MACHINE_EMAIL, :controller_info => {:c
         :username => "calvin",
         :name => "Calvin Klean",
         :email => "calvin@example.com",
-        :password => "password"
+        :password => "password",
       )
       user.confirm
       user.complete!
@@ -124,14 +125,14 @@ PaperTrail.request(:whodunnit => Account::MACHINE_EMAIL, :controller_info => {:c
             PaymentType.find_by(:name => "Visa"),
             PaymentType.find_by(:name => "Discover Card"),
             PaymentType.find_by(:name => "Mastercard"),
-            PaymentType.find_by(:name => "Giftcards")
+            PaymentType.find_by(:name => "Giftcards"),
           ],
           :google_place => {
             "types" => ["restaurant", "food", "point_of_interest", "establishment"],
             "photos" => [
               "https://lh3.googleusercontent.com/p/AF1QipP2zr_6z7J6FxzJpCvmWXrPxp3-0DViRTehY-su=s1600-w512",
               "https://lh3.googleusercontent.com/p/AF1QipNwRQFLfPTXF-eOHTXOg1ytpsqdTFOxuwg5JDSN=s1600-w512",
-              "https://lh3.googleusercontent.com/p/AF1QipNjZiUMTQu6V0O2t8tjUoxSrfOE18JyBx4WANdR=s1600-w512"
+              "https://lh3.googleusercontent.com/p/AF1QipNjZiUMTQu6V0O2t8tjUoxSrfOE18JyBx4WANdR=s1600-w512",
             ],
             "rating" => 4.1,
             "address" => "218 Adelaide St W, Toronto, ON M5H 1W7, Canada",
@@ -144,9 +145,9 @@ PaperTrail.request(:whodunnit => Account::MACHINE_EMAIL, :controller_info => {:c
               {"open" => {"day" => 3, "time" => "1100"}, "close" => {"day" => 4, "time" => "0300"}},
               {"open" => {"day" => 4, "time" => "1100"}, "close" => {"day" => 5, "time" => "0300"}},
               {"open" => {"day" => 5, "time" => "1100"}, "close" => {"day" => 6, "time" => "0400"}},
-              {"open" => {"day" => 6, "time" => "1100"}, "close" => {"day" => 0, "time" => "0400"}}
-            ]
-          }
+              {"open" => {"day" => 6, "time" => "1100"}, "close" => {"day" => 0, "time" => "0400"}},
+            ],
+          },
         )
 
         traditional = smokes_poutinerie.menu_items.create!(
@@ -154,8 +155,8 @@ PaperTrail.request(:whodunnit => Account::MACHINE_EMAIL, :controller_info => {:c
           :description => "Smoke’s Signature Gravy, Québec Cheese Curd",
           :allergies => [
             Allergy.find_by(:name => "Eggs"),
-            Allergy.find_by(:name => "Cow's Milk")
-          ]
+            Allergy.find_by(:name => "Cow's Milk"),
+          ],
         )
         traditional.publish!
         traditional.approve!
@@ -164,12 +165,12 @@ PaperTrail.request(:whodunnit => Account::MACHINE_EMAIL, :controller_info => {:c
           :name => "Veggie Traditional",
           :description => "Smoke’s Veggie Gravy, Québec Cheese Curd",
           :diets => [
-            Diet.find_by(:name => "Vegetarian")
+            Diet.find_by(:name => "Vegetarian"),
           ],
           :allergies => [
             Allergy.find_by(:name => "Eggs"),
-            Allergy.find_by(:name => "Cow's Milk")
-          ]
+            Allergy.find_by(:name => "Cow's Milk"),
+          ],
         )
         veggie_traditional.publish!
         veggie_traditional.approve!
@@ -203,7 +204,7 @@ PaperTrail.request(:whodunnit => Account::MACHINE_EMAIL, :controller_info => {:c
             "1/2 cup (120 ml) vegetable broth (DIY or store-bought)",
             "1 cup (240 ml) unsweetened plain almond milk",
             "optional: 1-2 tsp vegan worcestershire sauce or ketchup* (such as Annie’s brand, which isn’t GF)",
-            "1 batch Easy Vegan Mozzarella “Cheese”, separated into 1 tsp amounts (which act as “cheese curds” // or sub 1 cup store-bought vegan mozzarella cheese)*"
+            "1 batch Easy Vegan Mozzarella “Cheese”, separated into 1 tsp amounts (which act as “cheese curds” // or sub 1 cup store-bought vegan mozzarella cheese)*",
           ],
           :instructions => [
             "FRIES: Preheat oven to 450 degrees F (232 C) and chop potatoes into thin slices by halving lengthwise then cutting into wedges and then strips. For “wedges,” cut into larger pieces - both work the same, but matchsticks cook faster.",
@@ -216,14 +217,14 @@ PaperTrail.request(:whodunnit => Account::MACHINE_EMAIL, :controller_info => {:c
             "Transfer to a blender and blend until smooth (optional but recommended). Taste and adjust flavor as needed, adding more salt and pepper to taste or more Worcestershire or coconut aminos for more depth of flavor. See notes for other additions if you desire more depth of flavor.",
             "Return gravy to stovetop and heat on lowest heat to keep warm.",
             "FOR SERVING: Add all of the baked fries to one baking sheet. Then divide the Vegan Mozzarella Cheese into 1 tsp \"curds\" and add to the baked fries (I used just shy of 1 batch of the recipe). Then place fries back in oven on the top rack on medium-to-low broil so the cheese can melt and get slightly browned. Watch carefully so the fries don't burn - 3-5 minutes.",
-            "Pour the gravy over top and dig in! This is a dish best enjoyed fresh! However, the cheese will store separately in the fridge up to 10 days (see notes for other uses). The gravy will keep in the refrigerator up to 5 days (reheat on stovetop for best results - add more almond milk or broth to thin if thickened), and the fries will store for 2-3 days (reheat in oven at 350 degrees F (176 C) for best results)."
+            "Pour the gravy over top and dig in! This is a dish best enjoyed fresh! However, the cheese will store separately in the fridge up to 10 days (see notes for other uses). The gravy will keep in the refrigerator up to 5 days (reheat on stovetop for best results - add more almond milk or broth to thin if thickened), and the fries will store for 2-3 days (reheat in oven at 350 degrees F (176 C) for best results).",
           ],
           :diets => [
             Diet.find_by(:name => "GlutenFree"),
-            Diet.find_by(:name => "Vegan")
+            Diet.find_by(:name => "Vegan"),
           ],
           :cook_time => 45,
-          :prep_time => 15
+          :prep_time => 15,
         )
       end
     end

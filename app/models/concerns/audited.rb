@@ -12,14 +12,14 @@ module Audited
   included do
     has_paper_trail(
       :class_name => "Version",
-      :meta => paper_trail_meta
+      :meta => paper_trail_meta,
     )
   end
 
   class_methods do
     private def paper_trail_meta
       {
-        :transitions => :transitions
+        :transitions => :transitions,
       }
     end
   end

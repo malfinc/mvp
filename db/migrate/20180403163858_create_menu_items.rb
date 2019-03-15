@@ -1,6 +1,6 @@
 class CreateMenuItems < ActiveRecord::Migration[5.1]
   def change
-    create_table :menu_items, :id => :uuid do |table|
+    create_table(:menu_items, :id => :uuid) do |table|
       table.text(:name, :null => false)
       table.citext(:slug, :null => false)
       table.text(:description, :null => false)

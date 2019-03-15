@@ -5,7 +5,7 @@ module V1
       operation = LoginAccountOperation.(
         :scope => policy_scope(Session, :policy_scope_class => SessionPolicy),
         :shared => payload.data.attributes.email,
-        :secret => payload.data.attributes.password
+        :secret => payload.data.attributes.password,
       )
 
       authorize(operation.fetch(:account))
@@ -14,7 +14,7 @@ module V1
 
       render(
         :json => ::V1::SessionMaterializer.new(:object => operation.fetch(:account)),
-        :status => :created
+        :status => :created,
       )
     end
 
@@ -25,7 +25,7 @@ module V1
 
       render(
         :json => ::V1::SessionMaterializer.new(:object => current_account),
-        :status => :ok
+        :status => :ok,
       )
     end
   end

@@ -9,7 +9,7 @@ class GooglePlacesBackfillJob < ApplicationJob
 
     establishment.update!(
       :name => spot.name,
-      :google_place => GooglePlaceResult.serialize(spot)
+      :google_place => GooglePlaceResult.serialize(spot),
     )
   end
 end
