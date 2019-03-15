@@ -7,13 +7,13 @@ require("dotenv/load") unless ENV.fetch("RAILS_ENV", "development") == "producti
 # and maximum; this matches the default thread size of Active Record.
 #
 threads(
-  Poutineer.configuration.fetch_deep(:rails, :max_threads),
-  Poutineer.configuration.fetch_deep(:rails, :min_threads),
+  Poutineer.settings.fetch_deep(:rails, :max_threads),
+  Poutineer.settings.fetch_deep(:rails, :min_threads),
 )
 
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
 #
-port(Integer(ENV.fetch("PORT")))
+port(Integer(Poutineer.settings.fetch_deep(:rails, :port)))
 
 # Specifies the `environment` that Puma will run in.
 #
@@ -25,7 +25,7 @@ environment(ENV.fetch("RAILS_ENV", "development"))
 # Workers do not work on JRuby or Windows (both of which do not support
 # processes).
 #
-workers(Integer(Poutineer.configuration.fetch_deep(:rails, :web_concurrency)))
+workers(Integer(Poutineer.settings.fetch_deep(:rails, :web_concurrency)))
 
 # Use the `preload_app!` method when specifying a `workers` number.
 # This directive tells Puma to first boot the application and load code

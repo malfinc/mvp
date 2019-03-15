@@ -7,12 +7,12 @@ default: &default
   encoding: unicode
   # For details on connection pooling, see Rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
-  pool: <%= Poutineer.configuration.fetch_deep(:rails, :max_threads) %>
+  pool: <%= Poutineer.settings.fetch_deep(:rails, :max_threads) %>
   prepared_statements: false
   advisory_locks: false
   variables:
-    statement_timeout: <%= Poutineer.configuration.fetch_deep(:postgres, :statement_timeout) %>
-    lock_timeout: <%= Poutineer.configuration.fetch_deep(:postgres, :lock_timeout) %>
+    statement_timeout: <%= Poutineer.settings.fetch_deep(:postgres, :statement_timeout) %>
+    lock_timeout: <%= Poutineer.settings.fetch_deep(:postgres, :lock_timeout) %>
 
 development:
   <<: *default

@@ -1,1 +1,3 @@
-GOOGLE_PLACES_CLIENT = GooglePlaces::Client.new(ENV.fetch("GOOGLE_PLACES_API_SECRET")) unless Rails.env.test?
+if Poutineer.secrets.present?
+  GOOGLE_PLACES_CLIENT = GooglePlaces::Client.new(Poutineer.secrets.fetch_deep(:google_places, :secret)) unless Rails.env.test?
+end

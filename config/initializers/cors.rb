@@ -7,7 +7,7 @@
 
 Rails.application.config.middleware.insert_before(0, Rack::Cors) do
   allow do
-    origins(Poutineer.configuration.fetch_deep(:www_origin).gsub(%(https?:://), ""))
+    origins(Poutineer.settings.fetch_deep(:www_origin).gsub(%(https?:://), ""))
 
     resource(
       "*",

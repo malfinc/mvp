@@ -64,7 +64,7 @@ module Poutineer
     # The ActiveJob adapter
     config.active_job.queue_adapter = :sidekiq
     # A prefix for all queue names
-    # config.active_job.queue_name_prefix = Poutineer.configuration.fetch_deep(:activejob, :queue, :prefix)
+    # config.active_job.queue_name_prefix = Poutineer.settings.fetch_deep(:activejob, :queue, :prefix)
 
     # Cache mail views
     config.action_mailer.perform_caching = true
@@ -75,6 +75,7 @@ module Poutineer
     }
 
     # Set the application-level cache
+
     config.cache_store = [
       :redis_cache_store,
       {
@@ -125,14 +126,14 @@ module Poutineer
 
     # Set the url options for controllers
     Rails.application.config.action_controller.default_url_options = {
-      :host => Poutineer.configuration.fetch_deep(:rails, :host),
-      :port => ENV.fetch("PORT"),
+      :host => Poutineer.settings.fetch_deep(:rails, :host),
+      :port => Poutineer.settings.fetch_deep(:rails, :port),
     }.compact
 
     # Set the url options for mailers
     Rails.application.config.action_mailer.default_url_options = {
-      :host => Poutineer.configuration.fetch_deep(:rails, :host),
-      :port => ENV.fetch("PORT"),
+      :host => Poutineer.settings.fetch_deep(:rails, :host),
+      :port => Poutineer.settings.fetch_deep(:rails, :port),
     }.compact
   end
 end
