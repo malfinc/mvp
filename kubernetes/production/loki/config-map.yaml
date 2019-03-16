@@ -4,10 +4,7 @@ kind: ConfigMap
 metadata:
   name: loki
   labels:
-    app: loki
-    chart: loki-0.1.0
-    release: release-name
-    heritage: Tiller
+    group: loki
 data:
   loki.yaml: |
     auth_enabled: false

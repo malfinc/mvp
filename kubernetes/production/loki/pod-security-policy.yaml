@@ -5,10 +5,7 @@ kind: PodSecurityPolicy
 metadata:
   name: loki
   labels:
-    app: loki
-    chart: loki-0.1.0
-    heritage: Tiller
-    release: release-name
+    group: loki
 spec:
   privileged: false
   allowPrivilegeEscalation: false

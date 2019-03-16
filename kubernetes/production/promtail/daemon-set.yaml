@@ -20,8 +20,8 @@ spec:
       serviceAccountName: loki
       containers:
         - name: loki
-          image: "grafana/promtail:master"
-          imagePullPolicy: Always
+          image: "grafana/promtail:master-b8d81ab"
+          imagePullPolicy: IfNotPresent
           args:
             - "-config.file=/etc/promtail/promtail.yaml"
             - "-client.url=http://loki:3100/api/prom/push"
@@ -30,7 +30,7 @@ spec:
               mountPath: /etc/promtail
             - name: varlog
               mountPath: /var/log
-            - name: varlibdockercontainers
+            - name: containers
               mountPath: /var/lib/docker/containers
               readOnly: true
           env:
@@ -53,6 +53,6 @@ spec:
         - name: varlog
           hostPath:
             path: /var/log
-        - name: varlibdockercontainers
+        - name: containers
           hostPath:
             path: /var/lib/docker/containers

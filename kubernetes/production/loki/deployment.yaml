@@ -4,30 +4,24 @@ kind: Deployment
 metadata:
   name: loki
   labels:
-    app: loki
-    chart: loki-0.1.0
-    release: release-name
-    heritage: Tiller
+    group: loki
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: loki
-      release: release-name
+      group: loki
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
-        app: loki
-        name: loki
-        release: release-name
+        group: loki
     spec:
       serviceAccountName: loki
       containers:
         - name: loki
-          image: "grafana/loki:master"
-          imagePullPolicy: Always
+          image: "grafana/loki:master-b8d81ab"
+          imagePullPolicy: IfNotPresent
           args:
             - "-config.file=/etc/loki/loki.yaml"
           volumeMounts:
