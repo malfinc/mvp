@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# That also creates credentials for the gcloud service account for non-GKE development.
+# Create a gcloud keyrings and keys for every environment variable needing security and give various service accounts access to these keys:
+
+gcloud kms keyrings create cluster-secrets --location global
+gcloud kms keyrings create runtime-secrets --location global
+gcloud kms keys create database-encryption --location global --keyring cluster-secrets --purpose encryption
+gcloud kms keys create RAILS_MASTER_KEY --location global --keyring runtime-secrets --purpose encryption
+gcloud kms keys create POSTGRES_SUPERUSER_PASSWORD --location global --keyring runtime-secrets --purpose encryption
+gcloud kms keys create POSTGRES_APPLICATION_PASSWORD --location global --keyring runtime-secrets --purpose encryption
+gcloud kms keys create POSTGRES_SENTRY_PASSWORD --location global --keyring runtime-secrets --purpose encryption
+gcloud kms keys create POSTGRES_METABASE_PASSWORD --location global --keyring runtime-secrets --purpose encryption
+gcloud kms keys create POSTGRES_PGBOUNCER_PASSWORD --location global --keyring runtime-secrets --purpose encryption
