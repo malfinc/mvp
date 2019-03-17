@@ -48,6 +48,7 @@ production:
     email_default: noreply@poutineer.com
     host: poutineer.com
     servce_static_files: false
+    port: 3001
   devise:
     email_default: noreply@poutineer.com
   redis:
