@@ -1,30 +1,64 @@
+  - [ ] Figure out SSL for ambassador OR do it for
+    - [ ] Figure out SSL for resources-api
+    - [ ] Figure out SSL for metabase
+    - [ ] Figure out SSL for sentry
+    - [ ] Figure out SSL for grafana
+    - [ ] Figure out SSL for
+  - [X] Setup redis
+  - [X] Setup postgres (origin)
+  - [ ] Setup postgres (replica)
+  - [X] Setup pgbouncer
+  - [X] Figure out how volumes are going to work on gke
+  - [X] Figure out what RABC means
   - [ ] Setup pgpool in front of pgbouncer
   - [ ] Rewrite docs.rake to use down gem
-  - [ ] Point a domain at the whole thing
-  - [ ] SSL
-  - [ ] Loading?
-  - [ ] Sign up
-  - [ ] Sign in
-  - [ ] Modifying account
-  - [ ] Handle email setup
-  - [ ] Grafana password on KMS
-  - [ ] Sign out
+  - [X] Point a domain at the whole thing
+  - [X] Create users for postgresql
+  - [X] Setup sentry kubernetes configuration
+  - [X] Setup metabase kubernetes configuration
+  - [X] Setup ambassador kubernetes configuration
+  - [X] Setup ambassador-admin kubernetes configuration
+  - [X] Setup kubernetes kubernetes configuration
+  - [ ] Figure out why ambassador-admin isn't navigatable
+  - [ ] Figure out why kubernetes-admin isn't navigatable
+  - [ ] Create a non-production docker image + build
+  - [ ] Rename all database relationships to include intent + class name
+  - [X] Figure out redis security
+  - [X] What am I supposed to do when google is making an (automated?) healthcheck to / for ambassador?
+  - [X] Setup Grafana
+  - [X] Setup Sidekiq Monitor
+  - [X] Setup Sidekiq Monitor
+  - [ ] Find out if I need to set Grafana logs to stdout
+  - [ ] Create these loading components
+    - [ ] List
+    - [ ] Box
+    - [ ] Page
+    - [ ] Image
+  - [ ] Setup authentication logic for the browser client
+  - [ ] Integrate hsdk.js
+  - [ ] Setup some email server
   - [ ] npm install source-map-support
-  - [ ] react-helmet integration
-  - [ ] 404/500 html page
+  - [X] react-helmet(-async) integration
+  - [ ] Make an 404/500/502 html page
   - [ ] Figure out google cloud cloudbuild autodeploy to k8s permissions
-  - [ ] Metabase email
-  - [ ] Metabase google SSO
-  - [ ] ambassador healthcheck header constraint
+  - [ ] Setup Metabase emailing
+  - [ ] Setup Metabase google SSO
+  - [ ] Change ambassador healthcheck to have a header constraint
+  - [X] Setup loki/promtail
+  - [ ] Setup Prometheus
+  - [ ] Setup ambassador metrics
   - [ ] Test and finalize loki/grafana setup
   - [ ] Finish sentry setup
   - [ ] Setup sentry agent frontend/backend
   - [ ] Setup elasticsearch
-  - [ ] redis-backed gem
-  - [ ] active_record-local_postgres_cli
-  - [ ] pundit-not_authorized_error_message
+  - [ ] Pull out the redis-backend into it's own gem
+  - [ ] Pull out the active_record-local_postgres_cli into it's own gem
+  - [ ] Pull out the pundit-not_authorized_error_message into it's own gem
   - [ ] Move from env variables to settings that read from env variables
-  - [ ] opencensus + zipkin setup
+  - [ ] Setup opencensus(?) + zipkin(?) as an APM
   - [ ] Setup server side caching of user ui data to allow for client data hydration
   - [ ] Setup authenticated only routing logic for frontend
   - [ ] Move old ui over
+  - [X] Create automation for the annoying task of generating secret values
+  - [X] Create automation for the annoying task of generating pgbouncer md5 passwords
+  - [ ] Integrate jsonapi-home.rb
