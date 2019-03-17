@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -6,11 +7,11 @@ metadata:
     group: pgbouncer
 data:
   userlist.txt: |-
-    "pgbouncer" "md5006ffbf531f38332a8504871f029dec7"
-    "postgres" "md55cdcea2a7997be60d6c6dcf82e9480b2"
-    "application" "md5e687960cfde6f6b1f358e5fac7dc6cbc"
-    "sentry" "md571ca91609ca7c44cffa43bb79312f013"
-    "metabase" "md54ed97638e32af44a93943d258859fb9a"
+    "postgres" "md5b612ae8c26dc79943c79e40b1fe6b4a4"
+    "application" "md51db0f223a36c93367be2b672dc042c57"
+    "pgbouncer" "md5f10c9a6b4703affe7518401dd9f75f69"
+    "sentry" "md5ad1a87c1eb47af87d0ff3ec94278f947"
+    "metabase" "md50a12f7c044bc38f6718a032631cb0c71"
   pgbouncer.ini: |-
     [databases]
     * = host=postgresql-origin port=5430 auth_user=postgres
