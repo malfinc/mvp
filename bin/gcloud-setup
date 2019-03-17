@@ -1,0 +1,11 @@
+#!/bin/bash
+
+bin/gcloud-setup-project &&
+bin/gcloud-setup-local &&
+bin/gcloud-setup-secrets &&
+bin/gcloud-setup-source &&
+bin/gcloud-setup-build &&
+bin/gcloud-setup-cluster &&
+bin/gcloud-setup-policy-binding &&
+echo "This is the RAILS_MASTER_KEY encrypted value for cloudbuild.yml" &&
+cat config/master.key | gcloud kms encrypt --plaintext-file=- --ciphertext-file=- --location global --keyring runtime-secrets --key RAILS_MASTER_KEY | base64

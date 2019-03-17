@@ -1,0 +1,16 @@
+#!/bin/bash
+
+gcloud projects create --set-as-default poutineer &&
+gcloud config set compute/zone us-west1-a &&
+gcloud config set compute/region us-west1 &&
+gcloud config set functions/region us-west1 &&
+gcloud config set composer/location global &&
+gcloud config set filestore/location global &&
+gcloud config set container/cluster global &&
+gcloud services enable compute.googleapis.com &&
+gcloud services enable containerregistry.googleapis.com &&
+gcloud services enable cloudbuild.googleapis.com &&
+gcloud services enable container.googleapis.com &&
+gcloud services enable cloudkms.googleapis.com &&
+gcloud services enable sourcerepo.googleapis.com &&
+gcloud components install docker-credential-gcr

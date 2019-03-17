@@ -1,0 +1,27 @@
+#!/bin/bash
+
+clear &&
+gcloud iam service-accounts list &&
+echo "What is the email for your cloudbuild account?" &&
+read cloudbuildAccount &&
+echo "What is the email for your container engine account?" &&
+read containerAccount
+
+gcloud kms keys add-iam-policy-binding RAILS_MASTER_KEY --location global --keyring runtime-secrets --member serviceAccount:$cloudbuildAccount --role roles/cloudkms.cryptoKeyEncrypterDecrypter
+gcloud kms keys add-iam-policy-binding POSTGRES_SUPERUSER_PASSWORD --location global --keyring runtime-secrets --member serviceAccount:$cloudbuildAccount --role roles/cloudkms.cryptoKeyEncrypterDecrypter
+gcloud kms keys add-iam-policy-binding POSTGRES_APPLICATION_PASSWORD --location global --keyring runtime-secrets --member serviceAccount:$cloudbuildAccount --role roles/cloudkms.cryptoKeyEncrypterDecrypter
+gcloud kms keys add-iam-policy-binding POSTGRES_SENTRY_PASSWORD --location global --keyring runtime-secrets --member serviceAccount:$cloudbuildAccount --role roles/cloudkms.cryptoKeyEncrypterDecrypter
+gcloud kms keys add-iam-policy-binding POSTGRES_METABASE_PASSWORD --location global --keyring runtime-secrets --member serviceAccount:$cloudbuildAccount --role roles/cloudkms.cryptoKeyEncrypterDecrypter
+gcloud kms keys add-iam-policy-binding POSTGRES_PGBOUNCER_PASSWORD --location global --keyring runtime-secrets --member serviceAccount:$cloudbuildAccount --role roles/cloudkms.cryptoKeyEncrypterDecrypter
+gcloud kms keys add-iam-policy-binding RAILS_MASTER_KEY --location global --keyring runtime-secrets --member serviceAccount:$containerAccount --role roles/cloudkms.cryptoKeyEncrypterDecrypter
+gcloud kms keys add-iam-policy-binding POSTGRES_SUPERUSER_PASSWORD --location global --keyring runtime-secrets --member serviceAccount:$containerAccount --role roles/cloudkms.cryptoKeyEncrypterDecrypter
+gcloud kms keys add-iam-policy-binding POSTGRES_APPLICATION_PASSWORD --location global --keyring runtime-secrets --member serviceAccount:$containerAccount --role roles/cloudkms.cryptoKeyEncrypterDecrypter
+gcloud kms keys add-iam-policy-binding POSTGRES_SENTRY_PASSWORD --location global --keyring runtime-secrets --member serviceAccount:$containerAccount --role roles/cloudkms.cryptoKeyEncrypterDecrypter
+gcloud kms keys add-iam-policy-binding POSTGRES_METABASE_PASSWORD --location global --keyring runtime-secrets --member serviceAccount:$containerAccount --role roles/cloudkms.cryptoKeyEncrypterDecrypter
+gcloud kms keys add-iam-policy-binding POSTGRES_PGBOUNCER_PASSWORD --location global --keyring runtime-secrets --member serviceAccount:$containerAccount --role roles/cloudkms.cryptoKeyEncrypterDecrypter
+gcloud kms keys add-iam-policy-binding RAILS_MASTER_KEY --location global --keyring runtime-secrets --member serviceAccount:local-kubernetes@poutineer.iam.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter
+gcloud kms keys add-iam-policy-binding POSTGRES_SUPERUSER_PASSWORD --location global --keyring runtime-secrets --member serviceAccount:local-kubernetes@poutineer.iam.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter
+gcloud kms keys add-iam-policy-binding POSTGRES_APPLICATION_PASSWORD --location global --keyring runtime-secrets --member serviceAccount:local-kubernetes@poutineer.iam.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter
+gcloud kms keys add-iam-policy-binding POSTGRES_SENTRY_PASSWORD --location global --keyring runtime-secrets --member serviceAccount:local-kubernetes@poutineer.iam.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter
+gcloud kms keys add-iam-policy-binding POSTGRES_METABASE_PASSWORD --location global --keyring runtime-secrets --member serviceAccount:local-kubernetes@poutineer.iam.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter
+gcloud kms keys add-iam-policy-binding POSTGRES_PGBOUNCER_PASSWORD --location global --keyring runtime-secrets --member serviceAccount:local-kubernetes@poutineer.iam.gserviceaccount.com --role roles/cloudkms.cryptoKeyEncrypterDecrypter

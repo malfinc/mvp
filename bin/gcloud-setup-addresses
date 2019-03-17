@@ -1,0 +1,3 @@
+#!/bin/bash
+
+gcloud compute addresses create primary-production-ipv4-address --global --ip-version IPV4

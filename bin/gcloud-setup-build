@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# This will make sure any pushes are automatically turned into docker images
+
+curl -XPOST \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $(gcloud config config-helper --format='value(credential.access_token)')" https://cloudbuild.googleapis.com/v1/projects/poutineer/triggers \
+  -d '{
+      "trigger_template": {
+        "repoName": "mvp",
+        "branchName": "core"
+      },
+      "filename": "gcloud/cloudbuild.yaml"
+    }'

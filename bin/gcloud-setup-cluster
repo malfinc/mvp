@@ -1,15 +1,10 @@
 #!/bin/bash
 
-gcloud config set compute/zone us-west1-a &&
-gcloud config set compute/region us-west1 &&
-gcloud services enable container.googleapis.com &&
 gcloud beta container clusters create primary-production \
-  --enable-cloud-logging \
-  --enable-cloud-monitoring \
   --enable-autoupgrade \
   --enable-autoscaling \
   --min-nodes=3 \
-  --max-nodes=4 \
+  --max-nodes=5 \
   --machine-type=n1-standard-1 \
   --scopes=default,compute-rw,storage-rw \
   --database-encryption-key projects/poutineer/locations/global/keyRings/cluster-secrets/cryptoKeys/database-encryption &&

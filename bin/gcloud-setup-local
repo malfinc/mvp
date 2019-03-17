@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# So we can pull from gcloud's docker registry inside of local kubernete clusters:
+
+docker-credential-gcr configure-docker &&
+gcloud iam service-accounts create local-kubernetes --display-name "Handles all local kubernetes credentials" &&
+gcloud projects add-iam-policy-binding poutineer --member serviceAccount:local-kubernetes@poutineer.iam.gserviceaccount.com --role roles/iam.serviceAccountTokenCreator &&
+gcloud projects add-iam-policy-binding poutineer --member serviceAccount:local-kubernetes@poutineer.iam.gserviceaccount.com --role roles/viewer &&
+gcloud iam service-accounts keys create ./tmp/gcloud-key.json --iam-account local-kubernetes@poutineer.iam.gserviceaccount.com &&
+# Switch to docker-for-desktop
+# kubectl create secret docker-registry gcr-json-key --docker-server gcr.io --docker-username _json_key --docker-password "$(cat ./tmp/gcloud-key.json)" --docker-email local-kubernetes@poutineer.iam.gserviceaccount.com
+# Switch back
