@@ -1,29 +1,30 @@
-0. Setup pgpool
-0. Move old stuff over
-0. Authentication?
-0. Clientside?
-0. Correct docs.rake to use down
-0. Point a domain at the whole thing
-0. SSL
-0. Loading?
-0. Sign up
-0. Sign in
-0. Modifying account
-0. Handle email setup
-0. Grafana password on KMS
-0. Sign out
-0. npm install source-map-support
-0. react-helmet integration
-0. Node ram
-0. Autodeploy permissions
-0. Metabase email
-0. Metabase google SSO
-0. ambassador healthcheck header constraint
-0. Finish sentry setup
-0. ELK or Loki?
-0. Server context???
-0. 404/500 html page
-0. redis-backed gem
-0. active_record-local_postgres_cli
-0. pundit-not_authorized_error_message
-0. Setup sentry agent
+  - [ ] Setup pgpool in front of pgbouncer
+  - [ ] Rewrite docs.rake to use down gem
+  - [ ] Point a domain at the whole thing
+  - [ ] SSL
+  - [ ] Loading?
+  - [ ] Sign up
+  - [ ] Sign in
+  - [ ] Modifying account
+  - [ ] Handle email setup
+  - [ ] Grafana password on KMS
+  - [ ] Sign out
+  - [ ] npm install source-map-support
+  - [ ] react-helmet integration
+  - [ ] 404/500 html page
+  - [ ] Figure out google cloud cloudbuild autodeploy to k8s permissions
+  - [ ] Metabase email
+  - [ ] Metabase google SSO
+  - [ ] ambassador healthcheck header constraint
+  - [ ] Test and finalize loki/grafana setup
+  - [ ] Finish sentry setup
+  - [ ] Setup sentry agent frontend/backend
+  - [ ] Setup elasticsearch
+  - [ ] redis-backed gem
+  - [ ] active_record-local_postgres_cli
+  - [ ] pundit-not_authorized_error_message
+  - [ ] Move from env variables to settings that read from env variables
+  - [ ] opencensus + zipkin setup
+  - [ ] Setup server side caching of user ui data to allow for client data hydration
+  - [ ] Setup authenticated only routing logic for frontend
+  - [ ] Move old ui over
