@@ -1,35 +1,35 @@
 ---
 images:
-- "gcr.io/$PROJECT_ID/poutineer:latest"
-- "gcr.io/$PROJECT_ID/poutineer:$SHORT_SHA"
+  - "gcr.io/$PROJECT_ID/resources-api:latest"
+  - "gcr.io/$PROJECT_ID/resources-api:$SHORT_SHA"
 timeout: "5m"
 steps:
-- name: "gcr.io/cloud-builders/docker"
-  entrypoint: "sh"
-  args:
-  - "-c"
-  - "docker pull gcr.io/$PROJECT_ID/poutineer:latest || exit 0"
-- name: "gcr.io/cloud-builders/docker"
-  entrypoint: "sh"
-  args:
-  - "-c"
-  - "bin/docker-cloudbuild"
-  env:
-  - "SHORT_SHA=$SHORT_SHA"
-  - "PROJECT_ID=$PROJECT_ID"
-  secretEnv:
-  - "RAILS_MASTER_KEY"
-- name: gcr.io/cloud-builders/kubectl
-  args:
-  - set
-  - image
-  - deployment
-  - resources-api
-  - resources-api=gcr.io/$PROJECT_ID/poutineer:$SHORT_SHA
-  env:
-  - "CLOUDSDK_COMPUTE_ZONE=us-west1-a"
-  - "CLOUDSDK_CONTAINER_CLUSTER=primary-production"
+  - name: "gcr.io/cloud-builders/docker"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - "docker pull gcr.io/$PROJECT_ID/resources-api:latest || exit 0"
+  - name: "gcr.io/cloud-builders/docker"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - "bin/docker-cloudbuild"
+    env:
+      - "SHORT_SHA=$SHORT_SHA"
+      - "PROJECT_ID=$PROJECT_ID"
+    secretEnv:
+      - "RAILS_MASTER_KEY"
+  - name: gcr.io/cloud-builders/kubectl
+    args:
+      - set
+      - image
+      - deployment
+      - resources-api
+      - resources-api=gcr.io/$PROJECT_ID/resources-api:$SHORT_SHA
+    env:
+      - "CLOUDSDK_COMPUTE_ZONE=us-west1-a"
+      - "CLOUDSDK_CONTAINER_CLUSTER=primary-production"
 secrets:
-- kmsKeyName: "projects/poutineer/locations/global/keyRings/runtime-secrets/cryptoKeys/RAILS_MASTER_KEY"
-  secretEnv:
-    RAILS_MASTER_KEY: "CiQAv4r4rbz+DqwG50RczSsYsPvhTMfKTaZkLrYQhOxjdGflkhgSSgAS+5ji/huCXu+gB+6lfen1YXsYjQP1hgYfsMQgRtISB7u6VYkR42omj+YEG2EtDObwdps8tuQDvcG3qUhyE96V7cEUC/Ps0vXt"
+  - kmsKeyName: "projects/poutineer/locations/global/keyRings/runtime-secrets/cryptoKeys/RAILS_MASTER_KEY"
+    secretEnv:
+      RAILS_MASTER_KEY: "CiQA3TCZ4Fw06mPpy5JmjDTpb0VSB6ksyD3U77y0HspvKCqpFaMSSAB2uyuHZKIEJLPGuBVeikfB5fClD3nHtCYOUPjkSQKMM8JwvyAAnW2fZTr/ooJh9B9xlexJIla+aGIImPGHn5SE+Wiaf3SSWQ=="

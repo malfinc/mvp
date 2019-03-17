@@ -17,7 +17,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: resources-api-database-migration
-          image: gcr.io/poutineer/resources:latest
+          image: gcr.io/poutineer/resources-api:latest
           args:
             - bin/rake
             - db:migrate
