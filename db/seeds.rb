@@ -105,16 +105,16 @@ PaperTrail.request(:whodunnit => Account::MACHINE_EMAIL, :controller_info => {:c
       )
       moderator.confirm
       moderator.complete!
-      moderator.empower!
+      moderator.upgrade_to_moderator!
 
-      user = Account.create!(
+      author = Account.create!(
         :username => "calvin",
         :name => "Calvin Klean",
         :email => "calvin@example.com",
         :password => "password",
       )
-      user.confirm
-      user.complete!
+      author.confirm
+      author.complete!
 
       PaperTrail.request(:whodunnit => administrator.email, :controller_info => {:context_id => SecureRandom.uuid(), :actor_id => administrator.id}) do
         smokes_poutinerie = Establishment.create!(

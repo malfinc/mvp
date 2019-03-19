@@ -26,7 +26,7 @@ class Account < ApplicationRecord
   before_validation(:generate_authentication_secret, :unless => :authentication_secret?)
 
   validates_inclusion_of(:onboarding_state, :in => ["converted", "completed"], :on => :update)
-  validates_inclusion_of(:role_state, :in => ["user", "administrator"], :on => :update)
+  validates_inclusion_of(:role_state, :in => ["user", "moderator", "administrator"], :on => :update)
   validates_presence_of(:username, :if => :email_required?)
   validates_format_of(:username, :with => USERNAME_PATTERN, :if => :email_required?)
 

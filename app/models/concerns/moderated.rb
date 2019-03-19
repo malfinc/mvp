@@ -26,7 +26,7 @@ module Moderated
   end
 
   included do
-    include(AuditedTransitions)
+    include(AuditedWithTransitions)
 
     state_machine(:moderation_state, :initial => :draft) do
       event(:publish) do
