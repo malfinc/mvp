@@ -1,4 +1,4 @@
-class CreateMenuItems < ActiveRecord::Migration[5.1]
+class CreateMenuItems < ActiveRecord::Migration[5.2]
   def change
     create_table(:menu_items, :id => :uuid) do |table|
       table.text(:name, :null => false)

@@ -1,4 +1,4 @@
-class CreateRecipes < ActiveRecord::Migration[5.1]
+class CreateRecipes < ActiveRecord::Migration[5.2]
   def change
     create_table(:recipes, :id => :uuid) do |table|
       table.text(:name, :null => false)

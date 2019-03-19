@@ -1,4 +1,4 @@
-class CreateDietsRecipes < ActiveRecord::Migration[5.1]
+class CreateDietsRecipes < ActiveRecord::Migration[5.2]
   def change
     create_join_table(:diets, :recipes) do |table|
       table.references(:diet, :type => :bigint, :index => true, :foreign_key => true, :null => false)

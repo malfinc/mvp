@@ -1,4 +1,4 @@
-class CreatePaymentTypes < ActiveRecord::Migration[5.1]
+class CreatePaymentTypes < ActiveRecord::Migration[5.2]
   def change
     create_table(:payment_types, :id => :uuid) do |table|
       table.text(:name, :null => false)

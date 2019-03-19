@@ -1,4 +1,4 @@
-class CreateDiets < ActiveRecord::Migration[5.1]
+class CreateDiets < ActiveRecord::Migration[5.2]
   def change
     create_table(:diets, :id => :bigint) do |table|
       table.text(:name, :null => false)

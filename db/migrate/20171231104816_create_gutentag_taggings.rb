@@ -1,4 +1,4 @@
-class CreateGutentagTaggings < ActiveRecord::Migration[5.1]
+class CreateGutentagTaggings < ActiveRecord::Migration[5.2]
   def change
     create_table(:gutentag_taggings, :id => :bigserial) do |table|
       table.uuid(:tag_id, :null => false)

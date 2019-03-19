@@ -1,4 +1,4 @@
-class CreateQuestions < ActiveRecord::Migration[5.1]
+class CreateQuestions < ActiveRecord::Migration[5.2]
   def change
     create_table(:questions, :id => :bigint) do |table|
       table.text(:body, :null => false)

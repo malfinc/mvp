@@ -1,4 +1,4 @@
-class CreateFriendlyIdSlugs < ActiveRecord::Migration[5.1]
+class CreateFriendlyIdSlugs < ActiveRecord::Migration[5.2]
   def change
     create_table(:friendly_id_slugs, :id => :bigserial) do |table|
       table.citext(:slug, :null => false)

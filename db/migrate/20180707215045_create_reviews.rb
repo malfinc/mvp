@@ -1,4 +1,4 @@
-class CreateReviews < ActiveRecord::Migration[5.1]
+class CreateReviews < ActiveRecord::Migration[5.2]
   def change
     create_table(:reviews, :id => :uuid) do |table|
       table.uuid(:author_id, :null => false)

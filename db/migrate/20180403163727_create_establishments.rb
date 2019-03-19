@@ -1,4 +1,4 @@
-class CreateEstablishments < ActiveRecord::Migration[5.1]
+class CreateEstablishments < ActiveRecord::Migration[5.2]
   def change
     create_table(:establishments, :id => :uuid) do |table|
       table.text(:name, :null => false)

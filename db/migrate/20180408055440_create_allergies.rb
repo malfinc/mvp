@@ -1,4 +1,4 @@
-class CreateAllergies < ActiveRecord::Migration[5.1]
+class CreateAllergies < ActiveRecord::Migration[5.2]
   def change
     create_table(:allergies, :id => :bigint) do |table|
       table.text(:name, :null => false)

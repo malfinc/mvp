@@ -1,4 +1,4 @@
-class CreateAccounts < ActiveRecord::Migration[5.1]
+class CreateAccounts < ActiveRecord::Migration[5.2]
   def change
     create_table(:accounts, :id => :uuid) do |table|
       table.text(:name)

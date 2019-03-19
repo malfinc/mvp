@@ -1,4 +1,4 @@
-class CreateVersions < ActiveRecord::Migration[5.1]
+class CreateVersions < ActiveRecord::Migration[5.2]
   def change
     create_table(:versions, :id => :bigserial) do |table|
       table.text(:item_type, :null => false)

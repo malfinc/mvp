@@ -1,4 +1,4 @@
-class CreateAllergyMenuItems < ActiveRecord::Migration[5.1]
+class CreateAllergyMenuItems < ActiveRecord::Migration[5.2]
   def change
     create_join_table(:allergies, :menu_items) do |table|
       table.references(:allergy, :type => :bigint, :index => true, :foreign_key => true, :null => false)
