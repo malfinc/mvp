@@ -40,7 +40,7 @@
   - [ ] npm install source-map-support
   - [X] react-helmet(-async) integration
   - [ ] Make an 404/500/502 html page
-  - [ ] Figure out google cloud cloudbuild autodeploy to k8s permissions
+  - [X] Figure out google cloud cloudbuild autodeploy to k8s permissions
   - [ ] Setup Metabase emailing
   - [ ] Setup Metabase google SSO
   - [ ] Change ambassador healthcheck to have a header constraint
@@ -62,3 +62,4 @@
   - [X] Create automation for the annoying task of generating secret values
   - [X] Create automation for the annoying task of generating pgbouncer md5 passwords
   - [ ] Integrate jsonapi-home.rb
+  - [ ] Figure out what "Step #2: Error from server (NotFound): deployments.extensions "resources-api" not found" means from cloudbuild
