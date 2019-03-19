@@ -1,6 +1,6 @@
 class CreateAccounts < ActiveRecord::Migration[5.2]
   def change
-    create_table(:accounts, :id => :uuid) do |table|
+    create_table(:accounts) do |table|
       table.text(:name)
       table.citext(:email)
       table.citext(:username)
@@ -20,8 +20,8 @@ class CreateAccounts < ActiveRecord::Migration[5.2]
       table.datetime(:locked_at)
       table.timestamps(:null => false)
 
-      table.index(:email)
-      table.index(:username)
+      table.index(:email, :unique => true)
+      table.index(:username, :unique => true)
       table.index(:onboarding_state)
       table.index(:role_state)
       table.index(:confirmation_token, :unique => true)
@@ -31,8 +31,6 @@ class CreateAccounts < ActiveRecord::Migration[5.2]
 
     safety_assured do
       add_null_constraint(:accounts, :name, :if => %("accounts"."onboarding_state" = 'completed'))
-      add_unique_constraint(:accounts, :email)
-      add_unique_constraint(:accounts, :username)
     end
   end
 end

@@ -1,13 +1,9 @@
 class CreateAnswers < ActiveRecord::Migration[5.2]
   def change
-    create_table(:answers, :id => :bigint) do |table|
+    create_table(:answers) do |table|
       table.text(:body, :null => false)
-      table.bigint(:question_id, :null => false)
+      table.belongs_to(:question, :null => false, :foreign_key => true)
       table.timestamps
-
-      table.index(:question_id)
-
-      table.foreign_key(:questions, :column => :question_id)
     end
   end
 end

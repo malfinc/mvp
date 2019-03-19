@@ -1,6 +1,6 @@
 class CreateEstablishments < ActiveRecord::Migration[5.2]
   def change
-    create_table(:establishments, :id => :uuid) do |table|
+    create_table(:establishments) do |table|
       table.text(:name, :null => false)
       table.citext(:slug, :null => false)
       table.text(:google_places_id)

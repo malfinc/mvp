@@ -1,6 +1,6 @@
 class CreateDiets < ActiveRecord::Migration[5.2]
   def change
-    create_table(:diets, :id => :bigint) do |table|
+    create_table(:diets) do |table|
       table.text(:name, :null => false)
       table.timestamps
 
