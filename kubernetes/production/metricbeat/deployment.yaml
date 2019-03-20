@@ -22,6 +22,7 @@ spec:
     metadata:
       labels:
         group: metricbeat
+        role: monitoring
     spec:
       serviceAccountName: metricbeat
       hostNetwork: true
