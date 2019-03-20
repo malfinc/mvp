@@ -5,6 +5,13 @@ source .env.docker-build
 RAILS_MASTER_KEY=`cat config/master.key`
 
 docker build \
-  --file ./docker/production/Dockerfile \
+  --file ./docker/production/resources-api/Dockerfile \
   --build-arg RAILS_MASTER_KEY=$RAILS_MASTER_KEY \
+  .
+docker build \
+  --file ./docker/production/resources-sidekiq/Dockerfile \
+  --build-arg RAILS_MASTER_KEY=$RAILS_MASTER_KEY \
+  .
+docker build \
+  --file ./docker/production/browser-client/Dockerfile \
   .
