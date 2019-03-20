@@ -4,6 +4,11 @@ images:
   - "gcr.io/$PROJECT_ID/resources-sidekiq:$SHORT_SHA"
 timeout: "5m"
 steps:
+  - name: gcr.io/cloud-builders/gsutil
+    args:
+      - "cp"
+      - "gs://artifacts.poutineer.appspot.com/cloudbuild/cache/resources/vendor/ruby/"
+      - "vendor/ruby/"
   - name: "gcr.io/cloud-builders/docker"
     entrypoint: "sh"
     args:
@@ -19,6 +24,11 @@ steps:
       - "PROJECT_ID=$PROJECT_ID"
     secretEnv:
       - "RAILS_MASTER_KEY"
+  - name: gcr.io/cloud-builders/gsutil
+    args:
+      - "cp"
+      - "vendor/ruby/"
+      - "gs://artifacts.poutineer.appspot.com/cloudbuild/cache/resources/vendor/ruby/"
   - name: gcr.io/cloud-builders/kubectl
     args:
       - set

@@ -13,6 +13,7 @@
 /tmp/*
 !/tmp/.keep
 /node_modules/
+/vendor/ruby/
 /coverage/
 /.nyc_output/
 /docker-compose/postgres/data

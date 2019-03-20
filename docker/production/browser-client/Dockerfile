@@ -18,6 +18,7 @@ COPY assets/ assets/
 COPY client/ client/
 COPY server/ server/
 COPY @internal/ @internal/
+COPY node_modules/ node_modules/
 
 RUN heroku-buildpack-nodejs-master/bin/detect /home/application/
 RUN heroku-buildpack-nodejs-master/bin/compile /home/application/ /tmp/cache /tmp/env

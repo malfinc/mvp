@@ -7,8 +7,6 @@ kubernetes/
 log/
 storage/
 tmp/
-vendor/bundle/
-node_modules/
 .jest/
 .rubocop/
 .storybook/
