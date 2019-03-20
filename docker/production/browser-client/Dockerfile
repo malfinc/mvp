@@ -6,7 +6,7 @@ ENV PORT 3000
 
 WORKDIR /home/application/
 
-RUN curl -s --location https://github.com/heroku/heroku-buildpack-node/archive/master.tar.gz | tar -xzC .
+RUN curl -s --location https://github.com/heroku/heroku-buildpack-nodejs/archive/master.tar.gz | tar -xzC .
 
 COPY .babelrc .babelrc
 COPY package.json package.json
@@ -19,8 +19,8 @@ COPY client/ client/
 COPY server/ server/
 COPY @internal/ @internal/
 
-RUN heroku-buildpack-node-master/bin/detect /home/application/
-RUN heroku-buildpack-node-master/bin/compile /home/application/ /tmp/cache /tmp/env
+RUN heroku-buildpack-nodejs-master/bin/detect /home/application/
+RUN heroku-buildpack-nodejs-master/bin/compile /home/application/ /tmp/cache /tmp/env
 
 FROM heroku/heroku:18
 

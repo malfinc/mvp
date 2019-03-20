@@ -24,8 +24,8 @@ steps:
       - set
       - image
       - deployment
-      - resources-sidekiq-sidekiq
-      - resources-sidekiq-sidekiq=gcr.io/$PROJECT_ID/resources-sidekiq:$SHORT_SHA
+      - resources-sidekiq
+      - resources-sidekiq=gcr.io/$PROJECT_ID/resources-sidekiq:$SHORT_SHA
     env:
       - "CLOUDSDK_COMPUTE_ZONE=us-west1-a"
       - "CLOUDSDK_CONTAINER_CLUSTER=primary-production"
