@@ -13,7 +13,7 @@ steps:
     entrypoint: "sh"
     args:
       - "-c"
-      - "bin/docker-resources-sidekiq-cloudbuild"
+      - "bin/docker-cloudbuild-resources-sidekiq"
     env:
       - "SHORT_SHA=$SHORT_SHA"
       - "PROJECT_ID=$PROJECT_ID"
