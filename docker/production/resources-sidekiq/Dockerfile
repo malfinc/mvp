@@ -17,8 +17,8 @@ COPY Gemfile Gemfile
 COPY bin/rails bin/rails
 COPY bin/rake bin/rake
 COPY bin/docker-entrypoint-ruby bin/docker-entrypoint
-COPY bin/docker-cmd-resources-api bin/docker-cmd
-COPY bin/puma bin/puma
+COPY bin/docker-cmd-resources-sidekiq bin/docker-cmd
+COPY bin/sidekiq bin/sidekiq
 COPY vendor/ vendor/
 COPY lib/ lib/
 COPY config/ config/

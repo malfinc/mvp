@@ -16,53 +16,60 @@ metadata:
       rewrite: /ambassador/v0/check_alive
       ---
       apiVersion: ambassador/v1
+      kind:  Mapping
+      name:  resources-api
+      prefix: /
+      host: resources.poutineer.com
+      service: resources-api.default
+      rewrite: /ambassador/v0/diag/
+      ---
+      apiVersion: ambassador/v1
+      kind:  Mapping
+      name:  browser-client
+      prefix: /
+      host: www.poutineer.com
+      service: browser-client.default
+      ---
+      apiVersion: ambassador/v1
       kind: Mapping
       name: kubernetes-dashboard
       prefix: /
-      host: kubernetes-dashboard.difference-engineers.com
+      host: kubernetes-dashboard.poutineer.com
       service: kubernetes-dashboard.kube-system
       ---
       apiVersion: ambassador/v1
       kind: Mapping
       name: ambassador-admin
       prefix: /
-      host: ambassador-admin.difference-engineers.com
+      host: ambassador-admin.poutineer.com
       service: ambassador-admin.default:8877
-      ---
-      apiVersion: ambassador/v1
-      kind:  Mapping
-      name:  resources-api
-      prefix: /
-      host: resources.difference-engineers.com
-      service: resources-api.default
-      rewrite: /ambassador/v0/diag/
       ---
       apiVersion: ambassador/v1
       kind:  Mapping
       name:  grafana
       prefix: /
-      host: grafana.difference-engineers.com
+      host: grafana.poutineer.com
       service: grafana.default
       ---
       apiVersion: ambassador/v1
       kind:  Mapping
       name:  metabase
       prefix: /
-      host: metabase.difference-engineers.com
+      host: metabase.poutineer.com
       service: metabase.default
       ---
       apiVersion: ambassador/v1
       kind: Mapping
       name: sentry
       prefix: /
-      host: sentry.difference-engineers.com
+      host: sentry.poutineer.com
       service: sentry.default
       ---
       apiVersion: ambassador/v1
       kind: Mapping
       name: sidekiq-monitor
       prefix: /
-      host: sidekiq.difference-engineers.com
+      host: sidekiq.poutineer.com
       service: sidekiq-monitor.default
 spec:
   type: LoadBalancer

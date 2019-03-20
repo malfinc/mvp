@@ -10,6 +10,3 @@ gcloud beta container clusters create primary-production \
   --database-encryption-key projects/poutineer/locations/global/keyRings/cluster-secrets/cryptoKeys/database-encryption &&
 gcloud compute addresses create primary-production-ipv4 --global --ip-version IPV4 &&
 gcloud container clusters get-credentials primary-production &&
-echo "What is the email of the cloudbuild service account?" &&
-read cloudbuildAdmin &&
-gcloud projects add-iam-policy-binding poutineer --role roles/container.admin --member serviceAccount:$cloudbuildAdmin

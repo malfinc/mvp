@@ -23,6 +23,7 @@
   },
   "scripts": {
     "start": "PORT=3000 NODE_ENV=development ORIGIN_LOCATION=http://localhost:3001 webpack --watch",
+    "start:production": "node 'server/index.js'",
     "build": "webpack",
     "prepublishOnly": "npm run build",
     "test": "NODE_ENV=test jest",

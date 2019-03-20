@@ -10,5 +10,15 @@ curl -XPOST \
         "repoName": "mvp",
         "branchName": "core"
       },
-      "filename": "gcloud/cloudbuild.yaml"
+      "filename": "gcloud/resources-api/cloudbuild.yaml"
+    }'
+curl -XPOST \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $(gcloud config config-helper --format='value(credential.access_token)')" https://cloudbuild.googleapis.com/v1/projects/poutineer/triggers \
+  -d '{
+      "trigger_template": {
+        "repoName": "mvp",
+        "branchName": "core"
+      },
+      "filename": "gcloud/browser-client/cloudbuild.yaml"
     }'

@@ -1,0 +1,35 @@
+---
+images:
+  - "gcr.io/$PROJECT_ID/resources-sidekiq:latest"
+  - "gcr.io/$PROJECT_ID/resources-sidekiq:$SHORT_SHA"
+timeout: "5m"
+steps:
+  - name: "gcr.io/cloud-builders/docker"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - "docker pull gcr.io/$PROJECT_ID/resources-sidekiq:latest || exit 0"
+  - name: "gcr.io/cloud-builders/docker"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - "bin/docker-cloudbuild-resources-sidekiq"
+    env:
+      - "SHORT_SHA=$SHORT_SHA"
+      - "PROJECT_ID=$PROJECT_ID"
+    secretEnv:
+      - "RAILS_MASTER_KEY"
+  - name: gcr.io/cloud-builders/kubectl
+    args:
+      - set
+      - image
+      - deployment
+      - resources-sidekiq-sidekiq
+      - resources-sidekiq-sidekiq=gcr.io/$PROJECT_ID/resources-sidekiq:$SHORT_SHA
+    env:
+      - "CLOUDSDK_COMPUTE_ZONE=us-west1-a"
+      - "CLOUDSDK_CONTAINER_CLUSTER=primary-production"
+secrets:
+  - kmsKeyName: "projects/poutineer/locations/global/keyRings/runtime-secrets/cryptoKeys/RAILS_MASTER_KEY"
+    secretEnv:
+      RAILS_MASTER_KEY: "CiQA3TCZ4Fw06mPpy5JmjDTpb0VSB6ksyD3U77y0HspvKCqpFaMSSAB2uyuHZKIEJLPGuBVeikfB5fClD3nHtCYOUPjkSQKMM8JwvyAAnW2fZTr/ooJh9B9xlexJIla+aGIImPGHn5SE+Wiaf3SSWQ=="
