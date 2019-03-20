@@ -28,3 +28,5 @@ rules:
       - nodes/stats
     verbs:
       - get
+  - nonResourceURLs: ["/metrics"]
+    verbs: ["get"]

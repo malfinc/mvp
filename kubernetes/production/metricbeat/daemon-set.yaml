@@ -7,6 +7,15 @@ metadata:
   labels:
     group: metricbeat
 spec:
+  selector:
+    matchLabels:
+      group: metricbeat
+      role: monitoring
+  minReadySeconds: 10
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
   template:
     metadata:
       labels:
@@ -18,13 +27,15 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: metricbeat
-          image: docker.elastic.co/beats/metricbeat:8.0.0
+          image: "docker.elastic.co/beats/metricbeat:6.6.2"
           args:
-            - "-c"
-            - "/etc/metricbeat.yml"
             - "-e"
             - "-system.hostfs=/hostfs"
           env:
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
             - name: ELASTICSEARCH_HOST
               value: elasticsearch
             - name: ELASTICSEARCH_PORT
@@ -44,7 +55,7 @@ spec:
             runAsUser: 0
           volumeMounts:
             - name: config
-              mountPath: /etc/metricbeat.yml
+              mountPath: /usr/share/metricbeat/metricbeat.yml
               readOnly: true
               subPath: metricbeat.yml
             - name: modules
