@@ -7,6 +7,8 @@ steps:
   - name: gcr.io/cloud-builders/gsutil
     args:
       - "cp"
+      - "-r"
+      - "-m"
       - "gs://artifacts.poutineer.appspot.com/cloudbuild/cache/browser-client/node_modules/"
       - "node_modules/"
   - name: "gcr.io/cloud-builders/docker"
@@ -25,6 +27,8 @@ steps:
   - name: gcr.io/cloud-builders/gsutil
     args:
       - "cp"
+      - "-r"
+      - "-m"
       - "node_modules/"
       - "gs://artifacts.poutineer.appspot.com/cloudbuild/cache/browser-client/node_modules/"
   - name: gcr.io/cloud-builders/kubectl

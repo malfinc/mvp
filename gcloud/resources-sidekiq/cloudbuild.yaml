@@ -7,6 +7,8 @@ steps:
   - name: gcr.io/cloud-builders/gsutil
     args:
       - "cp"
+      - "-r"
+      - "-m"
       - "gs://artifacts.poutineer.appspot.com/cloudbuild/cache/resources/vendor/ruby/"
       - "vendor/ruby/"
   - name: "gcr.io/cloud-builders/docker"
@@ -27,6 +29,8 @@ steps:
   - name: gcr.io/cloud-builders/gsutil
     args:
       - "cp"
+      - "-r"
+      - "-m"
       - "vendor/ruby/"
       - "gs://artifacts.poutineer.appspot.com/cloudbuild/cache/resources/vendor/ruby/"
   - name: gcr.io/cloud-builders/kubectl
