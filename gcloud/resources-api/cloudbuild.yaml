@@ -13,7 +13,7 @@ steps:
     entrypoint: "sh"
     args:
       - "-c"
-      - "bin/docker-cloudbuild-resources-api"
+      - "bin/docker-resources-api-cloudbuild"
     env:
       - "SHORT_SHA=$SHORT_SHA"
       - "PROJECT_ID=$PROJECT_ID"
