@@ -55,7 +55,7 @@ spec:
           securityContext:
             runAsUser: 0
           volumeMounts:
-            - name: metricbeat-config
+            - name: config
               mountPath: /usr/share/metricbeat/metricbeat.yml
               readOnly: true
               subPath: metricbeat.yml

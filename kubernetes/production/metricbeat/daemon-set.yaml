@@ -20,6 +20,7 @@ spec:
     metadata:
       labels:
         group: metricbeat
+        role: monitoring
     spec:
       serviceAccountName: metricbeat
       terminationGracePeriodSeconds: 30

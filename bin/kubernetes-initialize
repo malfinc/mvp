@@ -9,7 +9,10 @@ bin/kubernetes-apply production/pgbouncer &&
 bin/kubernetes-apply production/metabase &&
 bin/kubernetes-apply production/grafana &&
 bin/kubernetes-apply production/sentry &&
+bin/kubernetes-apply production/resources-sidekiq &&
 bin/kubernetes-apply production/resources-api &&
+bin/kubernetes-apply production/browser-client &&
+bin/kubernetes-apply production/metricbeat &&
 bin/kubernetes-apply production/ambassador-admin &&
 bin/kubernetes-apply production/ambassador &&
 bin/kubernetes-apply production/ingress.yaml
