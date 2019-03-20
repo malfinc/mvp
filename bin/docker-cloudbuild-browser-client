@@ -1,0 +1,8 @@
+#!/bin/bash
+
+docker build \
+  --cache-from gcr.io/$PROJECT_ID/browser-client:latest \
+  --tag gcr.io/$PROJECT_ID/browser-client:latest \
+  --tag gcr.io/$PROJECT_ID/browser-client:$SHORT_SHA \
+  --file ./docker/production/browser-client/Dockerfile \
+  .
