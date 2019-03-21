@@ -28,8 +28,7 @@ steps:
     args:
       - set
       - image
-      - deployment
-      - resources-api
+      - deployment/resources-api
       - resources-api=gcr.io/$PROJECT_ID/resources-api:$SHORT_SHA
     env:
       - "CLOUDSDK_COMPUTE_ZONE=us-west1-a"
