@@ -37,4 +37,4 @@ steps:
 secrets:
   - kmsKeyName: "projects/poutineer/locations/global/keyRings/runtime-secrets/cryptoKeys/RAILS_MASTER_KEY"
     secretEnv:
-      RAILS_MASTER_KEY: "CiQA3TCZ4Fw06mPpy5JmjDTpb0VSB6ksyD3U77y0HspvKCqpFaMSSAB2uyuHZKIEJLPGuBVeikfB5fClD3nHtCYOUPjkSQKMM8JwvyAAnW2fZTr/ooJh9B9xlexJIla+aGIImPGHn5SE+Wiaf3SSWQ=="
+      RAILS_MASTER_KEY: "CiQA3TCZ4OXG0+GoUvDvFsbYffNzsp4efVvc/9TtOorD4R+1wr4SSAB2uyuHZX2WX1EIaDTu16ji5nLSC6Sdxvuy8bhoo0MZa2LAUgekT5emBWxwGaKTqBx1vZ7hjoEuOVBwa9ACc6tCJDWIxZ6M1g=="
