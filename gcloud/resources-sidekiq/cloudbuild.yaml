@@ -28,8 +28,7 @@ steps:
     args:
       - set
       - image
-      - deployment
-      - resources-sidekiq
+      - deployment/resources-sidekiq
       - resources-sidekiq=gcr.io/$PROJECT_ID/resources-sidekiq:$SHORT_SHA
     env:
       - "CLOUDSDK_COMPUTE_ZONE=us-west1-a"

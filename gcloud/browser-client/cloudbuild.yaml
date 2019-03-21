@@ -26,8 +26,7 @@ steps:
     args:
       - set
       - image
-      - deployment
-      - browser-client
+      - deployment/browser-client
       - browser-client=gcr.io/$PROJECT_ID/browser-client:$SHORT_SHA
     env:
       - "CLOUDSDK_COMPUTE_ZONE=us-west1-a"
