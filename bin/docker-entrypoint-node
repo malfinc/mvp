@@ -1,5 +1,3 @@
 #!/bin/bash
 
-source .profile.d/nodejs.sh
-
 $@
