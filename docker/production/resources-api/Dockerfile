@@ -19,7 +19,6 @@ COPY bin/rake bin/rake
 COPY bin/docker-entrypoint-ruby bin/docker-entrypoint
 COPY bin/docker-cmd-resources-api bin/docker-cmd
 COPY bin/puma bin/puma
-COPY vendor/ vendor/
 COPY lib/ lib/
 COPY config/ config/
 COPY db/ db/
