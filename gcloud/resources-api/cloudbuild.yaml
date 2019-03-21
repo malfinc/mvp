@@ -7,7 +7,7 @@ artifacts:
   objects:
     location: "gs://artifacts.poutineer.appspot.com/cloudbuild/cache/resources-shared/"
     paths:
-      - "vendor/"
+      - "vendor/*"
 steps:
   - name: "gcr.io/cloud-builders/docker"
     entrypoint: "sh"
