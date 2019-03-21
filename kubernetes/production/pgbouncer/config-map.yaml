@@ -7,11 +7,11 @@ metadata:
     group: pgbouncer
 data:
   userlist.txt: |-
-    "postgres" "md5b612ae8c26dc79943c79e40b1fe6b4a4"
-    "application" "md51db0f223a36c93367be2b672dc042c57"
-    "pgbouncer" "md5f10c9a6b4703affe7518401dd9f75f69"
-    "sentry" "md5ad1a87c1eb47af87d0ff3ec94278f947"
-    "metabase" "md50a12f7c044bc38f6718a032631cb0c71"
+    "postgres" "md5f5134bbb5fc80c462377b1786b2c5d43"
+    "application" "md5673e592db03af6fba5ba038ab5d52378"
+    "pgbouncer" "md5a68720b6d60144d57b409802a39e0d7d"
+    "sentry" "md57e6a858cdfd2021683c295f6098eb162"
+    "metabase" "md574a46fcb63b8f8d8e3c73c2dc6a98534"
   pgbouncer.ini: |-
     [databases]
     * = host=postgresql-origin port=5430 auth_user=postgres
