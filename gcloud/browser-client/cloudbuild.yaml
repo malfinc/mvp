@@ -9,6 +9,11 @@ artifacts:
     paths:
       - "node_modules/*"
 steps:
+  - name: gcr.io/cloud-builders/gsutil
+    args:
+      - "cp"
+      - "gs://artifacts.poutineer.appspot.com/cloudbuild/cache/browser-client/node_modules/*"
+      - "node_modules/"
   - name: "gcr.io/cloud-builders/docker"
     entrypoint: "sh"
     args:

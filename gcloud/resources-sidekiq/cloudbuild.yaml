@@ -9,6 +9,11 @@ artifacts:
     paths:
       - "vendor/*"
 steps:
+  - name: gcr.io/cloud-builders/gsutil
+    args:
+      - "cp"
+      - "gs://artifacts.poutineer.appspot.com/cloudbuild/cache/resources-shared/vendor/*"
+      - "vendor/"
   - name: "gcr.io/cloud-builders/docker"
     entrypoint: "sh"
     args:
