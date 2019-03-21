@@ -1,5 +1,6 @@
 ---
 images:
+  - "heroku/heroku:18-build"
   - "gcr.io/$PROJECT_ID/browser-client:latest"
   - "gcr.io/$PROJECT_ID/browser-client:$SHORT_SHA"
 timeout: "5m"
@@ -9,6 +10,11 @@ artifacts:
     paths:
       - "node_modules/"
 steps:
+  - name: "gcr.io/cloud-builders/docker"
+    entrypoint: "sh"
+    args:
+      - "-c"
+      - "docker pull heroku/heroku:18-build || exit 0"
   - name: "gcr.io/cloud-builders/docker"
     entrypoint: "sh"
     args:

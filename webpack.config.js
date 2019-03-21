@@ -15,8 +15,8 @@ const commonConfiguration = {
 }
 const commonPlugins = [
   // new BundleAnalyzerPlugin({analyzerMode: "static"}),
-  new FriendlyErrorsWebpackPlugin(),
-  new WebpackVisualizerPlugin()
+  // new FriendlyErrorsWebpackPlugin(),
+  // new WebpackVisualizerPlugin()
 ]
 const moduleBabel = {
   test: /index\.js$/,
