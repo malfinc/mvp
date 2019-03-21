@@ -46,7 +46,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: runtime-secrets
-                  key: SENTRY_URI
+                  key: SENTRY_RESOURCES_API_URI
             - name: REDIS_SIDEKIQ_HOST
               value: redis-origin.default
             - name: REDIS_SIDEKIQ_DATABASE
