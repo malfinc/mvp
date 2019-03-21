@@ -3,7 +3,7 @@ images:
   - "heroku/heroku:18-build"
   - "gcr.io/$PROJECT_ID/browser-client:latest"
   - "gcr.io/$PROJECT_ID/browser-client:$SHORT_SHA"
-timeout: "5m"
+timeout: "10m"
 artifacts:
   objects:
     location: "gs://artifacts.poutineer.appspot.com/cloudbuild/cache/browser-client/"
