@@ -1,7 +1,5 @@
 class ApplicationController < ActionController::API
   before_action(:assign_paper_trail_context)
-  before_bugsnag_notify(:assign_account_context)
-  before_bugsnag_notify(:assign_request_tab)
   rescue_from(StandardError, :with => :generic_error_handling)
 
   etag {current_account&.id}

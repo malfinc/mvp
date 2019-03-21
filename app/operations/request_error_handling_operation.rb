@@ -27,26 +27,6 @@ class RequestErrorHandlingOperation < ApplicationOperation
   end
   def notify_exception_service
     return unless Rails.env.production?
-
-    # if state.controller.account_signed_in?
-    #   Bugsnag.before_notify_callbacks << ->(report) do
-    #     report.user = {
-    #       :id => state.controller.current_account.id
-    #     }
-    #   end
-    # end
-    #
-    # Bugsnag.before_notify_callbacks << ->(report) do
-    #   report.add_tab(
-    #     :request,
-    #     :request_id => state.controller.request.request_id,
-    #     :session_id => if state.controller.account_signed_in? then state.controller.session.id end,
-    #     :operation_id => operation_id,
-    #     :step_id => step_id
-    #   )
-    # end
-    #
-    # Bugsnag.notify(state.exception)
   end
 
   schema(:render_output) do
