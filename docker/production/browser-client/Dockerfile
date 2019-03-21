@@ -41,6 +41,7 @@ COPY --chown=application --from=build /home/application/bin/ /home/application/b
 COPY --chown=application --from=build /home/application/tmp/server/ /home/application/server/
 COPY --chown=application --from=build /home/application/tmp/client/ /home/application/client/
 COPY --chown=application --from=build /home/application/node_modules/ /home/application/node_modules/
+COPY --chown=application --from=build /home/application/.profile.d/ /home/application/.profile.d/
 
 EXPOSE $PORT
 

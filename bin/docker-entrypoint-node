@@ -1,3 +1,5 @@
 #!/bin/bash
 
+source .profile.d/node.sh
+
 $@
