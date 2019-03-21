@@ -3,18 +3,7 @@ images:
   - "gcr.io/$PROJECT_ID/browser-client:latest"
   - "gcr.io/$PROJECT_ID/browser-client:$SHORT_SHA"
 timeout: "10m"
-artifacts:
-  objects:
-    location: "gs://artifacts.poutineer.appspot.com/cloudbuild/cache/browser-client/"
-    paths:
-      - "node_modules/*"
 steps:
-  - name: gcr.io/cloud-builders/gsutil
-    args:
-      - "cp"
-      - "-r"
-      - "gs://artifacts.poutineer.appspot.com/cloudbuild/cache/browser-client/node_modules/"
-      - "node_modules/"
   - name: "gcr.io/cloud-builders/docker"
     entrypoint: "sh"
     args:

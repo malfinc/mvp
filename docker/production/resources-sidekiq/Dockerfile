@@ -23,7 +23,6 @@ COPY lib/ lib/
 COPY config/ config/
 COPY db/ db/
 COPY app/ app/
-COPY vendor/ vendor/
 
 RUN heroku-buildpack-ruby-master/bin/detect /home/application/
 RUN heroku-buildpack-ruby-master/bin/compile /home/application/ /tmp/cache /tmp/env

@@ -3,18 +3,7 @@ images:
   - "gcr.io/$PROJECT_ID/resources-api:latest"
   - "gcr.io/$PROJECT_ID/resources-api:$SHORT_SHA"
 timeout: "5m"
-artifacts:
-  objects:
-    location: "gs://artifacts.poutineer.appspot.com/cloudbuild/cache/resources-shared/"
-    paths:
-      - "vendor/*"
 steps:
-  - name: gcr.io/cloud-builders/gsutil
-    args:
-      - "cp"
-      - "-r"
-      - "gs://artifacts.poutineer.appspot.com/cloudbuild/cache/resources-shared/vendor/"
-      - "vendor/"
   - name: "gcr.io/cloud-builders/docker"
     entrypoint: "sh"
     args:
