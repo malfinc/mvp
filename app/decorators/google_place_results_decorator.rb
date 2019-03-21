@@ -1,0 +1,3 @@
+class GooglePlaceResultDecorator < ApplicationDecorator
+
+end
