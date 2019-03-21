@@ -23,6 +23,7 @@ gem("smart_params", "2.3.1")
 gem("highline", "2.0.1")
 gem("down", "4.8.0", :require => "down/net_http")
 gem("flipper", "0.16.1")
+gem("draper", "3.1.0")
 
 gem("puma", "3.12.0")
 gem("puma_worker_killer", "0.1.0")
