@@ -40,7 +40,21 @@ WORKDIR /home/application/
 
 VOLUME /home/application/
 
-COPY --chown=application --from=build /home/application/ /home/application/
+COPY --chown=application --from=build /home/application/.bashrc /home/application/.bashrc
+COPY --chown=application --from=build /home/application/.profile /home/application/.profile
+COPY --chown=application --from=build /home/application/Gemfile /home/application/Gemfile
+COPY --chown=application --from=build /home/application/Gemfile.lock /home/application/Gemfile.lock
+COPY --chown=application --from=build /home/application/Rakefile /home/application/Rakefile
+COPY --chown=application --from=build /home/application/config.ru /home/application/config.ru
+COPY --chown=application --from=build /home/application/.bundle/ /home/application/.bundle/
+COPY --chown=application --from=build /home/application/.heroku/ /home/application/.heroku/
+COPY --chown=application --from=build /home/application/.profile.d/ /home/application/.profile.d/
+COPY --chown=application --from=build /home/application/app/ /home/application/app/
+COPY --chown=application --from=build /home/application/bin/ /home/application/bin/
+COPY --chown=application --from=build /home/application/config/ /home/application/config/
+COPY --chown=application --from=build /home/application/db/ /home/application/db/
+COPY --chown=application --from=build /home/application/lib/ /home/application/lib/
+COPY --chown=application --from=build /home/application/vendor/ /home/application/vendor/
 
 EXPOSE $PORT
 

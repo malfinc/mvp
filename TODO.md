@@ -62,4 +62,5 @@
   - [X] Create automation for the annoying task of generating secret values
   - [X] Create automation for the annoying task of generating pgbouncer md5 passwords
   - [ ] Integrate jsonapi-home.rb
-  - [ ] Figure out what "Step #2: Error from server (NotFound): deployments.extensions "resources-api" not found" means from cloudbuild
+  - [X] Figure out what "Step #2: Error from server (NotFound): deployments.extensions "resources-api" not found" means from cloudbuild
+  - [X] Figure out why all my postgres stuff can't get a connection anymore? "Bad Auth" is all I get. (Turns out it was a bad md5 sum on pgbouncer's side)
