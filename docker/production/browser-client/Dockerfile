@@ -37,7 +37,6 @@ VOLUME /home/application/
 
 COPY --chown=application --from=build /home/application/package.json /home/application/package.json
 COPY --chown=application --from=build /home/application/package-lock.json /home/application/package-lock.json
-COPY --chown=application --from=build /home/application/.bashrc /home/application/.bashrc
 COPY --chown=application --from=build /home/application/.profile /home/application/.profile
 COPY --chown=application --from=build /home/application/.heroku/ /home/application/.heroku/
 COPY --chown=application --from=build /home/application/bin/ /home/application/bin/
