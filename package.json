@@ -73,7 +73,6 @@
     "jest": "24.5.0",
     "nodemon-webpack-plugin": "4.0.7",
     "react-test-renderer": "16.8.4",
-    "redux-logger": "3.0.6",
     "regenerator-runtime": "0.13.1",
     "rucksack-css": "1.0.2",
     "source-map-support": "0.5.11",
@@ -125,6 +124,7 @@
     "recompose": "0.30.0",
     "redux": "4.0.1",
     "redux-thunk": "2.3.0",
+    "redux-logger": "3.0.6",
     "require-environment-variables": "1.2.0",
     "reselect": "4.0.0",
     "store": "2.0.12"
