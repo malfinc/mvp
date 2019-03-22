@@ -40,7 +40,6 @@ WORKDIR /home/application/
 
 VOLUME /home/application/
 
-COPY --chown=application --from=build /home/application/.profile /home/application/.profile
 COPY --chown=application --from=build /home/application/Gemfile /home/application/Gemfile
 COPY --chown=application --from=build /home/application/Gemfile.lock /home/application/Gemfile.lock
 COPY --chown=application --from=build /home/application/Rakefile /home/application/Rakefile
