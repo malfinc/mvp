@@ -53,9 +53,9 @@ production:
     email_default: noreply@poutineer.com
   redis:
     sidekiq_client:
-      pool: 10
+      pool: 20
     sidekiq_server:
-      pool: 10
+      pool: 20
     cache:
       pool: 20
     lock:
