@@ -2,7 +2,7 @@ module Poutineer
   module Redis
     def self.sidekiq_server_connection
       @sidekiq_server_connection ||= ConnectionPool.new(:size => pool_size(:sidekiq_server), :timeout => 5) do
-        Redis.new(:driver => :hiredis, **configuration(:server))
+        Redis.new(:driver => :hiredis, **configuration(:sidekiq))
       end
     end
 
