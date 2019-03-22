@@ -7,6 +7,6 @@ class UnlockOperation < ApplicationOperation
     field(:type, :type => Types::Strict::Symbol)
   end
   def delete(state:)
-    Poutineer.redis_lock_connection.unlock(state.lock)
+    Poutineer::Redis.lock_connection.unlock(state.lock)
   end
 end

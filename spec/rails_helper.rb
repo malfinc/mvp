@@ -129,10 +129,10 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do
-    Poutineer.redis_objects_connection.with(&:flushdb)
-    Poutineer.redis_sidekiq_client_connection.with(&:flushdb)
-    Poutineer.redis_sidekiq_server_connection.with(&:flushdb)
-    Poutineer.redis_cache_connection.with(&:flushdb)
-    Poutineer.redis_lock_connection.client.with(&:flushdb)
+    Poutineer::Redis.objects_connection.with(&:flushdb)
+    Poutineer::Redis.sidekiq_client_connection.with(&:flushdb)
+    Poutineer::Redis.sidekiq_server_connection.with(&:flushdb)
+    Poutineer::Redis.cache_connection.with(&:flushdb)
+    Poutineer::Redis.lock_connection.client.with(&:flushdb)
   end
 end

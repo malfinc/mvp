@@ -1,1 +1,1 @@
-Redis::Objects.redis = Poutineer.redis_objects_connection
+Redis::Objects.redis = Poutineer::Redis.objects_connection

@@ -82,7 +82,7 @@ module Poutineer
         :driver => :hiredis,
         :expires_in => 30.minutes,
         :compress => true,
-        :redis => Poutineer.redis_cache_connection,
+        :redis => Poutineer::Redis.cache_connection,
       },
     ]
 
