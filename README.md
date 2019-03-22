@@ -16,13 +16,14 @@ Requirements:
 
 Installing:
 
-  0. bundle install
-  0. npm install
+  0. `bundle install`
+  0. `npm install`
 
 Running:
 
-  0. docker-compose up
-  0. npx nf start
+  0. [daemon] `docker-compose up`
+  0. [daemon] `npx nf start`
+  0. [once] `bin/rake db:create db:migrate db:seed`
 
 
 ## Notes
