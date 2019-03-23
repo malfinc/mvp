@@ -27,9 +27,7 @@ data:
     output:
       elasticsearch:
         hosts:
-        - "${ELASTICSEARCH_HOST:elasticsearch}:${ELASTICSEARCH_PORT:9200}"
-        username: ${ELASTICSEARCH_USERNAME}
-        password: ${ELASTICSEARCH_PASSWORD}
+        - "elasticsearch-master.default:9200"
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -111,9 +109,7 @@ data:
     output:
       elasticsearch:
         hosts:
-        - "${ELASTICSEARCH_HOST:elasticsearch}:${ELASTICSEARCH_PORT:9200}"
-        username: ${ELASTICSEARCH_USERNAME}
-        password: ${ELASTICSEARCH_PASSWORD}
+        - "elasticsearch-master.default:9200"
 ---
 apiVersion: v1
 kind: ConfigMap

@@ -47,6 +47,13 @@ metadata:
       ---
       apiVersion: ambassador/v1
       kind:  Mapping
+      name:  kibana
+      prefix: /
+      host: kibana.difference-engineers.com
+      service: kibana.default
+      ---
+      apiVersion: ambassador/v1
+      kind:  Mapping
       name:  grafana
       prefix: /
       host: grafana.difference-engineers.com
