@@ -2,16 +2,17 @@
 apiVersion: extensions/v1beta1
 kind: PodSecurityPolicy
 metadata:
-  name: promtail
+  name: loki
   labels:
-    group: promtail
+    group: loki
 spec:
-  privileged: true
-  allowPrivilegeEscalation: true
+  privileged: false
+  allowPrivilegeEscalation: false
   volumes:
-  - secret
   - configMap
-  - hostPath
+  - emptyDir
+  - persistentVolumeClaim
+  - secret
   hostNetwork: false
   hostIPC: false
   hostPID: false

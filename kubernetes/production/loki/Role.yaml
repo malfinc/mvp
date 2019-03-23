@@ -2,9 +2,9 @@
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: Role
 metadata:
-  name: promtail
+  name: loki
   labels:
-    group: promtail
+    group: loki
 rules:
 - apiGroups:
   - extensions
@@ -13,4 +13,4 @@ rules:
   verbs:
   - use
   resourceNames:
-  - promtail
+  - loki

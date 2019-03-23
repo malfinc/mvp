@@ -5,7 +5,6 @@ metadata:
   name: kibana
   labels:
     group: kibana
-
 spec:
   replicas: 1
   selector:
@@ -20,10 +19,10 @@ spec:
     spec:
       containers:
       - name: kibana
-        image: "docker.elastic.co/kibana/kibana:6.6.2"
+        image: docker.elastic.co/kibana/kibana:6.6.2
         env:
-          - name: server.host
-            value: 0.0.0.0
+        - name: server.host
+          value: 0.0.0.0
         volumeMounts:
         - name: kibana
           mountPath: "/usr/share/kibana/config/kibana.yml"
@@ -40,6 +39,6 @@ spec:
             path: "/app/kibana"
             port: 5601
       volumes:
-        - name: kibana
-          configMap:
-            name: kibana
+      - name: kibana
+        configMap:
+          name: kibana

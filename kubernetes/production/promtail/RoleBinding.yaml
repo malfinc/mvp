@@ -1,9 +1,10 @@
+---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: RoleBinding
 metadata:
   name: promtail
   labels:
-    group: promail
+    group: promtail
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role

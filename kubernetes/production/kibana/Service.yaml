@@ -12,6 +12,6 @@ spec:
   selector:
     group: kibana
   ports:
-    - name: http
-      port: 80
-      targetPort: 5601
+  - name: http
+    port: 80
+    targetPort: 5601
