@@ -23,4 +23,4 @@ data:
     datasources:
     - name: Loki
       type: loki
-      url: http://loki.default:3100
+      url: http://loki.default:3100/

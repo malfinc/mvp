@@ -23,42 +23,42 @@ spec:
         role: browser-application
     spec:
       containers:
-        - name: grafana
-          image: grafana/grafana:5.4.3
-          imagePullPolicy: IfNotPresent
-          volumeMounts:
-            - name: config
-              mountPath: "/etc/grafana/grafana.ini"
-              subPath: grafana.ini
-            - name: config
-              mountPath: "/etc/grafana/provisioning/datasources/loki.yaml"
-              subPath: loki.yaml
-            - name: storage
-              mountPath: "/var/lib/grafana"
-          ports:
-            - containerPort: 3000
-          env:
-            - name: GF_SECURITY_ADMIN_USER
-              value: administrator
-            - name: GF_SECURITY_ADMIN_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: runtime-secrets
-                  key: GRAFANA_ADMINISTRATOR_PASSWORD
-          livenessProbe:
-            failureThreshold: 10
-            httpGet:
-              path: "/api/health"
-              port: 3000
-            initialDelaySeconds: 60
-            timeoutSeconds: 30
-          readinessProbe:
-            httpGet:
-              path: "/api/health"
-              port: 3000
-      volumes:
+      - name: grafana
+        image: grafana/grafana:6.0.2
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
         - name: config
-          configMap:
-            name: grafana
+          mountPath: "/etc/grafana/grafana.ini"
+          subPath: grafana.ini
+        - name: config
+          mountPath: "/etc/grafana/provisioning/datasources/loki.yaml"
+          subPath: loki.yaml
         - name: storage
-          emptyDir: {}
+          mountPath: "/var/lib/grafana"
+        ports:
+        - containerPort: 3000
+        env:
+        - name: GF_SECURITY_ADMIN_USER
+          value: administrator
+        - name: GF_SECURITY_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: GRAFANA_ADMINISTRATOR_PASSWORD
+        livenessProbe:
+          failureThreshold: 10
+          httpGet:
+            path: "/api/health"
+            port: 3000
+          initialDelaySeconds: 60
+          timeoutSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: "/api/health"
+            port: 3000
+      volumes:
+      - name: config
+        configMap:
+          name: grafana
+      - name: storage
+        emptyDir: {}
