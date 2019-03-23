@@ -7,6 +7,7 @@ metadata:
     group: loki
     role: reporting
 spec:
+  type: ClusterIP
   ports:
   - name: loki-http
     port: 3100

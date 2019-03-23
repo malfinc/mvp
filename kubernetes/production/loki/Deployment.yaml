@@ -29,11 +29,9 @@ spec:
           mountPath: "/etc/loki"
         - name: storage
           mountPath: "/data"
-          subPath: 
+          subPath:
         ports:
-        - name: loki-metrics
-          containerPort: 3100
-          protocol: TCP
+        - containerPort: 3100
       volumes:
       - name: config
         configMap:
