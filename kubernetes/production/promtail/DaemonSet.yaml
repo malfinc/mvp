@@ -18,7 +18,6 @@ spec:
         group: promtail
         role: monitor
     spec:
-      serviceAccount: promtail
       serviceAccountName: promtail
       containers:
       - name: promtail
@@ -45,9 +44,6 @@ spec:
         securityContext:
           privileged: true
           runAsUser: 0
-      tolerations:
-      - effect: NoSchedule
-        key: node-role.kubernetes.io/master
       volumes:
       - name: config
         configMap:
