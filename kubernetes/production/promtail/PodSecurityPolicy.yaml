@@ -1,3 +1,4 @@
+---
 apiVersion: extensions/v1beta1
 kind: PodSecurityPolicy
 metadata:
@@ -8,18 +9,18 @@ spec:
   privileged: true
   allowPrivilegeEscalation: true
   volumes:
-    - "secret"
-    - "configMap"
-    - "hostPath"
+  - secret
+  - configMap
+  - hostPath
   hostNetwork: false
   hostIPC: false
   hostPID: false
   runAsUser:
-    rule: "RunAsAny"
+    rule: RunAsAny
   seLinux:
-    rule: "RunAsAny"
+    rule: RunAsAny
   supplementalGroups:
-    rule: "RunAsAny"
+    rule: RunAsAny
   fsGroup:
-    rule: "RunAsAny"
+    rule: RunAsAny
   readOnlyRootFilesystem: false

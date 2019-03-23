@@ -1,4 +1,4 @@
-# Source: loki/templates/loki/deployment.yaml
+---
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
@@ -19,24 +19,24 @@ spec:
     spec:
       serviceAccountName: loki
       containers:
-        - name: loki
-          image: "grafana/loki:master-b8d81ab"
-          imagePullPolicy: IfNotPresent
-          args:
-            - "-config.file=/etc/loki/loki.yaml"
-          volumeMounts:
-            - name: config
-              mountPath: /etc/loki
-            - name: storage
-              mountPath: "/data"
-              subPath:
-          ports:
-            - name: loki-metrics
-              containerPort: 3100
-              protocol: TCP
-      volumes:
+      - name: loki
+        image: grafana/loki:master-b8d81ab
+        imagePullPolicy: IfNotPresent
+        args:
+        - "-config.file=/etc/loki/loki.yaml"
+        volumeMounts:
         - name: config
-          configMap:
-            name: loki
+          mountPath: "/etc/loki"
         - name: storage
-          emptyDir: {}
+          mountPath: "/data"
+          subPath: 
+        ports:
+        - name: loki-metrics
+          containerPort: 3100
+          protocol: TCP
+      volumes:
+      - name: config
+        configMap:
+          name: loki
+      - name: storage
+        emptyDir: {}

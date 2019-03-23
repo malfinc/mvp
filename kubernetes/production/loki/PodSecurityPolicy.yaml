@@ -1,5 +1,4 @@
-# Source: loki/templates/loki/podsecuritypolicy.yaml
-
+---
 apiVersion: extensions/v1beta1
 kind: PodSecurityPolicy
 metadata:
@@ -10,19 +9,19 @@ spec:
   privileged: false
   allowPrivilegeEscalation: false
   volumes:
-    - "configMap"
-    - "emptyDir"
-    - "persistentVolumeClaim"
-    - "secret"
+  - configMap
+  - emptyDir
+  - persistentVolumeClaim
+  - secret
   hostNetwork: false
   hostIPC: false
   hostPID: false
   runAsUser:
-    rule: "RunAsAny"
+    rule: RunAsAny
   seLinux:
-    rule: "RunAsAny"
+    rule: RunAsAny
   supplementalGroups:
-    rule: "RunAsAny"
+    rule: RunAsAny
   fsGroup:
-    rule: "RunAsAny"
+    rule: RunAsAny
   readOnlyRootFilesystem: false

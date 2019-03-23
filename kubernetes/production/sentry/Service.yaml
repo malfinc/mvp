@@ -1,3 +1,4 @@
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -11,6 +12,6 @@ spec:
   selector:
     group: sentry
   ports:
-    - name: sentry-http
-      port: 80
-      targetPort: 9000
+  - name: sentry-http
+    port: 80
+    targetPort: 9000

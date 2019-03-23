@@ -6,7 +6,11 @@ metadata:
   labels:
     group: loki
 rules:
-  - apiGroups: ["extensions"]
-    resources: ["podsecuritypolicies"]
-    verbs: ["use"]
-    resourceNames: [loki]
+- apiGroups:
+  - extensions
+  resources:
+  - podsecuritypolicies
+  verbs:
+  - use
+  resourceNames:
+  - loki

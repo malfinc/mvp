@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -22,57 +23,57 @@ spec:
         role: database
     spec:
       containers:
-        - name: postgresql-origin
-          image: postgres:11.2
-          imagePullPolicy: IfNotPresent
-          command:
-            - "docker-entrypoint.sh"
-            - "-c"
-            - "config_file=/var/lib/postgresql/configuration/postgresql.conf"
-          ports:
-            - containerPort: 5432
-          volumeMounts:
-            - name: postgresql-origin-data
-              mountPath: "/var/lib/postgresql/data/"
-            - name: postgresql-origin-configuration
-              mountPath: "/var/lib/postgresql/configuration/"
-            - name: postgresql-origin-initializers
-              mountPath: "/docker-entrypoint-initdb.d/"
-          env:
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: runtime-secrets
-                  key: POSTGRES_SUPERUSER_PASSWORD
-            - name: POSTGRES_PGBOUNCER_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: runtime-secrets
-                  key: POSTGRES_PGBOUNCER_PASSWORD
-            - name: POSTGRES_APPLICATION_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: runtime-secrets
-                  key: POSTGRES_APPLICATION_PASSWORD
-            - name: POSTGRES_METABASE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: runtime-secrets
-                  key: POSTGRES_METABASE_PASSWORD
-            - name: POSTGRES_SENTRY_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: runtime-secrets
-                  key: POSTGRES_SENTRY_PASSWORD
-            - name: PGDATA
-              value: "/var/lib/postgresql/data/"
-      volumes:
+      - name: postgresql-origin
+        image: postgres:11.2
+        imagePullPolicy: IfNotPresent
+        command:
+        - docker-entrypoint.sh
+        - "-c"
+        - config_file=/var/lib/postgresql/configuration/postgresql.conf
+        ports:
+        - containerPort: 5432
+        volumeMounts:
         - name: postgresql-origin-data
-          persistentVolumeClaim:
-            claimName: postgresql-origin-data
+          mountPath: "/var/lib/postgresql/data/"
         - name: postgresql-origin-configuration
-          configMap:
-            name: postgresql-origin-configuration
+          mountPath: "/var/lib/postgresql/configuration/"
         - name: postgresql-origin-initializers
-          configMap:
-            name: postgresql-origin-initializers
+          mountPath: "/docker-entrypoint-initdb.d/"
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: POSTGRES_SUPERUSER_PASSWORD
+        - name: POSTGRES_PGBOUNCER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: POSTGRES_PGBOUNCER_PASSWORD
+        - name: POSTGRES_APPLICATION_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: POSTGRES_APPLICATION_PASSWORD
+        - name: POSTGRES_METABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: POSTGRES_METABASE_PASSWORD
+        - name: POSTGRES_SENTRY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: POSTGRES_SENTRY_PASSWORD
+        - name: PGDATA
+          value: "/var/lib/postgresql/data/"
+      volumes:
+      - name: postgresql-origin-data
+        persistentVolumeClaim:
+          claimName: postgresql-origin-data
+      - name: postgresql-origin-configuration
+        configMap:
+          name: postgresql-origin-configuration
+      - name: postgresql-origin-initializers
+        configMap:
+          name: postgresql-origin-initializers

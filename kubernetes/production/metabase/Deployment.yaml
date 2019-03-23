@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -22,40 +23,40 @@ spec:
         role: browser-application
     spec:
       containers:
-        - name: metabase
-          image: metabase/metabase:v0.31.2
-          imagePullPolicy: IfNotPresent
-          env:
-            - name: MB_JETTY_HOST
-              value: "0.0.0.0"
-            - name: MB_JETTY_PORT
-              value: "3000"
-            - name: MB_DB_CONNECTION_URI
-              valueFrom:
-                secretKeyRef:
-                  name: runtime-secrets
-                  key: POSTGRES_METABASE_URI
-            - name: MB_PASSWORD_COMPLEXITY
-              value: "normal"
-            - name: MB_PASSWORD_LENGTH
-              value: "12"
-            - name: JAVA_TIMEZONE
-              value: "UTC"
-            - name: MB_EMOJI_IN_LOGS
-              value: "true"
-          ports:
-            - containerPort: 3000
-          livenessProbe:
-            httpGet:
-              path: "/"
-              port: 3000
-            initialDelaySeconds: 120
-            timeoutSeconds: 5
-            failureThreshold: 6
-          readinessProbe:
-            httpGet:
-              path: "/"
-              port: 3000
-            initialDelaySeconds: 30
-            timeoutSeconds: 3
-            periodSeconds: 5
+      - name: metabase
+        image: metabase/metabase:v0.31.2
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MB_JETTY_HOST
+          value: 0.0.0.0
+        - name: MB_JETTY_PORT
+          value: '3000'
+        - name: MB_DB_CONNECTION_URI
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: POSTGRES_METABASE_URI
+        - name: MB_PASSWORD_COMPLEXITY
+          value: normal
+        - name: MB_PASSWORD_LENGTH
+          value: '12'
+        - name: JAVA_TIMEZONE
+          value: UTC
+        - name: MB_EMOJI_IN_LOGS
+          value: 'true'
+        ports:
+        - containerPort: 3000
+        livenessProbe:
+          httpGet:
+            path: "/"
+            port: 3000
+          initialDelaySeconds: 120
+          timeoutSeconds: 5
+          failureThreshold: 6
+        readinessProbe:
+          httpGet:
+            path: "/"
+            port: 3000
+          initialDelaySeconds: 30
+          timeoutSeconds: 3
+          periodSeconds: 5

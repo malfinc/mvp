@@ -23,43 +23,43 @@ spec:
         role: background-jobs
     spec:
       containers:
-        - name: resources-sidekiq
-          image: gcr.io/poutineer/resources-sidekiq:latest
-          env:
-            - name: RAILS_MASTER_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: runtime-secrets
-                  key: RAILS_MASTER_KEY
-            - name: POSTGRES_HOST
-              value: pgbouncer.default
-            - name: POSTGRES_USERNAME
-              value: application
-            - name: POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: runtime-secrets
-                  key: POSTGRES_APPLICATION_PASSWORD
-            - name: POSTGRES_DATABASE
-              value: resources
-            - name: SENTRY_URI
-              valueFrom:
-                secretKeyRef:
-                  name: runtime-secrets
-                  key: SENTRY_RESOURCES_API_URI
-            - name: REDIS_SIDEKIQ_HOST
-              value: redis-origin.default
-            - name: REDIS_SIDEKIQ_DATABASE
-              value: "0"
-            - name: REDIS_CACHE_HOST
-              value: redis-origin.default
-            - name: REDIS_CACHE_DATABASE
-              value: "1"
-            - name: REDIS_LOCK_HOST
-              value: redis-origin.default
-            - name: REDIS_LOCK_DATABASE
-              value: "2"
-            - name: REDIS_OBJECTS_HOST
-              value: redis-origin.default
-            - name: REDIS_OBJECTS_DATABASE
-              value: "3"
+      - name: resources-sidekiq
+        image: gcr.io/poutineer/resources-sidekiq:latest
+        env:
+        - name: RAILS_MASTER_KEY
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: RAILS_MASTER_KEY
+        - name: POSTGRES_HOST
+          value: pgbouncer.default
+        - name: POSTGRES_USERNAME
+          value: application
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: POSTGRES_APPLICATION_PASSWORD
+        - name: POSTGRES_DATABASE
+          value: resources
+        - name: SENTRY_URI
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: SENTRY_RESOURCES_API_URI
+        - name: REDIS_SIDEKIQ_HOST
+          value: redis-origin.default
+        - name: REDIS_SIDEKIQ_DATABASE
+          value: '0'
+        - name: REDIS_CACHE_HOST
+          value: redis-origin.default
+        - name: REDIS_CACHE_DATABASE
+          value: '1'
+        - name: REDIS_LOCK_HOST
+          value: redis-origin.default
+        - name: REDIS_LOCK_DATABASE
+          value: '2'
+        - name: REDIS_OBJECTS_HOST
+          value: redis-origin.default
+        - name: REDIS_OBJECTS_DATABASE
+          value: '3'

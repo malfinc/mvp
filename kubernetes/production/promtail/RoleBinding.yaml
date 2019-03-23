@@ -1,3 +1,4 @@
+---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: RoleBinding
 metadata:
@@ -9,5 +10,5 @@ roleRef:
   kind: Role
   name: promtail
 subjects:
-  - kind: ServiceAccount
-    name: loki
+- kind: ServiceAccount
+  name: loki

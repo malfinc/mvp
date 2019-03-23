@@ -1,4 +1,4 @@
-# Source: loki/templates/loki/rolebinding.yaml
+---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: RoleBinding
 metadata:
@@ -10,5 +10,5 @@ roleRef:
   kind: Role
   name: loki
 subjects:
-  - kind: ServiceAccount
-    name: loki
+- kind: ServiceAccount
+  name: loki

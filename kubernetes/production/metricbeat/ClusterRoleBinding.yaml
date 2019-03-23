@@ -6,9 +6,9 @@ metadata:
   labels:
     group: metricbeat
 subjects:
-  - kind: ServiceAccount
-    name: metricbeat
-    namespace: kube-system
+- kind: ServiceAccount
+  name: metricbeat
+  namespace: kube-system
 roleRef:
   kind: ClusterRole
   name: metricbeat

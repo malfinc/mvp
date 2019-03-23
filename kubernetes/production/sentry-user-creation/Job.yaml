@@ -2,9 +2,9 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: sentry-database-initialize
+  name: sentry-user-creation
   labels:
-    group: sentry
+    group: sentry-user-creation
     role: postdeploy
 spec:
   completions: 0
@@ -17,13 +17,23 @@ spec:
     spec:
       restartPolicy: Never
       containers:
-      - name: sentry-database-initialize
+      - name: user-create-job
         image: sentry:9.0
         command:
         - sentry
-        - upgrade
-        - "--noinput"
+        - createuser
+        - "--no-input"
+        - "--email"
+        - admin@sentry.local
+        - "--superuser"
+        - "--password"
+        - "$(SENTRY_USER_PASSWORD)"
         env:
+        - name: SENTRY_USER_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: runtime-secrets
+              key: SENTRY_USER_PASSWORD
         - name: SENTRY_SECRET_KEY
           valueFrom:
             secretKeyRef:
