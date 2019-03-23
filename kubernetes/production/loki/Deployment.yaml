@@ -10,14 +10,15 @@ spec:
   selector:
     matchLabels:
       group: loki
+      role: reporting
   strategy:
     type: RollingUpdate
   template:
     metadata:
       labels:
         group: loki
+        role: reporting
     spec:
-      serviceAccountName: loki
       containers:
       - name: loki
         image: grafana/loki:master-b8d81ab

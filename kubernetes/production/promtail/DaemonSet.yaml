@@ -6,21 +6,22 @@ metadata:
   labels:
     group: promtail
 spec:
+  updateStrategy:
+    type: RollingUpdate
   selector:
     matchLabels:
       group: promtail
       role: monitor
-  updateStrategy:
-    type: RollingUpdate
   template:
     metadata:
       labels:
         group: promtail
         role: monitor
     spec:
-      serviceAccountName: loki
+      serviceAccount: promtail
+      serviceAccountName: promtail
       containers:
-      - name: loki
+      - name: promtail
         image: grafana/promtail:master-b8d81ab
         imagePullPolicy: IfNotPresent
         args:
