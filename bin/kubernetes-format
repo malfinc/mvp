@@ -14,11 +14,10 @@ Dir[File.join("kubernetes", "production", "**", "*.yaml")].each do |path|
 
 
     grouped_documents.each do |kind, documents|
-      `git mv -f #{path} "#{kind}.yaml"`
-      # File.write(
-      #   File.join("kubernetes", "production", group, "#{kind}.yaml"),
-      #   documents.map{|document| YAML.dump(document)}.join("")
-      # )
+      File.write(
+        File.join("kubernetes", "production", group, "#{kind}.yaml"),
+        documents.map{|document| YAML.dump(document)}.join("")
+      )
     end
   end
 end
