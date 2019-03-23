@@ -6,7 +6,7 @@ metadata:
     group: sentry
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   storageClassName: manual
   resources:
     requests:

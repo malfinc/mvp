@@ -1,0 +1,36 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: elasticsearch-master
+  labels:
+    group: elasticsearch
+    role: database
+spec:
+  selector:
+    group: elasticsearch
+  ports:
+    - name: http
+      protocol: TCP
+      port: 9200
+    - name: transport
+      protocol: TCP
+      port: 9300
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: elasticsearch-headless
+  labels:
+    group: elasticsearch
+    role: database
+  annotations:
+    # Create endpoints also if the related pod isn't ready
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+spec:
+  clusterIP: None
+  selector:
+    group: elasticsearch
+  ports:
+    - name: http
+      port: 9200

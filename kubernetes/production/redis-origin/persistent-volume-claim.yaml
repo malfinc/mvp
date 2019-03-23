@@ -6,7 +6,7 @@ metadata:
     group: redis-origin
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   storageClassName: manual
   resources:
     requests:

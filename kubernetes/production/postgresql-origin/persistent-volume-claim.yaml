@@ -6,7 +6,7 @@ metadata:
     group: postgresql-origin
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   storageClassName: manual
   resources:
     requests:

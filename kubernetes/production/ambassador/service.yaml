@@ -19,7 +19,7 @@ metadata:
       kind:  Mapping
       name:  resources-api
       prefix: /
-      host: resources.poutineer.com
+      host: resources.difference-engineers.com
       service: resources-api.default
       rewrite: /ambassador/v0/diag/
       ---
@@ -27,49 +27,49 @@ metadata:
       kind:  Mapping
       name:  browser-client
       prefix: /
-      host: www.poutineer.com
+      host: www.difference-engineers.com
       service: browser-client.default
       ---
       apiVersion: ambassador/v1
       kind: Mapping
       name: kubernetes-dashboard
       prefix: /
-      host: kubernetes-dashboard.poutineer.com
+      host: kubernetes-dashboard.difference-engineers.com
       service: kubernetes-dashboard.kube-system
       ---
       apiVersion: ambassador/v1
       kind: Mapping
       name: ambassador-admin
       prefix: /
-      host: ambassador-admin.poutineer.com
+      host: ambassador-admin.difference-engineers.com
       service: ambassador-admin.default:8877
       ---
       apiVersion: ambassador/v1
       kind:  Mapping
       name:  grafana
       prefix: /
-      host: grafana.poutineer.com
+      host: grafana.difference-engineers.com
       service: grafana.default
       ---
       apiVersion: ambassador/v1
       kind:  Mapping
       name:  metabase
       prefix: /
-      host: metabase.poutineer.com
+      host: metabase.difference-engineers.com
       service: metabase.default
       ---
       apiVersion: ambassador/v1
       kind: Mapping
       name: sentry
       prefix: /
-      host: sentry.poutineer.com
+      host: sentry.difference-engineers.com
       service: sentry.default
       ---
       apiVersion: ambassador/v1
       kind: Mapping
       name: sidekiq-monitor
       prefix: /
-      host: sidekiq.poutineer.com
+      host: sidekiq.difference-engineers.com
       service: sidekiq-monitor.default
 spec:
   type: LoadBalancer

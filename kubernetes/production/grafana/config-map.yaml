@@ -5,7 +5,7 @@ metadata:
   labels:
     group: grafana
 data:
-  grafana.ini: |
+  grafana.ini: |-
     [analytics]
     check_for_updates = true
     [grafana_net]

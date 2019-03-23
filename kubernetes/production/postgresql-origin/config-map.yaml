@@ -36,7 +36,7 @@ kind: ConfigMap
 metadata:
   name: postgresql-origin-initializers
   labels:
-    service: postgresql-origin
+    group: postgresql-origin
 data:
   enable-extensions.sql: |-
     CREATE EXTENSION IF NOT EXISTS "pg_stat_statements";
