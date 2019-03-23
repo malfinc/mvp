@@ -1,166 +1,248 @@
 # Elasticsearch Helm Chart
 
-This functionality is experimental and may be changed or removed completely in a future release. Elastic will take a best effort approach to fix any issues, but experimental features are not subject to the support SLA of official GA features.
+This chart uses a standard Docker image of Elasticsearch (docker.elastic.co/elasticsearch/elasticsearch-oss) and uses a service pointing to the master's transport port for service discovery.
+Elasticsearch does not communicate with the Kubernetes API, hence no need for RBAC permissions.
 
-This helm chart is a lightweight way to configure and run our official [Elasticsearch docker image](https://www.elastic.co/guide/en/kibana/current/docker.html)
+## Warning for previous users
+If you are currently using an earlier version of this Chart you will need to redeploy your Elasticsearch clusters. The discovery method used here is incompatible with using RBAC.
+If you are upgrading to Elasticsearch 6 from the 5.5 version used in this chart before, please note that your cluster needs to do a full cluster restart.
+The simplest way to do that is to delete the installation (keep the PVs) and install this chart again with the new version.
+If you want to avoid doing that upgrade to Elasticsearch 5.6 first before moving on to Elasticsearch 6.0.
 
-## Requirements
+## Prerequisites Details
 
-* [Helm](https://helm.sh/) >= 2.8.0
-* Kubernetes 1.8/1.9/1.10/1.11.
-* Minimum cluster requirements include the following to run this chart with default settings. All of these settings are configurable.
-  * Three Kubernetes nodes to respect the default "hard" affinity settings
-  * 1GB of RAM for the JVM heap
+* Kubernetes 1.6+
+* PV dynamic provisioning support on the underlying infrastructure
 
-## Installing
+## StatefulSets Details
+* https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/
 
-* Add the elastic helm charts repo
-  ```
-  helm repo add elastic https://helm.elastic.co
-  ```
-* Install it 
-  ```
-  helm install --name elasticsearch elastic/elasticsearch --version 6.5.0
-  ```
+## StatefulSets Caveats
+* https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#limitations
+
+## Todo
+
+* Implement TLS/Auth/Security
+* Smarter upscaling/downscaling
+* Solution for memory locking
+
+## Chart Details
+This chart will do the following:
+
+* Implemented a dynamically scalable elasticsearch cluster using Kubernetes StatefulSets/Deployments
+* Multi-role deployment: master, client (coordinating) and data nodes
+* Statefulset Supports scaling down without degrading the cluster
+
+## Installing the Chart
+
+To install the chart with the release name `my-release`:
+
+```bash
+$ helm install --name my-release stable/elasticsearch
+```
+
+## Deleting the Charts
+
+Delete the Helm deployment as normal
+
+```
+$ helm delete my-release
+```
+
+Deletion of the StatefulSet doesn't cascade to deleting associated PVCs. To delete them:
+
+```
+$ kubectl delete pvc -l release=my-release,component=data
+```
 
 ## Configuration
 
-| Parameter                 | Description                                                                                                                                                                                                                                                                                                                | Default                                                                                                                   |
-| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `clusterName`             | This will be used as the Elasticsearch [cluster.name](https://www.elastic.co/guide/en/elasticsearch/reference/current/cluster.name.html) and should be unique per cluster in the namespace                                                                                                                                 | `elasticsearch`                                                                                                           |
-| `nodeGroup`               | This is the name that will be used for each group of nodes in the cluster. The name will be `clusterName-nodeGroup-X`                                                                                                                                                                                                      | `master`                                                                                                                  |
-| `masterService`           | The service name used for [discovery.zen.ping.unicast.hosts](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-discovery-zen.html#unicast) to connect to the masters                                                                                                                                 | `elasticsearch-master`                                                                                                    |
-| `roles`                   | A hash map with the [specific roles](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-node.html) for the node group                                                                                                                                                                                 | `master: true`<br>`data: true`<br>`ingest: true`                                                                          |
-| `replicas`                | Kubernetes replica count for the statefulset (i.e. how many pods)                                                                                                                                                                                                                                                          | `3`                                                                                                                       |
-| `minimumMasterNodes`      | The value for [discovery.zen.minimum_master_nodes](https://www.elastic.co/guide/en/elasticsearch/reference/current/discovery-settings.html#minimum_master_nodes). Should be set to `(replicas / 2) + 1`                                                                                                                    | `2`                                                                                                                       |
-| `extraEnvs`               | Extra [environment variables](https://kubernetes.io/docs/tasks/inject-data-application/define-environment-variable-container/#using-environment-variables-inside-of-your-config) which will be appended to the `env:` definition for the container                                                                         | `{}`                                                                                                                      |
-| `secretMounts`            | Allows you easily mount a secret as a file inside the statefulset. Useful for mounting certificates and other secrets. See [values.yaml](./values.yaml) for an example                                                                                                                                                     | `{}`                                                                                                                      |
-| `image`                   | The Elasticsearch docker image                                                                                                                                                                                                                                                                                             | `docker.elastic.co/elasticsearch/elasticsearch`                                                                           |
-| `imageTag`                | The Elasticsearch docker image tag                                                                                                                                                                                                                                                                                         | `6.5.0`                                                                                                                   |
-| `imagePullPolicy`         | The Kubernetes [imagePullPolicy](https://kubernetes.io/docs/concepts/containers/images/#updating-images) value                                                                                                                                                                                                             | `IfNotPresent`                                                                                                            |
-| `esJavaOpts`              | [Java options](https://www.elastic.co/guide/en/elasticsearch/reference/current/jvm-options.html) for Elasticsearch. This is where you should configure the [jvm heap size](https://www.elastic.co/guide/en/elasticsearch/reference/current/heap-size.html)                                                                 | `-Xmx1g -Xms1g`                                                                                                           |
-| `resources`               | Allows you to set the [resources](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/) for the statefulset                                                                                                                                                                               | `requests.cpu: 100m`<br>`requests.memory: 2Gi`<br>`limits.cpu: 1000m`<br>`limits.memory: 2Gi`                             |
-| `networkHost`             | Value for the [network.host Elasticsearch setting](https://www.elastic.co/guide/en/elasticsearch/reference/current/network.host.html)                                                                                                                                                                                      | `0.0.0.0`                                                                                                                 |
-| `volumeClaimTemplate`     | Configuration for the [volumeClaimTemplate for statefulsets](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#stable-storage). You will want to adjust the storage (default `30Gi`) and the `storageClassName` if you are using a different storage class                                            | `accessModes: [ "ReadWriteOnce" ]`<br>`storageClassName: standard`<br>`resources.requests.storage: 30Gi`                  |
-| `antiAffinityTopologyKey` | The [anti-affinity topology key](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity). By default this will prevent multiple Elasticsearch nodes from running on the same Kubernetes node                                                                                        | `kubernetes.io/hostname`                                                                                                  |
-| `antiAffinity`            | Setting this to hard enforces the [anti-affinity rules](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity). If it is set to soft it will be done "best effort"                                                                                                                 | `hard`                                                                                                                    |
-| `podManagementPolicy`     | By default Kubernetes [deploys statefulsets serially](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/#pod-management-policies). This deploys them in parralel so that they can discover eachother                                                                                                   | `Parallel`                                                                                                                |
-| `protocol`                | The protocol that will be used for the readinessProbe. Change this to `https` if you have `xpack.security.http.ssl.enabled` set                                                                                                                                                                                            | `http`                                                                                                                    |
-| `httpPort`                | The http port that Kubernetes will use for the healthchecks and the service. If you change this you will also need to set [http.port](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-http.html#_settings_2) in `extraEnvs`                                                                        | `9200`                                                                                                                    |
-| `transportPort`           | The transport port that Kubernetes will use for the service. If you change this you will also need to set [transport port configuration](https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-transport.html#_tcp_transport) in `extraEnvs`                                                             | `9300`                                                                                                                    |
-| `updateStrategy`          | The [updateStrategy](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#updating-statefulsets) for the statefulset. By default Kubernetes will wait for the cluster to be green after upgrading each pod. Setting this to `OnDelete` will allow you to manually delete each pod during upgrades | `RollingUpdate`                                                                                                           |
-| `maxUnavailable`          | The [maxUnavailable](https://kubernetes.io/docs/tasks/run-application/configure-pdb/#specifying-a-poddisruptionbudget) value for the pod disruption budget. By default this will prevent Kubernetes from having more than 1 unhealthy pod in the node group                                                                | `1`                                                                                                                       |
-| `fsGroup`                 | The Group ID (GID) for [securityContext.fsGroup](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/) so that the Elasticsearch user can read from the persistent volume                                                                                                                            | `1000`                                                                                                                    |
-| `terminationGracePeriod`  | The [terminationGracePeriod](https://kubernetes.io/docs/concepts/workloads/pods/pod/#termination-of-pods) in seconds used when trying to stop the pod                                                                                                                                                                      | `120`                                                                                                                     |
-| `sysctlVmMaxMapCount`     | Sets the [sysctl vm.max_map_count](https://www.elastic.co/guide/en/elasticsearch/reference/current/vm-max-map-count.html#vm-max-map-count) needed for Elasticsearch                                                                                                                                                        | `262144`                                                                                                                  |
-| `readinessProbe`          | Configuration for the [readinessProbe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/)                                                                                                                                                                                      | `failureThreshold: 3`<br>`initialDelaySeconds: 10`<br>`periodSeconds: 10`<br>`successThreshold: 3`<br>`timeoutSeconds: 5` |
-| `imagePullSecrets`        | Configuration for [imagePullSecrets](https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/#create-a-pod-that-uses-your-secret) so that you can use a private registry for your image                                                                                                       | `[]`                                                                                                                      |
-| `nodeSelector`            | Configurable [nodeSelector](https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#nodeselector) so that you can target specific nodes for your Elasticsearch cluster                                                                                                                                          | `{}`                                                                                                                      |
-| `tolerations`             | Configurable [tolerations](https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/)                                                                                                                                                                                                                        | `[]`                                                                                                                      |
-| `ingress`                 | Configurable [ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) to expose the Elasticsearch service. See [`values.yaml`](./values.yaml) for an example                                                                                                                                            | `enabled: false`                                                                                                          |
+The following table lists the configurable parameters of the elasticsearch chart and their default values.
 
-## Try it out
+|              Parameter               |                             Description                             |                       Default                       |
+| ------------------------------------ | ------------------------------------------------------------------- | --------------------------------------------------- |
+| `appVersion`                         | Application Version (Elasticsearch)                                 | `6.6.1`                                             |
+| `image.repository`                   | Container image name                                                | `docker.elastic.co/elasticsearch/elasticsearch-oss` |
+| `image.tag`                          | Container image tag                                                 | `6.5.1`                                             |
+| `image.pullPolicy`                   | Container pull policy                                               | `IfNotPresent`                                      |
+| `initImage.repository`               | Init container image name                                           | `busybox`                                           |
+| `initImage.tag`                      | Init container image tag                                            | `latest`                                            |
+| `initImage.pullPolicy`               | Init container pull policy                                          | `Always`                                            |
+| `cluster.name`                       | Cluster name                                                        | `elasticsearch`                                     |
+| `cluster.xpackEnable`                | Writes the X-Pack configuration options to the configuration file   | `false`                                             |
+| `cluster.config`                     | Additional cluster config appended                                  | `{}`                                                |
+| `cluster.keystoreSecret`             | Name of secret holding secure config options in an es keystore      | `nil`                                               |
+| `cluster.env`                        | Cluster environment variables                                       | `{MINIMUM_MASTER_NODES: "2"}`                       |
+| `cluster.bootstrapShellCommand`      | Post-init command to run in separate Job                            | `""`                                                |
+| `cluster.additionalJavaOpts`         | Cluster parameters to be added to `ES_JAVA_OPTS` environment variable | `""`                                              |
+| `cluster.plugins`                    | List of Elasticsearch plugins to install                            | `[]`                                                |
+| `client.name`                        | Client component name                                               | `client`                                            |
+| `client.replicas`                    | Client node replicas (deployment)                                   | `2`                                                 |
+| `client.resources`                   | Client node resources requests & limits                             | `{} - cpu limit must be an integer`                 |
+| `client.priorityClassName`           | Client priorityClass                                                | `nil`                                               |
+| `client.heapSize`                    | Client node heap size                                               | `512m`                                              |
+| `client.podAnnotations`              | Client Deployment annotations                                       | `{}`                                                |
+| `client.nodeSelector`                | Node labels for client pod assignment                               | `{}`                                                |
+| `client.tolerations`                 | Client tolerations                                                  | `[]`                                                |
+| `client.serviceAnnotations`          | Client Service annotations                                          | `{}`                                                |
+| `client.serviceType`                 | Client service type                                                 | `ClusterIP`                                         |
+| `client.loadBalancerIP`              | Client loadBalancerIP                                               | `{}`                                                |
+| `client.loadBalancerSourceRanges`    | Client loadBalancerSourceRanges                                     | `{}`                                                |
+| `client.antiAffinity`                | Client anti-affinity policy                                         | `soft`                                              |
+| `client.nodeAffinity`                | Client node affinity policy                                         | `{}`                                                |
+| `client.initResources`               | Client initContainer resources requests & limits                    | `{}`                                                |
+| `client.additionalJavaOpts`          | Parameters to be added to `ES_JAVA_OPTS` environment variable for client | `""`                                           |
+| `client.ingress.enabled`             | Enable Client Ingress                                               | `false`                                             |
+| `client.ingress.user`                | If this & password are set, enable basic-auth on ingress            | `nil`                                               |
+| `client.ingress.password`            | If this & user are set, enable basic-auth on ingress                | `nil`                                               |
+| `client.ingress.annotations`         | Client Ingress annotations                                          | `{}`                                                |
+| `client.ingress.hosts`               | Client Ingress Hostnames                                            | `[]`                                                |
+| `client.ingress.tls`                 | Client Ingress TLS configuration                                    | `[]`                                                |
+| `master.initResources`               | Master initContainer resources requests & limits                    | `{}`                                                |
+| `master.additionalJavaOpts`          | Parameters to be added to `ES_JAVA_OPTS` environment variable for master | `""`                                           |
+| `master.exposeHttp`                  | Expose http port 9200 on master Pods for monitoring, etc            | `false`                                             |
+| `master.name`                        | Master component name                                               | `master`                                            |
+| `master.replicas`                    | Master node replicas (deployment)                                   | `2`                                                 |
+| `master.resources`                   | Master node resources requests & limits                             | `{} - cpu limit must be an integer`                 |
+| `master.priorityClassName`           | Master priorityClass                                                | `nil`                                               |
+| `master.podAnnotations`              | Master Deployment annotations                                       | `{}`                                                |
+| `master.nodeSelector`                | Node labels for master pod assignment                               | `{}`                                                |
+| `master.tolerations`                 | Master tolerations                                                  | `[]`                                                |
+| `master.heapSize`                    | Master node heap size                                               | `512m`                                              |
+| `master.name`                        | Master component name                                               | `master`                                            |
+| `master.persistence.enabled`         | Master persistent enabled/disabled                                  | `true`                                              |
+| `master.persistence.name`            | Master statefulset PVC template name                                | `data`                                              |
+| `master.persistence.size`            | Master persistent volume size                                       | `4Gi`                                               |
+| `master.persistence.storageClass`    | Master persistent volume Class                                      | `nil`                                               |
+| `master.persistence.accessMode`      | Master persistent Access Mode                                       | `ReadWriteOnce`                                     |
+| `master.readinessProbe`              | Master container readiness probes                                   | see `values.yaml` for defaults                      |
+| `master.antiAffinity`                | Master anti-affinity policy                                         | `soft`                                              |
+| `master.nodeAffinity`                | Master node affinity policy                                         | `{}`                                                |
+| `master.updateStrategy`              | Master node update strategy policy                                  | `{type: "onDelete"}`                                |
+| `data.initResources`                 | Data initContainer resources requests & limits                      | `{}`                                                |
+| `data.additionalJavaOpts`            | Parameters to be added to `ES_JAVA_OPTS` environment variable for data | `""`                                             |
+| `data.exposeHttp`                    | Expose http port 9200 on data Pods for monitoring, etc              | `false`                                             |
+| `data.replicas`                      | Data node replicas (statefulset)                                    | `2`                                                 |
+| `data.resources`                     | Data node resources requests & limits                               | `{} - cpu limit must be an integer`                 |
+| `data.priorityClassName`             | Data priorityClass                                                  | `nil`                                               |
+| `data.heapSize`                      | Data node heap size                                                 | `1536m`                                             |
+| `data.hooks.drain.enabled            | Data nodes: Enable drain pre-stop and post-start hook               | `true`                                              |
+| `data.persistence.enabled`           | Data persistent enabled/disabled                                    | `true`                                              |
+| `data.persistence.name`              | Data statefulset PVC template name                                  | `data`                                              |
+| `data.persistence.size`              | Data persistent volume size                                         | `30Gi`                                              |
+| `data.persistence.storageClass`      | Data persistent volume Class                                        | `nil`                                               |
+| `data.persistence.accessMode`        | Data persistent Access Mode                                         | `ReadWriteOnce`                                     |
+| `data.readinessProbe`                | Readiness probes for data-containers                                | see `values.yaml` for defaults                      |
+| `data.podAnnotations`                | Data StatefulSet annotations                                        | `{}`                                                |
+| `data.nodeSelector`                  | Node labels for data pod assignment                                 | `{}`                                                |
+| `data.tolerations`                   | Data tolerations                                                    | `[]`                                                |
+| `data.terminationGracePeriodSeconds` | Data termination grace period (seconds)                             | `3600`                                              |
+| `data.antiAffinity`                  | Data anti-affinity policy                                           | `soft`                                              |
+| `data.nodeAffinity`                  | Data node affinity policy                                           | `{}`                                                |
+| `data.updateStrategy`                | Data node update strategy policy                                    | `{type: "onDelete"}`                                |
+| `sysctlInitContainer.enabled`        | If true, the sysctl init container is enabled (does not stop extraInitContainers from running) | `true`                                              |
+| `extraInitContainers`                | Additional init container passed through the tpl                    | ``                                                  |
+| `podSecurityPolicy.annotations`      | Specify pod annotations in the pod security policy                  | `{}`                                                |
+| `podSecurityPolicy.enabled`          | Specify if a pod security policy must be created                    | `false`                                             |
+| `serviceAccounts.client.create`      | If true, create the client service account                          | `true`                                              |
+| `serviceAccounts.client.name`        | Name of the client service account to use or create                 | `{{ elasticsearch.client.fullname }}`               |
+| `serviceAccounts.master.create`      | If true, create the master service account                          | `true`                                              |
+| `serviceAccounts.master.name`        | Name of the master service account to use or create                 | `{{ elasticsearch.master.fullname }}`               |
+| `serviceAccounts.data.create`        | If true, create the data service account                            | `true`                                              |
+| `serviceAccounts.data.name`          | Name of the data service account to use or create                   | `{{ elasticsearch.data.fullname }}`                 |
 
-In [examples/](./examples) you will find some example configurations. These examples are used for the automated testing of this helm chart
+Specify each parameter using the `--set key=value[,key=value]` argument to `helm install`.
 
-### Default
+In terms of Memory resources you should make sure that you follow that equation:
 
-To deploy a cluster with all default values and run the integration tests
+- `${role}HeapSize < ${role}MemoryRequests < ${role}MemoryLimits`
 
-```
-cd examples/default
-make
-```
+The YAML value of cluster.config is appended to elasticsearch.yml file for additional customization ("script.inline: on" for example to allow inline scripting)
 
-### Multi
+# Deep dive
 
-A cluster with dedicated node types
+## Application Version
 
-```
-cd examples/multi
-make
-```
+This chart aims to support Elasticsearch v2 to v6 deployments by specifying the `values.yaml` parameter `appVersion`.
 
-### Security
+### Version Specific Features
 
-A cluster with X-Pack security enabled
+* Memory Locking *(variable renamed)*
+* Ingest Node *(v5)*
+* X-Pack Plugin *(v5)*
 
-* Generate SSL certificates following the [official docs]( https://www.elastic.co/guide/en/elasticsearch/reference/6.3/configuring-tls.html#node-certificates)
-* Make sure you have a copy of your [license](https://www.elastic.co/subscriptions) handy.
-* Create Kubernetes secrets for authentication credentials, X-Pack license and certificates
-  ```
-  kubectl create secret generic elastic-credentials  --from-literal=password=changeme --from-literal=username=elastic
-  kubectl create secret generic elastic-license --from-file=license.json
-  kubectl create secret generic elastic-certificates --from-file=elastic-certificates.p12
-  ```
-* Deploy!
-  ```
-  cd examples/security
-  make
-  ```
-* Attach into one of the containers
-  ```
-  kubectl exec -ti $(kubectl get pods -l release=helm-es-security -o name | awk -F'/' '{ print $NF }' | head -n 1) bash
-  ```
-  
-* Install the X-Pack license
-  ```
-  curl -XPUT 'http://localhost:9200/_xpack/license' -H "Content-Type: application/json" -d @/usr/share/elasticsearch/config/license/license.json
-  ```
-* Test that authentication is now enabled
-  ```
-  curl 'http://localhost:9200/' # This one will fail
-  curl -u elastic:changeme 'http://localhost:9200/'
-  ```
-* Install some test data to play around with
-  ```
-  wget https://download.elastic.co/demos/kibana/gettingstarted/logs.jsonl.gz && gunzip logs.jsonl.gz && curl -u elastic:changeme -H 'Content-Type: application/x-ndjson' -XPOST 'localhost:9200/_bulk?pretty' --data-binary @logs.jsonl
-  ```
+Upgrade paths & more info: https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-upgrade.html
 
-### Minikube
+## Mlocking
 
-This chart also works successfully on minikube in addition to typical hosted Kubernetes environments.
-An example `values.yaml` file for minikube is provided under `examples/`.
-
-In order to properly support the required persistent volume claims for the Elasticsearch `StatefulSet`, the `default-storageclass` and `storage-provisioner` minikube addons must be enabled.
-
-```
-minikube addons enable default-storageclass
-minikube addons enable storage-provisioner
-cd examples/minikube
-make
-```
-
-Note that if `helm` or `kubectl` timeouts occur, you may consider creating a minikube VM with more CPU cores or memory allocated.
-
-## Clustering and Node Discovery
-
-This chart facilitates Elasticsearch node discovery and services by creating two `Service` definitions in Kubernetes, one with the name `$clusterName-$nodeGroup` and another named `$clusterName-$nodeGroup-headless`.
-Only `Ready` pods are a part of the `$clusterName-$nodeGroup` service, while all pods (`Ready` or not) are a part of `$clusterName-$nodeGroup-headless`.
-
-The chart value for `masterService` is used to populate `discovery.zen.ping.unicast.hosts`, which Elasticsearch nodes will use to contact master nodes and form a cluster.
-Therefore, to add a group of nodes to an existing cluster, setting `masterService` to the desired `Service` name of the related cluster is sufficient.
-
-For an example of deploying both a group master nodes and data nodes using multiple releases of this chart, see the accompanying values files in `examples/multi`.
-
-## Testing
-
-This chart uses [pytest](https://docs.pytest.org/en/latest/) to test the templating logic. The dependencies for testing can be installed from the [`requirements.txt`](../requirements.txt) in the parent directory.
-
-```
-pip install -r ../requirements.txt
-make test
-```
-
-You can also use `helm template` to look at the YAML being generated
+This is a limitation in kubernetes right now. There is no way to raise the
+limits of lockable memory, so that these memory areas won't be swapped. This
+would degrade performance heavily. The issue is tracked in
+[kubernetes/#3595](https://github.com/kubernetes/kubernetes/issues/3595).
 
 ```
-make template
+[WARN ][bootstrap] Unable to lock JVM Memory: error=12,reason=Cannot allocate memory
+[WARN ][bootstrap] This can result in part of the JVM being swapped out.
+[WARN ][bootstrap] Increase RLIMIT_MEMLOCK, soft limit: 65536, hard limit: 65536
 ```
 
-It is possible to run all of the tests and linting inside of a docker container
+## Minimum Master Nodes
+> The minimum_master_nodes setting is extremely important to the stability of your cluster. This setting helps prevent split brains, the existence of two masters in a single cluster.
+
+>When you have a split brain, your cluster is at danger of losing data. Because the master is considered the supreme ruler of the cluster, it decides when new indices can be created, how shards are moved, and so forth. If you have two masters, data integrity becomes perilous, since you have two nodes that think they are in charge.
+
+>This setting tells Elasticsearch to not elect a master unless there are enough master-eligible nodes available. Only then will an election take place.
+
+>This setting should always be configured to a quorum (majority) of your master-eligible nodes. A quorum is (number of master-eligible nodes / 2) + 1
+
+More info: https://www.elastic.co/guide/en/elasticsearch/guide/1.x/_important_configuration_changes.html#_minimum_master_nodes
+
+# Client and Coordinating Nodes
+
+Elasticsearch v5 terminology has updated, and now refers to a `Client Node` as a `Coordinating Node`.
+
+More info: https://www.elastic.co/guide/en/elasticsearch/reference/5.5/modules-node.html#coordinating-node
+
+## Enabling elasticsearch internal monitoring
+Requires version 6.3+ and standard non `oss` repository defined. Starting with 6.3 Xpack is partially free and enabled by default. You need to set a new config to enable the collection of these internal metrics. (https://www.elastic.co/guide/en/elasticsearch/reference/6.3/monitoring-settings.html)
+
+To do this through this helm chart override with the three following changes:
+```
+image.repository: docker.elastic.co/elasticsearch/elasticsearch
+cluster.xpackEnable: true
+cluster.env.XPACK_MONITORING_ENABLED: true
+```
+
+Note: to see these changes you will need to update your kibana repo to `image.repository: docker.elastic.co/kibana/kibana` instead of the `oss` version
+
+
+## Select right storage class for SSD volumes
+
+### GCE + Kubernetes 1.5
+
+Create StorageClass for SSD-PD
 
 ```
-make test
+$ kubectl create -f - <<EOF
+kind: StorageClass
+apiVersion: extensions/v1beta1
+metadata:
+  name: ssd
+provisioner: kubernetes.io/gce-pd
+parameters:
+  type: pd-ssd
+EOF
+```
+Create cluster with Storage class `ssd` on Kubernetes 1.5+
+
+```
+$ helm install stable/elasticsearch --name my-release --set data.persistence.storageClass=ssd,data.storage=100Gi
 ```
 
+### Usage of the `tpl` Function
+
+The `tpl` function allows us to pass string values from `values.yaml` through the templating engine. It is used for the following values:
+
+* `extraInitContainers`
+
+It is important that these values be configured as strings. Otherwise, installation will fail.
