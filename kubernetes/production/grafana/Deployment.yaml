@@ -22,6 +22,10 @@ spec:
         group: grafana
         role: browser-application
     spec:
+      serviceAccountName: grafana
+      securityContext:
+        fsGroup: 472
+        runAsUser: 472
       containers:
       - name: grafana
         image: grafana/grafana:6.0.2
