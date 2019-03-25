@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kube-state-metrics
+  labels:
+    group: kube-state-metrics
+    role: metrics
+  annotations:
+    prometheus.io/scrape: 'true'
+spec:
+  type: ClusterIP
+  ports:
+  - name: kube-state-metrics-http
+    port: 8080
+    targetPort: 8080
+  selector:
+    group: kube-state-metrics
+    role: metrics
