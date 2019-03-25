@@ -18,7 +18,7 @@ data:
     logs = /var/log/grafana
     plugins = /var/lib/grafana/plugins
     provisioning = /etc/grafana/provisioning
-  loki.yaml: |-
+  general.yaml: |-
     apiVersion: 1
     datasources:
     - name: Loki
@@ -26,9 +26,6 @@ data:
       url: "http://loki.default:3100/"
       access: proxy
       isDefault: true
-  prometheus.yaml: |-
-    apiVersion: 1
-    datasources:
     - name: Prometheus
       type: prometheus
       url: http://prometheus-operator:9090/

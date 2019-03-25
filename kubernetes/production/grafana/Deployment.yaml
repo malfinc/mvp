@@ -31,12 +31,12 @@ spec:
         image: grafana/grafana:6.0.2
         imagePullPolicy: IfNotPresent
         volumeMounts:
-        - name: config
+        - name: grafana-configurations
           mountPath: "/etc/grafana/grafana.ini"
-          subPath: grafana.ini
-        - name: config
-          mountPath: "/etc/grafana/provisioning/datasources/loki.yaml"
-          subPath: loki.yaml
+          subPath: "grafana.ini"
+        - name: grafana-configurations
+          mountPath: "/etc/grafana/provisioning/datasources/general.yaml"
+          subPath: "general.yaml"
         - name: storage
           mountPath: "/var/lib/grafana"
         ports:
@@ -61,8 +61,8 @@ spec:
             path: "/api/health"
             port: 3000
       volumes:
-      - name: config
+      - name: grafana-configurations
         configMap:
-          name: grafana
+          name: grafana-configurations
       - name: storage
         emptyDir: {}
