@@ -37,7 +37,7 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: grafana-dashboards
+  name: grafana-dashboard-k8s-resources-pod
   labels:
     group: grafana
 data:
@@ -901,6 +901,14 @@ data:
       "uid": "6581e46e4e5c7ba40a07646395ef7b23",
       "version": 0
     }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-k8s-coredns
+  labels:
+    group: grafana
+data:
   k8s-coredns.json: |-
     {
       "annotations": {
@@ -2210,6 +2218,14 @@ data:
       "uid": "vkQ0UHxik",
       "version": 1
     }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-k8s-node-rsrc-use
+  labels:
+    group: grafana
+data:
   k8s-node-rsrc-use.json: |-
     {
       "annotations": {
@@ -3147,6 +3163,14 @@ data:
       "uid": "4ac4f123aae0ff6dbaf4f4f66120033b",
       "version": 0
     }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-pods
+  labels:
+    group: grafana
+data:
   pods.json: |-
     {
       "__inputs": [
@@ -3631,6 +3655,14 @@ data:
       "uid": "ab4f13a9892a76a4d21ce8c2445bf4ea",
       "version": 0
     }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-etcd
+  labels:
+    group: grafana
+data:
   etcd.json: |-
     {
       "annotations": {
@@ -4725,6 +4757,14 @@ data:
       "title": "etcd",
       "version": 215
     }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-k8s-resources-cluster
+  labels:
+    group: grafana
+data:
   k8s-resources-cluster.json: |-
     {
       "annotations": {
@@ -6047,6 +6087,14 @@ data:
       "uid": "efa86fd1d0c121a26444b636a3f509a8",
       "version": 0
     }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-k8s-cluster-rsrc-use
+  labels:
+    group: grafana
+data:
   k8s-cluster-rsrc-use.json: |-
     {
       "annotations": {
@@ -6957,6 +7005,14 @@ data:
       "uid": "a6e7d1362e1ddbb79db21d5bb40d7137",
       "version": 0
     }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-nodes
+  labels:
+    group: grafana
+data:
   nodes.json: |-
     {
       "__inputs": [
@@ -8269,6 +8325,14 @@ data:
       "uid": "fa49a4706d07a042595b664c87fb33ea",
       "version": 0
     }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-statefulset
+  labels:
+    group: grafana
+data:
   statefulset.json: |-
     {
       "__inputs": [
@@ -9126,6 +9190,14 @@ data:
       "uid": "a31c1f46e6f727cb37c0d731a7245005",
       "version": 0
     }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-persistentvolumesusage
+  labels:
+    group: grafana
+data:
   persistentvolumesusage.json: |-
     {
       "__inputs": [
@@ -9469,6 +9541,14 @@ data:
       "uid": "919b92a8e8041bd567af9edab12c840c",
       "version": 0
     }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboard-k8s-resources-namespace
+  labels:
+    group: grafana
+data:
   k8s-resources-namespace.json: |-
     {
       "annotations": {
