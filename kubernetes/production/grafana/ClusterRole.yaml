@@ -1,6 +1,4 @@
 ---
-# Source: prometheus-operator/charts/grafana/templates/clusterrole.yaml
-
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -8,6 +6,11 @@ metadata:
   labels:
     group: grafana
 rules:
-- apiGroups: [""] # "" indicates the core API group
-  resources: ["configmaps"]
-  verbs: ["get", "watch", "list"]
+- apiGroups:
+  - ''
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - watch
+  - list

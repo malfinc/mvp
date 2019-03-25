@@ -1,6 +1,4 @@
 ---
-# Source: prometheus-operator/charts/grafana/templates/clusterrolebinding.yaml
-
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -8,9 +6,9 @@ metadata:
   labels:
     group: grafana
 subjects:
-  - kind: ServiceAccount
-    name: grafana
-    namespace: default
+- kind: ServiceAccount
+  name: grafana
+  namespace: default
 roleRef:
   kind: ClusterRole
   name: grafana
