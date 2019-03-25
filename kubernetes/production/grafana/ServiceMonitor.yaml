@@ -1,6 +1,4 @@
 ---
-# Source: prometheus-operator/templates/grafana/servicemonitor.yaml
-
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
@@ -14,7 +12,7 @@ spec:
       role: browser-application
   namespaceSelector:
     matchNames:
-      - "default"
+    - default
   endpoints:
   - port: service
     interval: 30s

@@ -900,9 +900,9 @@ data:
       "title": "Kubernetes / Compute Resources / Pod",
       "uid": "6581e46e4e5c7ba40a07646395ef7b23",
       "version": 0
-  }
-k8s-coredns.json: |-
-  {
+    }
+  k8s-coredns.json: |-
+    {
       "annotations": {
           "list": [
               {
@@ -2209,9 +2209,9 @@ k8s-coredns.json: |-
       "title": "CoreDNS",
       "uid": "vkQ0UHxik",
       "version": 1
-  }
-k8s-node-rsrc-use.json: |-
-  {
+    }
+  k8s-node-rsrc-use.json: |-
+    {
       "annotations": {
           "list": [
 
@@ -3146,9 +3146,9 @@ k8s-node-rsrc-use.json: |-
       "title": "Kubernetes / USE Method / Node",
       "uid": "4ac4f123aae0ff6dbaf4f4f66120033b",
       "version": 0
-  }
-pods.json: |-
-  {
+    }
+  pods.json: |-
+    {
       "__inputs": [
 
       ],
@@ -3630,9 +3630,9 @@ pods.json: |-
       "title": "Kubernetes / Pods",
       "uid": "ab4f13a9892a76a4d21ce8c2445bf4ea",
       "version": 0
-  }
-etcd.json: |-
-  {
+    }
+  etcd.json: |-
+    {
       "annotations": {
           "list": []
       },
@@ -4724,9 +4724,9 @@ etcd.json: |-
       "timezone": "browser",
       "title": "etcd",
       "version": 215
-  }
-k8s-resources-cluster.json: |-
-  {
+    }
+  k8s-resources-cluster.json: |-
+    {
       "annotations": {
           "list": [
 
@@ -6046,9 +6046,9 @@ k8s-resources-cluster.json: |-
       "title": "Kubernetes / Compute Resources / Cluster",
       "uid": "efa86fd1d0c121a26444b636a3f509a8",
       "version": 0
-  }
-k8s-cluster-rsrc-use.json: |-
-  {
+    }
+  k8s-cluster-rsrc-use.json: |-
+    {
       "annotations": {
           "list": [
 
@@ -6956,9 +6956,9 @@ k8s-cluster-rsrc-use.json: |-
       "title": "Kubernetes / USE Method / Cluster",
       "uid": "a6e7d1362e1ddbb79db21d5bb40d7137",
       "version": 0
-  }
-nodes.json: |-
-  {
+    }
+  nodes.json: |-
+    {
       "__inputs": [
 
       ],
@@ -8268,9 +8268,9 @@ nodes.json: |-
       "title": "Kubernetes / Nodes",
       "uid": "fa49a4706d07a042595b664c87fb33ea",
       "version": 0
-  }
-statefulset.json: |-
-  {
+    }
+  statefulset.json: |-
+    {
       "__inputs": [
 
       ],
@@ -9125,9 +9125,9 @@ statefulset.json: |-
       "title": "Kubernetes / StatefulSets",
       "uid": "a31c1f46e6f727cb37c0d731a7245005",
       "version": 0
-  }
-persistentvolumesusage.json: |-
-  {
+    }
+  persistentvolumesusage.json: |-
+    {
       "__inputs": [
 
       ],
@@ -9468,9 +9468,9 @@ persistentvolumesusage.json: |-
       "title": "Kubernetes / Persistent Volumes",
       "uid": "919b92a8e8041bd567af9edab12c840c",
       "version": 0
-  }
-k8s-resources-namespace.json: |-
-  {
+    }
+  k8s-resources-namespace.json: |-
+    {
       "annotations": {
           "list": [
 
@@ -10301,4 +10301,4 @@ k8s-resources-namespace.json: |-
       "title": "Kubernetes / Compute Resources / Namespace",
       "uid": "85a562078cdf77779eaa1add43ccec1e",
       "version": 0
-  }
+    }
