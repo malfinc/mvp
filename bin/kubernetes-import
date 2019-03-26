@@ -1,0 +1,72 @@
+#!/usr/bin/env ruby
+
+require "yaml"
+require "fileutils"
+
+glob = File.join("tmp", "kubernetes", "**", "*.yaml")
+
+paths = Dir[glob]
+
+tree = paths.map do |path|
+  [path, File.read(path)]
+end.map do |(path, content)|
+  [path, content.
+    gsub("release-name-", "").
+    gsub("prometheus-op-", "prometheus-operator-").
+    gsub("-psp", "-pod-security").
+    gsub("psp-kube-state-metrics", "kube-state-metrics-pod-security").
+    gsub("app: ", "group: ").
+    gsub("k8s-app", "group").
+    gsub(/\s+chart: .+/, "").
+    gsub(/\s+release: .+/, "").
+    gsub(/\s+heritage: .+/, "").
+    gsub("protocol: TCP", "").
+    gsub(//, "")]
+end.flat_map do |(path, content)|
+  YAML.load_stream(content).map {|document| [path, document]}
+end.map do |(path, document)|
+  [path, document, document.fetch("kind")]
+end.map do |(path, document, kind)|
+  [path.gsub("tmp/", ""), document, kind]
+end.map do |(path, document, kind)|
+  raise "#{path} doesn't have a metadata.labels.group value" unless document.dig("metadata", "labels", "group")
+
+  unless document.dig("metadata", "labels", "group") == "global"
+    [path, document, kind, document.fetch("metadata").fetch("labels").fetch("group")]
+  end
+end.compact.map do |(path, document, kind, group)|
+  [File.join("kubernetes", group, "#{kind}.yaml"), document]
+end.group_by do |(path, document, kind, group)|
+  path
+end.transform_values do |items|
+  items.map do |(path, document)|
+    document
+  end
+end.transform_values do |documents|
+  YAML.dump_stream(*documents)
+end
+
+tree.each do |path, content|
+  puts("Formatting: #{path}")
+  FileUtils.mkdir_p(path.split("/").take(path.split("/").size - 1).join("/"))
+  File.write(path, content)
+end
+
+# #!/usr/bin/env ruby
+# require "yaml"
+#
+#
+# file = File.read(File.join("kubernetes", "production", "grafana", "ConfigMap.yaml"))
+#
+# configuration = YAML.load(file); nil
+#
+# data = configuration.fetch("data"); nil
+# # apiVersion: v1
+# # kind: ConfigMap
+# # metadata:
+# #   name: grafana-configurations
+# #   labels:
+# #     group: grafana
+# datas = YAML.dump_stream(*data.map {|(key, value)| {"apiVersion" => "v1", "kind" => "ConfigMap", "metadata" => {"name" => "grafana-dashboard-#{key.gsub(".json", "")}", "labels" => {"group" => "grafana"}}}.merge("data" => {key => value})}); nil
+#
+# File.write(File.join("kubernetes", "production", "grafana", "ConfigMap2.yaml"), datas)
