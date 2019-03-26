@@ -1,3 +1,4 @@
+---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
@@ -5,7 +6,7 @@ metadata:
   labels:
     group: global
   annotations:
-    kubernetes.io/ingress.global-static-ip-name: "primary-production-ipv4"
+    kubernetes.io/ingress.global-static-ip-name: primary-production-ipv4
 spec:
   backend:
     serviceName: ambassador
