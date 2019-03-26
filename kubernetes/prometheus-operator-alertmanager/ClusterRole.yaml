@@ -1,0 +1,16 @@
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: prometheus-operator-alertmanager
+  labels:
+    group: prometheus-operator-alertmanager
+rules:
+- apiGroups:
+  - extensions
+  resources:
+  - podsecuritypolicies
+  verbs:
+  - use
+  resourceNames:
+  - prometheus-operator-alertmanager

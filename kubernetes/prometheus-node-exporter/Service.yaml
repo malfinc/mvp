@@ -1,0 +1,18 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-node-exporter
+  annotations:
+    prometheus.io/scrape: 'true'
+  labels:
+    group: prometheus-node-exporter
+    jobLabel: node-exporter
+spec:
+  type: ClusterIP
+  ports:
+  - port: 9100
+    targetPort: 9100
+    name: metrics-http
+  selector:
+    group: prometheus-node-exporter

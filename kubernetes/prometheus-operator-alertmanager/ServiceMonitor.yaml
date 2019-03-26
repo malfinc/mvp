@@ -1,0 +1,18 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: prometheus-operator-alertmanager
+  labels:
+    group: prometheus-operator-alertmanager
+spec:
+  selector:
+    matchLabels:
+      group: prometheus-operator-alertmanager
+  namespaceSelector:
+    matchNames:
+    - default
+  endpoints:
+  - port: web
+    interval: 30s
+    path: "/metrics"

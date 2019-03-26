@@ -1,0 +1,22 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: prometheus-operator-kube-controller-manager
+  labels:
+    group: prometheus-operator-kube-controller-manager
+spec:
+  jobLabel: jobLabel
+  selector:
+    matchLabels:
+      group: prometheus-operator-kube-controller-manager
+  namespaceSelector:
+    matchNames:
+    - kube-system
+  endpoints:
+  - port: http-metrics
+    interval: 15s
+    tlsConfig:
+      caFile: "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt"
+      insecureSkipVerify: true
+    bearerTokenFile: "/var/run/secrets/kubernetes.io/serviceaccount/token"

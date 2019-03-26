@@ -1,0 +1,18 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-operator-kube-etcd
+  labels:
+    group: prometheus-operator-kube-etcd
+    jobLabel: kube-etcd
+  namespace: kube-system
+spec:
+  clusterIP: None
+  ports:
+  - name: http-metrics
+    port: 4001
+    targetPort: 4001
+  selector:
+    k8s-group: etcd-server
+  type: ClusterIP

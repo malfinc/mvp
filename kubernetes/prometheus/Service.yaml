@@ -1,0 +1,93 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    component: server
+    group: prometheus
+  name: prometheus-server
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: 9090
+  selector:
+    component: server
+    group: prometheus
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    prometheus.io/probe: pushgateway
+  labels:
+    component: pushgateway
+    group: prometheus
+  name: prometheus-pushgateway
+spec:
+  ports:
+  - name: http
+    port: 9091
+    targetPort: 9091
+  selector:
+    component: pushgateway
+    group: prometheus
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    prometheus.io/scrape: 'true'
+  labels:
+    component: kube-state-metrics
+    group: prometheus
+  name: prometheus-kube-state-metrics
+spec:
+  clusterIP: None
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+  selector:
+    component: kube-state-metrics
+    group: prometheus
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    prometheus.io/scrape: 'true'
+  labels:
+    component: node-exporter
+    group: prometheus
+  name: prometheus-node-exporter
+spec:
+  clusterIP: None
+  ports:
+  - name: metrics
+    port: 9100
+    targetPort: 9100
+  selector:
+    component: node-exporter
+    group: prometheus
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    component: alertmanager
+    group: prometheus
+  name: prometheus-alertmanager
+spec:
+  ports:
+  - name: http
+    port: 80
+    targetPort: 9093
+  selector:
+    component: alertmanager
+    group: prometheus
+  type: ClusterIP

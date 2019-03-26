@@ -1,0 +1,37 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-operator-operator
+  labels:
+    group: prometheus-operator-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      group: prometheus-operator-operator
+  template:
+    metadata:
+      labels:
+        group: prometheus-operator-operator
+    spec:
+      containers:
+      - name: prometheus-operator
+        image: quay.io/coreos/prometheus-operator:v0.29.0
+        imagePullPolicy: IfNotPresent
+        args:
+        - "--kubelet-service=kube-system/prometheus-operator-kubelet"
+        - "--logtostderr=true"
+        - "--crd-apigroup=monitoring.coreos.com"
+        - "--localhost=127.0.0.1"
+        - "--prometheus-config-reloader=quay.io/coreos/prometheus-config-reloader:v0.29.0"
+        - "--config-reloader-image=quay.io/coreos/configmap-reload:v0.0.1"
+        ports:
+        - containerPort: 8080
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+      serviceAccountName: prometheus-operator-operator

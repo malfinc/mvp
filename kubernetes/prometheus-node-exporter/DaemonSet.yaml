@@ -1,0 +1,66 @@
+---
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  name: prometheus-node-exporter
+  labels:
+    group: prometheus-node-exporter
+    jobLabel: node-exporter
+spec:
+  selector:
+    matchLabels:
+      group: prometheus-node-exporter
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        group: prometheus-node-exporter
+        jobLabel: node-exporter
+    spec:
+      serviceAccountName: prometheus-node-exporter
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+      containers:
+      - name: node-exporter
+        image: quay.io/prometheus/node-exporter:v0.17.0
+        imagePullPolicy: IfNotPresent
+        args:
+        - "--path.procfs=/host/proc"
+        - "--path.sysfs=/host/sys"
+        - "--web.listen-address=0.0.0.0:9100"
+        - "--collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var/lib/docker/.+)($|/)"
+        - "--collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|cgroup|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|mqueue|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|sysfs|tracefs)$"
+        ports:
+        - containerPort: 9100
+        livenessProbe:
+          httpGet:
+            path: "/"
+            port: 9100
+        readinessProbe:
+          httpGet:
+            path: "/"
+            port: 9100
+        resources: {}
+        volumeMounts:
+        - name: proc
+          mountPath: "/host/proc"
+          readOnly: true
+        - name: sys
+          mountPath: "/host/sys"
+          readOnly: true
+      hostNetwork: true
+      hostPID: true
+      tolerations:
+      - effect: NoSchedule
+        operator: Exists
+      volumes:
+      - name: proc
+        hostPath:
+          path: "/proc"
+      - name: sys
+        hostPath:
+          path: "/sys"

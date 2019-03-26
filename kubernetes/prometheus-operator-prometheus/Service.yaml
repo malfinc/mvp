@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-operator-prometheus
+  labels:
+    group: prometheus-operator-prometheus
+spec:
+  ports:
+  - name: web
+    port: 9090
+    targetPort: 9090
+  selector:
+    group: prometheus
+    prometheus: prometheus-operator-prometheus
+  type: ClusterIP

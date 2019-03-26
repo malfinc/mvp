@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-operator-operator
+  labels:
+    group: prometheus-operator-operator
+spec:
+  ports:
+  - name: prometheus-operator-operator-http
+    port: 8080
+    targetPort: 8080
+  selector:
+    group: prometheus-operator-operator
+  type: ClusterIP

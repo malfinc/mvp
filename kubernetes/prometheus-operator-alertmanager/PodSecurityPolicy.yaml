@@ -1,0 +1,34 @@
+---
+apiVersion: policy/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: prometheus-operator-alertmanager
+  labels:
+    group: prometheus-operator-alertmanager
+spec:
+  privileged: false
+  volumes:
+  - configMap
+  - emptyDir
+  - projected
+  - secret
+  - downwardAPI
+  - persistentVolumeClaim
+  hostNetwork: false
+  hostIPC: false
+  hostPID: false
+  runAsUser:
+    rule: RunAsAny
+  seLinux:
+    rule: RunAsAny
+  supplementalGroups:
+    rule: MustRunAs
+    ranges:
+    - min: 0
+      max: 65535
+  fsGroup:
+    rule: MustRunAs
+    ranges:
+    - min: 0
+      max: 65535
+  readOnlyRootFilesystem: false

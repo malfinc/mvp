@@ -1,0 +1,24 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alertmanager-prometheus-operator-alertmanager
+  labels:
+    group: prometheus-operator-alertmanager
+data:
+  alertmanager.yaml: |-
+    global:
+      resolve_timeout: 5m
+    receivers:
+    - name: "null"
+    route:
+      group_by:
+      - job
+      group_interval: 5m
+      group_wait: 30s
+      receiver: "null"
+      repeat_interval: 12h
+      routes:
+      - match:
+          alertname: Watchdog
+        receiver: "null"

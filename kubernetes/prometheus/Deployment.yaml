@@ -1,0 +1,211 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    component: server
+    group: prometheus
+  name: prometheus-server
+spec:
+  selector:
+    matchLabels:
+      component: server
+      group: prometheus
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: server
+        group: prometheus
+    spec:
+      serviceAccountName: prometheus-server
+      initContainers:
+      - name: init-chown-data
+        image: busybox:latest
+        imagePullPolicy: IfNotPresent
+        command:
+        - chown
+        - "-R"
+        - 65534:65534
+        - "/data"
+        volumeMounts:
+        - name: storage-volume
+          mountPath: "/data"
+          subPath: ''
+      containers:
+      - name: prometheus-server-configmap-reload
+        image: jimmidyson/configmap-reload:v0.2.2
+        imagePullPolicy: IfNotPresent
+        args:
+        - "--volume-dir=/etc/config"
+        - "--webhook-url=http://127.0.0.1:9090/-/reload"
+        volumeMounts:
+        - name: config-volume
+          mountPath: "/etc/config"
+          readOnly: true
+      - name: prometheus-server
+        image: prom/prometheus:v2.7.1
+        imagePullPolicy: IfNotPresent
+        args:
+        - "--config.file=/etc/config/prometheus.yml"
+        - "--storage.tsdb.path=/data"
+        - "--web.console.libraries=/etc/prometheus/console_libraries"
+        - "--web.console.templates=/etc/prometheus/consoles"
+        - "--web.enable-lifecycle"
+        ports:
+        - containerPort: 9090
+        readinessProbe:
+          httpGet:
+            path: "/-/ready"
+            port: 9090
+          initialDelaySeconds: 30
+          timeoutSeconds: 30
+        livenessProbe:
+          httpGet:
+            path: "/-/healthy"
+            port: 9090
+          initialDelaySeconds: 30
+          timeoutSeconds: 30
+        volumeMounts:
+        - name: config-volume
+          mountPath: "/etc/config"
+        - name: storage-volume
+          mountPath: "/data"
+          subPath: ''
+      terminationGracePeriodSeconds: 300
+      volumes:
+      - name: config-volume
+        configMap:
+          name: prometheus-server
+      - name: storage-volume
+        persistentVolumeClaim:
+          claimName: prometheus-server
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    component: kube-state-metrics
+    group: prometheus
+  name: prometheus-kube-state-metrics
+spec:
+  selector:
+    matchLabels:
+      component: kube-state-metrics
+      group: prometheus
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: kube-state-metrics
+        group: prometheus
+    spec:
+      serviceAccountName: prometheus-kube-state-metrics
+      containers:
+      - name: prometheus-kube-state-metrics
+        image: quay.io/coreos/kube-state-metrics:v1.5.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: metrics
+          containerPort: 8080
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    component: alertmanager
+    group: prometheus
+  name: prometheus-alertmanager
+spec:
+  selector:
+    matchLabels:
+      component: alertmanager
+      group: prometheus
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: alertmanager
+        group: prometheus
+    spec:
+      serviceAccountName: prometheus-alertmanager
+      containers:
+      - name: prometheus-alertmanager
+        image: prom/alertmanager:v0.15.3
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.podIP
+        args:
+        - "--config.file=/etc/config/alertmanager.yml"
+        - "--storage.path=/data"
+        - "--cluster.advertise-address=$(POD_IP):6783"
+        - "--web.external-url=/"
+        ports:
+        - containerPort: 9093
+        readinessProbe:
+          httpGet:
+            path: "/#/status"
+            port: 9093
+          initialDelaySeconds: 30
+          timeoutSeconds: 30
+        volumeMounts:
+        - name: config-volume
+          mountPath: "/etc/config"
+        - name: storage-volume
+          mountPath: "/data"
+          subPath: ''
+      - name: prometheus-alertmanager-configmap-reload
+        image: jimmidyson/configmap-reload:v0.2.2
+        imagePullPolicy: IfNotPresent
+        args:
+        - "--volume-dir=/etc/config"
+        - "--webhook-url=http://127.0.0.1:9093/-/reload"
+        volumeMounts:
+        - name: config-volume
+          mountPath: "/etc/config"
+          readOnly: true
+      volumes:
+      - name: config-volume
+        configMap:
+          name: prometheus-alertmanager
+      - name: storage-volume
+        persistentVolumeClaim:
+          claimName: prometheus-alertmanager
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    component: pushgateway
+    group: prometheus
+  name: prometheus-pushgateway
+spec:
+  selector:
+    matchLabels:
+      component: pushgateway
+      group: prometheus
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: pushgateway
+        group: prometheus
+    spec:
+      serviceAccountName: prometheus-pushgateway
+      containers:
+      - name: prometheus-pushgateway
+        image: prom/pushgateway:v0.6.0
+        imagePullPolicy: IfNotPresent
+        args:
+        ports:
+        - containerPort: 9091
+        readinessProbe:
+          httpGet:
+            path: "/#/status"
+            port: 9091
+          initialDelaySeconds: 10
+          timeoutSeconds: 10

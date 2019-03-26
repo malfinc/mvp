@@ -1,0 +1,16 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: prometheus-operator-kube-state-metrics
+  labels:
+    group: prometheus-operator-kube-state-metrics
+spec:
+  jobLabel: group
+  endpoints:
+  - interval: 30s
+    port: http
+    honorLabels: true
+  selector:
+    matchLabels:
+      group: kube-state-metrics

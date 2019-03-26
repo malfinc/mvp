@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus-operator-alertmanager
+  labels:
+    group: prometheus-operator-alertmanager
+spec:
+  ports:
+  - name: web
+    port: 9093
+    targetPort: 9093
+  selector:
+    group: alertmanager
+    alertmanager: prometheus-operator-alertmanager
+  type: ClusterIP

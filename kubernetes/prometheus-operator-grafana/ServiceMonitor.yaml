@@ -1,0 +1,18 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: prometheus-operator-grafana
+  labels:
+    group: prometheus-operator-grafana
+spec:
+  selector:
+    matchLabels:
+      group: grafana
+  namespaceSelector:
+    matchNames:
+    - default
+  endpoints:
+  - port: service
+    interval: 30s
+    path: "/metrics"

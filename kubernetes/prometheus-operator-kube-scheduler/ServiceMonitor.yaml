@@ -1,0 +1,18 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: prometheus-operator-kube-scheduler
+  labels:
+    group: prometheus-operator-kube-scheduler
+spec:
+  jobLabel: jobLabel
+  selector:
+    matchLabels:
+      group: prometheus-operator-kube-scheduler
+  namespaceSelector:
+    matchNames:
+    - kube-system
+  endpoints:
+  - port: http-metrics
+    interval: 15s

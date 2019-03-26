@@ -1,0 +1,23 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: prometheus-operator-kubelet
+  labels:
+    group: prometheus-operator-kubelet
+spec:
+  endpoints:
+  - port: http-metrics
+    interval: 30s
+    honorLabels: true
+  - port: http-metrics
+    path: "/metrics/cadvisor"
+    interval: 30s
+    honorLabels: true
+  jobLabel: group
+  namespaceSelector:
+    matchNames:
+    - kube-system
+  selector:
+    matchLabels:
+      k8s-group: kubelet
