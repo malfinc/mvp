@@ -5,7 +5,6 @@ metadata:
   name: resources-api-database-migration
   labels:
     group: resources-api
-    role: postdeploy
 spec:
   completions: 1
   backoffLimit: 0

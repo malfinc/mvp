@@ -33,10 +33,10 @@ spec:
         volumeMounts:
         - name: grafana-configurations
           mountPath: "/etc/grafana/grafana.ini"
-          subPath: "grafana.ini"
+          subPath: grafana.ini
         - name: grafana-configurations
           mountPath: "/etc/grafana/provisioning/datasources/general.yaml"
-          subPath: "general.yaml"
+          subPath: general.yaml
         - name: storage
           mountPath: "/var/lib/grafana"
         ports:

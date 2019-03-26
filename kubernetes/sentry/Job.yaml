@@ -5,7 +5,6 @@ metadata:
   name: sentry-database-initialize
   labels:
     group: sentry
-    role: postdeploy
 spec:
   completions: 0
   backoffLimit: 0

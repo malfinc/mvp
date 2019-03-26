@@ -26,5 +26,5 @@
 # Ignore secret data
 /.env
 /config/master.key
-/kubernetes/*/runtime-secrets.yaml
+/kubernetes/runtime-secrets.yaml
 /kubernetes/test/
