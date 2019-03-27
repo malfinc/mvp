@@ -28,7 +28,7 @@ data:
       isDefault: true
     - name: Prometheus
       type: prometheus
-      url: http://prometheus-operator:9090/
+      url: http://alpha-prometheus-server.prometheus/
       access: proxy
 ---
 apiVersion: v1
