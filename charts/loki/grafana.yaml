@@ -1,5 +1,0 @@
-image:
-  tag: master
-
-env:
-  GF_EXPLORE_ENABLED: true
