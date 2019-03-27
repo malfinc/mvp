@@ -74,7 +74,7 @@ spec:
             - name: COUCHDB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: couchdb
+                  name: runtime-secrets
                   key: COUCHDB_SUPERUSER_PASSWORD
       volumes:
         - name: config-storage
