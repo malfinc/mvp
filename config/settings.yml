@@ -16,9 +16,9 @@ development:
     email_default: noreply@poutineer.local
   redis:
     sidekiq_client:
-      pool: 10
+      pool: 20
     sidekiq_server:
-      pool: 10
+      pool: 20
     cache:
       pool: 20
     lock:
