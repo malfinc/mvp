@@ -1,0 +1,99 @@
+---
+apiVersion: apps/v1beta2
+kind: StatefulSet
+metadata:
+  name: couchdb
+  labels:
+    group: couchdb
+spec:
+  replicas: 1
+  serviceName: couchdb
+  podManagementPolicy: Parallel
+  selector:
+    matchLabels:
+      group: couchdb
+      role: database
+  template:
+    metadata:
+      labels:
+        group: couchdb
+        role: database
+    spec:
+      initContainers:
+        - name: init-copy
+          image: "busybox:latest"
+          imagePullPolicy: IfNotPresent
+          command: ['sh','-c','cp /tmp/chart.ini /default.d; ls -lrt /default.d;']
+          volumeMounts:
+          - name: config
+            mountPath: /tmp/
+          - name: config-storage
+            mountPath: /default.d
+      containers:
+        - name: couchdb
+          image: "couchdb:2.3.0"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5984
+            - containerPort: 4369
+            - containerPort: 9100
+          env:
+            - name: COUCHDB_USER
+              value: superuser
+            - name: COUCHDB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: runtime-secrets
+                  key: COUCHDB_SUPERUSER_PASSWORD
+            - name: COUCHDB_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: runtime-secrets
+                  key: COUCHDB_COOKIE_SECRET
+            - name: ERL_FLAGS
+              value: " -name couchdb  -setcookie monster "
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 5984
+          readinessProbe:
+            httpGet:
+              path: /_up
+              port: 5984
+          volumeMounts:
+          - name: config-storage
+            mountPath: /opt/couchdb/etc/default.d
+          - name: database-storage
+            mountPath: /opt/couchdb/data
+        - name: couchdb-statefulset-assembler
+          image: "kocolosk/couchdb-statefulset-assembler:1.2.0"
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: COUCHDB_USER
+              value: superuser
+            - name: COUCHDB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: couchdb
+                  key: COUCHDB_SUPERUSER_PASSWORD
+      volumes:
+        - name: config-storage
+          emptyDir: {}
+        - name: config
+          configMap:
+            name: couchdb
+            items:
+              - key: inifile
+                path: chart.ini
+  volumeClaimTemplates:
+    - metadata:
+        name: database-storage
+        labels:
+          group: couchdb
+          role: database
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "1Gi"

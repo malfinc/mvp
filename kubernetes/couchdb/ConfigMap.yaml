@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: couchdb
+  labels:
+    group: couchdb
+data:
+  inifile: |-
+    [chttpd]
+    bind_address = any
+    require_valid_user = false

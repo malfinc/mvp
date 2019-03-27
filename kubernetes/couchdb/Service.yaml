@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: couchdb
+  labels:
+    group: couchdb
+    role: database
+    access: external
+spec:
+  ports:
+    - name: couchdb-http
+      port: 5984
+  type: ClusterIP
+  selector:
+    group: couchdb
+    role: database
