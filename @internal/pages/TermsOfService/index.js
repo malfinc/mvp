@@ -1,18 +1,20 @@
-import React from "react"
+import React from "react";
+import {Paragraph} from "evergreen-ui";
+import {Heading} from "evergreen-ui";
+import {Pane} from "evergreen-ui";
 
-import {Page} from "@internal/ui"
-import {SectionHeader} from "@internal/elements"
+import {Page} from "@internal/ui";
 
 export default function TermsOfService () {
-  return <Page subtitle="Terms Of Service" kind="article" data-component="TermsOfService">
-    <section>
-      <SectionHeader>
+  return <Page subtitle="Terms Of Service" kind="article">
+    <Pane>
+      <Heading>
         Empty
-      </SectionHeader>
+      </Heading>
 
-      <p>
+      <Paragraph>
         To be filled
-      </p>
-    </section>
-  </Page>
+      </Paragraph>
+    </Pane>
+  </Page>;
 }

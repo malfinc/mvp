@@ -1,21 +1,27 @@
-import React from "react"
+import React from "react";
 
-import {Page} from "@internal/ui"
-import {PageHeader} from "@internal/elements"
-import {Anchor} from "@internal/elements"
+import {Pane} from "evergreen-ui";
+
+import {Page} from "@internal/ui";
+import {PageHeader} from "@internal/elements";
+import {Link} from "@internal/elements";
 
 export default function LandingPage () {
-  return <Page subtitle="Welcome!" data-component="LandingPage" hasHeader={false}>
+  return <Page subtitle="Welcome!" hasHeader={false}>
     <PageHeader>
-      Poutineer <i className="fas fa-lock"></i>
+      Poutineer
     </PageHeader>
 
-    <Anchor kind="primary" href="/sign-up">
-      Join us
-    </Anchor>
+    <Pane>
+      <Link kind="primary" href="/sign-up">
+        Join us
+      </Link>
+    </Pane>
 
-    <Anchor kind="secondary" href="/sign-in">
-      Login
-    </Anchor>
-  </Page>
+    <Pane>
+      <Link kind="secondary" href="/sign-in">
+        Login
+      </Link>
+    </Pane>
+  </Page>;
 }

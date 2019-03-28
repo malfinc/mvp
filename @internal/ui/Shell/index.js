@@ -1,22 +1,22 @@
-import React from "react"
+import React from "react";
 
-import GoogleTagManagerNoScript from "./GoogleTagManagerNoScript"
-import GoogleTagManagerScript from "./GoogleTagManagerScript"
-import JavascriptWarning from "./JavascriptWarning"
+import GoogleTagManagerNoScript from "./GoogleTagManagerNoScript";
+import GoogleTagManagerScript from "./GoogleTagManagerScript";
+import JavascriptWarning from "./JavascriptWarning";
 
 export default function Shell (props) {
-  const {helmet} = props
-  const {extractedStyles} = props
-  const {manifest} = props
-  const {children} = props
-  const {css} = extractedStyles
-  const {hydrationScript} = extractedStyles
-  const {runtime: {js: runtimeFilename}} = manifest
-  const {vendor: {js: vendorFilename}} = manifest
-  const {internal: {js: internalFilename}} = manifest
-  const {main: {js: mainFilename}} = manifest
+  const {helmet} = props;
+  const {manifest} = props;
+  const {children} = props;
+  const {extractedStyles} = props;
+  const {css} = extractedStyles;
+  const {hydrationScript} = extractedStyles;
+  const {runtime: {js: runtimeFilename}} = manifest;
+  const {vendor: {js: vendorFilename}} = manifest;
+  const {internal: {js: internalFilename}} = manifest;
+  const {main: {js: mainFilename}} = manifest;
 
-  return <html lang="en" data-component="Shell" {...helmet.htmlAttributes.toComponent()}>
+  return <html lang="en" {...helmet.htmlAttributes.toComponent()}>
     <head>
       <meta charSet="utf-8" />
       {helmet.title.toComponent()}
@@ -54,8 +54,8 @@ export default function Shell (props) {
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Handlee%7COpen+Sans" />
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" integrity="sha256-oSrCnRYXvHG31SBifqP2PM1uje7SJUyX0nTwO2RJV54=" crossOrigin="anonymous" />
 
+      <style id="server-side-rendered-css" dangerouslySetInnerHTML={{__html: css}} />
       {helmet.style.toComponent()}
-      <style id="server-side-rendered-css" dangerouslySetInnerHTML={{ __html: css }} />
 
       {helmet.noscript.toComponent()}
 
@@ -69,14 +69,14 @@ export default function Shell (props) {
 
       <JavascriptWarning />
 
-      <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/solid.js" integrity="sha384-6FXzJ8R8IC4v/SKPI8oOcRrUkJU8uvFK6YJ4eDY11bJQz4lRw5/wGthflEOX8hjL" crossOrigin="anonymous"></script>
-      <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/brands.js" integrity="sha384-zJ8/qgGmKwL+kr/xmGA6s1oXK63ah5/1rHuILmZ44sO2Bbq1V3p3eRTkuGcivyhD" crossOrigin="anonymous"></script>
-      <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/fontawesome.js" integrity="sha384-xl26xwG2NVtJDw2/96Lmg09++ZjrXPc89j0j7JHjLOdSwHDHPHiucUjfllW0Ywrq" crossOrigin="anonymous"></script>
-      <script src="/assets/babel-helpers.js"></script>
-      <script src={`/assets/${runtimeFilename}`}></script>
-      <script src={`/assets/${vendorFilename}`}></script>
-      <script src={`/assets/${internalFilename}`}></script>
-      <script src={`/assets/${mainFilename}`}></script>
+      <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/solid.js" integrity="sha384-6FXzJ8R8IC4v/SKPI8oOcRrUkJU8uvFK6YJ4eDY11bJQz4lRw5/wGthflEOX8hjL" crossOrigin="anonymous" />
+      <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/brands.js" integrity="sha384-zJ8/qgGmKwL+kr/xmGA6s1oXK63ah5/1rHuILmZ44sO2Bbq1V3p3eRTkuGcivyhD" crossOrigin="anonymous" />
+      <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/fontawesome.js" integrity="sha384-xl26xwG2NVtJDw2/96Lmg09++ZjrXPc89j0j7JHjLOdSwHDHPHiucUjfllW0Ywrq" crossOrigin="anonymous" />
+      <script src="/assets/babel-helpers.js" />
+      <script src={`/assets/${runtimeFilename}`} />
+      <script src={`/assets/${vendorFilename}`} />
+      <script src={`/assets/${internalFilename}`} />
+      <script src={`/assets/${mainFilename}`} />
     </body>
-  </html>
+  </html>;
 }

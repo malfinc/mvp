@@ -1,5 +1,5 @@
-import {createStructuredSelector} from "reselect"
-import mergeRight from "@unction/mergeright"
+import {createStructuredSelector} from "reselect";
+import mergeRight from "@unction/mergeright";
 
 
 export default function combinedSelectors (selectors) {
@@ -8,6 +8,6 @@ export default function combinedSelectors (selectors) {
       props
     )(
       createStructuredSelector(selectors)(state, props)
-    )
-  }
+    );
+  };
 }

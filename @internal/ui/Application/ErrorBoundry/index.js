@@ -1,29 +1,29 @@
-import React from "react"
-import {withState} from "recompose"
-import {lifecycle} from "recompose"
+import React from "react";
+import {withState} from "recompose";
+import {lifecycle} from "recompose";
+import {Paragraph} from "evergreen-ui";
 
-import view from "@internal/view"
-
+import view from "@internal/view";
 
 export default view([
   function ErrorBoundary (props) {
-    const {exploded} = props
-    const {children} = props
+    const {exploded} = props;
+    const {children} = props;
 
     if (exploded) {
-      return <p>
+      return <Paragraph>
         Something has gone wrong.
-      </p>
+      </Paragraph>;
     }
 
-    return children
+    return children;
   },
   withState("exploded", "explode", false),
   lifecycle({
     componentDidCatch (exception, info) {
-      this.setState({exploded: true})
+      this.setState({exploded: true});
 
-      console.error({exception, info})
+      console.error({exception, info});
     },
   }),
-])
+]);

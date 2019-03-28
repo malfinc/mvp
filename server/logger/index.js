@@ -1,3 +1,3 @@
-import {createLogger} from "bunyan"
+import {createLogger} from "bunyan";
 
-export default createLogger({name: "www"})
+export default createLogger({name: "www"});

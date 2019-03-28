@@ -1,8 +1,8 @@
-import dig from "@unction/dig"
+import dig from "@unction/dig";
 
 
 export default function formSelector (state, props) {
-  const {formSlug} = props
+  const {formSlug} = props;
 
-  return dig(["forms", formSlug])(state)
+  return dig(["forms", formSlug])(state);
 }

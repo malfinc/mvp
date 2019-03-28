@@ -1,18 +1,18 @@
-import React from "react"
-import {Switch} from "react-router-dom"
-import {Route} from "react-router-dom"
+import React from "react";
+import {Switch} from "react-router-dom";
+import {Route} from "react-router-dom";
 
-import {LandingPage} from "@internal/pages"
-import {CodeOfConduct} from "@internal/pages"
-import {DataPolicy} from "@internal/pages"
-import {OurTechnology} from "@internal/pages"
-import {PrivacyPolicy} from "@internal/pages"
-import {TermsOfService} from "@internal/pages"
-import {TheCost} from "@internal/pages"
-import {ThisIsUs} from "@internal/pages"
-import {PageNotFound} from "@internal/pages"
+import {LandingPage} from "@internal/pages";
+import {CodeOfConduct} from "@internal/pages";
+import {DataPolicy} from "@internal/pages";
+import {OurTechnology} from "@internal/pages";
+import {PrivacyPolicy} from "@internal/pages";
+import {TermsOfService} from "@internal/pages";
+import {TheCost} from "@internal/pages";
+import {ThisIsUs} from "@internal/pages";
+import {PageNotFound} from "@internal/pages";
 
-import ErrorBoundry from "./ErrorBoundry"
+import ErrorBoundry from "./ErrorBoundry";
 
 export default function Application () {
   return <ErrorBoundry>
@@ -27,5 +27,5 @@ export default function Application () {
       <Route path="/" component={LandingPage} />
       <Route component={PageNotFound} />
     </Switch>
-  </ErrorBoundry>
+  </ErrorBoundry>;
 }

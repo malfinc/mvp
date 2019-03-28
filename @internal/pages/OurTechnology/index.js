@@ -1,62 +1,20 @@
-import React from "react"
+import React from "react";
+import {Paragraph} from "evergreen-ui";
+import {Heading} from "evergreen-ui";
+import {Pane} from "evergreen-ui";
 
-import {Page} from "@internal/ui"
-import {SectionHeader} from "@internal/elements"
+import {Page} from "@internal/ui";
 
 export default function OurTechnology () {
-  return <Page subtitle="Our Technology" kind="article" data-component="OurTechnology">
-    <SectionHeader>
-      Resource Server
-    </SectionHeader>
-    <section>
-      <p>
-        To be filled
-      </p>
-    </section>
+  return <Page subtitle="Our Technology" kind="article">
+    <Pane>
+      <Heading>
+        Topic
+      </Heading>
 
-    <SectionHeader>
-      Origin Server
-    </SectionHeader>
-    <section>
-      <p>
+      <Paragraph>
         To be filled
-      </p>
-    </section>
-
-    <SectionHeader>
-      Browser Client
-    </SectionHeader>
-    <section>
-      <p>
-        To be filled
-      </p>
-    </section>
-
-    <SectionHeader>
-      Mobile Client
-    </SectionHeader>
-    <section>
-      <p>
-        To be filled
-      </p>
-    </section>
-
-    <SectionHeader>
-      General Technologies
-    </SectionHeader>
-    <section>
-      <p>
-        To be filled
-      </p>
-    </section>
-
-    <SectionHeader>
-      External Services
-    </SectionHeader>
-    <section>
-      <p>
-        To be filled
-      </p>
-    </section>
-  </Page>
+      </Paragraph>
+    </Pane>
+  </Page>;
 }

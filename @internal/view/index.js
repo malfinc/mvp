@@ -1,10 +1,10 @@
-import {compose} from "recompose"
+import {compose} from "recompose";
 
 export default function view (unctions) {
   const [
-    view,
+    presentation,
     ...wrappers
-  ] = unctions
+  ] = unctions;
 
-  return compose(...wrappers)(view)
+  return compose(...wrappers)(presentation);
 }

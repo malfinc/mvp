@@ -1,18 +1,20 @@
-import React from "react"
+import React from "react";
+import {Paragraph} from "evergreen-ui";
+import {Heading} from "evergreen-ui";
+import {Pane} from "evergreen-ui";
 
-import {Page} from "@internal/ui"
-import {SectionHeader} from "@internal/elements"
+import {Page} from "@internal/ui";
 
 export default function ThisIsUs () {
-  return <Page subtitle="This Is Us" kind="article" data-component="ThisIsUs">
-    <section>
-      <SectionHeader>
-        Engineering
-      </SectionHeader>
+  return <Page subtitle="This Is Us" kind="article">
+    <Pane>
+      <Heading>
+        Empty
+      </Heading>
 
-      <p>
+      <Paragraph>
         To be filled
-      </p>
-    </section>
-  </Page>
+      </Paragraph>
+    </Pane>
+  </Page>;
 }
