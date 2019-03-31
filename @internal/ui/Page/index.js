@@ -2,6 +2,7 @@ import React from "react";
 import {defaultProps} from "recompose";
 import {withRouter} from "react-router";
 import get from "@unction/get";
+import {Pane} from "evergreen-ui";
 
 import view from "@internal/view";
 import {PageHeader} from "@internal/elements";
@@ -18,9 +19,13 @@ export default view([
     const {match: {isExact, path, url}} = props;
 
     return <main data-component={dataComponent} data-match-exact={isExact} data-match-path={path} data-match-url={url}>
-      {hasHeader && <HeaderComponent />}
-      {children}
-      {hasFooter && <FooterComponent />}
+      <Pane display="flex" flexDirection="column">
+        {hasHeader && <HeaderComponent />}
+        <Pane flexGrow={1} display="flex" flexDirection="column">
+          {children}
+        </Pane>
+        {hasFooter && <FooterComponent />}
+      </Pane>
     </main>;
   },
   defaultProps({
