@@ -12,23 +12,15 @@ import {Link} from "@internal/elements";
 export default function PageFooter () {
   return <ThemeConsumer>
     {
-      (theme) => <Pane is="footer" background={theme.palette.neutral.base}>
-        <Heading size={800} color={theme.palette.neutral.light}>
+      (theme) => <Pane is="footer" minHeight={400} padding={25} background={theme.colors.background.yellowTint} display="flex" flexDirection="row" justifyContent="space-evenly">
+        <Heading size={800} width={300}>
           Poutineer
         </Heading>
-        <Pane display="flex" alignItems="center" justifyContent="space-evenly">
-          <Heading size={500} color={theme.palette.neutral.light} marginX={50}>
-            Navigation
-          </Heading>
-          <Heading size={500} color={theme.palette.neutral.light} marginX={50}>
-            Legal
-          </Heading>
-          <Heading size={500} color={theme.palette.neutral.light} marginX={50}>
-            Find Us
-          </Heading>
-        </Pane>
-        <Pane display="flex" alignItems="center" justifyContent="space-evenly">
-          <Pane marginX={50}>
+        <Pane display="flex" alignItems="stretch" flexGrow="1" justifyContent="space-evenly">
+          <Pane>
+            <Heading size={500}>
+              Navigation
+            </Heading>
             <UnorderedList>
               <ListItem>
                 <Link href="/this-is-us">This Is Us</Link>
@@ -51,24 +43,28 @@ export default function PageFooter () {
             </UnorderedList>
           </Pane>
 
-          <Pane marginX={50}>
-            <Paragraph color={theme.palette.neutral.light}>
-              <Strong color={theme.palette.neutral.light}>Poutineer</Strong> is owned by <Link href="https://kurits.rainbolt-greene.online">Kurtis Rainbolt-Greene</Link>.<br />
-              The source code is licensed <Link href="http://opensource.org/licenses/isc-license.php">ISC</Link>.<br />
-              The website content is licensed <Link href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC ANS 4.0</Link>.
-            </Paragraph>
+          <Pane>
+            <Heading size={500}>
+              Find Us
+            </Heading>
+            <UnorderedList>
+              <ListItem>
+                <Link href="https://github.com/lacqueristas"><i className="fab fa-github" /></Link>
+              </ListItem>
+              <ListItem>
+                <Link href="https://twitter.com/lacqueristas"><i className="fab fa-twitter" /></Link>
+              </ListItem>
+            </UnorderedList>
           </Pane>
 
           <Pane>
-            <Paragraph color={theme.palette.neutral.light}>
-              <UnorderedList>
-                <ListItem>
-                  <Link href="https://github.com/lacqueristas"><span className="fab fa-github" /></Link>
-                </ListItem>
-                <ListItem>
-                  <Link href="https://twitter.com/lacqueristas"><span className="fab fa-twitter" /></Link>
-                </ListItem>
-              </UnorderedList>
+            <Heading size={500}>
+              Legal
+            </Heading>
+            <Paragraph>
+              <Strong>Poutineer</Strong> is owned by <Link href="https://kurits.rainbolt-greene.online">Kurtis Rainbolt-Greene</Link>.<br />
+              The source code is licensed <Link href="http://opensource.org/licenses/isc-license.php">ISC</Link>.<br />
+              The website content is licensed <Link href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC ANS 4.0</Link>.
             </Paragraph>
           </Pane>
         </Pane>
