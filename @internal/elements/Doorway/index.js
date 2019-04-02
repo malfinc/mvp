@@ -16,12 +16,12 @@ export default view([
 
     const [left, right] = children();
 
-    return <Pane display="flex" flexDirection="row" flexGrow={1} alignItems="stretch" {...remainingProps}>
-      <Pane display="flex" flexGrow={1} alignItems="center" justifyContent="center">
+    return <Pane data-element="Doorway" display="flex" flexDirection="row" minHeight={400} alignItems="stretch" {...remainingProps}>
+      <Pane data-element="Doorway Left" display="flex" flexGrow={1} alignItems="center" justifyContent="center">
         {left}
       </Pane>
 
-      <Pane display="flex" flexGrow={1} alignItems="center" justifyContent="center">
+      <Pane data-element="Doorway Right" display="flex" flexGrow={1} alignItems="center" justifyContent="center">
         {right}
       </Pane>
     </Pane>;
