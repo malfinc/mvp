@@ -30,18 +30,18 @@ export default view([
     const remainingProps = omit(REMAINING_PROP_NAMES)(props);
 
     if (isNil(href)) {
-      return <EvergreenLink color={color} {...remainingProps}>
+      return <EvergreenLink data-element="Link" color={color} {...remainingProps}>
         {children}
       </EvergreenLink>;
     }
 
     if (startsWith("https")(href) || startsWith("http")(href)) {
-      return <EvergreenLink color={color} href={href} {...remainingProps}>
+      return <EvergreenLink data-element="Link" color={color} href={href} {...remainingProps}>
         {children}
       </EvergreenLink>;
     }
 
-    return <ComponentLink color={color} to={href} component={EvergreenLink} {...remainingProps}>{children}</ComponentLink>;
+    return <ComponentLink data-element="Link" color={color} to={href} component={EvergreenLink} {...remainingProps}>{children}</ComponentLink>;
   },
   defaultProps({
     kind: "normal",

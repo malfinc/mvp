@@ -12,7 +12,7 @@ import {Link} from "@internal/elements";
 export default function PageFooter () {
   return <ThemeConsumer>
     {
-      (theme) => <Pane is="footer" minHeight={400} padding={25} background={theme.colors.background.yellowTint} display="flex" flexDirection="row" justifyContent="space-evenly">
+      (theme) => <Pane data-element="Footer" is="footer" minHeight={400} padding={25} background={theme.colors.background.yellowTint} display="flex" flexDirection="row" justifyContent="space-evenly">
         <Heading size={800} width={300}>
           Poutineer
         </Heading>
