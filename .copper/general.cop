@@ -1,0 +1,7 @@
+rule DeploymentFilenamePolicy ensure {
+    filename.ext == ".yml" and // extension is yml
+    filename.name == fetch("$[?(@['kind'] == 'Deployment')].metadata.name").first and
+    filename.path.split("/").last == "deployments"
+}
+
+
