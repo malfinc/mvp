@@ -1,10 +1,9 @@
-import {compose} from "recompose";
+import pipe from "@unction/pipe";
+import last from "@unction/last";
+import dropLast from "@unction/droplast";
+
+const PRESENTER_POSITION = 1;
 
 export default function view (unctions) {
-  const [
-    presentation,
-    ...wrappers
-  ] = unctions;
-
-  return compose(...wrappers)(presentation);
+  return pipe(dropLast(PRESENTER_POSITION)(unctions))(last(unctions));
 }

@@ -9,6 +9,13 @@ import {PageHeader} from "@internal/elements";
 import {PageFooter} from "@internal/elements";
 
 export default view([
+  defaultProps({
+    hasHeader: true,
+    hasFooter: true,
+    header: PageHeader,
+    footer: PageFooter,
+  }),
+  withRouter,
   function Page (props) {
     const {children} = props;
     const {hasHeader} = props;
@@ -28,11 +35,4 @@ export default view([
       </Pane>
     </main>;
   },
-  defaultProps({
-    hasHeader: true,
-    hasFooter: true,
-    header: PageHeader,
-    footer: PageFooter,
-  }),
-  withRouter,
 ]);

@@ -6,6 +6,9 @@ import {Paragraph} from "evergreen-ui";
 import view from "@internal/view";
 
 export default view([
+  defaultProps({
+    subtitle: null,
+  }),
   function PageHeader (props) {
     const {children} = props;
     const {subtitle} = props;
@@ -17,7 +20,4 @@ export default view([
       {subtitle && <Paragraph size={300}>{subtitle}</Paragraph>}
     </header>;
   },
-  defaultProps({
-    subtitle: null,
-  }),
 ]);

@@ -6,6 +6,14 @@ import {Paragraph} from "evergreen-ui";
 import view from "@internal/view";
 
 export default view([
+  withState("exploded", "explode", false),
+  lifecycle({
+    componentDidCatch (exception, info) {
+      this.setState({exploded: true});
+
+      console.error({exception, info}); // eslint-disable-line no-console
+    },
+  }),
   function ErrorBoundary (props) {
     const {exploded} = props;
     const {children} = props;
@@ -18,12 +26,4 @@ export default view([
 
     return children;
   },
-  withState("exploded", "explode", false),
-  lifecycle({
-    componentDidCatch (exception, info) {
-      this.setState({exploded: true});
-
-      console.error({exception, info});
-    },
-  }),
 ]);

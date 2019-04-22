@@ -10,6 +10,7 @@ const REMAINING_PROP_NAMES = [
 ];
 
 export default view([
+  defaultProps({}),
   function Doorway (props) {
     const {children} = props;
     const remainingProps = omit(REMAINING_PROP_NAMES)(props);
@@ -26,5 +27,4 @@ export default view([
       </Pane>
     </Pane>;
   },
-  defaultProps({}),
 ]);

@@ -22,6 +22,9 @@ const kinds = {
 };
 
 export default view([
+  defaultProps({
+    kind: "normal",
+  }),
   function Link (props) {
     const {children} = props;
     const {href} = props;
@@ -43,7 +46,4 @@ export default view([
 
     return <ComponentLink data-element="Link" color={color} to={href} component={EvergreenLink} {...remainingProps}>{children}</ComponentLink>;
   },
-  defaultProps({
-    kind: "normal",
-  }),
 ]);
