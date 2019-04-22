@@ -1,8 +1,8 @@
 {
   "presets": [
     ["@emotion/babel-preset-css-prop", {"sourceMap": true}],
-    "@babel/preset-typescript",
     "@babel/react",
+    "@babel/preset-typescript",
     ["@babel/env", {"useBuiltIns": "usage"}],
     "minify"
   ],
