@@ -1,11 +1,8 @@
+import mergeRight from "@unction/mergeRight";
+
 export default {
   state: {},
   reducers: {
-    updateEmail (state, email) {
-      return {
-        email,
-        ...state,
-      };
-    },
+    updateState: (state, value) => mergeRight(state)(value),
   },
 };
