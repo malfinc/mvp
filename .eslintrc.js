@@ -352,7 +352,7 @@ module.exports = {
     "operator-linebreak": "off", // Doesn't work with pipes
     "padded-blocks": ["error", "never"],
     "padding-line-between-statements": "error",
-    "prefer-arrow-callback": "error",
+    "prefer-arrow-callback": "off", // functions are fine too
     "prefer-const": "error",
     "prefer-destructuring": "error",
     "prefer-numeric-literals": "error",
