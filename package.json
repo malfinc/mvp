@@ -96,6 +96,7 @@
     "@unction/isnil": "5.0.0",
     "@unction/last": "10.0.0",
     "@unction/mergedeepright": "9.0.0",
+    "@unction/mergeright": "6.0.0",
     "@unction/objectfrom": "1.0.0",
     "@unction/pipe": "9.0.0",
     "@unction/startswith": "3.0.0",
