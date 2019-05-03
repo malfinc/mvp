@@ -21,6 +21,10 @@
       "^.+\\.jsx?$": "babel-jest"
     }
   },
+  "engines": {
+    "node": "10.13.0",
+    "npm": "6.9.0"
+  },
   "scripts": {
     "start": "nf start",
     "start:nodemon": "nodemon --exec 'npx --no-install babel-node' --watch ./server/ --watch ./@internal/ -- ./server/index.js",
