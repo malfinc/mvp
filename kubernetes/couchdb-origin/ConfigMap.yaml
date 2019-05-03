@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: "couchdb-configuration"
+  name: "couchdb-origin-configuration"
   labels:
-    group: couchdb
+    group: couchdb-origin
 data:
   inifile: |-
     [couchdb]
