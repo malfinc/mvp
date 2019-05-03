@@ -32,13 +32,6 @@ spec:
         - config_file=/var/lib/postgresql/configuration/postgresql.conf
         ports:
         - containerPort: 5432
-        volumeMounts:
-        - name: postgresql-origin-data
-          mountPath: "/var/lib/postgresql/data/"
-        - name: postgresql-origin-configuration
-          mountPath: "/var/lib/postgresql/configuration/"
-        - name: postgresql-origin-initializers
-          mountPath: "/docker-entrypoint-initdb.d/"
         env:
         - name: POSTGRES_PASSWORD
           valueFrom:
@@ -67,6 +60,13 @@ spec:
               key: POSTGRES_SENTRY_PASSWORD
         - name: PGDATA
           value: "/var/lib/postgresql/data/"
+        volumeMounts:
+        - name: postgresql-origin-data
+          mountPath: "/var/lib/postgresql/data/"
+        - name: postgresql-origin-configuration
+          mountPath: "/var/lib/postgresql/configuration/"
+        - name: postgresql-origin-initializers
+          mountPath: "/docker-entrypoint-initdb.d/"
       volumes:
       - name: postgresql-origin-data
         persistentVolumeClaim:
