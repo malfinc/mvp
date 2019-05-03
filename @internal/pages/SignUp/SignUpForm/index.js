@@ -1,6 +1,8 @@
-import React, {useState, useEffect} from "react";
+import React, {useState} from "react";
+import useDebounce from "react-use/lib/useDebounce";
 import {Pane} from "evergreen-ui";
 import {TextInput} from "evergreen-ui";
+import {Button} from "evergreen-ui";
 import {connect} from "react-redux";
 import {get} from "@unction/complete";
 import view from "@internal/view";
@@ -8,23 +10,32 @@ import view from "@internal/view";
 export default view([
   connect(
     get("signUpForm"),
-    ({signUpForm: {write}}) => ({write}),
+    ({signUpForm: {mergeAttributes, submitForm}}) => ({mergeAttributes, submitForm}),
   ),
-  function SignUpForm ({email, password, write}) {
-    const [form, setForm] = useState({email, password});
+  function SignUpForm ({mergeAttributes, submitForm}) {
+    const [formFields, setFormFields] = useState({});
+    const [loading, setLoading] = useState(false);
+    const {email} = formFields;
+    const onChangeEmail = (event) => setFormFields({...formFields, email: event.target.value});
+    const onSubmit = async () => {
+      try {
+        setLoading(true);
+        await submitForm();
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    useEffect(function writeEmailState () {
-      write(form);
-    }, [form]);
+    useDebounce(function mergeState () {
+      mergeAttributes(formFields);
+    }, 250, [formFields]);
 
-    return <form>
+    return <form id="signUpForm" onSubmit={onSubmit}>
       <Pane>
-        {form.email}
-        <TextInput type="email" onChange={(event) => setForm({email: event.target.value})} value={email} />
+        <TextInput id="signUpFormEmail" name="signUpForm[email]" type="email" disabled={loading} onChange={onChangeEmail} value={email} />
       </Pane>
       <Pane>
-        {form.password}
-        <TextInput type="password" onChange={(event) => setForm({password: event.target.value})} value={password} />
+        <Button appearance="primary" isLoading={loading}>Sign Up</Button>
       </Pane>
     </form>;
   },
