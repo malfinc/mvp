@@ -15,15 +15,16 @@ spec:
       role: database
   template:
     metadata:
+      name: couchdb
       labels:
         group: couchdb
         role: database
     spec:
       initContainers:
-        - name: configuration-copy
+        - name: "configuration-copy"
           image: "busybox:latest"
           imagePullPolicy: IfNotPresent
-          command: ['sh','-c','cp /tmp/chart.ini /default.d; ls -lrt /default.d;']
+          command: ['sh','-c','cp /tmp/chart.ini /default.d/; ls -lrt /default.d/;']
           volumeMounts:
           - name: config
             mountPath: /tmp/
@@ -35,9 +36,6 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5984
-            - containerPort: 5986
-            - containerPort: 4369
-            - containerPort: 9100
           env:
             - name: COUCHDB_USER
               value: superuser
@@ -63,20 +61,9 @@ spec:
               port: 5984
           volumeMounts:
           - name: temporary-storage
-            mountPath: /opt/couchdb/etc/default.d
+            mountPath: /opt/couchdb/etc/default.d/
           - name: database-storage
-            mountPath: /opt/couchdb/data
-        - name: couchdb-statefulset-assembler
-          image: "kocolosk/couchdb-statefulset-assembler:1.2.0"
-          imagePullPolicy: IfNotPresent
-          env:
-            - name: COUCHDB_USER
-              value: superuser
-            - name: COUCHDB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: runtime-secrets
-                  key: COUCHDB_SUPERUSER_PASSWORD
+            mountPath: /opt/couchdb/data/
       volumes:
         - name: temporary-storage
           emptyDir: {}
@@ -97,4 +84,4 @@ spec:
           - "ReadWriteOnce"
         resources:
           requests:
-            storage: "10Gi"
+            storage: "1Gi"

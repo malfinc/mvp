@@ -2,21 +2,22 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: couchdb-configuration
+  name: "couchdb-configuration"
   labels:
     group: couchdb
 data:
   inifile: |-
     [couchdb]
     max_dbs_open = 500
-    ; Supply a comma-delimited list of node names that this node should
-    ; contact in order to join a cluster. If a seedlist is configured the ``_up``
-    ; endpoint will return a 404 until the node has successfully contacted at
-    ; least one of the members of the seedlist and replicated an up-to-date copy
-    ; of the ``_nodes``, ``_dbs``, and ``_users`` system databases.
-    ; seedlist = couchdb@node1.example.com,couchdb@node2.example.com
+    default_security = everyone
+    [cluster]
+    n = 1
+    q = 8
     [chttpd]
     bind_address = 0.0.0.0
     require_valid_user = true
     [httpd]
     bind_address = 0.0.0.0
+    enable_cors = true
+    [cors]
+    origins = *
