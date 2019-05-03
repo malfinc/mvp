@@ -25,10 +25,10 @@ module.exports = {
     }
   },
   rules: {
-    "babel/new-cap": "error",
+    "babel/new-cap": "off", // Already handled
     "babel/no-invalid-this": "error",
     "babel/object-curly-spacing": "error",
-    "babel/semi": "error",
+    "babel/semi": "off", // Already handled
     "promise/always-return": "error",
     "promise/avoid-new": "error",
     "promise/catch-or-return": "error",
@@ -199,7 +199,7 @@ module.exports = {
     "max-nested-callbacks": "error",
     "max-params": "error",
     "max-statements-per-line": "error",
-    "max-statements": "warn",
+    "max-statements": "off", // Still not terribly useful
     "multiline-ternary": ["error", "never"],
     "new-cap": "error",
     "new-parens": "error",
