@@ -9,8 +9,8 @@ metadata:
     access: external
 spec:
   ports:
-    - name: couchdb-origin-http
-      port: 5984
+  - name: couchdb-origin-http
+    port: 5984
   type: ClusterIP
   selector:
     group: couchdb-origin

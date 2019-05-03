@@ -55,10 +55,10 @@ spec:
               name: runtime-secrets
               key: COUCHDB_COOKIE_SECRET
         - name: ERL_FLAGS
-          value: "-name couchdb  -setcookie monster"
+          value: "-name server@couchdb-origin -setcookie monster"
         livenessProbe:
           httpGet:
-            path: /
+            path: /_up
             port: 5984
         readinessProbe:
           httpGet:
