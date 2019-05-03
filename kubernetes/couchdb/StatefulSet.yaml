@@ -20,21 +20,22 @@ spec:
         role: database
     spec:
       initContainers:
-        - name: init-copy
+        - name: configuration-copy
           image: "busybox:latest"
           imagePullPolicy: IfNotPresent
           command: ['sh','-c','cp /tmp/chart.ini /default.d; ls -lrt /default.d;']
           volumeMounts:
           - name: config
             mountPath: /tmp/
-          - name: config-storage
-            mountPath: /default.d
+          - name: temporary-storage
+            mountPath: /default.d/
       containers:
         - name: couchdb
           image: "couchdb:2.3.0"
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5984
+            - containerPort: 5986
             - containerPort: 4369
             - containerPort: 9100
           env:
@@ -61,7 +62,7 @@ spec:
               path: /_up
               port: 5984
           volumeMounts:
-          - name: config-storage
+          - name: temporary-storage
             mountPath: /opt/couchdb/etc/default.d
           - name: database-storage
             mountPath: /opt/couchdb/data
@@ -77,11 +78,11 @@ spec:
                   name: runtime-secrets
                   key: COUCHDB_SUPERUSER_PASSWORD
       volumes:
-        - name: config-storage
+        - name: temporary-storage
           emptyDir: {}
         - name: config
           configMap:
-            name: couchdb
+            name: couchdb-configuration
             items:
               - key: inifile
                 path: chart.ini
@@ -96,4 +97,4 @@ spec:
           - "ReadWriteOnce"
         resources:
           requests:
-            storage: "1Gi"
+            storage: "10Gi"
