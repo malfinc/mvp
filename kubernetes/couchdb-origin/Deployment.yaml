@@ -42,6 +42,10 @@ spec:
         ports:
         - containerPort: 5984
         env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
         - name: COUCHDB_USER
           value: superuser
         - name: COUCHDB_PASSWORD
@@ -55,14 +59,14 @@ spec:
               name: runtime-secrets
               key: COUCHDB_COOKIE_SECRET
         - name: ERL_FLAGS
-          value: "-name server@couchdb-origin -setcookie monster"
+          value: "-name couchdb-origin@$(POD_IP) -setcookie monster"
         livenessProbe:
           httpGet:
             path: /_up
             port: 5984
         readinessProbe:
           httpGet:
-            path: /_up
+            path: /
             port: 5984
         volumeMounts:
         - name: temporary-storage

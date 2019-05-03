@@ -33,6 +33,13 @@ metadata:
       ---
       apiVersion: ambassador/v1
       kind: Mapping
+      name: couchdb-origin
+      prefix: /
+      host: couchdb-origin.difference-engineers.com
+      service: couchdb-origin.default:5984
+      ---
+      apiVersion: ambassador/v1
+      kind: Mapping
       name: kubernetes-dashboard
       prefix: /
       host: kubernetes-dashboard.difference-engineers.com
