@@ -1,11 +1,11 @@
-import indexBy from "@unction/indexby";
-import groupBy from "@unction/groupby";
-import objectFrom from "@unction/objectfrom";
-import mergeDeepRight from "@unction/mergedeepright";
-import treeify from "@unction/treeify";
-import dig from "@unction/dig";
-import arrayify from "@unction/arrayify";
-import pipe from "@unction/pipe";
+import {indexBy} from "@unction/complete";
+import {groupBy} from "@unction/complete";
+import {objectFrom} from "@unction/complete";
+import {mergeDeepRight} from "@unction/complete";
+import {treeify} from "@unction/complete";
+import {dig} from "@unction/complete";
+import {arrayify} from "@unction/complete";
+import {pipe} from "@unction/complete";
 
 export default {
   state: {},

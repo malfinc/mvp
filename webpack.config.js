@@ -9,6 +9,7 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 const {BundleAnalyzerPlugin} = require("webpack-bundle-analyzer");
 const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
 const WebpackVisualizerPlugin = require("webpack-visualizer-plugin");
+const {compact} = require("@unction/complete");
 
 const commonConfiguration = {
   mode: process.env.NODE_ENV || "development",

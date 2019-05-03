@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import {Pane} from "evergreen-ui";
 import {TextInput} from "evergreen-ui";
 import {connect} from "react-redux";
-import get from "@unction/get";
+import {get} from "@unction/complete";
 import view from "@internal/view";
 
 export default view([

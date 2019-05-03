@@ -2,9 +2,9 @@ import React from "react";
 import {Link as EvergreenLink} from "evergreen-ui";
 import ComponentLink from "react-router-component-link";
 import {defaultProps} from "recompose";
-import startsWith from "@unction/startswith";
-import isNil from "@unction/isnil";
-import get from "@unction/get";
+import {startsWith} from "@unction/complete";
+import {isNil} from "@unction/complete";
+import {get} from "@unction/complete";
 import {omit} from "ramda";
 
 import view from "@internal/view";

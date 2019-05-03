@@ -1,4 +1,4 @@
-import dig from "@unction/dig";
+import {dig} from "@unction/complete";
 
 
 export default function inputSelector (state, props) {

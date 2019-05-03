@@ -1,7 +1,7 @@
 import React from "react";
 import {defaultProps} from "recompose";
 import {withRouter} from "react-router";
-import get from "@unction/get";
+import {get} from "@unction/complete";
 import {Pane} from "evergreen-ui";
 
 import view from "@internal/view";

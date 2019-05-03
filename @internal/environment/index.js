@@ -1,4 +1,4 @@
-import reduceValues from "@unction/reducevalues";
+import {reduceValues} from "@unction/complete";
 
 export default reduceValues(
   (previous) => (element) => {

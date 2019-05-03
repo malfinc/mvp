@@ -1,5 +1,5 @@
 import {createStructuredSelector} from "reselect";
-import mergeRight from "@unction/mergeright";
+import {mergeRight} from "@unction/complete";
 
 
 export default function combinedSelectors (selectors) {

@@ -1,6 +1,6 @@
-import pipe from "@unction/pipe";
-import last from "@unction/last";
-import dropLast from "@unction/droplast";
+import {pipe} from "@unction/complete";
+import {last} from "@unction/complete";
+import {dropLast} from "@unction/complete";
 
 const PRESENTER_POSITION = 1;
 

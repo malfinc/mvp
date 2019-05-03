@@ -1,4 +1,4 @@
-import mergeRight from "@unction/mergeRight";
+import {mergeDeepRight} from "@unction/complete";
 
 export default {
   state: {},
