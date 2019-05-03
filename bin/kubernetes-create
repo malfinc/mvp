@@ -2,7 +2,7 @@
 
 ARGV.
   map {|argument| argument.split("/").compact}.
-  map {|parts| File.join("kubernetes", *parts)}.
+  map {|parts| File.join(*parts)}.
   map {|glob| Dir[glob]}.
   flatten.
   each do |path|
