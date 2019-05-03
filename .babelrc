@@ -1,10 +1,10 @@
 {
   "sourceMaps": "both",
   "presets": [
-    ["@emotion/babel-preset-css-prop", {"sourceMap": true}],
+    ["@babel/env", {"useBuiltIns": "usage"}],
+    "@emotion/babel-preset-css-prop",
     "@babel/react",
     "@babel/preset-typescript",
-    ["@babel/env", {"useBuiltIns": "usage"}],
     "minify"
   ],
   "plugins": [
