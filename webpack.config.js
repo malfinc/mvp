@@ -4,22 +4,42 @@ const WebpackNodeExternals = require("webpack-node-externals");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const CompressionWebpackPlugin = require("compression-webpack-plugin");
 const AssetsWebpackPlugin = require("assets-webpack-plugin");
-const NodemonWebpackPlugin = require("nodemon-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const {BundleAnalyzerPlugin} = require("webpack-bundle-analyzer");
 const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
 const WebpackVisualizerPlugin = require("webpack-visualizer-plugin");
 const {compact} = require("@unction/complete");
 
-const commonConfiguration = {
-  mode: process.env.NODE_ENV || "development",
-};
-const commonPlugins = [
-  // new BundleAnalyzerPlugin({analyzerMode: "static"}),
-  // new FriendlyErrorsWebpackPlugin(),
-  // new WebpackVisualizerPlugin()
+const BENCHMARK = process.env.BENCHMARK === "enabled";
+const NODE_ENV = process.env.NODE_ENV || "development";
+
+const PACKAGE_ASSETS = [
+  ["node_modules/@babel/polyfill/dist/polyfill.js", "babel-polyfill.js"],
 ];
-const moduleBabel = {
+const DEFAULT_CONFIGURATION = {
+  mode: NODE_ENV,
+};
+const DEFAULT_PLUGINS = compact([
+  BENCHMARK ? new WebpackVisualizerPlugin() : null,
+  BENCHMARK ? new FriendlyErrorsWebpackPlugin() : null,
+  BENCHMARK ? new BundleAnalyzerPlugin({analyzerMode: "static"}) : null,
+  new CopyWebpackPlugin([{
+    from: path.resolve(__dirname, "assets"),
+    to: path.resolve(__dirname, "tmp", "client"),
+  }]),
+  ...PACKAGE_ASSETS.map(([from, ...to]) => new CopyWebpackPlugin([{
+    from,
+    to: path.resolve(__dirname, "tmp", "client", ...to),
+  }])),
+  NODE_ENV === "production" ? new CompressionWebpackPlugin({
+    test: /\.(js|css|txt|xml|json|png|svg|jpg|gif|woff|woff2|eot|ttf|otf)$/i,
+  }) : null,
+  new AssetsWebpackPlugin({
+    path: path.join(__dirname, "tmp", "client"),
+    integrity: true,
+  }),
+]);
+const DEFAULT_BABEL_CONFIGURATION = {
   test: /index\.js$/,
   exclude: /node_modules/,
   use: {
@@ -29,7 +49,7 @@ const moduleBabel = {
 
 module.exports = [
   {
-    ...commonConfiguration,
+    ...DEFAULT_CONFIGURATION,
     entry: [
       "core-js/modules/es6.promise",
       "core-js/modules/es6.array.iterator",
@@ -61,7 +81,7 @@ module.exports = [
     },
     module: {
       rules: [
-        moduleBabel,
+        DEFAULT_BABEL_CONFIGURATION,
         {
           test: /\.css$/,
           use: {
@@ -82,25 +102,14 @@ module.exports = [
         },
       ],
     },
-    plugins: [
-      ...commonPlugins,
-      new CopyWebpackPlugin([{
-        from: path.resolve(__dirname, "assets"),
-        to: path.resolve(__dirname, "tmp", "client"),
-      }]),
-      new AssetsWebpackPlugin({
-        path: path.join(__dirname, "tmp", "client"),
-        integrity: true,
-      }),
-      new CompressionWebpackPlugin({
-        test: /\.(js|css|txt|xml|json|png|svg|jpg|gif|woff|woff2|eot|ttf|otf)$/i,
-      }),
+    plugins: compact([
+      ...DEFAULT_PLUGINS,
       new HashedModuleIdsPlugin(),
-      // new CleanWebpackPlugin({verbose: true}),
-    ],
+      NODE_ENV === "production" ? new CleanWebpackPlugin({verbose: true}) : null,
+    ]),
   },
   {
-    ...commonConfiguration,
+    ...DEFAULT_CONFIGURATION,
     entry: "./server/index.js",
     target: "node",
     devtool: "source-map",
@@ -118,13 +127,12 @@ module.exports = [
     },
     module: {
       rules: [
-        moduleBabel,
+        DEFAULT_BABEL_CONFIGURATION,
       ],
     },
-    plugins: [
-      ...commonPlugins,
-      new NodemonWebpackPlugin(),
-      // new CleanWebpackPlugin({verbose: true}),
-    ],
+    plugins: compact([
+      ...DEFAULT_PLUGINS,
+      NODE_ENV === "production" ? new CleanWebpackPlugin({verbose: true}) : null,
+    ]),
   },
 ];
