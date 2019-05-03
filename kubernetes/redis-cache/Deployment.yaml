@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-cache
+  labels:
+    group: redis-cache
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      group: redis-cache
+      role: database
+  template:
+    metadata:
+      labels:
+        group: redis-cache
+        role: database
+    spec:
+      containers:
+      - name: redis-cache
+        image: redis:5.0.3-alpine
+        imagePullPolicy: IfNotPresent
+        command:
+        - redis-server
+        - "/usr/local/etc/redis/redis.conf"
+        ports:
+        - containerPort: 6379
+        volumeMounts:
+        - name: redis-cache-data
+          mountPath: "/data/"
+        - name: redis-cache-configuration
+          mountPath: "/usr/local/etc/redis/"
+      volumes:
+      - name: redis-cache-data
+        persistentVolumeClaim:
+          claimName: redis-cache-data
+      - name: redis-cache-configuration
+        secret:
+          secretName: redis-cache-configuration
