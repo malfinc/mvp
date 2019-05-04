@@ -23,16 +23,19 @@ requireEnvironmentVariables([
   "PORT",
   "NODE_ENV",
   "ORIGIN_LOCATION",
-  "WEBPACK_MANIFEST_LOCATION",
+  "WEBPACK_ASSET_LOCATION",
 ]);
 
-const WEBPACK_ASSET_PATH = join(__dirname, process.env.WEBPACK_MANIFEST_LOCATION);
+const WEBPACK_ASSET_PATH = join(__dirname, process.env.WEBPACK_ASSET_LOCATION);
 
+console.log({WEBPACK_ASSET_PATH});
 if (!existsSync(WEBPACK_ASSET_PATH)) {
   throw new Error("Can't find the webpack manifest file");
 }
 
-const webpackManifest = JSON.parse(readFileSync(WEBPACK_ASSET_PATH));
+const webpackAssets = JSON.parse(readFileSync(WEBPACK_ASSET_PATH));
+
+console.log({webpackAssets});
 const application = express();
 
 application.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
@@ -142,10 +145,10 @@ application.get("*", (request, response) => {
         <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/solid.js" integrity="sha384-6FXzJ8R8IC4v/SKPI8oOcRrUkJU8uvFK6YJ4eDY11bJQz4lRw5/wGthflEOX8hjL" crossOrigin="anonymous"></script>
         <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/brands.js" integrity="sha384-zJ8/qgGmKwL+kr/xmGA6s1oXK63ah5/1rHuILmZ44sO2Bbq1V3p3eRTkuGcivyhD" crossOrigin="anonymous"></script>
         <script defer src="https://use.fontawesome.com/releases/v5.7.2/js/fontawesome.js" integrity="sha384-xl26xwG2NVtJDw2/96Lmg09++ZjrXPc89j0j7JHjLOdSwHDHPHiucUjfllW0Ywrq" crossOrigin="anonymous"></script>
-        <script src="/assets/${webpackManifest.runtime.js}"></script>
-        <script src="/assets/${webpackManifest.vendor.js}"></script>
-        <script src="/assets/${webpackManifest.internal.js}"></script>
-        <script src="/assets/${webpackManifest.main.js}"></script>
+        <script src="/assets/${webpackAssets.runtime.js}"></script>
+        <script src="/assets/${webpackAssets.vendor.js}"></script>
+        <script src="/assets/${webpackAssets.internal.js}"></script>
+        <script src="/assets/${webpackAssets.main.js}"></script>
       </body>
     </html>
   `);

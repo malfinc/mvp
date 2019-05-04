@@ -41,5 +41,5 @@ spec:
           value: "https://www.poutineer.com"
         - name: RESOURCE_LOCATION
           value: "https://resources.poutineer.com"
-        - name: WEBPACK_MANIFEST_LOCATION
-          value: "../client/webpack-assets.json"
+        - name: WEBPACK_ASSET_LOCATION
+          value: "client/webpack-assets.json"
