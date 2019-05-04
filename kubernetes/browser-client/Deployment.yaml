@@ -38,4 +38,8 @@ spec:
         - name: REDIS_CACHE_HOST
           value: redis-origin.default
         - name: ORIGIN_LOCATION
-          value: https://www.poutineer.com
+          value: "https://www.poutineer.com"
+        - name: RESOURCE_LOCATION
+          value: "https://resources.poutineer.com"
+        - name: WEBPACK_MANIFEST_LOCATION
+          value: "../client/webpack-assets.json"
