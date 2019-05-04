@@ -28,14 +28,10 @@ requireEnvironmentVariables([
 
 const WEBPACK_ASSET_PATH = join(__dirname, process.env.WEBPACK_ASSET_LOCATION);
 
-console.log({WEBPACK_ASSET_PATH});
 if (!existsSync(WEBPACK_ASSET_PATH)) {
   throw new Error("Can't find the webpack manifest file");
 }
-
 const webpackAssets = JSON.parse(readFileSync(WEBPACK_ASSET_PATH));
-
-console.log({webpackAssets});
 const application = express();
 
 application.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
