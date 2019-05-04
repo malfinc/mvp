@@ -18,6 +18,7 @@ const DEFAULT_CONFIGURATION = {
   mode: NODE_ENV,
 };
 const DEFAULT_PLUGINS = compact([
+  // NODE_ENV === "production" ? new CleanWebpackPlugin({verbose: true}) : null,
   BENCHMARK ? new WebpackVisualizerPlugin() : null,
   BENCHMARK ? new FriendlyErrorsWebpackPlugin() : null,
   BENCHMARK ? new BundleAnalyzerPlugin({analyzerMode: "static"}) : null,
@@ -102,7 +103,6 @@ module.exports = [
     plugins: compact([
       ...DEFAULT_PLUGINS,
       new HashedModuleIdsPlugin(),
-      NODE_ENV === "production" ? new CleanWebpackPlugin({verbose: true}) : null,
     ]),
   },
   {
@@ -132,7 +132,6 @@ module.exports = [
     },
     plugins: compact([
       ...DEFAULT_PLUGINS,
-      NODE_ENV === "production" ? new CleanWebpackPlugin({verbose: true}) : null,
     ]),
   },
 ];
