@@ -15,7 +15,7 @@ import compression from "compression";
 import helmet from "helmet";
 
 import {Application} from "@internal/ui";
-import {rematch} from "@internal/store";
+import rematch from "@internal/rematch";
 
 import logger from "./logger";
 

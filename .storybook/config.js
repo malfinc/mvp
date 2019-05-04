@@ -6,7 +6,7 @@ import {withTests} from "@storybook/addon-jest"
 import "@storybook/addon-console"
 import results from "./jest-test-results.json"
 import {Provider} from "react-redux"
-import {rematch} from "@internal/store"
+import rematch from "@internal/rematch"
 
 const requireStorybooks = require.context("../", true, /storybook\.js$/)
 
