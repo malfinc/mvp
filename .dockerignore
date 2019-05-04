@@ -1,18 +1,20 @@
 # See https://docs.docker.com/engine/reference/builder/#dockerignore-file for more about ignoring files.
 
-db/dumps/
-docs/
+.bundle/
+.copper/
+.jest/
+.rubocop/
+.storybook/
 charts/
+config/master.key
+db/dumps/
+docker-compose/
+docs/
+gcloud/
 kubernetes/
 log/
 storage/
 tmp/
-.jest/
-.rubocop/
-.storybook/
-docker-compose/
-gcloud/
-
-config/master.key
+vendor/
 .DS_Store
 .env
