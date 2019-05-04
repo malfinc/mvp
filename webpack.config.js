@@ -13,9 +13,7 @@ const {compact} = require("@unction/complete");
 const BENCHMARK = process.env.BENCHMARK === "enabled";
 const NODE_ENV = process.env.NODE_ENV || "development";
 
-const PACKAGE_ASSETS = [
-  ["node_modules/@babel/polyfill/dist/polyfill.js", "babel-polyfill.js"],
-];
+const PACKAGE_ASSETS = [];
 const DEFAULT_CONFIGURATION = {
   mode: NODE_ENV,
 };
@@ -51,8 +49,8 @@ module.exports = [
   {
     ...DEFAULT_CONFIGURATION,
     entry: [
-      "core-js/modules/es6.promise",
-      "core-js/modules/es6.array.iterator",
+      "core-js",
+      "regenerator-runtime/runtime",
       "./client/index.js",
     ],
     target: "web",

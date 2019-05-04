@@ -1,7 +1,7 @@
 {
   "sourceMaps": "both",
   "presets": [
-    ["@babel/env", {"useBuiltIns": "usage"}],
+    "@babel/env",
     "@emotion/babel-preset-css-prop",
     "@babel/react",
     "@babel/preset-typescript",

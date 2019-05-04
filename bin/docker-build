@@ -1,6 +1,5 @@
 #!/bin/bash
 
-source .env.docker-build
 
 RAILS_MASTER_KEY=`cat config/master.key`
 

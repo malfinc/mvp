@@ -90,7 +90,6 @@
     "webpack-visualizer-plugin": "0.1.11"
   },
   "dependencies": {
-    "@babel/polyfill": "7.2.5",
     "@emotion/core": "10.0.9",
     "@rematch/core": "1.1.0",
     "@unction/complete": "20.0.0",
@@ -99,6 +98,7 @@
     "clean-webpack-plugin": "2.0.0",
     "compression": "1.7.3",
     "copy-webpack-plugin": "5.0.1",
+    "core-js": "3.0.1",
     "cors": "2.8.5",
     "evergreen-ui": "4.14.1",
     "express": "4.16.4",
