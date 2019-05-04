@@ -49,8 +49,7 @@ module.exports = [
   {
     ...DEFAULT_CONFIGURATION,
     entry: [
-      "core-js",
-      "regenerator-runtime/runtime",
+      "@babel/polyfill",
       "./client/index.js",
     ],
     target: "web",
@@ -108,7 +107,10 @@ module.exports = [
   },
   {
     ...DEFAULT_CONFIGURATION,
-    entry: "./server/index.js",
+    entry: [
+      "@babel/polyfill",
+      "./server/index.js",
+    ],
     target: "node",
     devtool: "source-map",
     node: {
