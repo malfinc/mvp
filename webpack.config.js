@@ -101,8 +101,8 @@ module.exports = [
       ],
     },
     plugins: compact([
-      ...DEFAULT_PLUGINS,
       new HashedModuleIdsPlugin(),
+      ...DEFAULT_PLUGINS,
     ]),
   },
   {
