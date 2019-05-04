@@ -33,7 +33,7 @@ const webpackAssetScripts = reduceValues((accumulation) => (file) => {
   }
 
   return accumulation;
-})(JSON.parse(readFileSync(join(__dirname, process.env.WEBPACK_ASSET_LOCATION))));
+})("")(JSON.parse(readFileSync(join(__dirname, process.env.WEBPACK_ASSET_LOCATION))));
 const application = express();
 
 
