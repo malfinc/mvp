@@ -26,14 +26,14 @@ requireEnvironmentVariables([
   "WEBPACK_ASSET_LOCATION",
 ]);
 
-const rootDirectory = join(__dirname, process.env.NODE_ENV === "production" ? "" : "../tmp");
+const rootDirectory = join(__dirname, process.env.NODE_ENV === "production" ? "../" : "../tmp");
 const webpackAssetScripts = reduceValues((accumulation) => (file) => {
   if (file.js) {
     return `${accumulation}<script src="/assets/${file.js}"></script>`;
   }
 
   return accumulation;
-})("")(JSON.parse(readFileSync(join(__dirname, process.env.WEBPACK_ASSET_LOCATION))));
+})("")(JSON.parse(readFileSync(join(rootDirectory, process.env.WEBPACK_ASSET_LOCATION))));
 const application = express();
 
 
