@@ -1,7 +1,6 @@
 import React from "react";
 import {join} from "path";
 import {readFileSync} from "fs";
-import {existsSync} from "fs";
 import requireEnvironmentVariables from "require-environment-variables";
 import {Provider as ReduxProvider} from "react-redux";
 import {StaticRouter} from "react-router";
@@ -27,6 +26,7 @@ requireEnvironmentVariables([
   "WEBPACK_ASSET_LOCATION",
 ]);
 
+const rootDirectory = join(__dirname, process.env.NODE_ENV === "production" ? "" : "../tmp");
 const webpackAssetScripts = reduceValues((accumulation) => (file) => {
   if (file.js) {
     return `${accumulation}<script src="/assets/${file.js}"></script>`;
@@ -41,7 +41,7 @@ application.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev
 application.use(compression());
 application.use(cors());
 application.use(helmet());
-application.use("/assets", express.static(join(__dirname, "..", "tmp", "client"), {fallthrough: false}));
+application.use("/assets", express.static(join(rootDirectory, "client"), {fallthrough: false}));
 application.get("*", (request, response) => {
   const helmetContext = {};
   const routerContext = {};
