@@ -8,16 +8,15 @@
 /.bundle
 
 # Ignore all logfiles and tempfiles.
-/log/*
+/log/
 !/log/.keep
-/tmp/*
+/tmp/
 !/tmp/.keep
 /node_modules/
 /vendor/ruby/
 /coverage/
 /.nyc_output/
-/docker-compose/postgres/data
-/docker-compose/redis/data
+/docker-compose/*/data/
 
 # Ignore uploaded files in development
 /storage/*
@@ -25,6 +24,8 @@
 
 # Ignore secret data
 /.env
+
+# Ignore master key for decrypting credentials and more.
 /config/master.key
 /kubernetes/runtime-secrets.yaml
 /kubernetes/test/

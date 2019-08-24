@@ -4,7 +4,6 @@
 .circleci/
 .copper/
 .git/
-.git/
 .jest/
 .rubocop/
 .storybook/

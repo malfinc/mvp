@@ -15,7 +15,7 @@ data:
     q = 8
     [chttpd]
     bind_address = 0.0.0.0
-    require_valid_user = true
+    require_valid_user = false
     [httpd]
     bind_address = 0.0.0.0
     enable_cors = true
