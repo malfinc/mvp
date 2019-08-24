@@ -1,20 +1,16 @@
 import React from "react";
-import {Paragraph} from "evergreen-ui";
-import {Heading} from "evergreen-ui";
-import {Pane} from "evergreen-ui";
-
 import {Page} from "@internal/ui";
 
 export default function OurTechnology () {
   return <Page subtitle="Our Technology" kind="article">
-    <Pane>
-      <Heading>
+    <section>
+      <h2>
         Topic
-      </Heading>
+      </h2>
 
-      <Paragraph>
+      <p>
         To be filled
-      </Paragraph>
-    </Pane>
+      </p>
+    </section>
   </Page>;
 }

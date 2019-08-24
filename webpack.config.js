@@ -1,137 +1,184 @@
+// eslint-disable no-undef import/no-commonjs import/no-nodejs-modules
 const path = require("path");
 const {HashedModuleIdsPlugin} = require("webpack");
 const WebpackNodeExternals = require("webpack-node-externals");
+const {IgnorePlugin} = require("webpack");
+const {EnvironmentPlugin} = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const CompressionWebpackPlugin = require("compression-webpack-plugin");
-const AssetsWebpackPlugin = require("assets-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const {BundleAnalyzerPlugin} = require("webpack-bundle-analyzer");
-const FriendlyErrorsWebpackPlugin = require("friendly-errors-webpack-plugin");
-const WebpackVisualizerPlugin = require("webpack-visualizer-plugin");
+const {Plugin: WebpackCommonShake} = require("webpack-common-shake");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const WebpackAssetsManifest = require("webpack-assets-manifest");
+const WebpackSubresourceIntegrity = require("webpack-subresource-integrity");
+const DotenvWebpack = require("dotenv-webpack");
+const {config: dotenvConfiguration} = require("dotenv");
 const {compact} = require("@unction/complete");
+
+dotenvConfiguration();
 
 const BENCHMARK = process.env.BENCHMARK === "enabled";
 const NODE_ENV = process.env.NODE_ENV || "development";
 
 const PACKAGE_ASSETS = [];
-const DEFAULT_CONFIGURATION = {
-  mode: NODE_ENV,
-};
-const DEFAULT_PLUGINS = compact([
-  // NODE_ENV === "production" ? new CleanWebpackPlugin({verbose: true}) : null,
-  BENCHMARK ? new WebpackVisualizerPlugin() : null,
-  BENCHMARK ? new FriendlyErrorsWebpackPlugin() : null,
-  BENCHMARK ? new BundleAnalyzerPlugin({analyzerMode: "static"}) : null,
-  new CopyWebpackPlugin([{
-    from: path.resolve(__dirname, "assets"),
-    to: path.resolve(__dirname, "tmp", "client"),
-  }]),
-  ...PACKAGE_ASSETS.map(([from, ...to]) => new CopyWebpackPlugin([{
-    from,
-    to: path.resolve(__dirname, "tmp", "client", ...to),
-  }])),
-  NODE_ENV === "production" ? new CompressionWebpackPlugin({
-    test: /\.(js|css|txt|xml|json|png|svg|jpg|gif|woff|woff2|eot|ttf|otf)$/i,
-  }) : null,
-  new AssetsWebpackPlugin({
-    path: path.join(__dirname, "tmp", "client"),
-    integrity: true,
-  }),
-]);
-const DEFAULT_BABEL_CONFIGURATION = {
-  test: /index\.js$/,
-  exclude: /node_modules/,
-  use: {
-    loader: "babel-loader",
-  },
-};
 
 module.exports = [
   {
-    ...DEFAULT_CONFIGURATION,
+    mode: NODE_ENV,
     entry: [
       "@babel/polyfill",
       "./client/index.js",
     ],
     target: "web",
-    devtool: "source-map",
+    devtool: NODE_ENV === "production" ? "source-map" : "inline-source-map",
     output: {
       path: path.resolve(__dirname, "tmp", "client"),
-      chunkFilename: "[name].[chunkhash].js",
       filename: "[name].[chunkhash].js",
     },
     optimization: {
+      minimize: NODE_ENV === "production",
       runtimeChunk: "single",
       splitChunks: {
+        minSize: 0,
+        maxAsyncRequests: Infinity,
+        maxInitialRequests: Infinity,
         cacheGroups: {
           internal: {
-            test: /[\\/]@internal[\\/]/,
-            name: "internal",
+            test: /@internal[\\/]/u,
             chunks: "initial",
+            priority: -40,
           },
-          commons: {
-            test: /[\\/]node_modules[\\/]/,
-            name: "vendor",
-            chunks: "all",
+          unction: {
+            test: /[\\/]node_modules[\\/]@unction/u,
+            chunks: "initial",
+            priority: -30,
+          },
+          ramda: {
+            test: /[\\/]node_modules[\\/]ramda/u,
+            chunks: "initial",
+            priority: -30,
+          },
+          moment: {
+            test: /[\\/]node_modules[\\/]moment/u,
+            chunks: "initial",
+            priority: -20,
+          },
+          most: {
+            test: /[\\/]node_modules[\\/]most/u,
+            chunks: "initial",
+            priority: -20,
+          },
+          elliptic: {
+            test: /[\\/]node_modules[\\/]elliptic/u,
+            chunks: "initial",
+            priority: -20,
+          },
+          bn: {
+            test: /[\\/]node_modules[\\/]bn/u,
+            chunks: "initial",
+            priority: -20,
+          },
+          redux: {
+            test: /[\\/]node_modules[\\/]redux/u,
+            chunks: "initial",
+            priority: -20,
+          },
+          react: {
+            test: /[\\/]node_modules[\\/]react(?:-dom|-router|-router-dom|-redux)?[\\/]/u,
+            chunks: "initial",
+            priority: -20,
+          },
+          babel: {
+            test: /[\\/]node_modules[\\/]@babel/u,
+            chunks: "initial",
+            priority: -20,
+          },
+          corejs: {
+            test: /[\\/]node_modules[\\/]core-js/u,
+            chunks: "initial",
+            priority: -20,
+          },
+          pouchdb: {
+            test: /[\\/]node_modules[\\/](?:pouchdb|lunr)/u,
+            chunks: "initial",
+            priority: -20,
+          },
+          vendors: {
+            test: /[\\/]node_modules[\\/]/u,
+            chunks: "initial",
+            priority: -40,
           },
         },
       },
     },
     module: {
       rules: [
-        DEFAULT_BABEL_CONFIGURATION,
         {
-          test: /\.css$/,
+          test: /index\.js$/u,
+          exclude: /node_modules/u,
           use: {
-            loader: "file-loader",
-          },
-        },
-        {
-          test: /\.(png|svg|jpg|gif)$/,
-          use: {
-            loader: "file-loader",
-          },
-        },
-        {
-          test: /\.(woff|woff2|eot|ttf|otf)$/,
-          use: {
-            loader: "file-loader",
+            loader: "babel-loader",
           },
         },
       ],
     },
+    devServer: {
+      contentBase: path.join(__dirname, "tmp", "client"),
+      compress: true,
+      port: 9000,
+    },
     plugins: compact([
+      NODE_ENV === "production" ? null : new DotenvWebpack(),
+      new EnvironmentPlugin([
+        "NODE_ENV",
+        "BENCHMARK",
+        "COUCHDB_USERNAME",
+        "COUCHDB_PASSWORD",
+        "COUCHDB_URI",
+      ]),
+      NODE_ENV === "production" ? new IgnorePlugin(/^\.\/locale$/u, /moment$/u) : null,
+      NODE_ENV === "production" ? new CleanWebpackPlugin({verbose: true}) : null,
+      new HtmlWebpackPlugin({
+        minify: {
+          removeComments: true,
+          collapseWhitespace: true,
+          removeRedundantAttributes: true,
+          useShortDoctype: true,
+          removeEmptyAttributes: true,
+          minifyJS: true,
+          minifyCSS: true,
+        },
+        template: "client/index.html",
+      }),
       new HashedModuleIdsPlugin(),
-      ...DEFAULT_PLUGINS,
-    ]),
-  },
-  {
-    ...DEFAULT_CONFIGURATION,
-    entry: [
-      "@babel/polyfill",
-      "./server/index.js",
-    ],
-    target: "node",
-    devtool: "source-map",
-    node: {
-      __dirname: false,
-      __filename: false,
-    },
-    externals: [
-      WebpackNodeExternals(),
-    ],
-    output: {
-      path: path.resolve(__dirname, "tmp", "server"),
-      filename: "index.js",
-      libraryTarget: "commonjs2",
-    },
-    module: {
-      rules: [
-        DEFAULT_BABEL_CONFIGURATION,
-      ],
-    },
-    plugins: compact([
-      ...DEFAULT_PLUGINS,
+      new CopyWebpackPlugin([{
+        from: path.resolve(__dirname, "assets"),
+        to: path.resolve(__dirname, "tmp", "client"),
+      }]),
+      ...PACKAGE_ASSETS.map(([from, ...to]) => new CopyWebpackPlugin([{
+        from,
+        to: path.resolve(__dirname, "tmp", "client", ...to),
+      }])),
+      new WebpackCommonShake(),
+      NODE_ENV === "production" ? new WebpackSubresourceIntegrity({
+        hashFuncNames: ["sha256", "sha384"],
+        enabled: true,
+      }) : null,
+      NODE_ENV === "production" ? new CompressionWebpackPlugin({
+        filename: "[path].br[query]",
+        algorithm: "brotliCompress",
+        compressionOptions: {level: 11},
+        test: /\.(?:js|css|txt|xml|json|png|svg|jpg|gif|woff|woff2|eot|ttf|otf)$/iu,
+      }) : null,
+      NODE_ENV === "production" ? new CompressionWebpackPlugin({
+        test: /\.(?:js|css|txt|xml|json|png|svg|jpg|gif|woff|woff2|eot|ttf|otf)$/iu,
+      }) : null,
+      new WebpackAssetsManifest({
+        output: "asset-integrity-manifest.json",
+        integrity: NODE_ENV === "production",
+      }),
+      BENCHMARK ? new BundleAnalyzerPlugin({analyzerMode: "static", openAnalyzer: false}) : null,
     ]),
   },
 ];

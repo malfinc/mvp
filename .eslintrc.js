@@ -2,9 +2,15 @@ module.exports = {
   parser: "babel-eslint",
   plugins: [
     "babel",
+    "emotion",
+    "filenames",
+    "import",
+    "jest",
     "jsx-a11y",
     "promise",
-    "react"
+    "react-hooks",
+    "react",
+    "unicorn"
   ],
   env: {
     es6: true,
@@ -16,8 +22,8 @@ module.exports = {
       "babel-module": {}
     },
     "react": {
-      version: "16.8.4"
-    },
+      "version": "16.8.4"
+    }
   },
   parserOptions: {
     ecmaFeatures: {
@@ -25,122 +31,6 @@ module.exports = {
     }
   },
   rules: {
-    "babel/new-cap": "off", // Already handled
-    "babel/no-invalid-this": "error",
-    "babel/object-curly-spacing": "error",
-    "babel/semi": "off", // Already handled
-    "promise/always-return": "error",
-    "promise/avoid-new": "error",
-    "promise/catch-or-return": "error",
-    "promise/no-callback-in-promise": "error",
-    "promise/no-native": "off", // We have babel
-    "promise/no-nesting": "error",
-    "promise/no-promise-in-callback": "error",
-    "promise/no-return-in-finally": "error",
-    "promise/no-return-wrap": "error",
-    "promise/param-names": "error",
-    "promise/prefer-await-to-callbacks": "off", // Not convinced of await/async
-    "promise/prefer-await-to-then": "off", // Not convinced of await/async
-    "react/boolean-prop-naming": "error",
-    "react/default-props-match-prop-types": "error", // We don't use prop types
-    "react/display-name": "error",
-    "react/forbid-component-props": "error",
-    "react/forbid-elements": "error",
-    "react/forbid-prop-types": "error", // We don't use prop types
-    "react/forbid-foreign-prop-types": "error", // We don't use prop types
-    "react/no-array-index-key": "warn",
-    "react/no-children-prop": "error",
-    "react/no-danger": "warn",
-    "react/no-danger-with-children": "error",
-    "react/no-deprecated": "error",
-    "react/no-did-mount-set-state": "error",
-    "react/no-did-update-set-state": "error",
-    "react/no-direct-mutation-state": "error",
-    "react/no-find-dom-node": "error",
-    "react/no-is-mounted": "error",
-    "react/no-multi-comp": "error",
-    "react/no-redundant-should-component-update": "error",
-    "react/no-render-return-value": "error",
-    "react/no-set-state": "off", // We use setState()
-    "react/no-typos": "warn",
-    "react/no-string-refs": "error",
-    "react/no-unescaped-entities": "warn",
-    "react/no-unknown-property": "error",
-    "react/no-unused-prop-types": "off", // Doesn't understand recompose
-    "react/no-unused-state": "error",
-    "react/no-will-update-set-state": "error",
-    "react/prefer-es6-class": "off", // We use recompose
-    "react/prefer-stateless-function": "error",
-    "react/prop-types": "off", // Doesn't understand recompose
-    "react/react-in-jsx-scope": "error",
-    "react/require-default-props": "off", // Doesn't work with recompose
-    "react/require-optimization": "error", // We use recompose
-    "react/require-render-return": "error", // We use recompose
-    "react/self-closing-comp": "error",
-    "react/sort-comp": "off", // This is just busy work
-    "react/sort-prop-types": "off", // This is just busy work
-    "react/style-prop-object": "error",
-    "react/void-dom-elements-no-children": "error",
-    "react/jsx-boolean-value": "error",
-    "react/jsx-closing-bracket-location": "off", // This is just busy work
-    "react/jsx-closing-tag-location": "off", // This is just busy work
-    "react/jsx-curly-spacing": "error",
-    "react/jsx-equals-spacing": "error",
-    "react/jsx-filename-extension": "off", // We just use .js
-    "react/jsx-first-prop-new-line": "off", // This is just busy work
-    "react/jsx-handler-names": "error",
-    "react/jsx-indent": "off", // This is just busy work
-    "react/jsx-indent-props": "off", // This is just busy work
-    "react/jsx-key": "error",
-    "react/jsx-max-depth": "off", // This is just busy work
-    "react/jsx-max-props-per-line": "off", // This is just busy work
-    "react/jsx-no-bind": ["warn", {allowArrowFunctions: true}],
-    "react/jsx-no-comment-textnodes": "error",
-    "react/jsx-no-duplicate-props": "error",
-    "react/jsx-no-literals": "off", // This is annoying as heck
-    "react/jsx-no-target-blank": "error",
-    "react/jsx-no-undef": "error",
-    "react/jsx-curly-brace-presence": "error",
-    "react/jsx-pascal-case": "error",
-    "react/jsx-sort-default-props": "off", // This is just busy work
-    "react/jsx-sort-props": "off", // This is just busy work
-    "react/jsx-tag-spacing": "error",
-    "react/jsx-uses-react": "error",
-    "react/jsx-uses-vars": "error",
-    "react/jsx-wrap-multilines": "off", // This is just busy work
-    "jsx-a11y/accessible-emoji": "error",
-    "jsx-a11y/alt-text": "error",
-    "jsx-a11y/anchor-has-content": "error",
-    "jsx-a11y/anchor-is-valid": "error",
-    "jsx-a11y/aria-activedescendant-has-tabindex": "error",
-    "jsx-a11y/aria-props": "error",
-    "jsx-a11y/aria-proptypes": "error",
-    "jsx-a11y/aria-role": "error",
-    "jsx-a11y/aria-unsupported-elements": "error",
-    "jsx-a11y/click-events-have-key-events": "error",
-    "jsx-a11y/heading-has-content": "error",
-    "jsx-a11y/html-has-lang": "error",
-    "jsx-a11y/iframe-has-title": "error",
-    "jsx-a11y/img-redundant-alt": "error",
-    "jsx-a11y/interactive-supports-focus": "error",
-    "jsx-a11y/label-has-for": "error",
-    "jsx-a11y/lang": "error",
-    "jsx-a11y/media-has-caption": "error",
-    "jsx-a11y/mouse-events-have-key-events": "error",
-    "jsx-a11y/no-access-key": "error",
-    "jsx-a11y/no-autofocus": "error",
-    "jsx-a11y/no-distracting-elements": "error",
-    "jsx-a11y/no-interactive-element-to-noninteractive-role": "error",
-    "jsx-a11y/no-noninteractive-element-interactions": "error",
-    "jsx-a11y/no-noninteractive-element-to-interactive-role": "error",
-    "jsx-a11y/no-noninteractive-tabindex": "error",
-    "jsx-a11y/no-onchange": "error",
-    "jsx-a11y/no-redundant-roles": "error",
-    "jsx-a11y/no-static-element-interactions": "error",
-    "jsx-a11y/role-has-required-aria-props": "error",
-    "jsx-a11y/role-supports-aria-props": "error",
-    "jsx-a11y/scope": "error",
-    "jsx-a11y/tabindex-no-positive": "error",
     "accessor-pairs": "error",
     "array-bracket-newline": "off",
     "array-bracket-spacing": "error",
@@ -149,6 +39,14 @@ module.exports = {
     "arrow-body-style": "off", // Weird style
     "arrow-parens": "error",
     "arrow-spacing": "error",
+    "babel/camelcase": "error",
+    "babel/new-cap": "off", // Already handled
+    "babel/no-invalid-this": "error",
+    "babel/no-unused-expressions": "error",
+    "babel/object-curly-spacing": "error",
+    "babel/quotes": "error",
+    "babel/semi": "off", // Already handled
+    "babel/valid-typeof": "error",
     "block-scoped-var": "error",
     "block-spacing": "error",
     "brace-style": "error",
@@ -168,13 +66,21 @@ module.exports = {
     "default-case": "error",
     "dot-location": ["error", "property"],
     "dot-notation": "error",
+    "emotion/import-from-emotion": "error",
+    "emotion/jsx-import": "off", // I use babel
+    "emotion/no-vanilla": "error",
+    "emotion/styled-import": "error",
+    "emotion/syntax-preference": "error",
     "eol-last": "error",
     "eqeqeq": "error",
+    "filenames/match-exported": "error",
+    "filenames/match-regex": "off", // doesn't work for me
+    "filenames/no-index": "off", // doesn't work for me
     "for-direction": "error",
     "func-call-spacing": "error",
     "func-name-matching": "error",
     "func-names": "error",
-    "func-style": ["error", "expression", {allowArrowFunctions: true}],
+    "func-style": ["error", "expression", {"allowArrowFunctions": true}],
     "function-paren-newline": ["error", "consistent"],
     "generator-star-spacing": "error",
     "getter-return": "error",
@@ -184,8 +90,115 @@ module.exports = {
     "id-blacklist": "error",
     "id-length": "error",
     "id-match": "error",
+    "implicit-arrow-linebreak": "error",
+    "import/default": "error",
+    "import/dynamic-import-chunkname": "error",
+    "import/export": "error",
+    "import/exports-last": "error",
+    "import/extensions": "error",
+    "import/first": "error",
+    "import/group-exports": "off", // Doesn't work for my style
+    "import/max-dependencies": "off", // not worth it
+    "import/named": "error",
+    "import/namespace": "error",
+    "import/newline-after-import": "error",
+    "import/no-absolute-path": "error",
+    "import/no-amd": "error",
+    "import/no-anonymous-default-export": ["error", {"allowObject": true}],
+    "import/no-commonjs": "error",
+    "import/no-cycle": "error",
+    "import/no-default-export": "error",
+    "import/no-deprecated": "error",
+    "import/no-duplicates": "off", // Just frankly a bad rule
+    "import/no-dynamic-require": "error",
+    "import/no-extraneous-dependencies": "error",
+    "import/no-internal-modules": "error",
+    "import/no-mutable-exports": "error",
+    "import/no-named-as-default-member": "error",
+    "import/no-named-as-default": "error",
+    "import/no-named-default": "error",
+    "import/no-named-export": "error",
+    "import/no-namespace": "error",
+    "import/no-nodejs-modules": "error",
+    "import/no-relative-parent-imports": "off", // doesn't work for me
+    "import/no-restricted-paths": "error",
+    "import/no-self-import": "error",
+    "import/no-unassigned-import": "error",
+    "import/no-unresolved": "error",
+    "import/no-unused-modules": "error",
+    "import/no-useless-path-segments": "error",
+    "import/no-webpack-loader-syntax": "error",
+    "import/order": "error",
+    "import/prefer-default-export": "error",
+    "import/unambiguous": "error",
     "indent": ["error", 2, {"SwitchCase": 1}],
     "init-declarations": "error",
+    "jest/consistent-test-it": "error",
+    "jest/expect-expect": "error",
+    "jest/lowercase-name": "error",
+    "jest/no-alias-methods": "error",
+    "jest/no-commented-out-tests": "error",
+    "jest/no-disabled-tests": "error",
+    "jest/no-empty-title": "error",
+    "jest/no-focused-tests": "error",
+    "jest/no-hooks": "error",
+    "jest/no-identical-title": "error",
+    "jest/no-jasmine-globals": "error",
+    "jest/no-jest-import": "error",
+    "jest/no-large-snapshots": "error",
+    "jest/no-mocks-import": "error",
+    "jest/no-test-callback": "error",
+    "jest/no-test-prefixes": "error",
+    "jest/no-test-return-statement": "error",
+    "jest/no-truthy-falsy": "error",
+    "jest/prefer-called-with": "error",
+    "jest/prefer-expect-assertions": "error",
+    "jest/prefer-inline-snapshots": "error",
+    "jest/prefer-spy-on": "error",
+    "jest/prefer-strict-equal": "error",
+    "jest/prefer-to-be-null": "error",
+    "jest/prefer-to-be-undefined": "error",
+    "jest/prefer-to-contain": "error",
+    "jest/prefer-to-have-length": "error",
+    "jest/prefer-todo": "error",
+    "jest/require-tothrow-message": "error",
+    "jest/valid-describe": "error",
+    "jest/valid-expect-in-promise": "error",
+    "jest/valid-expect": "error",
+    "jsx-a11y/accessible-emoji": "error",
+    "jsx-a11y/alt-text": "error",
+    "jsx-a11y/anchor-has-content": "error",
+    "jsx-a11y/anchor-is-valid": "error",
+    "jsx-a11y/aria-activedescendant-has-tabindex": "error",
+    "jsx-a11y/aria-props": "error",
+    "jsx-a11y/aria-proptypes": "error",
+    "jsx-a11y/aria-role": "error",
+    "jsx-a11y/aria-unsupported-elements": "error",
+    "jsx-a11y/click-events-have-key-events": "error",
+    "jsx-a11y/control-has-associated-label": "error",
+    "jsx-a11y/heading-has-content": "error",
+    "jsx-a11y/html-has-lang": "error",
+    "jsx-a11y/iframe-has-title": "error",
+    "jsx-a11y/img-redundant-alt": "error",
+    "jsx-a11y/interactive-supports-focus": "error",
+    "jsx-a11y/label-has-associated-control": "error",
+    "jsx-a11y/lang": "error",
+    "jsx-a11y/media-has-caption": "error",
+    "jsx-a11y/mouse-events-have-key-events": "error",
+    "jsx-a11y/no-access-key": "error",
+    "jsx-a11y/no-autofocus": "error",
+    "jsx-a11y/no-distracting-elements": "error",
+    "jsx-a11y/no-interactive-element-to-noninteractive-role": "error",
+    "jsx-a11y/no-noninteractive-element-interactions": "error",
+    "jsx-a11y/no-noninteractive-element-to-interactive-role": "error",
+    "jsx-a11y/no-noninteractive-tabindex": "error",
+    "jsx-a11y/no-onchange": "error",
+    "jsx-a11y/no-redundant-roles": "error",
+    "jsx-a11y/no-static-element-interactions": "error",
+    "jsx-a11y/role-has-required-aria-props": "error",
+    "jsx-a11y/role-supports-aria-props": "error",
+    "jsx-a11y/scope": "error",
+    "jsx-a11y/tabindex-no-positive": "error",
     "jsx-quotes": "error",
     "key-spacing": "error",
     "keyword-spacing": "error",
@@ -193,13 +206,17 @@ module.exports = {
     "linebreak-style": ["error", "unix"],
     "lines-around-comment": "error",
     "lines-around-directive": "error",
+    "lines-between-class-members": "error",
+    "max-classes-per-file": "error",
     "max-depth": "error",
     "max-len": "off", // Causes more work than anything else
-    "max-lines": "warn",
+    "max-lines-per-function": "off", // Still not terribly useful
+    "max-lines": "off", // Still not terribly useful
     "max-nested-callbacks": "error",
     "max-params": "error",
     "max-statements-per-line": "error",
     "max-statements": "off", // Still not terribly useful
+    "multiline-comment-style": ["error", "separate-lines"],
     "multiline-ternary": ["error", "never"],
     "new-cap": "error",
     "new-parens": "error",
@@ -208,6 +225,7 @@ module.exports = {
     "newline-per-chained-call": "error",
     "no-alert": "error",
     "no-array-constructor": "error",
+    "no-async-promise-executor": "error",
     "no-await-in-loop": "error",
     "no-bitwise": "off", // Doesn't work with pipes
     "no-buffer-constructor": "error",
@@ -264,6 +282,7 @@ module.exports = {
     "no-lonely-if": "error",
     "no-loop-func": "error",
     "no-magic-numbers": "warn",
+    "no-misleading-character-class": "error",
     "no-mixed-operators": "error",
     "no-mixed-requires": "error",
     "no-mixed-spaces-and-tabs": "error",
@@ -330,6 +349,7 @@ module.exports = {
     "no-unused-vars": "error",
     "no-use-before-define": "error",
     "no-useless-call": "error",
+    "no-useless-catch": "error",
     "no-useless-computed-key": "error",
     "no-useless-concat": "error",
     "no-useless-constructor": "error",
@@ -355,23 +375,125 @@ module.exports = {
     "prefer-arrow-callback": "off", // functions are fine too
     "prefer-const": "error",
     "prefer-destructuring": "error",
+    "prefer-named-capture-group": "error",
     "prefer-numeric-literals": "error",
+    "prefer-object-spread": "error",
     "prefer-promise-reject-errors": "error",
     "prefer-reflect": "error",
     "prefer-rest-params": "error",
     "prefer-spread": "error",
     "prefer-template": "error",
-    "quote-props": ["error", "consistent-as-needed", {keywords: true}],
+    "promise/always-return": "error",
+    "promise/avoid-new": "error",
+    "promise/catch-or-return": "error",
+    "promise/no-callback-in-promise": "error",
+    "promise/no-native": "off", // We have babel
+    "promise/no-nesting": "error",
+    "promise/no-new-statics": "error",
+    "promise/no-promise-in-callback": "error",
+    "promise/no-return-in-finally": "error",
+    "promise/no-return-wrap": "error",
+    "promise/param-names": "error",
+    "promise/prefer-await-to-callbacks": "off", // Not convinced of await/async
+    "promise/prefer-await-to-then": "off", // Not convinced of await/async
+    "promise/valid-params": "error",
+    "quote-props": ["error", "consistent-as-needed", {"keywords": true}],
     "quotes": "error",
     "radix": "error",
+    "react-hooks/exhaustive-deps": "error",
+    "react-hooks/rules-of-hooks": "error",
+    "react/boolean-prop-naming": "error",
+    "react/button-has-type": "error",
+    "react/default-props-match-prop-types": "error", // We don't use prop types
+    "react/destructuring-assignment": "error",
+    "react/display-name": "error",
+    "react/forbid-component-props": "error",
+    "react/forbid-dom-props": "error",
+    "react/forbid-elements": "error",
+    "react/forbid-foreign-prop-types": "error", // We don't use prop types
+    "react/forbid-prop-types": "error", // We don't use prop types
+    "react/jsx-boolean-value": "error",
+    "react/jsx-child-element-spacing": "error",
+    "react/jsx-closing-bracket-location": "off", // This is just busy work
+    "react/jsx-closing-tag-location": "off", // This is just busy work
+    "react/jsx-curly-brace-presence": "error",
+    "react/jsx-curly-spacing": "error",
+    "react/jsx-equals-spacing": "error",
+    "react/jsx-filename-extension": "off", // We just use .js
+    "react/jsx-first-prop-new-line": "off", // This is just busy work
+    "react/jsx-fragments": "error",
+    "react/jsx-handler-names": "error",
+    "react/jsx-indent-props": "off", // This is just busy work
+    "react/jsx-indent": "off", // This is just busy work
+    "react/jsx-key": "error",
+    "react/jsx-max-depth": "off", // This is just busy work
+    "react/jsx-max-props-per-line": "off", // This is just busy work
+    "react/jsx-no-bind": ["warn", {"allowArrowFunctions": true}],
+    "react/jsx-no-comment-textnodes": "error",
+    "react/jsx-no-duplicate-props": "error",
+    "react/jsx-no-literals": "off", // This is annoying as heck
+    "react/jsx-no-target-blank": "error",
+    "react/jsx-no-undef": "error",
+    "react/jsx-one-expression-per-line": "off", // Really fucking stupid
+    "react/jsx-pascal-case": "error",
+    "react/jsx-props-no-multi-spaces": "error",
+    "react/jsx-props-no-spreading": "warn",
+    "react/jsx-sort-default-props": "off", // This is just busy work
+    "react/jsx-sort-props": "off", // This is just busy work
+    "react/jsx-tag-spacing": "error",
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error",
+    "react/jsx-wrap-multilines": "off", // This is just busy work
+    "react/no-access-state-in-setstate": "error",
+    "react/no-array-index-key": "warn",
+    "react/no-children-prop": "error",
+    "react/no-danger-with-children": "error",
+    "react/no-danger": "warn",
+    "react/no-deprecated": "error",
+    "react/no-did-mount-set-state": "error",
+    "react/no-did-update-set-state": "error",
+    "react/no-direct-mutation-state": "error",
+    "react/no-find-dom-node": "error",
+    "react/no-is-mounted": "error",
+    "react/no-multi-comp": "error",
+    "react/no-redundant-should-component-update": "error",
+    "react/no-render-return-value": "error",
+    "react/no-set-state": "off", // We use setState()
+    "react/no-string-refs": "error",
+    "react/no-this-in-sfc": "error",
+    "react/no-typos": "warn",
+    "react/no-unescaped-entities": "warn",
+    "react/no-unknown-property": "error",
+    "react/no-unsafe": "error",
+    "react/no-unused-prop-types": "off", // Doesn't understand recompose
+    "react/no-unused-state": "error",
+    "react/no-will-update-set-state": "error",
+    "react/prefer-es6-class": "off", // We use recompose
+    "react/prefer-read-only-props": "error",
+    "react/prefer-stateless-function": "error",
+    "react/prop-types": "off", // Doesn't understand recompose
+    "react/react-in-jsx-scope": "error",
+    "react/require-default-props": "off", // Doesn't work with recompose
+    "react/require-optimization": "error", // We use recompose
+    "react/require-render-return": "error", // We use recompose
+    "react/self-closing-comp": "error",
+    "react/sort-comp": "off", // This is just busy work
+    "react/sort-prop-types": "off", // This is just busy work
+    "react/state-in-constructor": "error",
+    "react/static-property-placement": "error",
+    "react/style-prop-object": "error",
+    "react/void-dom-elements-no-children": "error",
+    "require-atomic-updates": "error",
     "require-await": "error",
     "require-jsdoc": "off", // What is this even?
+    "require-unicode-regexp": "error",
     "require-yield": "error",
     "rest-spread-spacing": "error",
     "semi-spacing": "error",
     "semi-style": "error",
     "semi": ["error", "always"],
     "sort-imports": "off", // Not worth the hassle
+    "sort-keys": "off",
     "sort-vars": "off", // I don't like making busy work for myself
     "space-before-blocks": "error",
     "space-before-function-paren": "error",
@@ -385,6 +507,40 @@ module.exports = {
     "template-curly-spacing": "error",
     "template-tag-spacing": "error",
     "unicode-bom": "error",
+    "unicorn/catch-error-name": "error",
+    "unicorn/custom-error-definition": "error",
+    "unicorn/error-message": "error",
+    "unicorn/escape-case": "error",
+    "unicorn/explicit-length-check": "error",
+    "unicorn/filename-case": "error",
+    "unicorn/import-index": "error",
+    "unicorn/new-for-builtins": "error",
+    "unicorn/no-abusive-eslint-disable": "error",
+    "unicorn/no-array-instanceof": "error",
+    "unicorn/no-console-spaces": "error",
+    "unicorn/no-fn-reference-in-iterator": "error",
+    "unicorn/no-for-loop": "error",
+    "unicorn/no-hex-escape": "error",
+    "unicorn/no-new-buffer": "error",
+    "unicorn/no-process-exit": "error",
+    "unicorn/no-unreadable-array-destructuring": "error",
+    "unicorn/no-unsafe-regex": "error",
+    "unicorn/no-unused-properties": "error",
+    "unicorn/no-zero-fractions": "error",
+    "unicorn/number-literal-case": "error",
+    "unicorn/prefer-add-event-listener": "error",
+    "unicorn/prefer-exponentiation-operator": "error",
+    "unicorn/prefer-includes": "error",
+    "unicorn/prefer-node-append": "error",
+    "unicorn/prefer-node-remove": "error",
+    "unicorn/prefer-query-selector": "error",
+    "unicorn/prefer-spread": "error",
+    "unicorn/prefer-starts-ends-with": "error",
+    "unicorn/prefer-text-content": "error",
+    "unicorn/prefer-type-error": "error",
+    "unicorn/prevent-abbreviations": "error",
+    "unicorn/regex-shorthand": "error",
+    "unicorn/throw-new-error": "error",
     "use-isnan": "error",
     "valid-jsdoc": "error",
     "valid-typeof": "error",
@@ -392,7 +548,6 @@ module.exports = {
     "wrap-iife": "error",
     "wrap-regex": "error",
     "yield-star-spacing": "error",
-    "yoda": "error",
-    "sort-keys": "off"
+    "yoda": "error"
   }
-}
+};

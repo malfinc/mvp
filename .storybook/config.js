@@ -3,12 +3,13 @@ import {configure, addDecorator} from "@storybook/react"
 import {withKnobs} from "@storybook/addon-knobs"
 import {checkA11y} from "@storybook/addon-a11y"
 import {withTests} from "@storybook/addon-jest"
-import "@storybook/addon-console"
 import results from "./jest-test-results.json"
 import {Provider} from "react-redux"
 import rematch from "@internal/rematch"
+import {configure} from '@storybook/react';
 
-const requireStorybooks = require.context("../", true, /storybook\.js$/)
+// automatically import all files ending in *.stories.js
+const requireWithContext = require.context('../@internal', true, /story\.js$/);
 
 addDecorator(withTests({results}))
 addDecorator(withKnobs)
@@ -19,4 +20,4 @@ addDecorator((story) => {
   </Provider>
 })
 
-configure(() => requireStorybooks.keys().forEach(requireStorybooks), module)
+configure(() => requireWithContext.keys().forEach((filename) => requireWithContext(filename)), module);

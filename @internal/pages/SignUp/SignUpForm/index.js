@@ -1,18 +1,14 @@
 import React, {useState} from "react";
 import useDebounce from "react-use/lib/useDebounce";
-import {Pane} from "evergreen-ui";
-import {TextInput} from "evergreen-ui";
-import {Button} from "evergreen-ui";
 import {connect} from "react-redux";
-import {get} from "@unction/complete";
 import view from "@internal/view";
 
 export default view([
-  connect(
-    get("signUpForm"),
-    ({signUpForm: {mergeAttributes, submitForm}}) => ({mergeAttributes, submitForm}),
-  ),
-  function SignUpForm ({mergeAttributes, submitForm}) {
+  connect(),
+  function SignUpForm (props) {
+    const {dispatch} = props;
+    const {signUpForm} = dispatch;
+    const {mergeAttributes, submitForm} = signUpForm;
     const [formFields, setFormFields] = useState({});
     const [loading, setLoading] = useState(false);
     const {email} = formFields;
@@ -31,12 +27,12 @@ export default view([
     }, 250, [formFields]);
 
     return <form id="signUpForm" onSubmit={onSubmit}>
-      <Pane>
+      <section>
         <TextInput id="signUpFormEmail" name="signUpForm[email]" type="email" disabled={loading} onChange={onChangeEmail} value={email} />
-      </Pane>
-      <Pane>
+      </section>
+      <section>
         <Button appearance="primary" isLoading={loading}>Sign Up</Button>
-      </Pane>
+      </section>
     </form>;
   },
 ]);

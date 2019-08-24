@@ -1,22 +1,23 @@
 import React from "react";
-import {hydrate} from "react-dom";
-import {Provider as ReduxProvider} from "react-redux";
+import {render} from "react-dom";
 import {BrowserRouter} from "react-router-dom";
 import {HelmetProvider} from "react-helmet-async";
+import {Provider as ReduxProvider} from "react-redux";
 
 import {Application} from "@internal/ui";
-import environment from "@internal/environment";
-import rematch from "@internal/rematch";
+import store from "@internal/store";
 
-window.env = environment(Array.from(document.querySelectorAll("meta[class='environment']")));
-
-hydrate(
-  <HelmetProvider>
-    <ReduxProvider store={rematch}>
+store.dispatch.database.initialize()
+  .then(
+    () => render(
       <BrowserRouter>
-        <Application />
-      </BrowserRouter>
-    </ReduxProvider>
-  </HelmetProvider>,
-  document.getElementById("application")
-);
+        <HelmetProvider>
+          <ReduxProvider store={store}>
+            <Application />
+          </ReduxProvider>
+        </HelmetProvider>
+      </BrowserRouter>,
+      document.querySelector("#application")
+    )
+  )
+  .catch(console.error);

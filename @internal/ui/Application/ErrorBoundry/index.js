@@ -1,6 +1,5 @@
 import React from "react";
 import {lifecycle} from "recompose";
-import {Paragraph} from "evergreen-ui";
 
 import view from "@internal/view";
 
@@ -12,9 +11,9 @@ export default view([
   }),
   function ErrorBoundary ({exploded, children}) {
     if (exploded) {
-      return <Paragraph>
+      return <p>
         Something has gone wrong.
-      </Paragraph>;
+      </p>;
     }
 
     return children;
