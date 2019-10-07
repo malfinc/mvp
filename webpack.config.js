@@ -149,7 +149,11 @@ module.exports = [
           minifyJS: true,
           minifyCSS: true,
         },
+        hash: true,
         template: "client/index.html",
+        baseURL: "https://www.poutineer.club/",
+        themeColor: "#4285f4",
+        description: "Front page",
       }),
       new HashedModuleIdsPlugin(),
       new CopyWebpackPlugin([{

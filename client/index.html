@@ -1,39 +1,268 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8">
+    <!--
+      Set the character encoding for this document, so that
+      all characters within the UTF-8 space (such as emoji)
+      are rendered correctly.
+    -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--
+      The above 2 meta tags *must* come first in the <head>
+      to consistently ensure proper document rendering.
+      Any other head element should come *after* these tags.
+    -->
+
+    <!-- Set the document's title -->
     <title><%= htmlWebpackPlugin.options.title %></title>
-    <meta httpEquiv="x-ua-compatible" content="ie=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="robots" content="index,follow" />
-    <link rel="author" href="/assets/humans.txt" />
-    <link rel="manifest" href="/assets/manifest.json" />
-    <link rel="copyright" href="/assets/copyright.txt" />
-    <link rel="apple-touch-icon" sizes="57x57" href="/assets/apple-icon-57x57.png" />
-    <link rel="apple-touch-icon" sizes="60x60" href="/assets/apple-icon-60x60.png" />
-    <link rel="apple-touch-icon" sizes="72x72" href="/assets/apple-icon-72x72.png" />
-    <link rel="apple-touch-icon" sizes="76x76" href="/assets/apple-icon-76x76.png" />
-    <link rel="apple-touch-icon" sizes="114x114" href="/assets/apple-icon-114x114.png" />
-    <link rel="apple-touch-icon" sizes="120x120" href="/assets/apple-icon-120x120.png" />
-    <link rel="apple-touch-icon" sizes="144x144" href="/assets/apple-icon-144x144.png" />
-    <link rel="apple-touch-icon" sizes="152x152" href="/assets/apple-icon-152x152.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-icon-180x180.png" />
-    <link rel="apple-touch-icon-precomposed" href="/assets/apple-icon-precomposed.png" />
-    <link rel="icon" sizes="192x192" href="/assets/android-icon-192x192.png" />
-    <link rel="icon" sizes="32x32" href="/assets/favicon-32x32.png" />
-    <link rel="icon" sizes="96x96" href="/assets/favicon-96x96.png" />
-    <link rel="icon" sizes="16x16" href="/assets/favicon-16x16.png" />
-    <link rel="icon" href="/assets/favicon.ico" />
+
+    <!--
+      Allows control over where resources are loaded from.
+      Place as early in the <head> as possible, as the tag
+      only applies to resources that are declared after it.
+    -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+
+    <!-- Set the base URL for all relative URLs within the document -->
+    <base href="<%= htmlWebpackPlugin.options.baseURL %>">
+
+    <!-- Name of web application (only should be used if the website is used as an app) -->
+    <meta name="application-name" content="<%= htmlWebpackPlugin.options.title %>">
+
+    <!-- Theme Color for Chrome, Firefox OS and Opera -->
+    <meta name="theme-color" content="<%= htmlWebpackPlugin.options.themeColor %>">
+
+    <!-- Short description of the document (limit to 150 characters) -->
+    <!-- This content *may* be used as a part of search engine results. -->
+    <meta name="description" content="<%= htmlWebpackPlugin.options.description %>">
+
+    <!-- Control the behavior of search engine crawling and indexing -->
+    <!-- <meta name="robots" content="index,follow"> --> <!-- All Search Engines --> <!-- DYNAMIC -->
+    <!-- <meta name="googlebot" content="index,follow"> --> <!-- Google Specific --> <!-- DYNAMIC -->
+
+    <!-- Tells Google not to show the sitelinks search box -->
+    <meta name="google" content="nositelinkssearchbox">
+
+    <!-- Tells Google not to provide a translation for this document -->
+    <meta name="google" content="translate">
+
+    <!-- Verify website ownership -->
+    <meta name="google-site-verification" content="<%= htmlWebpackPlugin.options.googleSiteVerification %>"><!-- Google Search Console -->
+    <meta name="yandex-verification" content="<%= htmlWebpackPlugin.options.yandexVerification %>"><!-- Yandex Webmasters -->
+    <meta name="msvalidate.01" content="<%= htmlWebpackPlugin.options.bingWebmasterVerification %>"><!-- Bing Webmaster Center -->
+    <meta name="alexaVerifyID" content="<%= htmlWebpackPlugin.options.alexaConsoleVerification %>"><!-- Alexa Console -->
+    <meta name="p:domain_verify" content="<%= htmlWebpackPlugin.options.pinterestConsoleVerification %>"><!-- Pinterest Console-->
+    <meta name="norton-safeweb-site-verification" content="<%= htmlWebpackPlugin.options.nortonSafewebVerification %>"><!-- Norton Safe Web -->
+
+    <!-- Identify the software used to build the document (i.e. - WordPress, Dreamweaver) -->
+    <meta name="generator" content="program">
+
+    <!-- Short description of your document's subject -->
+    <!-- <meta name="subject" content="<%= htmlWebpackPlugin.options.shortDescription %>"> --> <!-- DYNAMIC -->
+
+    <!-- Gives a general age rating based on the document's content -->
+    <!-- <meta name="rating" content="General"> --> <!-- DYNAMIC -->
+
+    <!-- Allows control over how referrer information is passed -->
+    <meta name="referrer" content="no-referrer">
+
+    <!-- Disable automatic detection and formatting of possible phone numbers -->
+    <!-- <meta name="format-detection" content="telephone=no"> --> <!-- DYNAMIC -->
+
+    <!-- Completely opt out of DNS prefetching by setting to "off" -->
+    <meta http-equiv="x-dns-prefetch-control" content="off">
+
+    <!-- Specifies the document to appear in a specific frame -->
+    <meta http-equiv="Window-Target" content="_value">
+
+    <!-- Geo tags -->
+    <!-- <meta name="ICBM" content="latitude, longitude"> --> <!-- DYNAMIC -->
+    <!-- <meta name="geo.position" content="latitude;longitude"> --> <!-- DYNAMIC -->
+    <!-- <meta name="geo.region" content="country[-state]"> --> <!-- Country code (ISO 3166-1): mandatory, state code (ISO 3166-2): optional; eg. content="US" / content="US-NY" --> <!-- DYNAMIC -->
+    <!-- <meta name="geo.placename" content="city/town"> --> <!-- eg. content="New York City" --> <!-- DYNAMIC -->
+
+    <!-- Helps prevent duplicate content issues -->
+    <!-- <link rel="canonical" href="https://example.com/article/?page=2"> --> <!-- DYNAMIC -->
+
+    <!-- Links to an AMP HTML version of the current document -->
+    <!-- <link rel="amphtml" href="https://example.com/path/to/amp-version.html"> --> <!-- DYNAMIC -->
+
+    <!-- Links to a JSON file that specifies "installation" credentials for the web applications -->
+    <link rel="manifest" href="<%= htmlWebpackPlugin.options.baseURL %>/manifest.json">
+
+    <!-- Links to information about the author(s) of the document -->
+    <link rel="author" href="<%= htmlWebpackPlugin.options.baseURL %>/humans.txt">
+
+    <!-- Refers to a copyright statement that applies to the link's context -->
+    <link rel="license" href="<%= htmlWebpackPlugin.options.baseURL %>/copyright.html">
+
+    <!-- Gives a reference to a location in your document that may be in another language -->
+    <!-- <link rel="alternate" href="https://es.example.com/" hreflang="es"> -->
+
+    <!-- Provides a self reference - useful when the document has multiple possible references -->
+    <!-- <link rel="self" type="application/atom+xml" href="https://example.com/atom.xml"> --> <!-- DYNAMIC -->
+
+    <!-- The first, last, previous, and next documents in a series of documents, respectively -->
+    <!-- <link rel="first" href="https://example.com/article/"> --> <!-- DYNAMIC -->
+    <!-- <link rel="last" href="https://example.com/article/?page=42"> --> <!-- DYNAMIC -->
+    <!-- <link rel="prev" href="https://example.com/article/?page=1"> --> <!-- DYNAMIC -->
+    <!-- <link rel="next" href="https://example.com/article/?page=3"> --> <!-- DYNAMIC -->
+
+    <!-- Open Search -->
+    <!-- <link rel="search" href="/open-search.xml" type="application/opensearchdescription+xml" title="Search Title"> -->
+
+    <!-- Feeds -->
+    <!-- <link rel="alternate" href="https://feeds.feedburner.com/example" type="application/rss+xml" title="RSS"> --> <!-- DYNAMIC -->
+    <!-- <link rel="alternate" href="https://example.com/feed.atom" type="application/atom+xml" title="Atom 0.3"> --> <!-- DYNAMIC -->
+
+    <!-- Prefetching, preloading, prebrowsing -->
+    <!-- More info: https://css-tricks.com/prefetching-preloading-prebrowsing/ -->
+    <!-- <link rel="dns-prefetch" href="//example.com/"> -->
+    <!-- <link rel="preconnect" href="https://www.example.com/"> -->
+    <!-- <link rel="prefetch" href="https://www.example.com/"> -->
+    <!-- <link rel="prerender" href="https://example.com/"> -->
+    <!-- <link rel="preload" href="image.png" as="image"> -->
+
+    <!-- For IE 10 and below -->
+    <!-- Place favicon.ico in the root directory - no tag necessary -->
+
+    <!-- Icon in the highest resolution we need it for -->
+    <!-- <link rel="icon" sizes="192x192" href="/icon.png"> -->
+
+    <!-- Apple Touch Icon (reuse 192px icon.png) -->
+    <!-- <link rel="apple-touch-icon" href="/apple-touch-icon.png"> -->
+
+    <!-- Safari Pinned Tab Icon -->
+    <!-- <link rel="mask-icon" href="/mask-icon.svg" color="blue"> -->
+
+    <!-- Facebook Open Graph -->
+    <!-- <meta property="fb:app_id" content="123456789"> -->
+    <!-- <meta property="og:url" content="https://example.com/page.html"> -->
+    <!-- <meta property="og:type" content="website"> -->
+    <!-- <meta property="og:title" content="Content Title"> -->
+    <!-- <meta property="og:image" content="https://example.com/image.jpg"> -->
+    <!-- <meta property="og:image:alt" content="A description of what is in the image (not a caption)"> -->
+    <!-- <meta property="og:description" content="Description Here"> -->
+    <!-- <meta property="og:site_name" content="Site Name"> -->
+    <!-- <meta property="og:locale" content="en_US"> -->
+    <!-- <meta property="article:author" content=""> -->
+
+    <!-- Twitter Card -->
+    <!-- <meta name="twitter:card" content="summary"> -->
+    <!-- <meta name="twitter:site" content="@site_account"> -->
+    <!-- <meta name="twitter:creator" content="@individual_account"> -->
+    <!-- <meta name="twitter:url" content="https://example.com/page.html"> -->
+    <!-- <meta name="twitter:title" content="Content Title"> -->
+    <!-- <meta name="twitter:description" content="Content description less than 200 characters"> -->
+    <!-- <meta name="twitter:image" content="https://example.com/image.jpg"> -->
+    <!-- <meta name="twitter:image:alt" content="A text description of the image conveying the essential nature of an image to users who are visually impaired. Maximum 420 characters."> -->
+
+    <!-- disallow Twitter from using your site's info for personalization purposes -->
+    <!-- <meta name="twitter:dnt" content="on"> -->
+
+    <!-- Pinterest -->
+    <!-- <meta name="pinterest" content="nopin" description="Sorry, you can't save from my website!"> -->
+
+    <!-- OEmbed -->
+    <!-- <link rel="alternate" type="application/json+oembed" href="https://example.com/services/oembed?url=http%3A%2F%2Fexample.com%2Ffoo%2F&amp;format=json" title="oEmbed Profile: JSON"> -->
+    <!-- <link rel="alternate" type="text/xml+oembed" href="https://example.com/services/oembed?url=http%3A%2F%2Fexample.com%2Ffoo%2F&amp;format=xml" title="oEmbed Profile: XML"> -->
+
+    <!-- Smart App Banner -->
+    <!-- <meta name="apple-itunes-app" content="app-id=APP_ID,affiliate-data=AFFILIATE_ID,app-argument=SOME_TEXT"> -->
+
+    <!-- Disable automatic detection and formatting of possible phone numbers -->
+    <!-- <meta name="format-detection" content="telephone=no"> -->
+
+    <!-- Launch Icon (180x180px or larger) -->
+    <!-- <link rel="apple-touch-icon" href="/path/to/apple-touch-icon.png"> -->
+
+    <!-- Launch Screen Image -->
+    <!-- <link rel="apple-touch-startup-image" href="/path/to/launch.png"> -->
+
+    <!-- Launch Icon Title -->
+    <!-- <meta name="apple-mobile-web-app-title" content="App Title"> -->
+
+    <!-- Enable standalone (full-screen) mode -->
+    <!-- <meta name="apple-mobile-web-app-capable" content="yes"> -->
+
+    <!-- Status bar appearance (has no effect unless standalone mode is enabled) -->
+    <!-- <meta name="apple-mobile-web-app-status-bar-style" content="black"> -->
+
+    <!-- iOS app deep linking -->
+    <!-- <meta name="apple-itunes-app" content="app-id=APP-ID, app-argument=http/url-sample.com"> -->
+    <!-- <link rel="alternate" href="ios-app://APP-ID/http/url-sample.com"> -->
+
+    <!-- Add to home screen -->
+    <!-- More info: https://developer.chrome.com/multidevice/android/installtohomescreen -->
+    <!-- <meta name="mobile-web-app-capable" content="yes"> -->
+
+    <!-- Android app deep linking -->
+    <!-- <meta name="google-play-app" content="app-id=package-name"> -->
+    <!-- <link rel="alternate" href="android-app://package-name/http/url-sample.com"> -->
+
+    <!-- Google Chrome Webstore -->
+    <!-- <link rel="chrome-webstore-item" href="https://chrome.google.com/webstore/detail/APP_ID"> -->
+
+    <!-- Force IE 8/9/10 to use its latest rendering engine -->
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <!-- Select rendering engine order -->
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+
+    <!-- Locks the screen into the specified orientation -->
+    <meta name="x5-orientation" content="landscape/portrait">
+
+    <!-- Display this document in fullscreen -->
+    <meta name="x5-fullscreen" content="true">
+
+    <!-- Document will be displayed in "application mode" (fullscreen, etc.) -->
+    <meta name="x5-page-mode" content="app">
+
+    <!-- Locks the screen into the specified orientation -->
+    <meta name="screen-orientation" content="landscape/portrait">
+
+    <!-- Display this document in fullscreen -->
+    <meta name="full-screen" content="yes">
+
+    <!-- UC browser will display images even if in "text mode" -->
+    <meta name="imagemode" content="force">
+
+    <!-- Document will be displayed in "application mode"(fullscreen, forbidding gesture, etc.) -->
+    <meta name="browsermode" content="application">
+
+    <!-- Disabled the UC browser's "night mode" for this document -->
+    <meta name="nightmode" content="disable">
+
+    <!-- Simplify the document to reduce data transfer -->
+    <meta name="layoutmode" content="fitscreen">
+
+    <!-- Disable the UC browser's feature of "scaling font up when there are many words in this document" -->
+    <meta name="wap-font-scale" content="no">
+
+    <!-- iOS -->
+    <!-- <meta property="al:ios:url" content="applinks://docs"> -->
+    <!-- <meta property="al:ios:app_store_id" content="12345"> -->
+    <!-- <meta property="al:ios:app_name" content="App Links"> -->
+
+    <!-- Android -->
+    <!-- <meta property="al:android:url" content="applinks://docs"> -->
+    <!-- <meta property="al:android:app_name" content="App Links"> -->
+    <!-- <meta property="al:android:package" content="org.applinks"> -->
+
+    <!-- Web fall back -->
+    <!-- <meta property="al:web:url" content="https://applinks.org/documentation"> -->
+
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Handlee%7COpen+Sans" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <script>
-      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','<%= process.env.GOOGLE_TAG_MANAGER_ID %>');
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','<%= htmlWebpackPlugin.options.googleTagManagerId %>');
     </script>
   </head>
   <body id="application">
     <noscript>
-      <iframe title="google tag manager" src="https://www.googletagmanager.com/ns.html?id=<%= process.env.GOOGLE_TAG_MANAGER_ID %>" height="0" width="0" style="display: none; visibility: none;"></iframe>
+      <iframe title="google tag manager" src="https://www.googletagmanager.com/ns.html?id=<%= htmlWebpackPlugin.options.googleTagManagerId %>" height="0" width="0" style="display: none; visibility: none;"></iframe>
     </noscript>
 
     <noscript>
@@ -58,7 +287,7 @@
         I&apos;m a big fan of the open web and accessability and I try very hard to
         make this a home for <strong>anyone</strong> interested. You are not
         invisible to this team.
-        <a href="mailto:${process.env.SUPPORT_EMAIL}" title="Let me know you want a non-javascript version of this site">
+        <a href="mailto:<%= htmlWebpackPlugin.options.supportEmail %>" title="Let me know you want a non-javascript version of this site">
           I would love to hear from you on this issue and our email is open to
           anyone wanting to talk about it.
         </a>
