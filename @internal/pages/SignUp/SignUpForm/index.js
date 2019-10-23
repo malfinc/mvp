@@ -1,38 +1,25 @@
 import React, {useState} from "react";
-import useDebounce from "react-use/lib/useDebounce";
-import {connect} from "react-redux";
-import view from "@internal/view";
+import {useDispatch} from "react-redux";
 
-export default view([
-  connect(),
-  function SignUpForm (props) {
-    const {dispatch} = props;
-    const {signUpForm} = dispatch;
-    const {mergeAttributes, submitForm} = signUpForm;
-    const [formFields, setFormFields] = useState({});
-    const [loading, setLoading] = useState(false);
-    const {email} = formFields;
-    const onChangeEmail = (event) => setFormFields({...formFields, email: event.target.value});
-    const onSubmit = async () => {
-      try {
-        setLoading(true);
-        await submitForm();
-      } finally {
-        setLoading(false);
-      }
-    };
+import {Field} from "@internal/elements";
 
-    useDebounce(function mergeState () {
-      mergeAttributes(formFields);
-    }, 250, [formFields]);
+export default function SignUpForm () {
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const submitForm = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    await dispatch({type: "resources/write", payload: 1});
+    setLoading(false);
+  };
 
-    return <form id="signUpForm" onSubmit={onSubmit}>
-      <section>
-        <TextInput id="signUpFormEmail" name="signUpForm[email]" type="email" disabled={loading} onChange={onChangeEmail} value={email} />
-      </section>
-      <section>
-        <Button appearance="primary" isLoading={loading}>Sign Up</Button>
-      </section>
-    </form>;
-  },
-]);
+  return <form id="signUpForm" onSubmit={submitForm}>
+    <Field scope="signUpForm" attribute="email" type="email" label="Email" autoComplete="email" readOnly={loading} onChange={(event) => setEmail(event.target.value)} value={email} />
+    <Field scope="signUpForm" attribute="password" type="password" label="Password" autoComplete="new-password" readOnly={loading} onChange={(event) => setPassword(event.target.value)} value={password} />
+    <section>
+      <button className="btn btn-primary" type="submit">Sign Up</button>
+    </section>
+  </form>;
+}

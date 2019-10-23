@@ -12,7 +12,7 @@ import helmet from "helmet";
 
 
 import logger from "./logger";
-import {Application} from "@internal/ui";
+import {Application} from "@internal/elements";
 
 requireEnvironmentVariables([
   "PORT",

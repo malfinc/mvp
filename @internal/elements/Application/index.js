@@ -13,7 +13,6 @@ import {DataPolicy} from "@internal/pages";
 import {SignUp} from "@internal/pages";
 import {PageNotFound} from "@internal/pages";
 
-
 export default function Application () {
   return <ErrorBoundry>
     <Switch>

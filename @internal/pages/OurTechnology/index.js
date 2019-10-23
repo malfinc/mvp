@@ -1,5 +1,5 @@
 import React from "react";
-import {Page} from "@internal/ui";
+import {Page} from "@internal/elements";
 
 export default function OurTechnology () {
   return <Page subtitle="Our Technology" kind="article">

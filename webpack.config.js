@@ -1,12 +1,13 @@
 // eslint-disable no-undef import/no-commonjs import/no-nodejs-modules
 const path = require("path");
 const {HashedModuleIdsPlugin} = require("webpack");
-const WebpackNodeExternals = require("webpack-node-externals");
+const {HotModuleReplacementPlugin} = require("webpack");
+// const WebpackNodeExternals = require("webpack-node-externals");
 const {IgnorePlugin} = require("webpack");
 const {EnvironmentPlugin} = require("webpack");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const CompressionWebpackPlugin = require("compression-webpack-plugin");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
+const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 const {BundleAnalyzerPlugin} = require("webpack-bundle-analyzer");
 const {Plugin: WebpackCommonShake} = require("webpack-common-shake");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -20,7 +21,6 @@ dotenvConfiguration();
 
 const BENCHMARK = process.env.BENCHMARK === "enabled";
 const NODE_ENV = process.env.NODE_ENV || "development";
-
 const PACKAGE_ASSETS = [];
 
 module.exports = [
@@ -34,7 +34,7 @@ module.exports = [
     devtool: NODE_ENV === "production" ? "source-map" : "inline-source-map",
     output: {
       path: path.resolve(__dirname, "tmp", "client"),
-      filename: "[name].[chunkhash].js",
+      filename: "[name].[hash].js",
     },
     optimization: {
       minimize: NODE_ENV === "production",
@@ -127,9 +127,13 @@ module.exports = [
       contentBase: path.join(__dirname, "tmp", "client"),
       compress: true,
       port: 9000,
+      historyApiFallback: true,
+      hot: true,
+      overlay: true,
     },
     plugins: compact([
       NODE_ENV === "production" ? null : new DotenvWebpack(),
+      NODE_ENV === "production" ? null : new HotModuleReplacementPlugin(),
       new EnvironmentPlugin([
         "NODE_ENV",
         "BENCHMARK",
@@ -151,7 +155,7 @@ module.exports = [
         },
         hash: true,
         template: "client/index.html",
-        baseURL: "https://www.poutineer.club/",
+        baseURL: process.env.ORIGIN_LOCATION,
         themeColor: "#4285f4",
         description: "Front page",
       }),

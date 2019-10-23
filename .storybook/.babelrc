@@ -9,6 +9,7 @@
       "^@internal/(.+)$": "./@internal/\\1",
       "^@assets/(.+)$": "./assets/\\1",
     }}],
+    "@babel/plugin-syntax-dynamic-import",
     "annotate-console-log",
   ]
 }

@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Page} from "@internal/ui";
+import {Page} from "@internal/elements";
 
 export default function CodeOfConduct () {
   return <Page subtitle="Code Of Conduct" kind="article">

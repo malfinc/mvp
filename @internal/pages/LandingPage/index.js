@@ -1,15 +1,29 @@
 import React from "react";
 
-import {Page} from "@internal/ui";
+import {Page} from "@internal/elements";
 import {Link} from "@internal/elements";
 
-export default function LandingPage () {
-  return <Page subtitle="Welcome!">
-    <h2>
-      Poutineer
-    </h2>
+const layoutStyle = {
+  gridTemplateAreas: `
+    "showcase showcase showcase"
+    "brand brand authentication"
+    "review review review"
+    "feed feed feed"
+  `,
+  gridGap: "5px",
+};
 
-    <section>
+export default function LandingPage () {
+  return <Page layoutStyle={layoutStyle} subtitle="Welcome!">
+    <section css={{gridArea: "showcase"}}>
+      showcase
+    </section>
+
+    <header css={{gridArea: "brand"}}>
+      <h1>Poutineer</h1>
+    </header>
+
+    <section css={{gridArea: "authentication"}}>
       <section>
         <Link kind="primary" href="/sign-up">
           Join us
@@ -21,6 +35,14 @@ export default function LandingPage () {
           Login
         </Link>
       </section>
+    </section>
+
+    <section css={{gridArea: "review"}}>
+      review
+    </section>
+
+    <section css={{gridArea: "feed"}}>
+      feed
     </section>
   </Page>;
 }
