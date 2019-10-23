@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Page} from "@internal/ui";
+import {Page} from "@internal/elements";
 
 export default function TheCost () {
   return <Page subtitle="The Cost" kind="article">

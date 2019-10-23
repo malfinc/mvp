@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Page} from "@internal/ui";
+import {Page} from "@internal/elements";
 
 export default function PageNotFound () {
   return <Page subtitle="We couldn't find the page you wanted" kind="article">
