@@ -34,7 +34,7 @@ gem("redis-rails", "5.0.2")
 gem("redlock", "1.0.1")
 gem("redis-objects", "1.4.3")
 
-gem("devise", "4.7.0")
+gem("devise", "4.7.1")
 gem("devise-async", "1.0.0")
 gem("devise-security", "0.14.3")
 gem("omniauth", "1.9.0")
