@@ -13,7 +13,7 @@ gem("rack-timeout", "0.5.1")
 
 gem("connection_pool", "2.2.2")
 gem("pg", "1.1.4")
-gem("mini_magick", "4.9.2")
+gem("mini_magick", "4.9.4")
 gem("action_operation", "2.2.0")
 gem("addressable", "2.6.0", :require => false)
 gem("bootsnap", "1.4.4", :require => false)
