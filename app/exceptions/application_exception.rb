@@ -1,2 +1,0 @@
-class ApplicationException < RuntimeError
-end

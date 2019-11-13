@@ -1,1 +1,0 @@
-# SecureHeaders::Configuration.default
