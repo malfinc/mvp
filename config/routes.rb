@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   devise_for(:accounts)
 
+  post("/graphql", :to => "graphql#execute")
+
   namespace(:v1) do
     resources(:accounts, :only => [:index, :show, :create, :update, :destroy])
     resources(:payment_types, :only => [:index, :show])

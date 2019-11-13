@@ -108,3 +108,5 @@ group(:development) do
   gem("rubocop", "0.63.1", :require => false)
   gem("rubocop-rspec", "1.32.0")
 end
+
+gem("graphql", "~> 1.9")

@@ -25,6 +25,7 @@ require_relative("../lib/source")
 
 module Poutineer
   class Application < Rails::Application
+    VERSION = "1.0.0".freeze
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults(5.2)
 
