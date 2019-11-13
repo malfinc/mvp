@@ -1,4 +1,11 @@
-  - [ ] Replace hex passwords with human passwords
+  - [ ] Remove environment stuff
+  - [ ] Setup html plugin for webpack
+  - [ ] rucksack.css
+  - [ ] object spread babel
+  - [ ] remove dynamic import
+  - [ ] remove typescript
+  - [ ] remove testing libraries  
+ - [ ] Replace hex passwords with human passwords
   - [ ] Change ambassador healthcheck to have a header constraint
   - [ ] Create a LoadingBox
   - [ ] Create a LoadingImage
