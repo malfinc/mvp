@@ -1,0 +1,3 @@
+class UnknownReviewMatchImpactException < ApplicationException
+
+end
