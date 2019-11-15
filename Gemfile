@@ -7,7 +7,7 @@ gem("rails", "5.2.3")
 
 gem("rack-attack", "5.4.2")
 gem("rack-authentication_bearer", "2.0.2")
-gem("rack-cors", "1.0.2")
+gem("rack-cors", "1.0.5")
 gem("rack-rewrite", "1.5.1")
 gem("rack-timeout", "0.5.1")
 
