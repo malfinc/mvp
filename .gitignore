@@ -8,12 +8,9 @@
 /.bundle
 
 # Ignore all logfiles and tempfiles.
-/log/
-!/log/.keep
 /tmp/
 !/tmp/.keep
 /node_modules/
-/vendor/ruby/
 /coverage/
 /.nyc_output/
 /docker-compose/*/data/
@@ -26,6 +23,34 @@
 /.env
 
 # Ignore master key for decrypting credentials and more.
-/config/master.key
 /kubernetes/runtime-secrets.yaml
 /kubernetes/test/
+
+# The directory Mix will write compiled artifacts to.
+/_build/
+
+# If you run "mix test --cover", coverage assets end up here.
+/cover/
+
+# The directory Mix downloads your dependencies sources to.
+/deps/
+
+# Where 3rd-party dependencies like ExDoc output generated docs.
+/doc/
+
+# Ignore .fetch files in case you like to edit your project deps locally.
+/.fetch
+
+# If the VM crashes, it generates a dump, let's ignore it too.
+erl_crash.dump
+
+# Also ignore archive artifacts (built via "mix archive.build").
+*.ez
+
+# Ignore package tarball (built via "mix hex.build").
+poutineer-*.tar
+
+# Since we are building assets from assets/,
+# we ignore priv/static. You may want to comment
+# this depending on your deployment strategy.
+/priv/static/
