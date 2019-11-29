@@ -1,7 +1,6 @@
 defmodule PoutineerWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :poutineer
   use Absinthe.Phoenix.Endpoint
-  use Absinthe.Phoenix.Socket, schema: PoutineerWeb.Schema
 
   socket "/socket", PoutineerWeb.UserSocket,
     websocket: true,
