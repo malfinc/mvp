@@ -44,7 +44,7 @@ defmodule PoutineerWeb.Endpoint do
     signing_salt: "aiVLsWxs"
 
   plug Absinthe.Plug,
-    schema: PoutineerWeb.Schema
+    schema: Poutineer.Schema
 
   plug PoutineerWeb.Router
 end
