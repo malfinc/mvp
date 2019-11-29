@@ -18,6 +18,11 @@ config :poutineer, PoutineerWeb.Endpoint,
   render_errors: [view: PoutineerWeb.ErrorView, accepts: ["json"]],
   pubsub: [name: Poutineer.PubSub, adapter: Phoenix.PubSub.PG2]
 
+# Configures Pow
+config :poutineer, :pow,
+  user: Poutineer.Accounts.Account,
+  repo: Poutineer.Repo
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

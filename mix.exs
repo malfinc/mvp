@@ -44,7 +44,9 @@ defmodule Poutineer.MixProject do
       {:bcrypt_elixir, "~> 2.0"},
       {:absinthe, "~> 1.4"},
       {:absinthe_plug, "~> 1.4"},
-      {:absinthe_phoenix, "~> 1.4"}
+      {:absinthe_phoenix, "~> 1.4"},
+      {:pow, "~> 1.0"},
+      {:envy, "~> 1.1"}
     ]
   end
 

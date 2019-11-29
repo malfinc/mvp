@@ -43,6 +43,8 @@ defmodule PoutineerWeb.Endpoint do
     key: "_poutineer_key",
     signing_salt: "aiVLsWxs"
 
+  plug Pow.Plug.Session, otp_app: :poutineer
+
   plug Absinthe.Plug,
     schema: Poutineer.Schema
 
