@@ -7,6 +7,7 @@
 # General application configuration
 use Mix.Config
 
+# Configures for ecto
 config :poutineer,
   ecto_repos: [Poutineer.Repo]
 
