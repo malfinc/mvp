@@ -1,7 +1,6 @@
 defmodule PoutineerWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :poutineer
   use Absinthe.Phoenix.Endpoint
-
   socket "/socket", PoutineerWeb.UserSocket,
     websocket: true,
     longpoll: false
@@ -44,9 +43,6 @@ defmodule PoutineerWeb.Endpoint do
     signing_salt: "aiVLsWxs"
 
   plug Pow.Plug.Session, otp_app: :poutineer
-
-  plug Absinthe.Plug,
-    schema: Poutineer.Schema
 
   plug PoutineerWeb.Router
 end

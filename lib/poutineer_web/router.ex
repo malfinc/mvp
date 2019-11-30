@@ -5,11 +5,11 @@ defmodule PoutineerWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", PoutineerWeb do
+  scope "/" do
     pipe_through :api
-    # resources "/accounts", AccountController, except: [:new, :edit]
-    # resources "/reviews", ReviewController, except: [:new, :edit]
-    # resources "/companies", CompanyController, except: [:new, :edit]
-    # resources "/companies", CompanyController, except: [:new, :edit]
+
+    forward "/", Absinthe.Plug,
+      schema: Poutineer.Schema
   end
+
 end

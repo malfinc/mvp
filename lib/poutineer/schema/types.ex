@@ -1,4 +1,4 @@
-defmodule Poutineer.Schema.ContentTypes do
+defmodule Poutineer.Schema.Types do
   use Absinthe.Schema.Notation
 
   object :account do

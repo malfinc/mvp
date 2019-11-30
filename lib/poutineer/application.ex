@@ -6,6 +6,10 @@ defmodule Poutineer.Application do
   use Application
 
   def start(_type, _args) do
+    unless Mix.env == :prod do
+      Envy.auto_load
+    end
+
     # List all child processes to be supervised
     children = [
       # Start the Ecto repository

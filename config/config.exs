@@ -21,7 +21,8 @@ config :poutineer, PoutineerWeb.Endpoint,
 # Configures Pow
 config :poutineer, :pow,
   user: Poutineer.Accounts.Account,
-  repo: Poutineer.Repo
+  repo: Poutineer.Repo#,
+  # extensions: [PowResetPassword, PowEmailConfirmation]
 
 # Configures Elixir's Logger
 config :logger, :console,
