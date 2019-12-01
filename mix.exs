@@ -38,6 +38,9 @@ defmodule Poutineer.MixProject do
       {:phoenix_ecto, "~> 4.0"},
       {:ecto_sql, "~> 3.1"},
       {:postgrex, "~> 0.15"},
+      {:ecto_enum, "~> 1.4"},
+      {:ecto_autoslug_field, "~> 2.0"},
+      {:paper_trail, "~> 0.8.2"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
@@ -47,7 +50,10 @@ defmodule Poutineer.MixProject do
       {:absinthe_phoenix, "~> 1.4"},
       {:crudry, "~> 2.1"},
       {:pow, "~> 1.0"},
-      {:envy, "~> 1.1"}
+      {:countries, "~> 1.5"},
+      {:envy, "~> 1.1"},
+      {:machinery, "~> 1.0"},
+      {:flippant, "~> 0.3"}
     ]
   end
 

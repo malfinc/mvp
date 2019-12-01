@@ -12,12 +12,12 @@ defmodule Poutineer.Schema do
   query do
     @desc "Get all accounts"
     field :accounts, list_of(:account) do
-      resolve &Resolvers.Accounts.list_accounts/3
+      resolve &Resolvers.Accounts.list/3
     end
 
     field :account, :account do
       arg :id, non_null(:id)
-      resolve &Resolvers.Accounts.fetch_account/3
+      resolve &Resolvers.Accounts.fetch/3
     end
   end
 
@@ -25,7 +25,7 @@ defmodule Poutineer.Schema do
     field :create_account, :account do
       arg :email, non_null(:string)
 
-      resolve &Resolvers.Accounts.create_account/3
+      resolve &Resolvers.Accounts.create/3
     end
   end
 

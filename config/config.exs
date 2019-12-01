@@ -9,7 +9,8 @@ use Mix.Config
 
 # Configures for ecto
 config :poutineer,
-  ecto_repos: [Poutineer.Repo]
+  ecto_repos: [Poutineer.Repo],
+  generators: [binary_id: true]
 
 # Configures the endpoint
 config :poutineer, PoutineerWeb.Endpoint,
@@ -20,7 +21,7 @@ config :poutineer, PoutineerWeb.Endpoint,
 
 # Configures Pow
 config :poutineer, :pow,
-  user: Poutineer.Accounts.Account,
+  user: Poutineer.Models.Account,
   repo: Poutineer.Repo#,
   # extensions: [PowResetPassword, PowEmailConfirmation]
 
@@ -31,6 +32,8 @@ config :logger, :console,
 
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
+
+config :paper_trail, repo: Poutineer.Repo
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

@@ -1,4 +1,4 @@
-defmodule Poutineer.Accounts.Account do
+defmodule Poutineer.Models.Account do
   use Ecto.Schema
   use Pow.Ecto.Schema
   # use Pow.Extension.Ecto.Schema,

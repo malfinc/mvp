@@ -1,17 +1,17 @@
 defmodule Poutineer.Resolvers.Accounts do
   alias Poutineer.Repo
-  alias Poutineer.Accounts.Account
+  alias Poutineer.Models.Account
 
-  def list_accounts(_parent, _arguments, _resolution) do
+  def list(_parent, _arguments, _resolution) do
     # {:ok, Blog.Content.list_posts()}
     {:ok, Repo.all(Account)}
   end
 
-  def fetch_account(_parent, arguments, _resolution) do
+  def fetch(_parent, arguments, _resolution) do
     {:ok, Repo.get(Account, arguments[:id])}
   end
 
-  def create_account(_parent, arguments, _resolution) do
+  def create(_parent, arguments, _resolution) do
     password = :crypto.strong_rand_bytes(24)
       |> Base.encode32(case: :upper)
       |> binary_part(0, 24)
