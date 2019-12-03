@@ -3,7 +3,6 @@ defmodule Poutineer.Resolvers.Accounts do
   alias Poutineer.Models.Account
 
   def list(_parent, _arguments, _resolution) do
-    # {:ok, Blog.Content.list_posts()}
     {:ok, Repo.all(Account)}
   end
 
