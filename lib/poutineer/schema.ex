@@ -15,6 +15,7 @@ defmodule Poutineer.Schema do
       resolve &Resolvers.Accounts.list/3
     end
 
+    @desc "Get an account by id"
     field :account, :account do
       arg :id, non_null(:id)
       resolve &Resolvers.Accounts.fetch/3
