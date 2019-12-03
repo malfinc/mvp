@@ -4,7 +4,7 @@ defmodule Poutineer.Models.Recipe do
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
-  schema "recipe" do
+  schema "recipes" do
     field :body, :string
     field :cook_time, :integer
     field :ingredients, {:array, :string}
