@@ -2,7 +2,7 @@ defmodule Poutineer.Repo.Migrations.CreateRecipe do
   use Ecto.Migration
 
   def change do
-    create table(:recipe, primary_key: false) do
+    create table(:recipes, primary_key: false) do
       add :id, :binary_id, primary_key: true
       add :name, :text, null: false
       add :slug, :citext, null: false
@@ -17,7 +17,7 @@ defmodule Poutineer.Repo.Migrations.CreateRecipe do
       timestamps()
     end
 
-    create unique_index(:recipe, [:slug])
-    create index(:recipe, [:author_id])
+    create unique_index(:recipes, [:slug])
+    create index(:recipes, [:author_id])
   end
 end
