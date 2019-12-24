@@ -15,7 +15,8 @@ defmodule Repo.Migrations.AddVersions do
 
     create index(:versions, [:originator_id])
     create index(:versions, [:item_id, :item_type])
-    create index(:versions, [:event, :item_type])
-    create index(:versions, [:item_type, :inserted_at])
+    create index(:versions, [:event])
+    create index(:versions, [:item_type])
+    create index(:versions, [:inserted_at])
   end
 end

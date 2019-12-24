@@ -1,10 +1,12 @@
-defmodule Poutineer.Models.RecipeAllergy do
+defmodule Poutineer.Models.RecipeTag do
   use Ecto.Schema
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
-  schema "recipe_allergies" do
-    belongs_to :allergy, Poutineer.Models.Allergy
+  schema "recipes_tags" do
     belongs_to :recipe, Poutineer.Models.Recipe
+    belongs_to :tag, Poutineer.Models.Tag
+
+    timestamps()
   end
 end

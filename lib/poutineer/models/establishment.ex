@@ -1,25 +1,30 @@
 defmodule Poutineer.Models.Establishment do
   use Ecto.Schema
   import Ecto.Changeset
+  alias Poutineer.NameSlug
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "establishments" do
+    field :name, :string
+    field :slug, NameSlug.Type
     field :google_place_data, :map
     field :google_place_id, :string
-    field :moderation_state, :string
-    field :name, :string
-    field :slug, :string
+    field :moderation_state, :string, default: "pending"
+    has_many :menu_items, Poutineer.Models.MenuItem
+    many_to_many :payment_types, Poutineer.Models.PaymentType, join_through: Poutineer.Models.EstablishmentPaymentType
+    many_to_many :tags, Poutineer.Models.Tag, join_through: Poutineer.Models.MenuItemTag
 
     timestamps()
   end
 
   @doc false
-  def changeset(establishment, attrs) do
+  def changeset(%Poutineer.Models.Establishment{} = establishment, attributes \\ %{}) do
     establishment
-    |> cast(attrs, [:name, :slug, :google_place_id, :google_place_data, :moderation_state])
-    |> validate_required([:name, :slug, :google_place_id, :google_place_data, :moderation_state])
-    |> unique_constraint(:slug)
+    |> cast(attributes, [:name, :google_place_id, :google_place_data, :moderation_state])
+    |> validate_required([:name, :google_place_id, :google_place_data, :moderation_state])
+    |> NameSlug.maybe_generate_slug
+    |> NameSlug.unique_constraint
     |> unique_constraint(:google_place_id)
   end
 end

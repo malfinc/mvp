@@ -9,5 +9,6 @@ defmodule Poutineer.Repo.Migrations.CreateEstablishmentPaymentTypes do
     end
 
     create unique_index(:establishment_payment_types, [:establishment_id, :payment_type_id])
+    create index(:establishment_payment_types, [:payment_type_id])
   end
 end

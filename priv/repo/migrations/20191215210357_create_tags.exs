@@ -1,8 +1,8 @@
-defmodule Poutineer.Repo.Migrations.CreateDiets do
+defmodule Poutineer.Repo.Migrations.CreateTags do
   use Ecto.Migration
 
   def change do
-    create table(:diets, primary_key: false) do
+    create table(:tags, primary_key: false) do
       add :id, :binary_id, primary_key: true
       add :name, :text, null: false
       add :slug, :citext, null: false
@@ -10,7 +10,7 @@ defmodule Poutineer.Repo.Migrations.CreateDiets do
       timestamps()
     end
 
-    create unique_index(:diets, [:name])
-    create unique_index(:diets, [:slug])
+    create unique_index(:tags, [:name])
+    create unique_index(:tags, [:slug])
   end
 end

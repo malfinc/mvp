@@ -1,12 +1,12 @@
-defmodule Poutineer.Resolvers.Diets do
+defmodule Poutineer.Resolvers.Tags do
   alias Poutineer.Repo
-  alias Poutineer.Models.Diet
+  alias Poutineer.Models.Tag
 
   def list(_parent, _arguments, _resolution) do
-    {:ok, Repo.all(Diet)}
+    {:ok, Repo.all(Tag)}
   end
 
   def fetch(_parent, arguments, _resolution) do
-    {:ok, Repo.get(Diet, arguments[:id])}
+    {:ok, Repo.get(Tag, arguments[:id])}
   end
 end

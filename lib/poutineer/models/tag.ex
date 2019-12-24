@@ -1,21 +1,20 @@
-defmodule Poutineer.Models.Diet do
+defmodule Poutineer.Models.Tag do
   use Ecto.Schema
   import Ecto.Changeset
   alias Poutineer.NameSlug
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
-  schema "diets" do
+  schema "tags" do
     field :name, :string
     field :slug, NameSlug.Type
-    many_to_many :menu_items, Poutineer.Models.MenuItem, join_through: Poutineer.Models.MenuItemDiet
 
     timestamps()
   end
 
   @doc false
-  def changeset(%Poutineer.Models.Diet{} = diet, attributes \\ %{}) do
-    diet
+  def changeset(%Poutineer.Models.Tag{} = tag, attributes \\ %{}) do
+    tag
     |> cast(attributes, [:name])
     |> validate_required([:name])
     |> NameSlug.maybe_generate_slug

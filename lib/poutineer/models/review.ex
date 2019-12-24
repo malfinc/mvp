@@ -6,16 +6,18 @@ defmodule Poutineer.Models.Review do
   @foreign_key_type :binary_id
   schema "reviews" do
     field :body, :string
-    field :moderation_state, :string
-    field :author_id, :binary_id
+    field :moderation_state, :string, default: "pending"
+    belongs_to :author, Poutineer.Models.Account
+    many_to_many :tags, Poutineer.Models.Tag, join_through: Poutineer.Models.ReviewTag
+    has_many :critiques, Poutineer.Models.Critique
 
     timestamps()
   end
 
   @doc false
-  def changeset(review, attrs) do
+  def changeset(%Poutineer.Models.Review{} = review, attributes \\ %{}) do
     review
-    |> cast(attrs, [:body, :moderation_state])
+    |> cast(attributes, [:body, :moderation_state])
     |> validate_required([:body, :moderation_state])
   end
 end

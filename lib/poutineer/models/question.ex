@@ -7,14 +7,15 @@ defmodule Poutineer.Models.Question do
   schema "questions" do
     field :body, :string
     field :kind, :string
+    has_many :critiques, Poutineer.Models.Critique
 
     timestamps()
   end
 
   @doc false
-  def changeset(question, attrs) do
+  def changeset(%Poutineer.Models.Question{} = question, attributes \\ %{}) do
     question
-    |> cast(attrs, [:body, :kind])
+    |> cast(attributes, [:body, :kind])
     |> validate_required([:body, :kind])
   end
 end

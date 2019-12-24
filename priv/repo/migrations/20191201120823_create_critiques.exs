@@ -9,12 +9,15 @@ defmodule Poutineer.Repo.Migrations.CreateCritiques do
       add :review_id, references(:reviews, on_delete: :nothing, type: :binary_id), null: false
       add :answer_id, references(:answers, on_delete: :nothing, type: :binary_id), null: false
       add :question_id, references(:questions, on_delete: :nothing, type: :binary_id), null: false
+
+      timestamps()
     end
 
-    create index(:critiques, [:author_id])
+    create index(:critiques, [:author_id, :review_id])
     create index(:critiques, [:review_id])
+    create index(:critiques, [:author_id, :answer_id])
     create index(:critiques, [:answer_id])
-    create index(:critiques, [:question_id])
+    create index(:critiques, [:author_id, :question_id])
     create unique_index(:critiques, [:question_id, :answer_id, :author_id, :review_id])
   end
 end

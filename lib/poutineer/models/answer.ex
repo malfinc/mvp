@@ -6,15 +6,16 @@ defmodule Poutineer.Models.Answer do
   @foreign_key_type :binary_id
   schema "answers" do
     field :body, :string
-    field :question_id, :binary_id
+    belongs_to :question, Poutineer.Models.Question
+    has_many :critiques, Poutineer.Models.Critique
 
     timestamps()
   end
 
   @doc false
-  def changeset(answer, attrs) do
+  def changeset(%Poutineer.Models.Answer{} = answer, attributes \\ %{}) do
     answer
-    |> cast(attrs, [:body])
+    |> cast(attributes, [:body])
     |> validate_required([:body])
   end
 end

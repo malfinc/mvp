@@ -6,18 +6,18 @@ defmodule Poutineer.Models.Critique do
   @foreign_key_type :binary_id
   schema "critiques" do
     field :guage, :integer
-    field :author_id, :binary_id
-    field :review_id, :binary_id
-    field :answer_id, :binary_id
-    field :question_id, :binary_id
+    belongs_to :author, Poutineer.Models.Account
+    belongs_to :review, Poutineer.Models.Review
+    belongs_to :answer, Poutineer.Models.Answer
+    belongs_to :question, Poutineer.Models.Question
 
     timestamps()
   end
 
   @doc false
-  def changeset(critique, attrs) do
+  def changeset(%Poutineer.Models.Critique{} = critique, attributes \\ %{}) do
     critique
-    |> cast(attrs, [:guage])
+    |> cast(attributes, [:guage])
     |> validate_required([:guage])
   end
 end

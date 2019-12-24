@@ -9,5 +9,6 @@ defmodule Poutineer.Repo.Migrations.CreateMenuItemAllergies do
     end
 
     create unique_index(:menu_item_allergies, [:allergy_id, :menu_item_id])
+    create index(:menu_item_allergies, [:menu_item_id])
   end
 end
