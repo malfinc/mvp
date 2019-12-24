@@ -26,9 +26,14 @@ config :logger, :console,
   metadata: [:request_id]
 
 # Use Jason for JSON parsing in Phoenix
-config :phoenix, :json_library, Jason
+config :phoenix,
+  :json_library, Jason
 
-config :paper_trail, repo: Poutineer.Repo
+config :paper_trail,
+  repo: Poutineer.Repo,
+  item_type: Ecto.UUID,
+  originator_type: Ecto.UUID,
+  originator: [name: :account, model: Poutineer.Models.Account]
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
