@@ -19,11 +19,6 @@ config :poutineer, PoutineerWeb.Endpoint,
   render_errors: [view: PoutineerWeb.ErrorView, accepts: ["json"]],
   pubsub: [name: Poutineer.PubSub, adapter: Phoenix.PubSub.PG2]
 
-# Configures Pow
-config :poutineer, :pow,
-  user: Poutineer.Models.Account,
-  repo: Poutineer.Repo#,
-  # extensions: [PowResetPassword, PowEmailConfirmation]
 
 # Configures Elixir's Logger
 config :logger, :console,

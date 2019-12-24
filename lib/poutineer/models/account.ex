@@ -1,20 +1,26 @@
 defmodule Poutineer.Models.Account do
   use Ecto.Schema
-  use Pow.Ecto.Schema
-  # use Pow.Extension.Ecto.Schema,
-  #   extensions: [PowResetPassword, PowEmailConfirmation]
+  import Ecto.Changeset
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "accounts" do
-    pow_user_fields()
+    field :email, :string
+    field :unconfirmed_email, :string
+    field :username, :string
+    field :name, :string
+    field :onboarding_state, :string, default: "converted"
+    field :role_state, :string, default: "user"
+    field :password, :string, virtual: true
+    field :password_hash, :string
 
     timestamps()
   end
 
-  def changeset(account_or_changeset, attributes \\ %{}) do
-    account_or_changeset
-      |> pow_changeset(attributes)
-      # |> pow_extension_changeset(attributes)
+  @doc false
+  def changeset(%Poutineer.Models.Account{} = account, attributes \\ %{}) do
+    account
+      |> cast(attributes, [:email, :username, :name])
+      |> validate_required([:email])
   end
 end

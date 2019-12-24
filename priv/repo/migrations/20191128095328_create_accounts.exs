@@ -7,6 +7,7 @@ defmodule Poutineer.Repo.Migrations.CreateAccounts do
       add :email, :citext, null: false
       add :unconfirmed_email, :citext
       add :username, :citext
+      add :name, :text
       add :onboarding_state, :citext, null: false, default: "converted"
       add :role_state, :citext, null: false, default: "user"
       add :password_hash, :string

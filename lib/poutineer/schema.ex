@@ -79,7 +79,10 @@ defmodule Poutineer.Schema do
 
   mutation do
     field :create_account, :account do
+      arg :name, :string
+      arg :username, :string
       arg :email, non_null(:string)
+      arg :password, :string
 
       resolve &Resolvers.Accounts.create/3
     end

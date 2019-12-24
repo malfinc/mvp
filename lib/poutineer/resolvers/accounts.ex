@@ -11,11 +11,12 @@ defmodule Poutineer.Resolvers.Accounts do
   end
 
   def create(_parent, arguments, _resolution) do
-    password = :crypto.strong_rand_bytes(24)
-      |> Base.encode32(case: :upper)
-      |> binary_part(0, 24)
+    default_attributes = %{
+      username: List.first(String.split(arguments[:email], "@")),
+      password: arguments[:password] || (:crypto.strong_rand_bytes(24) |> Base.encode32(case: :upper) |> binary_part(0, 24))
+    }
 
-    Account.changeset(%Account{}, Map.merge(%{password: password, confirm_password: password}, arguments))
+    Account.changeset(%Account{}, Map.merge(default_attributes, arguments))
       |> case do
         %Ecto.Changeset{valid?: true} = changeset -> Repo.insert(changeset)
         %Ecto.Changeset{valid?: false} = changeset -> {:error, changeset}

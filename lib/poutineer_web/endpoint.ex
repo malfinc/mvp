@@ -1,6 +1,13 @@
 defmodule PoutineerWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :poutineer
   use Absinthe.Phoenix.Endpoint
+
+  @session_options [
+    store: :cookie,
+    key: "_poutineer_key",
+    signing_salt: "aiVLsWxs"
+  ]
+
   socket "/socket", PoutineerWeb.UserSocket,
     websocket: true,
     longpoll: false
@@ -37,12 +44,7 @@ defmodule PoutineerWeb.Endpoint do
   # The session will be stored in the cookie and signed,
   # this means its contents can be read but not tampered with.
   # Set :encryption_salt if you would also like to encrypt it.
-  plug Plug.Session,
-    store: :cookie,
-    key: "_poutineer_key",
-    signing_salt: "aiVLsWxs"
-
-  plug Pow.Plug.Session, otp_app: :poutineer
+  plug Plug.Session, @session_options
 
   plug PoutineerWeb.Router
 end
