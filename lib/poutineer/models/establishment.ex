@@ -1,7 +1,7 @@
 defmodule Poutineer.Models.Establishment do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Poutineer.NameSlug
+  alias Poutineer.Slugs.Name
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
