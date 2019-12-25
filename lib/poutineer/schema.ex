@@ -141,6 +141,15 @@ defmodule Poutineer.Schema do
   end
 
   mutation do
+    @desc "Create a new session with login credentials"
+    field :create_session, :session do
+      arg :email, non_null(:string)
+      arg :password, non_null(:string)
+
+      resolve &Poutineer.Schema.Resolvers.Sessions.create/3
+      middleware &Poutineer.Schema.Middlewares.Sessions.update_session/2
+    end
+
     field :create_account, :account do
       arg :name, :string
       arg :username, :string
@@ -158,6 +167,7 @@ defmodule Poutineer.Schema do
       arg :instructions, non_null(list_of(:string))
       arg :prep_time, non_null(:integer)
 
+      middleware &Poutineer.Schema.Middlewares.Sessions.require_authentication/2
       resolve &Poutineer.Schema.Resolvers.Recipes.create/3
     end
   end

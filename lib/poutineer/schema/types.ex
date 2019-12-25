@@ -4,6 +4,10 @@ defmodule Poutineer.Schema.Types do
 
   import_types Absinthe.Type.Custom
 
+  object :session do
+    field :id, non_null(:string)
+  end
+
   object :account do
     field :id, :id
     field :email, :string
