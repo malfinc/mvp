@@ -1,4 +1,4 @@
-defmodule Poutineer.Resolvers.Critiques do
+defmodule Poutineer.Schema.Resolvers.Critiques do
   alias Poutineer.Repo
   alias Poutineer.Models.Critique
 

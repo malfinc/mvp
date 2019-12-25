@@ -1,4 +1,4 @@
-defmodule Poutineer.Resolvers.Reviews do
+defmodule Poutineer.Schema.Resolvers.Reviews do
   alias Poutineer.Repo
   alias Poutineer.Models.Review
 

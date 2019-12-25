@@ -1,4 +1,4 @@
-defmodule Poutineer.Resolvers.Diets do
+defmodule Poutineer.Schema.Resolvers.Diets do
   alias Poutineer.Repo
   alias Poutineer.Models.Diet
 

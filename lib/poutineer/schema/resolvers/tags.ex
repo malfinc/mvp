@@ -1,4 +1,4 @@
-defmodule Poutineer.Resolvers.Tags do
+defmodule Poutineer.Schema.Resolvers.Tags do
   alias Poutineer.Repo
   alias Poutineer.Models.Tag
 

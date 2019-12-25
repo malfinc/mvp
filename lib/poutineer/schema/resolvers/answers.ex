@@ -1,4 +1,4 @@
-defmodule Poutineer.Resolvers.Answers do
+defmodule Poutineer.Schema.Resolvers.Answers do
   alias Poutineer.Repo
   alias Poutineer.Models.Answer
 

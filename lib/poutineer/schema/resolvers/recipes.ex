@@ -1,4 +1,4 @@
-defmodule Poutineer.Resolvers.Recipes do
+defmodule Poutineer.Schema.Resolvers.Recipes do
   alias Poutineer.Repo
   alias Poutineer.Models.Recipe
 

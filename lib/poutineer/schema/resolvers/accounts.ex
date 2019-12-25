@@ -1,4 +1,4 @@
-defmodule Poutineer.Resolvers.Accounts do
+defmodule Poutineer.Schema.Resolvers.Accounts do
   alias Poutineer.Repo
   alias Poutineer.Models.Account
 

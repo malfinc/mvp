@@ -1,4 +1,4 @@
-defmodule Poutineer.Resolvers.Establishments do
+defmodule Poutineer.Schema.Resolvers.Establishments do
   alias Poutineer.Repo
   alias Poutineer.Models.Establishment
 

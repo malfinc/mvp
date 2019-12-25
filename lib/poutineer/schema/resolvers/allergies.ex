@@ -1,4 +1,4 @@
-defmodule Poutineer.Resolvers.Allergies do
+defmodule Poutineer.Schema.Resolvers.Allergies do
   alias Poutineer.Repo
   alias Poutineer.Models.Allergy
 

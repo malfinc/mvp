@@ -1,4 +1,4 @@
-defmodule Poutineer.Resolvers.PaymentTypes do
+defmodule Poutineer.Schema.Resolvers.PaymentTypes do
   alias Poutineer.Repo
   alias Poutineer.Models.PaymentType
 

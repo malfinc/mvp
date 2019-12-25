@@ -1,4 +1,4 @@
-defmodule Poutineer.Resolvers.MenuItems do
+defmodule Poutineer.Schema.Resolvers.MenuItems do
   alias Poutineer.Repo
   alias Poutineer.Models.MenuItem
 
