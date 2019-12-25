@@ -3,10 +3,8 @@ defmodule Poutineer.Schema do
   import_types Poutineer.Schema.Types
 
   alias Poutineer.Resolvers
-  alias Crudry.Middlewares.TranslateErrors
-
   def middleware(middleware, _field, _object) do
-    middleware ++ [TranslateErrors]
+    middleware ++ [Crudry.Middlewares.TranslateErrors]
   end
 
   query do
