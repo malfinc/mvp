@@ -1,13 +1,12 @@
 defmodule Poutineer.Models.Recipe do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Poutineer.Slugs.Name
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "recipes" do
     field :name, :string
-    field :slug, NameSlug.Type
+    field :slug, Poutineer.Slugs.Name.Type
     field :body, :string
     field :cook_time, :integer
     field :ingredients, {:array, :string}

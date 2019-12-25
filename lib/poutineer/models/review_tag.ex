@@ -6,7 +6,5 @@ defmodule Poutineer.Models.ReviewTag do
   schema "reviews_tags" do
     belongs_to :review, Poutineer.Models.Review
     belongs_to :tag, Poutineer.Models.Tag
-
-    timestamps()
   end
 end

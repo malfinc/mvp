@@ -6,7 +6,5 @@ defmodule Poutineer.Models.RecipeTag do
   schema "recipes_tags" do
     belongs_to :recipe, Poutineer.Models.Recipe
     belongs_to :tag, Poutineer.Models.Tag
-
-    timestamps()
   end
 end

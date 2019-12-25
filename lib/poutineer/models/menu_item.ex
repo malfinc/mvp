@@ -1,13 +1,12 @@
 defmodule Poutineer.Models.MenuItem do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Poutineer.Slugs.Name
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "menu_items" do
     field :name, :string
-    field :slug, NameSlug.Type
+    field :slug, Poutineer.Slugs.Name.Type
     field :body, :string
     field :moderation_state, :string, default: "pending"
     belongs_to :establishment, Poutineer.Models.Establishment

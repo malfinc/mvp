@@ -20,7 +20,7 @@ defmodule PoutineerWeb.UserSocket do
     {
       :ok,
       Absinthe.Phoenix.Socket.put_options(socket, context: %{
-        current_account: current_account(params)
+        current_account: account_from_session(params)
       })
     }
   end
@@ -37,7 +37,7 @@ defmodule PoutineerWeb.UserSocket do
   # Returning `nil` makes this socket anonymous.
   def id(socket), do: "user_socket:#{socket.assigns.account_id}"
 
-  defp current_account(%{"account_id" => id}) do
+  defp account_from_session(%{"session_id" => id}) do
     Poutineer.Repo.get(Poutineer.Models.Account, id)
   end
 end

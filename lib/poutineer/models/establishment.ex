@@ -1,13 +1,12 @@
 defmodule Poutineer.Models.Establishment do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Poutineer.Slugs.Name
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "establishments" do
     field :name, :string
-    field :slug, NameSlug.Type
+    field :slug, Poutineer.Slugs.Name.Type
     field :google_place_data, :map
     field :google_place_id, :string
     field :moderation_state, :string, default: "pending"

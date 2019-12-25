@@ -1,4 +1,4 @@
-defmodule Poutineer.EstablishmentTag do
+defmodule Poutineer.Models.EstablishmentTag do
   use Ecto.Schema
 
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -6,7 +6,5 @@ defmodule Poutineer.EstablishmentTag do
   schema "establishments_tags" do
     belongs_to :establishment, Poutineer.Models.Establishment
     belongs_to :tag, Poutineer.Models.Tag
-
-    timestamps()
   end
 end

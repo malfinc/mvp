@@ -6,7 +6,5 @@ defmodule Poutineer.Models.MenuItemTag do
   schema "menu_items_tags" do
     belongs_to :menu_item, Poutineer.Models.MenuItem
     belongs_to :tag, Poutineer.Models.Tag
-
-    timestamps()
   end
 end

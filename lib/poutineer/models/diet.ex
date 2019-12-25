@@ -1,13 +1,12 @@
 defmodule Poutineer.Models.Diet do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Poutineer.Slugs.Name
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "diets" do
     field :name, :string
-    field :slug, NameSlug.Type
+    field :slug, Poutineer.Slugs.Name.Type
     many_to_many :menu_items, Poutineer.Models.MenuItem, join_through: Poutineer.Models.MenuItemDiet
 
     timestamps()
