@@ -17,7 +17,8 @@ defmodule Poutineer.Models.Review do
   @doc false
   def changeset(%Poutineer.Models.Review{} = review, attributes \\ %{}) do
     review
-    |> cast(attributes, [:body, :moderation_state])
-    |> validate_required([:body, :moderation_state])
+      |> cast(attributes, [:body, :moderation_state])
+      |> validate_required([:body, :moderation_state])
+      |> foreign_key_constraint(:author_id)
   end
 end

@@ -17,7 +17,11 @@ defmodule Poutineer.Models.Critique do
   @doc false
   def changeset(%Poutineer.Models.Critique{} = critique, attributes \\ %{}) do
     critique
-    |> cast(attributes, [:guage])
-    |> validate_required([:guage])
+      |> cast(attributes, [:guage])
+      |> validate_required([:guage])
+      |> foreign_key_constraint(:author_id)
+      |> foreign_key_constraint(:review_id)
+      |> foreign_key_constraint(:answer_id)
+      |> foreign_key_constraint(:question_id)
   end
 end

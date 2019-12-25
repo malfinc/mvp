@@ -21,10 +21,10 @@ defmodule Poutineer.Models.Establishment do
   @doc false
   def changeset(%Poutineer.Models.Establishment{} = establishment, attributes \\ %{}) do
     establishment
-    |> cast(attributes, [:name, :google_place_id, :google_place_data, :moderation_state])
-    |> validate_required([:name, :google_place_id, :google_place_data, :moderation_state])
-    |> NameSlug.maybe_generate_slug
-    |> NameSlug.unique_constraint
-    |> unique_constraint(:google_place_id)
+      |> cast(attributes, [:name, :google_place_id, :google_place_data, :moderation_state])
+      |> validate_required([:name, :google_place_id, :google_place_data, :moderation_state])
+      |> Poutineer.Slugs.Name.maybe_generate_slug
+      |> Poutineer.Slugs.Name.unique_constraint
+      |> unique_constraint(:google_place_id)
   end
 end

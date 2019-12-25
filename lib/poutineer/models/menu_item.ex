@@ -19,9 +19,10 @@ defmodule Poutineer.Models.MenuItem do
   @doc false
   def changeset(%Poutineer.Models.MenuItem{} = menu_item, attributes \\ %{}) do
     menu_item
-    |> cast(attributes, [:name, :body, :moderation_state])
-    |> validate_required([:name, :body, :moderation_state])
-    |> NameSlug.maybe_generate_slug
-    |> NameSlug.unique_constraint
+      |> cast(attributes, [:name, :body, :moderation_state])
+      |> validate_required([:name, :body, :moderation_state])
+      |> Poutineer.Slugs.Name.maybe_generate_slug
+      |> Poutineer.Slugs.Name.unique_constraint
+      |> foreign_key_constraint(:establishment_id)
   end
 end

@@ -21,9 +21,29 @@ defmodule Poutineer.Models.Account do
   end
 
   @doc false
-  def changeset(%Poutineer.Models.Account{} = account, attributes \\ %{}) do
-    account
-      |> cast(attributes, [:email, :username, :name])
+  def changeset(%Poutineer.Models.Account{} = record, attributes \\ %{}) do
+    record
+      |> optionally_handle_password_hash(attributes)
+      |> optionally_handle_unconfirmed_email(attributes)
+      |> cast(attributes, [:email, :username, :name, :password_hash])
       |> validate_required([:email])
+      |> unique_constraint(:email)
+      |> unique_constraint(:username)
+  end
+
+  defp optionally_handle_password_hash(record, attributes) do
+    if attributes.password do
+      Ecto.Changeset.change(record, Argon2.add_hash(attributes.password))
+    else
+      record
+    end
+  end
+
+  defp optionally_handle_unconfirmed_email(record, attributes) do
+    if attributes.email do
+      Ecto.Changeset.change(record, %{unconfirmed_email: attributes.email})
+    else
+      record
+    end
   end
 end

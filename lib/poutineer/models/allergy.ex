@@ -16,10 +16,10 @@ defmodule Poutineer.Models.Allergy do
   @doc false
   def changeset(%Poutineer.Models.Allergy{} = allergy, attributes \\ %{}) do
     allergy
-    |> cast(attributes, [:name])
-    |> validate_required([:name])
-    |> NameSlug.maybe_generate_slug
-    |> NameSlug.unique_constraint
-    |> unique_constraint(:name)
+      |> cast(attributes, [:name])
+      |> validate_required([:name])
+      |> Poutineer.Slugs.Name.maybe_generate_slug
+      |> Poutineer.Slugs.Name.unique_constraint
+      |> unique_constraint(:name)
   end
 end

@@ -25,7 +25,8 @@ defmodule Poutineer.Models.Recipe do
     recipe
       |> cast(attributes, [:moderation_state, :name, :body, :ingredients, :instructions, :cook_time, :prep_time])
       |> validate_required([:moderation_state, :name, :body, :ingredients, :instructions, :cook_time, :prep_time])
-      |> NameSlug.maybe_generate_slug
-      |> NameSlug.unique_constraint
+      |> Poutineer.Slugs.Name.maybe_generate_slug
+      |> Poutineer.Slugs.Name.unique_constraint
+      |> foreign_key_constraint(:author_id)
   end
 end

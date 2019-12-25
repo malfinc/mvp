@@ -16,10 +16,10 @@ defmodule Poutineer.Models.PaymentType do
   @doc false
   def changeset(%Poutineer.Models.PaymentType{} = payment_type, attributes \\ %{}) do
     payment_type
-    |> cast(attributes, [:name])
-    |> validate_required([:name])
-    |> unique_constraint(:name)
-    |> NameSlug.maybe_generate_slug
-    |> NameSlug.unique_constraint
+      |> cast(attributes, [:name])
+      |> validate_required([:name])
+      |> unique_constraint(:name)
+      |> Poutineer.Slugs.Name.maybe_generate_slug
+      |> Poutineer.Slugs.Name.unique_constraint
   end
 end

@@ -15,10 +15,10 @@ defmodule Poutineer.Models.Tag do
   @doc false
   def changeset(%Poutineer.Models.Tag{} = tag, attributes \\ %{}) do
     tag
-    |> cast(attributes, [:name])
-    |> validate_required([:name])
-    |> NameSlug.maybe_generate_slug
-    |> NameSlug.unique_constraint
-    |> unique_constraint(:name)
+      |> cast(attributes, [:name])
+      |> validate_required([:name])
+      |> Poutineer.Slugs.Name.maybe_generate_slug
+      |> Poutineer.Slugs.Name.unique_constraint
+      |> unique_constraint(:name)
   end
 end

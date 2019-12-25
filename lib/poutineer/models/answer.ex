@@ -15,7 +15,7 @@ defmodule Poutineer.Models.Answer do
   @doc false
   def changeset(%Poutineer.Models.Answer{} = answer, attributes \\ %{}) do
     answer
-    |> cast(attributes, [:body])
-    |> validate_required([:body])
+      |> cast(attributes, [:body])
+      |> validate_required([:body])
   end
 end
