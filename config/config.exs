@@ -19,6 +19,11 @@ config :poutineer, PoutineerWeb.Endpoint,
   render_errors: [view: PoutineerWeb.ErrorView, accepts: ["json"]],
   pubsub: [name: Poutineer.PubSub, adapter: Phoenix.PubSub.PG2]
 
+# Configure background processor oban
+config :poutineer, Oban,
+  repo: Poutineer.Repo,
+  prune: {:maxlen, 100_000},
+  queues: [default: 10, mailers: 10, events: 50, media: 2]
 
 # Configures Elixir's Logger
 config :logger, :console,

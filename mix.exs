@@ -20,7 +20,7 @@ defmodule Poutineer.MixProject do
   def application do
     [
       mod: {Poutineer.Application, []},
-      extra_applications: [:logger, :runtime_tools, :absinthe_plug]
+      extra_applications: [:logger, :runtime_tools, :absinthe_plug, :que]
     ]
   end
 
@@ -54,7 +54,8 @@ defmodule Poutineer.MixProject do
       {:countries, "~> 1.5"},
       {:envy, "~> 1.1"},
       {:machinery, "~> 1.0"},
-      {:flippant, "~> 0.3"}
+      {:oban, "~> 0.12"},
+      {:flippant, "~> 0.3"},
     ]
   end
 
