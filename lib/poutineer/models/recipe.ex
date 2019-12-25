@@ -15,6 +15,8 @@ defmodule Poutineer.Models.Recipe do
     field :prep_time, :integer
     belongs_to :author, Poutineer.Models.Account
     many_to_many :tags, Poutineer.Models.Tag, join_through: Poutineer.Models.RecipeTag
+    many_to_many :allergies, Poutineer.Models.Allergy, join_through: Poutineer.Models.MenuItemAllergy
+    many_to_many :diets, Poutineer.Models.Diet, join_through: Poutineer.Models.MenuItemDiet
 
     timestamps()
   end

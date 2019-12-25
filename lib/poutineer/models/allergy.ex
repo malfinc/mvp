@@ -8,6 +8,7 @@ defmodule Poutineer.Models.Allergy do
     field :name, :string
     field :slug, Poutineer.Slugs.Name.Type
     many_to_many :menu_items, Poutineer.Models.MenuItem, join_through: Poutineer.Models.MenuItemAllergy
+    many_to_many :recipes, Poutineer.Models.Recipe, join_through: Poutineer.Models.RecipeDiet
 
     timestamps()
   end

@@ -8,6 +8,7 @@ defmodule Poutineer.Models.Diet do
     field :name, :string
     field :slug, Poutineer.Slugs.Name.Type
     many_to_many :menu_items, Poutineer.Models.MenuItem, join_through: Poutineer.Models.MenuItemDiet
+    many_to_many :recipes, Poutineer.Models.Recipe, join_through: Poutineer.Models.RecipeDiet
 
     timestamps()
   end

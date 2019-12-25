@@ -8,6 +8,7 @@ defmodule Poutineer.Models.Question do
     field :body, :string
     field :kind, :string
     has_many :critiques, Poutineer.Models.Critique
+    has_many :answers, Poutineer.Models.Answer
 
     timestamps()
   end

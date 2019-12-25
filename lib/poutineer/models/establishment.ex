@@ -12,7 +12,7 @@ defmodule Poutineer.Models.Establishment do
     field :moderation_state, :string, default: "pending"
     has_many :menu_items, Poutineer.Models.MenuItem
     many_to_many :payment_types, Poutineer.Models.PaymentType, join_through: Poutineer.Models.EstablishmentPaymentType
-    many_to_many :tags, Poutineer.Models.Tag, join_through: Poutineer.Models.MenuItemTag
+    many_to_many :tags, Poutineer.Models.Tag, join_through: Poutineer.Models.EstablishmentTag
 
     timestamps()
   end

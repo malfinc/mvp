@@ -1,5 +1,6 @@
 defmodule Poutineer.Schema.Types do
   use Absinthe.Schema.Notation
+  use Absinthe.Ecto, repo: Poutineer.Repo
 
   import_types Absinthe.Type.Custom
 
@@ -8,9 +9,9 @@ defmodule Poutineer.Schema.Types do
     field :email, :string
     field :inserted_at, :naive_datetime
     field :updated_at, :naive_datetime
-    field :critiques, list_of(:critique)
-    field :reviews, list_of(:review)
-    field :recipes, list_of(:recipe)
+    field :critiques, list_of(:critique), resolve: assoc(:critiques)
+    field :reviews, list_of(:review), resolve: assoc(:reviews)
+    field :recipes, list_of(:recipe), resolve: assoc(:recipes)
   end
 
   object :allergy do
@@ -19,15 +20,16 @@ defmodule Poutineer.Schema.Types do
     field :slug, :string
     field :inserted_at, :naive_datetime
     field :updated_at, :naive_datetime
+    field :menu_items, list_of(:menu_item), resolve: assoc(:menu_items)
   end
 
   object :answer do
     field :id, :id
     field :body, :string
-    field :question, :question
     field :inserted_at, :naive_datetime
     field :updated_at, :naive_datetime
-    field :critiques, list_of(:critique)
+    field :question, :question, resolve: assoc(:question)
+    field :critiques, list_of(:critique), resolve: assoc(:critiques)
   end
 
   object :critique do
@@ -35,10 +37,10 @@ defmodule Poutineer.Schema.Types do
     field :guage, :integer
     field :inserted_at, :naive_datetime
     field :updated_at, :naive_datetime
-    field :author, :account
-    field :review, :review
-    field :answer, :answer
-    field :question, :question
+    field :author, :account, resolve: assoc(:author)
+    field :review, :review, resolve: assoc(:review)
+    field :answer, :answer, resolve: assoc(:answer)
+    field :question, :question, resolve: assoc(:question)
   end
 
   object :diet do
@@ -47,6 +49,7 @@ defmodule Poutineer.Schema.Types do
     field :slug, :string
     field :inserted_at, :naive_datetime
     field :updated_at, :naive_datetime
+    field :menu_items, list_of(:menu_item), resolve: assoc(:menu_items)
   end
 
   object :establishment do
@@ -56,7 +59,10 @@ defmodule Poutineer.Schema.Types do
     field :moderation_state, :string
     field :inserted_at, :naive_datetime
     field :updated_at, :naive_datetime
-    field :menu_items, list_of(:menu_item)
+    field :menu_items, list_of(:menu_item), resolve: assoc(:menu_items)
+    field :payment_types, list_of(:payment_type), resolve: assoc(:payment_types)
+    field :reviews, list_of(:review), resolve: assoc(:reviews)
+    field :tags, list_of(:tag), resolve: assoc(:tags)
   end
 
   object :menu_item do
@@ -67,6 +73,10 @@ defmodule Poutineer.Schema.Types do
     field :moderation_state, :string
     field :inserted_at, :naive_datetime
     field :updated_at, :naive_datetime
+    field :allergies, list_of(:allergy), resolve: assoc(:allergies)
+    field :diets, list_of(:diet), resolve: assoc(:diets)
+    field :establishment, :establishment, resolve: assoc(:establishment)
+    field :tags, list_of(:tag), resolve: assoc(:tags)
   end
 
   object :payment_type do
@@ -75,6 +85,7 @@ defmodule Poutineer.Schema.Types do
     field :slug, :string
     field :inserted_at, :naive_datetime
     field :updated_at, :naive_datetime
+    field :establishment, :establishment, resolve: assoc(:establishment)
   end
 
   object :question do
@@ -83,7 +94,7 @@ defmodule Poutineer.Schema.Types do
     field :kind, :string
     field :inserted_at, :naive_datetime
     field :updated_at, :naive_datetime
-    field :critiques, list_of(:critique)
+    field :critiques, list_of(:critique), resolve: assoc(:critiques)
   end
 
   object :recipe do
@@ -98,16 +109,16 @@ defmodule Poutineer.Schema.Types do
     field :prep_time, :integer
     field :inserted_at, :naive_datetime
     field :updated_at, :naive_datetime
-    field :author, :account
-    field :tags, :tag
+    field :author, :account, resolve: assoc(:author)
+    field :tags, list_of(:tag), resolve: assoc(:tags)
   end
 
   object :review do
     field :id, :id
     field :inserted_at, :naive_datetime
     field :updated_at, :naive_datetime
-    field :critiques, list_of(:critique)
-    field :author, :account
+    field :critiques, list_of(:critique), resolve: assoc(:critiques)
+    field :author, :account, resolve: assoc(:author)
   end
 
   object :tag do
@@ -116,6 +127,10 @@ defmodule Poutineer.Schema.Types do
     field :slug, :string
     field :inserted_at, :naive_datetime
     field :updated_at, :naive_datetime
+    field :establishments, list_of(:establishment), resolve: assoc(:establishments)
+    field :menu_items, list_of(:menu_item), resolve: assoc(:menu_items)
+    field :recipes, list_of(:recipe), resolve: assoc(:recipes)
+    field :reviews, list_of(:review), resolve: assoc(:reviews)
   end
 
   object :menu_item do
@@ -126,5 +141,7 @@ defmodule Poutineer.Schema.Types do
     field :moderation_state, :string
     field :inserted_at, :naive_datetime
     field :updated_at, :naive_datetime
+    field :establishment, :establishment, resolve: assoc(:establishment)
+    field :reviews, list_of(:review), resolve: assoc(:reviews)
   end
 end

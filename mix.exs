@@ -48,6 +48,7 @@ defmodule Poutineer.MixProject do
       {:absinthe, "~> 1.4"},
       {:absinthe_plug, "~> 1.4"},
       {:absinthe_phoenix, "~> 1.4"},
+      {:absinthe_ecto, "~> 0.1"},
       {:crudry, "~> 2.1"},
       {:comeonin, "~> 5.1"},
       {:countries, "~> 1.5"},

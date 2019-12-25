@@ -10,7 +10,10 @@ defmodule Poutineer.Models.MenuItem do
     field :body, :string
     field :moderation_state, :string, default: "pending"
     belongs_to :establishment, Poutineer.Models.Establishment
+    has_many :reviews, Poutineer.Models.Review
     many_to_many :tags, Poutineer.Models.Tag, join_through: Poutineer.Models.MenuItemTag
+    many_to_many :allergies, Poutineer.Models.Allergy, join_through: Poutineer.Models.MenuItemAllergy
+    many_to_many :diets, Poutineer.Models.Diet, join_through: Poutineer.Models.MenuItemDiet
 
     timestamps()
   end
