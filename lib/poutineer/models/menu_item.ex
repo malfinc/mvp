@@ -9,7 +9,7 @@ defmodule Poutineer.Models.MenuItem do
     field :slug, Poutineer.Slugs.Name.Type
     field :body, :string
     field :moderation_state, :string, default: "pending"
-    belongs_to :establishment, Poutineer.Models.Establishment
+    belongs_to :establishment, Poutineer.Models.Establishment, primary_key: true
     has_many :reviews, Poutineer.Models.Review
     many_to_many :tags, Poutineer.Models.Tag, join_through: Poutineer.Models.MenuItemTag
     many_to_many :allergies, Poutineer.Models.Allergy, join_through: Poutineer.Models.MenuItemAllergy

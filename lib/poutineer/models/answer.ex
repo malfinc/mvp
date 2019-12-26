@@ -6,7 +6,7 @@ defmodule Poutineer.Models.Answer do
   @foreign_key_type :binary_id
   schema "answers" do
     field :body, :string
-    belongs_to :question, Poutineer.Models.Question
+    belongs_to :question, Poutineer.Models.Question, primary_key: true
     has_many :critiques, Poutineer.Models.Critique
 
     timestamps()

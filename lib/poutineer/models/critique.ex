@@ -6,10 +6,10 @@ defmodule Poutineer.Models.Critique do
   @foreign_key_type :binary_id
   schema "critiques" do
     field :guage, :integer
-    belongs_to :author, Poutineer.Models.Account
-    belongs_to :review, Poutineer.Models.Review
-    belongs_to :answer, Poutineer.Models.Answer
-    belongs_to :question, Poutineer.Models.Question
+    belongs_to :author, Poutineer.Models.Account, primary_key: true
+    belongs_to :review, Poutineer.Models.Review, primary_key: true
+    belongs_to :answer, Poutineer.Models.Answer, primary_key: true
+    belongs_to :question, Poutineer.Models.Question, primary_key: true
 
     timestamps()
   end

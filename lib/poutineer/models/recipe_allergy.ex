@@ -4,7 +4,7 @@ defmodule Poutineer.Models.RecipeAllergy do
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
   schema "recipe_allergies" do
-    belongs_to :allergy, Poutineer.Models.Allergy
-    belongs_to :recipe, Poutineer.Models.Recipe
+    belongs_to :allergy, Poutineer.Models.Allergy, primary_key: true
+    belongs_to :recipe, Poutineer.Models.Recipe, primary_key: true
   end
 end

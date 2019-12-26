@@ -24,10 +24,11 @@ defmodule Poutineer.Models.Recipe do
   @doc false
   def changeset(%Poutineer.Models.Recipe{} = recipe, attributes \\ %{}) do
     recipe
-      |> cast(attributes, [:moderation_state, :name, :body, :ingredients, :instructions, :cook_time, :prep_time])
-      |> validate_required([:moderation_state, :name, :body, :ingredients, :instructions, :cook_time, :prep_time])
+      |> cast(attributes, [:author_id, :moderation_state, :name, :body, :ingredients, :instructions, :cook_time, :prep_time])
+      |> validate_required([:author_id, :moderation_state, :name, :body, :ingredients, :instructions, :cook_time, :prep_time])
       |> Poutineer.Slugs.Name.maybe_generate_slug
       |> Poutineer.Slugs.Name.unique_constraint
+      |> assoc_constraint(:author)
       |> foreign_key_constraint(:author_id)
   end
 end
