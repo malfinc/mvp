@@ -9,143 +9,151 @@ defmodule Poutineer.Schema.Types do
   end
 
   object :account do
-    field :id, :id
-    field :email, :string
-    field :inserted_at, :naive_datetime
-    field :updated_at, :naive_datetime
-    field :critiques, list_of(:critique), resolve: assoc(:critiques)
-    field :reviews, list_of(:review), resolve: assoc(:reviews)
-    field :recipes, list_of(:recipe), resolve: assoc(:recipes)
+    field :id, non_null(:id)
+    field :email, non_null(:string)
+    field :name, :string
+    field :username, :string
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
+    field :critiques, list_of(non_null(:critique)), resolve: assoc(:critiques)
+    field :reviews, list_of(non_null(:review)), resolve: assoc(:reviews)
+    field :recipes, list_of(non_null(:recipe)), resolve: assoc(:recipes)
   end
 
   object :allergy do
-    field :id, :id
-    field :name, :string
-    field :slug, :string
-    field :inserted_at, :naive_datetime
-    field :updated_at, :naive_datetime
-    field :menu_items, list_of(:menu_item), resolve: assoc(:menu_items)
+    field :id, non_null(:id)
+    field :name, non_null(:string)
+    field :slug, non_null(:string)
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
+    field :menu_items, list_of(non_null(:menu_item)), resolve: assoc(:menu_items)
   end
 
   object :answer do
-    field :id, :id
-    field :body, :string
-    field :inserted_at, :naive_datetime
-    field :updated_at, :naive_datetime
-    field :question, :question, resolve: assoc(:question)
-    field :critiques, list_of(:critique), resolve: assoc(:critiques)
+    field :id, non_null(:id)
+    field :body, non_null(:string)
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
+    field :question, non_null(:question), resolve: assoc(:question)
+    field :critiques, list_of(non_null(:critique)), resolve: assoc(:critiques)
   end
 
   object :critique do
-    field :id, :id
-    field :guage, :integer
-    field :inserted_at, :naive_datetime
-    field :updated_at, :naive_datetime
-    field :author, :account, resolve: assoc(:author)
-    field :review, :review, resolve: assoc(:review)
-    field :answer, :answer, resolve: assoc(:answer)
-    field :question, :question, resolve: assoc(:question)
+    field :id, non_null(:id)
+    field :guage, non_null(:integer)
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
+    field :author, non_null(:account), resolve: assoc(:author)
+    field :review, non_null(:review), resolve: assoc(:review)
+    field :answer, non_null(:answer), resolve: assoc(:answer)
+    field :question, non_null(:question), resolve: assoc(:question)
   end
 
   object :diet do
-    field :id, :id
-    field :name, :string
-    field :slug, :string
-    field :inserted_at, :naive_datetime
-    field :updated_at, :naive_datetime
-    field :menu_items, list_of(:menu_item), resolve: assoc(:menu_items)
+    field :id, non_null(:id)
+    field :name, non_null(:string)
+    field :slug, non_null(:string)
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
+    field :menu_items, list_of(non_null(:menu_item)), resolve: assoc(:menu_items)
   end
 
   object :establishment do
-    field :id, :id
-    field :name, :string
-    field :slug, :string
-    field :moderation_state, :string
-    field :inserted_at, :naive_datetime
-    field :updated_at, :naive_datetime
-    field :menu_items, list_of(:menu_item), resolve: assoc(:menu_items)
-    field :payment_types, list_of(:payment_type), resolve: assoc(:payment_types)
-    field :reviews, list_of(:review), resolve: assoc(:reviews)
-    field :tags, list_of(:tag), resolve: assoc(:tags)
+    field :id, non_null(:id)
+    field :name, non_null(:string)
+    field :slug, non_null(:string)
+    field :moderation_state, non_null(:string)
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
+    field :menu_items, list_of(non_null(:menu_item)), resolve: assoc(:menu_items)
+    field :payment_types, list_of(non_null(:payment_type)), resolve: assoc(:payment_types)
+    field :reviews, list_of(non_null(:review)), resolve: assoc(:reviews)
+    field :tags, list_of(non_null(:tag)), resolve: assoc(:tags)
   end
 
   object :menu_item do
-    field :id, :id
-    field :name, :string
-    field :slug, :string
-    field :body, :string
-    field :moderation_state, :string
-    field :inserted_at, :naive_datetime
-    field :updated_at, :naive_datetime
-    field :allergies, list_of(:allergy), resolve: assoc(:allergies)
-    field :diets, list_of(:diet), resolve: assoc(:diets)
-    field :establishment, :establishment, resolve: assoc(:establishment)
-    field :tags, list_of(:tag), resolve: assoc(:tags)
+    field :id, non_null(:id)
+    field :name, non_null(:string)
+    field :slug, non_null(:string)
+    field :body, non_null(:string)
+    field :moderation_state, non_null(:string)
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
+    field :allergies, list_of(non_null(:allergy)), resolve: assoc(:allergies)
+    field :diets, list_of(non_null(:diet)), resolve: assoc(:diets)
+    field :establishment, non_null(:establishment), resolve: assoc(:establishment)
+    field :tags, list_of(non_null(:tag)), resolve: assoc(:tags)
   end
 
   object :payment_type do
-    field :id, :id
-    field :name, :string
-    field :slug, :string
-    field :inserted_at, :naive_datetime
-    field :updated_at, :naive_datetime
-    field :establishment, :establishment, resolve: assoc(:establishment)
+    field :id, non_null(:id)
+    field :name, non_null(:string)
+    field :slug, non_null(:string)
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
+    field :establishment, non_null(:establishment), resolve: assoc(:establishment)
+  end
+
+  enum :questiom_kind do
+    value :pick_one
+    value :pick_many
   end
 
   object :question do
-    field :id, :id
-    field :body, :string
-    field :kind, :string
-    field :inserted_at, :naive_datetime
-    field :updated_at, :naive_datetime
-    field :critiques, list_of(:critique), resolve: assoc(:critiques)
+    field :id, non_null(:id)
+    field :body, non_null(:string)
+    field :kind, non_null(:questiom_kind)
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
+    field :critiques, list_of(non_null(:critique)), resolve: assoc(:critiques)
   end
 
   object :recipe do
-    field :id, :id
+    field :id, non_null(:id)
     field :name, :string
-    field :slug, :string
-    field :body, :string
-    field :cook_time, :integer
-    field :ingredients, list_of(:string)
-    field :instructions, list_of(:string)
-    field :moderation_state, :string
-    field :prep_time, :integer
-    field :inserted_at, :naive_datetime
-    field :updated_at, :naive_datetime
-    field :author, :account, resolve: assoc(:author)
-    field :tags, list_of(:tag), resolve: assoc(:tags)
+    field :slug, non_null(:string)
+    field :body, non_null(:string)
+    field :cook_time, non_null(:integer)
+    field :prep_time, non_null(:integer)
+    field :ingredients, list_of(non_null(:string))
+    field :instructions, list_of(non_null(:string))
+    field :moderation_state, non_null(:string)
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
+    field :author, non_null(:account), resolve: assoc(:author)
+    field :tags, list_of(non_null(:tag)), resolve: assoc(:tags)
   end
 
   object :review do
-    field :id, :id
-    field :inserted_at, :naive_datetime
-    field :updated_at, :naive_datetime
-    field :critiques, list_of(:critique), resolve: assoc(:critiques)
-    field :author, :account, resolve: assoc(:author)
+    field :id, non_null(:id)
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
+    field :critiques, list_of(non_null(:critique)), resolve: assoc(:critiques)
+    field :author, non_null(:account), resolve: assoc(:author)
   end
 
   object :tag do
-    field :id, :id
-    field :name, :string
-    field :slug, :string
-    field :inserted_at, :naive_datetime
-    field :updated_at, :naive_datetime
-    field :establishments, list_of(:establishment), resolve: assoc(:establishments)
-    field :menu_items, list_of(:menu_item), resolve: assoc(:menu_items)
-    field :recipes, list_of(:recipe), resolve: assoc(:recipes)
-    field :reviews, list_of(:review), resolve: assoc(:reviews)
+    field :id, non_null(:id)
+    field :name, non_null(:string)
+    field :slug, non_null(:string)
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
+    field :taggables, list_of(non_null(:taggable))
+    field :establishments, list_of(non_null(:establishment)), resolve: assoc(:establishments)
+    field :menu_items, list_of(non_null(:menu_item)), resolve: assoc(:menu_items)
+    field :recipes, list_of(non_null(:recipe)), resolve: assoc(:recipes)
+    field :reviews, list_of(non_null(:review)), resolve: assoc(:reviews)
   end
 
   object :menu_item do
-    field :id, :id
-    field :name, :string
-    field :slug, :string
-    field :body, :string
-    field :moderation_state, :string
-    field :inserted_at, :naive_datetime
-    field :updated_at, :naive_datetime
-    field :establishment, :establishment, resolve: assoc(:establishment)
-    field :reviews, list_of(:review), resolve: assoc(:reviews)
+    field :id, non_null(:id)
+    field :name, non_null(:string)
+    field :slug, non_null(:string)
+    field :body, non_null(:string)
+    field :moderation_state, non_null(:string)
+    field :inserted_at, non_null(:naive_datetime)
+    field :updated_at, non_null(:naive_datetime)
+    field :establishment, non_null(:establishment), resolve: assoc(:establishment)
+    field :reviews, list_of(non_null(:review)), resolve: assoc(:reviews)
   end
 end
