@@ -20,7 +20,7 @@ defmodule Poutineer.MixProject do
   def application do
     [
       mod: {Poutineer.Application, []},
-      extra_applications: [:logger, :runtime_tools, :absinthe_plug, :que]
+      extra_applications: [:logger, :runtime_tools, :absinthe_plug]
     ]
   end
 
