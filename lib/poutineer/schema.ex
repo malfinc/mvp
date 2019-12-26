@@ -170,6 +170,15 @@ defmodule Poutineer.Schema do
       middleware &Poutineer.Schema.Middlewares.Sessions.require_authentication/2
       resolve &Poutineer.Schema.Resolvers.Recipes.create/3
     end
+
+    field :assign_tag, non_null(:tag) do
+      arg :name, non_null(:string)
+      arg :subject_id, non_null(:id)
+      arg :subject_type, non_null(:taggable_types)
+
+      middleware &Poutineer.Schema.Middlewares.Sessions.require_authentication/2
+      resolve &Poutineer.Schema.Resolvers.Tags.create/3
+    end
   end
 
   subscription do
