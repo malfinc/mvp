@@ -20,18 +20,21 @@ defmodule Poutineer.Models.Account do
     timestamps()
   end
 
+  def unconfirmed?(%Poutineer.Models.Account{unconfirmed_email: _}), do: true
+  def unconfirmed?(_), do: false
+
   @doc false
   def changeset(%Poutineer.Models.Account{} = record, attributes \\ %{}) do
     record
-      |> optionally_handle_password_hash(attributes)
-      |> optionally_handle_unconfirmed_email(attributes)
+      |> set_password_hash_if_changing_password(attributes)
+      |> replace_email_with_unconfirmed_email(attributes)
       |> cast(attributes, [:email, :username, :name, :password_hash])
       |> validate_required([:email])
       |> unique_constraint(:email)
       |> unique_constraint(:username)
   end
 
-  defp optionally_handle_password_hash(record, attributes) do
+  defp set_password_hash_if_changing_password(record, attributes) do
     if attributes.password do
       Ecto.Changeset.change(record, Argon2.add_hash(attributes.password))
     else
@@ -39,9 +42,15 @@ defmodule Poutineer.Models.Account do
     end
   end
 
-  defp optionally_handle_unconfirmed_email(record, attributes) do
-    if attributes.email do
-      Ecto.Changeset.change(record, %{unconfirmed_email: attributes.email})
+  defp replace_email_with_unconfirmed_email(record, attributes) do
+    email = attributes.email
+
+    if email && !record.email do
+      Map.delete(attributes, :email)
+    end
+
+    if email != record.email do
+      Ecto.Changeset.change(record, %{unconfirmed_email: email})
     else
       record
     end
