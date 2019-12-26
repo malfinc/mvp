@@ -16,11 +16,12 @@ defmodule Poutineer.Schema.Resolvers.Accounts do
       password: arguments[:password] || (:crypto.strong_rand_bytes(24) |> Base.encode32(case: :upper) |> binary_part(0, 24))
     }
     attributes = Map.merge(default_attributes, arguments)
-    changeset = Account.changeset(%Account{}, attributes)
 
-    case changeset do
-      %Ecto.Changeset{valid?: true} -> Repo.insert(changeset)
-      %Ecto.Changeset{valid?: false} -> {:error, changeset}
-    end
+    %Account{}
+      |> Account.changeset(attributes)
+      |> case do
+        %Ecto.Changeset{valid?: true} = changeset -> Repo.insert(changeset)
+        %Ecto.Changeset{valid?: false} = changeset -> {:error, changeset}
+      end
   end
 end
