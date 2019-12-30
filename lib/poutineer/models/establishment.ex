@@ -21,7 +21,7 @@ defmodule Poutineer.Models.Establishment do
   def changeset(%Poutineer.Models.Establishment{} = establishment, attributes \\ %{}) do
     establishment
       |> cast(attributes, [:name, :google_place_id, :google_place_data, :moderation_state])
-      |> validate_required([:name, :google_place_id, :google_place_data, :moderation_state])
+      |> validate_required([:name, :google_place_id, :moderation_state])
       |> Poutineer.Slugs.Name.maybe_generate_slug
       |> Poutineer.Slugs.Name.unique_constraint
       |> unique_constraint(:google_place_id)

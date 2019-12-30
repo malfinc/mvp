@@ -23,7 +23,7 @@ config :poutineer, PoutineerWeb.Endpoint,
 config :poutineer, Oban,
   repo: Poutineer.Repo,
   prune: {:maxlen, 100_000},
-  queues: [default: 10, mailers: 10, events: 50, media: 2]
+  queues: [default: 10, mailers: 10, events: 50, media: 2, google_places: 1]
 
 # Configures Elixir's Logger
 config :logger, :console,
@@ -39,6 +39,9 @@ config :paper_trail,
   item_type: Ecto.UUID,
   originator_type: Ecto.UUID,
   originator: [name: :account, model: Poutineer.Models.Account]
+
+config :google_maps,
+  api_key: "YOUR API KEY HERE"
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
