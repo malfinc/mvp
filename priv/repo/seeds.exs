@@ -10,64 +10,117 @@
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
-Poutineer.Repo.insert_or_update!(Poutineer.Models.Diet.changeset(%Poutineer.Models.Diet{}, %{name: "Diabetic"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.Diet.changeset(%Poutineer.Models.Diet{}, %{name: "Gluten-Free"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.Diet.changeset(%Poutineer.Models.Diet{}, %{name: "Halal"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.Diet.changeset(%Poutineer.Models.Diet{}, %{name: "Hindu"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.Diet.changeset(%Poutineer.Models.Diet{}, %{name: "Kosher"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.Diet.changeset(%Poutineer.Models.Diet{}, %{name: "Low-Calorie"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.Diet.changeset(%Poutineer.Models.Diet{}, %{name: "Low-Fat"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.Diet.changeset(%Poutineer.Models.Diet{}, %{name: "Low-Lactose"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.Diet.changeset(%Poutineer.Models.Diet{}, %{name: "Low-Salt"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.Diet.changeset(%Poutineer.Models.Diet{}, %{name: "Vegan"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.Diet.changeset(%Poutineer.Models.Diet{}, %{name: "Vegetarian"}))
+Enum.each([
+  "Diabetic",
+  "Gluten-Free",
+  "Halal",
+  "Hindu",
+  "Kosher",
+  "Low-Calorie",
+  "Low-Fat",
+  "Low-Lactose",
+  "Low-Salt",
+  "Vegan",
+  "Vegetarian"
+], fn name -> %Poutineer.Models.Diet{} |> Poutineer.Models.Diet.changeset(%{name: name}) |> Poutineer.Repo.insert_or_update!() end)
 
-Poutineer.Repo.insert_or_update!(Poutineer.Models.Allergy.changeset(%Poutineer.Models.Allergy{}, %{name: "Cow's Milk"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.Allergy.changeset(%Poutineer.Models.Allergy{}, %{name: "Peanuts"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.Allergy.changeset(%Poutineer.Models.Allergy{}, %{name: "Eggs"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.Allergy.changeset(%Poutineer.Models.Allergy{}, %{name: "Shellfish"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.Allergy.changeset(%Poutineer.Models.Allergy{}, %{name: "Fish"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.Allergy.changeset(%Poutineer.Models.Allergy{}, %{name: "Tree Nuts"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.Allergy.changeset(%Poutineer.Models.Allergy{}, %{name: "Soy"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.Allergy.changeset(%Poutineer.Models.Allergy{}, %{name: "Wheat"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.Allergy.changeset(%Poutineer.Models.Allergy{}, %{name: "Rice"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.Allergy.changeset(%Poutineer.Models.Allergy{}, %{name: "Fruit"}))
+Enum.each([
+  "Cow's Milk",
+  "Peanuts",
+  "Eggs",
+  "Shellfish",
+  "Fish",
+  "Tree Nuts",
+  "Soy",
+  "Wheat",
+  "Rice",
+  "Fruit"
+], fn name -> %Poutineer.Models.Allergy{} |> Poutineer.Models.Allergy.changeset(%{name: name}) |> Poutineer.Repo.insert_or_update!() end)
 
-Poutineer.Repo.insert_or_update!(Poutineer.Models.PaymentType.changeset(%Poutineer.Models.PaymentType{}, %{name: "Cash"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.PaymentType.changeset(%Poutineer.Models.PaymentType{}, %{name: "Check"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.PaymentType.changeset(%Poutineer.Models.PaymentType{}, %{name: "Visa"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.PaymentType.changeset(%Poutineer.Models.PaymentType{}, %{name: "Discover Card"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.PaymentType.changeset(%Poutineer.Models.PaymentType{}, %{name: "Mastercard"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.PaymentType.changeset(%Poutineer.Models.PaymentType{}, %{name: "EBT/Foodstamps"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.PaymentType.changeset(%Poutineer.Models.PaymentType{}, %{name: "Giftcards"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.PaymentType.changeset(%Poutineer.Models.PaymentType{}, %{name: "Online Payments"}))
-Poutineer.Repo.insert_or_update!(Poutineer.Models.PaymentType.changeset(%Poutineer.Models.PaymentType{}, %{name: "Bitcoin/Cryptocurrency"}))
+Enum.each([
+  "Cash",
+  "Check",
+  "Visa",
+  "Discover Card",
+  "Mastercard",
+  "EBT/Foodstamps",
+  "Giftcards",
+  "Online Payments",
+  "Bitcoin/Cryptocurrency"
+], fn name -> %Poutineer.Models.PaymentType{} |> Poutineer.Models.PaymentType.changeset(%{name: name}) |> Poutineer.Repo.insert_or_update!() end)
 
-Poutineer.Repo.insert_or_update!(
-  Poutineer.Models.Question.changeset(
-    %Poutineer.Models.Question{},
+Enum.each(
+  [
     %{
-      body: "Did the poutine have real cheese curds?",
+      body: "What kind of fries did you eat?",
       kind: "pick_one",
       answers: [
-        Poutineer.Models.Answer.changeset(%Poutineer.Models.Answer{}, %{body: "Yes"}),
-        Poutineer.Models.Answer.changeset(%Poutineer.Models.Answer{}, %{body: "No"}),
+        %{body: "Sweet Potato"},
+        %{body: "Steak"},
+        %{body: "Shoestring"},
+        %{body: "Curly"},
+        %{body: "Classic Cut"},
+        %{body: "Wedge Cut"},
+        %{body: "Slap Chips"},
+        %{body: "Tornado"},
+        %{body: "Waffle Cut"},
+        %{body: "Crinkle Cut"}
+      ]
+    },
+    %{
+      body: "How was the cheese prepared?",
+      kind: "pick_one",
+      answers: [
+        %{
+          body: "Curds",
+          questions: [
+            %{
+              body: "How many cheese curds were there?",
+              kind: "pick_one",
+              answers: [
+                %{body: "Very sparse"},
+                %{body: "A handful"},
+                %{body: "A solid layer"}
+              ]
+            },
+            %{
+              body: "Did the cheese curds squeak when bitten?",
+              kind: "pick_one",
+              answers: [
+                %{body: "Yes"},
+                %{body: "No"}
+              ]
+            }
+          ]
+        },
+        %{body: "Shredded"},
+        %{body: "Sliced"}
+      ]
+    },
+    %{
+      body: "Was the cheese Dairy or Vegan?",
+      kind: "pick_one",
+      answers: [
+        %{body: "Dairy"},
+        %{body: "Vegan"}
       ]
     }
-  )
+  ],
+  fn question -> %Poutineer.Models.Question{} |> Poutineer.Models.Question.changeset(question) |> Poutineer.Repo.insert_or_update!() end
 )
 
-Poutineer.Repo.insert_or_update!(
-  Poutineer.Models.Question.changeset(
-    %Poutineer.Models.Question{},
+Enum.each(
+  [
     %{
-      body: "Did the cheese curds squeak when bitten?",
-      kind: "pick_one",
-      answers: [
-        Poutineer.Models.Answer.changeset(%Poutineer.Models.Answer{}, %{body: "Very sparse"}),
-        Poutineer.Models.Answer.changeset(%Poutineer.Models.Answer{}, %{body: "A handful"}),
-        Poutineer.Models.Answer.changeset(%Poutineer.Models.Answer{}, %{body: "A solid layer"}),
+      name: "Smoke's Poutinerie",
+      google_place_id: "ChIJLbNPx9E0K4gRIpDVnhmgUb8",
+      menu_items: [
+        %{
+          name: "Traditional",
+          body: "Smoke’s Signature Gravy, Québec Cheese Curd",
+        }
       ]
     }
-  )
+  ],
+  fn establishment -> %Poutineer.Models.Establishment{} |> Poutineer.Models.Establishment.changeset(establishment) |> Poutineer.Repo.insert_or_update!() end
 )

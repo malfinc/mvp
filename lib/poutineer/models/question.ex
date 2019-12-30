@@ -9,6 +9,7 @@ defmodule Poutineer.Models.Question do
     field :kind, :string
     has_many :critiques, Poutineer.Models.Critique
     has_many :answers, Poutineer.Models.Answer
+    belongs_to :requisit_answer, Poutineer.Models.Answer, primary_key: true
 
     timestamps()
   end
@@ -17,6 +18,8 @@ defmodule Poutineer.Models.Question do
   def changeset(%Poutineer.Models.Question{} = question, attributes \\ %{}) do
     question
       |> cast(attributes, [:body, :kind])
+      |> cast_assoc(:answers, with: &Poutineer.Models.Answer.changeset/2)
+      |> cast_assoc(:requisit_answer, with: &Poutineer.Models.Answer.changeset/2)
       |> validate_required([:body, :kind])
   end
 end

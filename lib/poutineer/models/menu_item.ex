@@ -11,9 +11,9 @@ defmodule Poutineer.Models.MenuItem do
     field :moderation_state, :string, default: "pending"
     belongs_to :establishment, Poutineer.Models.Establishment, primary_key: true
     has_many :reviews, Poutineer.Models.Review
-    many_to_many :tags, Poutineer.Models.Tag, join_through: Poutineer.Models.MenuItemTag
-    many_to_many :allergies, Poutineer.Models.Allergy, join_through: Poutineer.Models.MenuItemAllergy
-    many_to_many :diets, Poutineer.Models.Diet, join_through: Poutineer.Models.MenuItemDiet
+    many_to_many :tags, Poutineer.Models.Tag, join_through: Poutineer.Models.MenuItemTag, on_replace: :delete
+    many_to_many :allergies, Poutineer.Models.Allergy, join_through: Poutineer.Models.MenuItemAllergy, on_replace: :delete
+    many_to_many :diets, Poutineer.Models.Diet, join_through: Poutineer.Models.MenuItemDiet, on_replace: :delete
 
     timestamps()
   end

@@ -9,7 +9,7 @@ defmodule Poutineer.Models.Review do
     field :moderation_state, :string, default: "pending"
     belongs_to :author_account, Poutineer.Models.Account, primary_key: true
     belongs_to :menu_item, Poutineer.Models.MenuItem, primary_key: true
-    many_to_many :tags, Poutineer.Models.Tag, join_through: Poutineer.Models.ReviewTag
+    many_to_many :tags, Poutineer.Models.Tag, join_through: Poutineer.Models.ReviewTag, on_replace: :delete
     has_many :critiques, Poutineer.Models.Critique
 
     timestamps()

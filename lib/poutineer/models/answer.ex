@@ -8,6 +8,8 @@ defmodule Poutineer.Models.Answer do
     field :body, :string
     belongs_to :question, Poutineer.Models.Question, primary_key: true
     has_many :critiques, Poutineer.Models.Critique
+    has_many :questions, Poutineer.Models.Question, foreign_key: :requisit_answer_id
+
 
     timestamps()
   end
@@ -16,6 +18,7 @@ defmodule Poutineer.Models.Answer do
   def changeset(%Poutineer.Models.Answer{} = answer, attributes \\ %{}) do
     answer
       |> cast(attributes, [:body])
+      |> cast_assoc(:questions, with: &Poutineer.Models.Question.changeset/2)
       |> validate_required([:body])
   end
 end
