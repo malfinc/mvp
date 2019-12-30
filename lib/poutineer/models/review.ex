@@ -7,7 +7,7 @@ defmodule Poutineer.Models.Review do
   schema "reviews" do
     field :body, :string
     field :moderation_state, :string, default: "pending"
-    belongs_to :author, Poutineer.Models.Account, primary_key: true
+    belongs_to :author_account, Poutineer.Models.Account, primary_key: true
     belongs_to :menu_item, Poutineer.Models.MenuItem, primary_key: true
     many_to_many :tags, Poutineer.Models.Tag, join_through: Poutineer.Models.ReviewTag
     has_many :critiques, Poutineer.Models.Critique
@@ -20,6 +20,6 @@ defmodule Poutineer.Models.Review do
     review
       |> cast(attributes, [:body, :moderation_state])
       |> validate_required([:body, :moderation_state])
-      |> foreign_key_constraint(:author_id)
+      |> foreign_key_constraint(:author_account_id)
   end
 end

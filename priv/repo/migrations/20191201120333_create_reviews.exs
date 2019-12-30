@@ -7,11 +7,11 @@ defmodule Poutineer.Repo.Migrations.CreateReviews do
       add :body, :text, null: false
       add :moderation_state, :citext, null: false
       add :menu_item_id, references(:accounts, on_delete: :nothing, type: :binary_id), null: false
-      add :author_id, references(:accounts, on_delete: :nothing, type: :binary_id), null: false
+      add :author_account_id, references(:accounts, on_delete: :nothing, type: :binary_id), null: false
 
       timestamps()
     end
 
-    create index(:reviews, [:author_id])
+    create index(:reviews, [:author_account_id])
   end
 end

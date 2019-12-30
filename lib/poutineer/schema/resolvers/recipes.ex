@@ -11,7 +11,7 @@ defmodule Poutineer.Schema.Resolvers.Recipes do
   end
 
   def create(_parent, arguments, resolution) do
-    default_attributes = %{author_id: resolution.context.current_account.id}
+    default_attributes = %{author_account_id: resolution.context.current_account.id}
     attributes = Map.merge(arguments, default_attributes)
 
     %Recipe{}

@@ -13,9 +13,9 @@ defmodule Poutineer.Models.Account do
     field :role_state, :string, default: "user"
     field :password, :string, virtual: true
     field :password_hash, :string
-    has_many :reviews, Poutineer.Models.Review, foreign_key: :author_id
-    has_many :recipes, Poutineer.Models.Recipe, foreign_key: :author_id
-    has_many :critiques, Poutineer.Models.Critique, foreign_key: :author_id
+    has_many :reviews, Poutineer.Models.Review, foreign_key: :author_account_id
+    has_many :recipes, Poutineer.Models.Recipe, foreign_key: :author_account_id
+    has_many :critiques, Poutineer.Models.Critique, foreign_key: :author_account_id
 
     timestamps()
   end

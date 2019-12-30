@@ -12,12 +12,12 @@ defmodule Poutineer.Repo.Migrations.CreateRecipe do
       add :instructions, {:array, :text}, null: false
       add :cook_time, :integer, null: false
       add :prep_time, :integer, null: false
-      add :author_id, references(:accounts, on_delete: :nothing, type: :binary_id), null: false
+      add :author_account_id, references(:accounts, on_delete: :nothing, type: :binary_id), null: false
 
       timestamps()
     end
 
     create unique_index(:recipes, [:slug])
-    create index(:recipes, [:author_id])
+    create index(:recipes, [:author_account_id])
   end
 end
