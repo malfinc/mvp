@@ -1,6 +1,20 @@
 defmodule Poutineer.Schema do
   use Absinthe.Schema
-  import_types Poutineer.Schema.Types
+
+  import_types Absinthe.Type.Custom
+  import_types Poutineer.Schema.Types.Account
+  import_types Poutineer.Schema.Types.Allergy
+  import_types Poutineer.Schema.Types.Answer
+  import_types Poutineer.Schema.Types.Critique
+  import_types Poutineer.Schema.Types.Diet
+  import_types Poutineer.Schema.Types.Establishment
+  import_types Poutineer.Schema.Types.MenuItem
+  import_types Poutineer.Schema.Types.PaymentType
+  import_types Poutineer.Schema.Types.Question
+  import_types Poutineer.Schema.Types.Recipe
+  import_types Poutineer.Schema.Types.Review
+  import_types Poutineer.Schema.Types.Session
+  import_types Poutineer.Schema.Types.Tag
 
   def middleware(middleware, _field, _object) do
     middleware ++ [Crudry.Middlewares.TranslateErrors]
@@ -147,7 +161,7 @@ defmodule Poutineer.Schema do
       arg :password, non_null(:string)
 
       resolve &Poutineer.Schema.Resolvers.Sessions.create/3
-      middleware &Poutineer.Schema.Middlewares.Sessions.update_session/2
+      middleware &Poutineer.Schema.Middlewares.Sessions.update_session_id/2
     end
 
     field :create_account, :account do
@@ -157,6 +171,7 @@ defmodule Poutineer.Schema do
       arg :password, :string
 
       resolve &Poutineer.Schema.Resolvers.Accounts.create/3
+      middleware &Poutineer.Schema.Middlewares.Sessions.update_session_id/2
     end
 
     field :create_recipe, :recipe do
