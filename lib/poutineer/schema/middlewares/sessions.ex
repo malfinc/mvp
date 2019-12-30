@@ -1,5 +1,5 @@
 defmodule Poutineer.Schema.Middlewares.Sessions do
-  def update_session(resolution, _) do
+  def update_session_id(resolution, _) do
     case resolution do
       %{value: %{id: id}} ->
         Map.merge(resolution, %{context: Map.merge(resolution.context, %{cookies: [[:session_id, id]]})})
