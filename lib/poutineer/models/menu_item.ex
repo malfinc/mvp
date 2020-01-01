@@ -29,7 +29,7 @@ defmodule Poutineer.Models.MenuItem do
   end
 
   @doc false
-  def changeset(%Poutineer.Models.MenuItem{} = menu_item, attributes \\ %{}) do
+  def changeset(%{} = menu_item, attributes \\ %{}) do
     menu_item
       |> cast(attributes, [:name, :body, :moderation_state])
       |> validate_required([:name, :body, :moderation_state])

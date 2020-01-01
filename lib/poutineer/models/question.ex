@@ -15,7 +15,7 @@ defmodule Poutineer.Models.Question do
   end
 
   @doc false
-  def changeset(%Poutineer.Models.Question{} = question, attributes \\ %{}) do
+  def changeset(%{} = question, attributes \\ %{}) do
     question
       |> cast(attributes, [:body, :kind])
       |> cast_assoc(:answers, with: &Poutineer.Models.Answer.changeset/2)

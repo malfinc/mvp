@@ -32,7 +32,7 @@ defmodule Poutineer.Models.Recipe do
   end
 
   @doc false
-  def changeset(%Poutineer.Models.Recipe{} = recipe, attributes \\ %{}) do
+  def changeset(%{} = recipe, attributes \\ %{}) do
     recipe
       |> cast(attributes, [:author_account_id, :moderation_state, :name, :body, :ingredients, :instructions, :cook_time, :prep_time])
       |> validate_required([:author_account_id, :moderation_state, :name, :body, :ingredients, :instructions, :cook_time, :prep_time])

@@ -13,7 +13,7 @@ defmodule Poutineer.Models.PaymentType do
   end
 
   @doc false
-  def changeset(%Poutineer.Models.PaymentType{} = payment_type, attributes \\ %{}) do
+  def changeset(%{} = payment_type, attributes \\ %{}) do
     payment_type
       |> cast(attributes, [:name])
       |> validate_required([:name])

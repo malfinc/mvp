@@ -26,7 +26,7 @@ defmodule Poutineer.Models.Review do
   end
 
   @doc false
-  def changeset(%Poutineer.Models.Review{} = review, attributes \\ %{}) do
+  def changeset(%{} = review, attributes \\ %{}) do
     review
       |> cast(attributes, [:body, :moderation_state])
       |> validate_required([:body, :moderation_state])

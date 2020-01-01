@@ -16,7 +16,7 @@ defmodule Poutineer.Models.Tag do
   end
 
   @doc false
-  def changeset(%Poutineer.Models.Tag{} = tag, attributes \\ %{}) do
+  def changeset(%{} = tag, attributes \\ %{}) do
     tag
       |> cast(attributes, [:name])
       |> validate_required([:name])

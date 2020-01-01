@@ -14,7 +14,7 @@ defmodule Poutineer.Models.Diet do
   end
 
   @doc false
-  def changeset(%Poutineer.Models.Diet{} = diet, attributes \\ %{}) do
+  def changeset(%{} = diet, attributes \\ %{}) do
     diet
       |> cast(attributes, [:name])
       |> validate_required([:name])

@@ -28,7 +28,7 @@ defmodule Poutineer.Models.Establishment do
   end
 
   @doc false
-  def changeset(%Poutineer.Models.Establishment{} = establishment, attributes \\ %{}) do
+  def changeset(%{} = establishment, attributes \\ %{}) do
     establishment
       |> cast(attributes, [:name, :google_place_id, :google_place_data, :moderation_state])
       |> cast_assoc(:menu_items, with: &Poutineer.Models.MenuItem.changeset/2)

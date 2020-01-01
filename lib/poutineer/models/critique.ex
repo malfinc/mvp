@@ -15,7 +15,7 @@ defmodule Poutineer.Models.Critique do
   end
 
   @doc false
-  def changeset(%Poutineer.Models.Critique{} = critique, attributes \\ %{}) do
+  def changeset(%{} = critique, attributes \\ %{}) do
     critique
       |> cast(attributes, [:guage])
       |> validate_required([:guage])

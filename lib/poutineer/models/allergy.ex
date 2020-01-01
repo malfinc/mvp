@@ -14,7 +14,7 @@ defmodule Poutineer.Models.Allergy do
   end
 
   @doc false
-  def changeset(%Poutineer.Models.Allergy{} = allergy, attributes \\ %{}) do
+  def changeset(%{} = allergy, attributes \\ %{}) do
     allergy
       |> cast(attributes, [:name])
       |> validate_required([:name])
