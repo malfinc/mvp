@@ -21,4 +21,14 @@ defmodule Poutineer.Schema.Resolvers.Accounts do
         %Ecto.Changeset{valid?: false} = changeset -> {:error, changeset}
       end
   end
+
+  def grant_moderation_powers(_parent, %{account_id: account_id}, _resolution) when is_bitstring(account_id) do
+    Poutineer.Repo.get(Poutineer.Models.Account, account_id)
+      |> Poutineer.Models.Account.grant_moderation_powers!()
+  end
+
+  def grant_moderation_powers(_parent, %{account_id: account_id}, _resolution) when is_bitstring(account_id) do
+    Poutineer.Repo.get(Poutineer.Models.Account, account_id)
+      |> Poutineer.Models.Account.grant_administrator_powers!()
+  end
 end

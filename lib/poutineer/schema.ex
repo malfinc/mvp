@@ -178,6 +178,20 @@ defmodule Poutineer.Schema do
       middleware &Poutineer.Schema.Middlewares.Sessions.update_session_id/2
     end
 
+    field :grant_moderation_powers, :account do
+      arg :account_id, non_null(:id)
+
+      middleware &Poutineer.Schema.Middlewares.Sessions.require_authentication/2
+      resolve &Poutineer.Schema.Resolvers.Accounts.grant_moderation_powers/3
+    end
+
+    field :grant_administration_powers, :account do
+      arg :account_id, non_null(:id)
+
+      middleware &Poutineer.Schema.Middlewares.Sessions.require_authentication/2
+      resolve &Poutineer.Schema.Resolvers.Accounts.grant_administration_powers/3
+    end
+
     field :create_recipe, :recipe do
       arg :name, non_null(:string)
       arg :body, non_null(:string)
