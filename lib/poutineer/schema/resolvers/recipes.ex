@@ -7,14 +7,11 @@ defmodule Poutineer.Schema.Resolvers.Recipes do
     {:ok, Poutineer.Repo.get(Poutineer.Models.Recipe, id)}
   end
 
-  def create(_parent, arguments, resolution) do
-    default_attributes = %{author_account_id: resolution.context.current_account.id}
-    attributes = Map.merge(arguments, default_attributes)
-
-    %Recipe{}
-      |> Recipe.changeset(attributes)
+  def create(_parent, arguments, %{context: %{current_account: %Poutineer.Models.Account{id: id}}}) when not is_nil(id) do
+    %Poutineer.Models.Recipe{}
+      |> Poutineer.Models.Recipe.changeset(Map.merge(arguments, %{author_account_id: id}))
       |> case do
-        %Ecto.Changeset{valid?: true} = changeset -> Repo.insert(changeset)
+        %Ecto.Changeset{valid?: true} = changeset -> Poutineer.Repo.insert(changeset)
         %Ecto.Changeset{valid?: false} = changeset -> {:error, changeset}
       end
   end

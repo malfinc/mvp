@@ -11,9 +11,7 @@ defmodule Poutineer.Schema.Resolvers.Tags do
     {:ok, Poutineer.Repo.get(Tag, id)}
   end
 
-  def create(_parent, arguments, _resolution) do
-    %{name: name, subject_id: subject_id} = arguments
-
+  def create(_parent, %{name: name, subject_id: subject_id, subject_type: subject_type}, _resolution) when is_bitstring(name) and is_bitstring(subject_id) and is_atom(subject_type) do
     # Create a new tag or failing that find a tag by that name
     tag = Repo.insert(Tag.changeset(%Tag{}, %{name: name}))
       |> case do
@@ -22,11 +20,11 @@ defmodule Poutineer.Schema.Resolvers.Tags do
       end
 
     # Figure out the model we're trying to attach a tag to
-    subject_model = case arguments do
-      %{subject_type: :establishment} -> Poutineer.Models.Establishment
-      %{subject_type: :review} -> Poutineer.Models.Review
-      %{subject_type: :recipe} -> Poutineer.Models.Recipe
-      %{subject_type: :menu_item} -> Poutineer.Models.MenuItem
+    subject_model = case subject_type do
+      :establishment -> Poutineer.Models.Establishment
+      :review -> Poutineer.Models.Review
+      :recipe -> Poutineer.Models.Recipe
+      :menu_item -> Poutineer.Models.MenuItem
     end
 
     # Go find that record, and then preload tags
