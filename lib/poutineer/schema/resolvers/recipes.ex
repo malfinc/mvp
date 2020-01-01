@@ -1,6 +1,6 @@
 defmodule Poutineer.Schema.Resolvers.Recipes do
   def list(_parent, _arguments, _resolution) do
-    {:ok, Poutineer.Repo.all(Poutineer.Models..Recipe)}
+    {:ok, Poutineer.Repo.all(Poutineer.Models.Recipe)}
   end
 
   def fetch(_parent, %{id: id}, _resolution) when not is_nil(id) do

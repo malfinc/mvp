@@ -1,6 +1,6 @@
 defmodule Poutineer.Schema.Resolvers.Accounts do
   def list(_parent, _arguments, _resolution) do
-    {:ok, Poutineer.Repo.all(Poutineer.Models..Account)}
+    {:ok, Poutineer.Repo.all(Poutineer.Models.Account)}
   end
 
   def fetch(_parent, %{id: id}, _resolution) when not is_nil(id) do
