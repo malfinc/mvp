@@ -1,6 +1,16 @@
 defmodule Poutineer.Models.Establishment do
   use Ecto.Schema
+  import Estate, only: [machine: 1]
   import Ecto.Changeset
+
+  machine([
+    moderation_state: [
+      approve: [draft: "published"],
+      reject: [draft: "rejected"],
+      kill: [published: "killed"],
+      archive: [published: "archived"]
+    ]
+  ])
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id

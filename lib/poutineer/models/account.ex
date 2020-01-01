@@ -1,6 +1,15 @@
 defmodule Poutineer.Models.Account do
   use Ecto.Schema
+  import Estate, only: [machine: 1]
   import Ecto.Changeset
+
+  machine([
+    onboarding_state: [complete: [converted: "completed"]],
+    role_state: [
+      grant_moderation_powers: [user: "moderator"],
+      grant_administrator_powers: [user: "administrator", moderator: "administrator"]
+    ]
+  ])
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
