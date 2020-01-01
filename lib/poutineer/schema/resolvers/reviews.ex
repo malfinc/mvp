@@ -1,12 +1,12 @@
 defmodule Poutineer.Schema.Resolvers.Reviews do
-  alias Poutineer.Repo
-  alias Poutineer.Models.Review
+  
+  
 
   def list(_parent, _arguments, _resolution) do
-    {:ok, Repo.all(Review)}
+    {:ok, Poutineer.Repo.all(Poutineer.Models.Review)}
   end
 
-  def fetch(_parent, arguments, _resolution) do
-    {:ok, Repo.get(Review, arguments[:id])}
+  def fetch(_parent, %{id: id}, _resolution) when not is_nil(id) do
+    {:ok, Poutineer.Repo.get(Review, id)}
   end
 end

@@ -1,13 +1,10 @@
 defmodule Poutineer.Schema.Resolvers.Recipes do
-  alias Poutineer.Repo
-  alias Poutineer.Models.Recipe
-
   def list(_parent, _arguments, _resolution) do
-    {:ok, Repo.all(Recipe)}
+    {:ok, Poutineer.Repo.all(Poutineer.Models..Recipe)}
   end
 
-  def fetch(_parent, arguments, _resolution) do
-    {:ok, Repo.get(Recipe, arguments[:id])}
+  def fetch(_parent, %{id: id}, _resolution) when not is_nil(id) do
+    {:ok, Poutineer.Repo.get(Poutineer.Models.Recipe, id)}
   end
 
   def create(_parent, arguments, resolution) do

@@ -1,12 +1,12 @@
 defmodule Poutineer.Schema.Resolvers.Critiques do
-  alias Poutineer.Repo
-  alias Poutineer.Models.Critique
+  
+  
 
   def list(_parent, _arguments, _resolution) do
-    {:ok, Repo.all(Critique)}
+    {:ok, Poutineer.Repo.all(Poutineer.Models.Critique)}
   end
 
-  def fetch(_parent, arguments, _resolution) do
-    {:ok, Repo.get(Critique, arguments[:id])}
+  def fetch(_parent, %{id: id}, _resolution) when not is_nil(id) do
+    {:ok, Poutineer.Repo.get(Critique, id)}
   end
 end

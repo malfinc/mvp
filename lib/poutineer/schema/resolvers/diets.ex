@@ -1,12 +1,12 @@
 defmodule Poutineer.Schema.Resolvers.Diets do
-  alias Poutineer.Repo
-  alias Poutineer.Models.Diet
+  
+  
 
   def list(_parent, _arguments, _resolution) do
-    {:ok, Repo.all(Diet)}
+    {:ok, Poutineer.Repo.all(Poutineer.Models.Diet)}
   end
 
-  def fetch(_parent, arguments, _resolution) do
-    {:ok, Repo.get(Diet, arguments[:id])}
+  def fetch(_parent, %{id: id}, _resolution) when not is_nil(id) do
+    {:ok, Poutineer.Repo.get(Diet, id)}
   end
 end

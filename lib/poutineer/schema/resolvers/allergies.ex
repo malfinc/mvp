@@ -1,12 +1,9 @@
 defmodule Poutineer.Schema.Resolvers.Allergies do
-  alias Poutineer.Repo
-  alias Poutineer.Models.Allergy
-
   def list(_parent, _arguments, _resolution) do
-    {:ok, Repo.all(Allergy)}
+    {:ok, Poutineer.Repo.all(Poutineer.Models.Allergy)}
   end
 
-  def fetch(_parent, arguments, _resolution) do
-    {:ok, Repo.get(Allergy, arguments[:id])}
+  def fetch(_parent, %{id: id}, _resolution) when not is_nil(id) do
+    {:ok, Poutineer.Repo.get(Allergy, id)}
   end
 end

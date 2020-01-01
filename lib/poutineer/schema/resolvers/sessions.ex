@@ -1,10 +1,8 @@
 defmodule Poutineer.Schema.Resolvers.Sessions do
-  alias Poutineer.Repo
-  alias Poutineer.Models.Account
+  
+  
 
-  def create(_parent, arguments, _resolution) do
-    %{email: email, password: password} = arguments
-
+  def create(_parent, %{email: email, password: password}, _resolution) when is_bitstring(email) and is_bitstring(password) do
     # Find the account by email
     Repo.get_by(Account, email: email)
       |> case do
@@ -14,7 +12,7 @@ defmodule Poutineer.Schema.Resolvers.Sessions do
       end
       |> case do
         # Only pass down the account id
-        {true, account} -> {:ok, %{id: account.id}}
+        {true, %Poutineer.Models.Account{id: id}} -> {:ok, %{id: id}}
         {false, _} -> {:error, "Login credentials were invalid or the account doesn't exist"}
         {:error, message} -> {:error, message}
       end

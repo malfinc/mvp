@@ -1,12 +1,12 @@
 defmodule Poutineer.Schema.Resolvers.Establishments do
-  alias Poutineer.Repo
-  alias Poutineer.Models.Establishment
+  
+  
 
   def list(_parent, _arguments, _resolution) do
-    {:ok, Repo.all(Establishment)}
+    {:ok, Poutineer.Repo.all(Poutineer.Models.Establishment)}
   end
 
-  def fetch(_parent, arguments, _resolution) do
-    {:ok, Repo.get(Establishment, arguments[:id])}
+  def fetch(_parent, %{id: id}, _resolution) when not is_nil(id) do
+    {:ok, Poutineer.Repo.get(Establishment, id)}
   end
 end

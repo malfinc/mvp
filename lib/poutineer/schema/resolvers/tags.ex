@@ -1,14 +1,14 @@
 defmodule Poutineer.Schema.Resolvers.Tags do
-  alias Poutineer.Repo
-  alias Poutineer.Models.Tag
+  
+  
   import Ecto.Query, only: [from: 2]
 
   def list(_parent, _arguments, _resolution) do
-    {:ok, Repo.all(Tag)}
+    {:ok, Poutineer.Repo.all(Poutineer.Models.Tag)}
   end
 
-  def fetch(_parent, arguments, _resolution) do
-    {:ok, Repo.get(Tag, arguments[:id])}
+  def fetch(_parent, %{id: id}, _resolution) when not is_nil(id) do
+    {:ok, Poutineer.Repo.get(Tag, id)}
   end
 
   def create(_parent, arguments, _resolution) do

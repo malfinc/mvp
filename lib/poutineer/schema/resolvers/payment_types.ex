@@ -1,12 +1,12 @@
 defmodule Poutineer.Schema.Resolvers.PaymentTypes do
-  alias Poutineer.Repo
-  alias Poutineer.Models.PaymentType
+  
+  
 
   def list(_parent, _arguments, _resolution) do
-    {:ok, Repo.all(PaymentType)}
+    {:ok, Poutineer.Repo.all(Poutineer.Models.PaymentType)}
   end
 
-  def fetch(_parent, arguments, _resolution) do
-    {:ok, Repo.get(PaymentType, arguments[:id])}
+  def fetch(_parent, %{id: id}, _resolution) when not is_nil(id) do
+    {:ok, Poutineer.Repo.get(PaymentType, id)}
   end
 end

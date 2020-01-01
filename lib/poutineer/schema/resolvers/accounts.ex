@@ -1,13 +1,10 @@
 defmodule Poutineer.Schema.Resolvers.Accounts do
-  alias Poutineer.Repo
-  alias Poutineer.Models.Account
-
   def list(_parent, _arguments, _resolution) do
-    {:ok, Repo.all(Account)}
+    {:ok, Poutineer.Repo.all(Poutineer.Models..Account)}
   end
 
-  def fetch(_parent, arguments, _resolution) do
-    {:ok, Repo.get(Account, arguments[:id])}
+  def fetch(_parent, %{id: id}, _resolution) when not is_nil(id) do
+    {:ok, Poutineer.Repo.get(Poutineer.Models.Account, id)}
   end
 
   def create(_parent, arguments, _resolution) do
@@ -17,10 +14,10 @@ defmodule Poutineer.Schema.Resolvers.Accounts do
     }
     attributes = Map.merge(default_attributes, arguments)
 
-    %Account{}
-      |> Account.changeset(attributes)
+    %Poutineer.Models.Account{}
+      |> Poutineer.Models.Account.changeset(attributes)
       |> case do
-        %Ecto.Changeset{valid?: true} = changeset -> Repo.insert(changeset)
+        %Ecto.Changeset{valid?: true} = changeset -> Poutineer.Repo.insert(changeset)
         %Ecto.Changeset{valid?: false} = changeset -> {:error, changeset}
       end
   end
