@@ -23,12 +23,16 @@ defmodule Poutineer.Schema do
   query do
     @desc "Get all accounts"
     field :accounts, list_of(:account) do
+
+      middleware &Poutineer.Schema.Middlewares.Sessions.require_authentication/2
       resolve &Poutineer.Schema.Resolvers.Accounts.list/3
     end
 
     @desc "Get an account by id"
     field :account, :account do
       arg :id, non_null(:id)
+
+      middleware &Poutineer.Schema.Middlewares.Sessions.require_authentication/2
       resolve &Poutineer.Schema.Resolvers.Accounts.fetch/3
     end
 
