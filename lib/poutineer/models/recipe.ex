@@ -1,9 +1,9 @@
 defmodule Poutineer.Models.Recipe do
   use Ecto.Schema
-  import Estate, only: [machine: 1]
+  import Estate, only: [state_machines: 1]
   import Ecto.Changeset
 
-  machine([
+  state_machines([
     moderation_state: [
       approve: [draft: "published"],
       reject: [draft: "rejected"],
