@@ -168,6 +168,12 @@ defmodule Poutineer.Schema do
       middleware &Poutineer.Schema.Middlewares.Sessions.update_session_id/2
     end
 
+    field :destroy_session, :session do
+      middleware &Poutineer.Schema.Middlewares.Sessions.require_authentication/2
+      resolve &Poutineer.Schema.Resolvers.Sessions.create/3
+      middleware &Poutineer.Schema.Middlewares.Sessions.update_session_id/2
+    end
+
     field :create_account, :account do
       arg :name, :string
       arg :username, :string

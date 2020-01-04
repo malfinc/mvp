@@ -14,4 +14,8 @@ defmodule Poutineer.Schema.Resolvers.Sessions do
         {:error, message} -> {:error, message}
       end
   end
+
+  def destroy(_parent, _arguments, %{context: %{current_account: %{id: id}}}) when not is_nil(id) do
+    {:ok, %{id: id}}
+  end
 end

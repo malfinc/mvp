@@ -17,7 +17,11 @@ defmodule PoutineerWeb.Router do
 
   def absinthe_before_send(%Plug.Conn{method: "POST"} = connection, %Absinthe.Blueprint{} = blueprint) do
     Enum.reduce(blueprint.execution.context[:cookies] || [], connection, fn ([key, value], accumulation) ->
-      Plug.Conn.put_session(accumulation, key, value)
+      if value do
+        Plug.Conn.put_session(accumulation, key, value)
+      else
+        Plug.Conn.delete_session(accumulation, key)
+      end
     end)
   end
 

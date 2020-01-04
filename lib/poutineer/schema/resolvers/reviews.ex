@@ -1,7 +1,4 @@
 defmodule Poutineer.Schema.Resolvers.Reviews do
-  
-  
-
   def list(_parent, _arguments, _resolution) do
     {:ok, Poutineer.Repo.all(Poutineer.Models.Review)}
   end
