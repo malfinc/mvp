@@ -1,6 +1,6 @@
 defmodule PoutineerWeb.UserSocket do
   use Phoenix.Socket
-  use Absinthe.Phoenix.Socket, schema: Poutineer.Schema
+  use Absinthe.Phoenix.Socket, schema: Poutineer.Graphql.Schema
 
   ## Channels
   # channel "room:*", PoutineerWeb.RoomChannel

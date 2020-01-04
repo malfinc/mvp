@@ -11,7 +11,7 @@ defmodule PoutineerWeb.Router do
     pipe_through :api
 
     forward "/", Absinthe.Plug,
-      schema: Poutineer.Schema,
+      schema: Poutineer.Graphql.Schema,
       before_send: {__MODULE__, :absinthe_before_send}
   end
 
