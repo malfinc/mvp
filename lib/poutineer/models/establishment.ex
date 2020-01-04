@@ -5,6 +5,7 @@ defmodule Poutineer.Models.Establishment do
 
   state_machines([
     moderation_state: [
+      publish: [draft: "processing"],
       approve: [draft: "published"],
       reject: [draft: "rejected"],
       kill: [published: "killed"],
