@@ -210,6 +210,48 @@ defmodule Poutineer.Schema do
       resolve &Poutineer.Schema.Resolvers.Recipes.create/3
     end
 
+    field :start_review, :review do
+      arg :body, non_null(:string)
+
+      middleware &Poutineer.Schema.Middlewares.Sessions.require_authentication/2
+      resolve &Poutineer.Schema.Resolvers.Reviews.create/3
+    end
+
+    field :publish_review, :review do
+      arg :review_id, non_null(:id)
+
+      middleware &Poutineer.Schema.Middlewares.Sessions.require_authentication/2
+      resolve &Poutineer.Schema.Resolvers.Moderations.publish/3
+    end
+
+    field :kill_review, :review do
+      arg :review_id, non_null(:id)
+
+      middleware &Poutineer.Schema.Middlewares.Sessions.require_authentication/2
+      resolve &Poutineer.Schema.Resolvers.Moderations.kill/3
+    end
+
+    field :archive_review, :review do
+      arg :review_id, non_null(:id)
+
+      middleware &Poutineer.Schema.Middlewares.Sessions.require_authentication/2
+      resolve &Poutineer.Schema.Resolvers.Moderations.archive/3
+    end
+
+    field :approve_review, :review do
+      arg :review_id, non_null(:id)
+
+      middleware &Poutineer.Schema.Middlewares.Sessions.require_authentication/2
+      resolve &Poutineer.Schema.Resolvers.Moderations.approve/3
+    end
+
+    field :reject_review, :review do
+      arg :review_id, non_null(:id)
+
+      middleware &Poutineer.Schema.Middlewares.Sessions.require_authentication/2
+      resolve &Poutineer.Schema.Resolvers.Moderations.reject/3
+    end
+
     field :assign_tag, non_null(:tag) do
       arg :name, non_null(:string)
       arg :subject_id, non_null(:id)
