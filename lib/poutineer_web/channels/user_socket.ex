@@ -38,6 +38,6 @@ defmodule PoutineerWeb.UserSocket do
   def id(socket), do: "user_socket:#{socket.assigns.account_id}"
 
   defp account_from_session(%{"session_id" => id}) do
-    Poutineer.Repo.get(Poutineer.Models.Account, id)
+    Poutineer.Database.Repo.get(Poutineer.Models.Account, id)
   end
 end

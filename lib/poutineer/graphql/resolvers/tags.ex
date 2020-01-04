@@ -2,19 +2,19 @@ defmodule Poutineer.Graphql.Resolvers.Tags do
   import Ecto.Query, only: [from: 2]
 
   def list(_parent, _arguments, _resolution) do
-    {:ok, Poutineer.Repo.all(Poutineer.Models.Tag)}
+    {:ok, Poutineer.Database.Repo.all(Poutineer.Models.Tag)}
   end
 
   def fetch(_parent, %{id: id}, _resolution) when not is_nil(id) do
-    {:ok, Poutineer.Repo.get(Poutineer.Models.Tag, id)}
+    {:ok, Poutineer.Database.Repo.get(Poutineer.Models.Tag, id)}
   end
 
   def create(_parent, %{name: name, subject_id: subject_id, subject_type: subject_type}, _resolution) when is_bitstring(name) and is_bitstring(subject_id) and is_atom(subject_type) do
     # Create a new tag or failing that find a tag by that name
-    tag = Poutineer.Repo.insert(Poutineer.Models.Tag.changeset(%Poutineer.Models.Tag{}, %{name: name}))
+    tag = Poutineer.Database.Repo.insert(Poutineer.Models.Tag.changeset(%Poutineer.Models.Tag{}, %{name: name}))
       |> case do
         {:ok, tag} -> tag
-        {:error, _} -> Poutineer.Repo.one(from(tag in Poutineer.Models.Tag, where: tag.name == ^name))
+        {:error, _} -> Poutineer.Database.Repo.one(from(tag in Poutineer.Models.Tag, where: tag.name == ^name))
       end
 
     # Figure out the model we're trying to attach a tag to
@@ -26,14 +26,14 @@ defmodule Poutineer.Graphql.Resolvers.Tags do
     end
 
     # Go find that record, and then preload tags
-    subject = Poutineer.Repo.get!(subject_model, subject_id) |> Poutineer.Repo.preload(:tags)
+    subject = Poutineer.Database.Repo.get!(subject_model, subject_id) |> Poutineer.Database.Repo.preload(:tags)
 
     if subject do
       subject
         |> Ecto.Changeset.change()
         # Prepend the tag to the list of tags, let ecto handle the difference
         |> Ecto.Changeset.put_assoc(:tags, [tag | subject.tags])
-        |> Poutineer.Repo.update()
+        |> Poutineer.Database.Repo.update()
         # If it worked, returned the tag, otherwise return the error
         |> case do
           {:ok, _} -> {:ok, tag}

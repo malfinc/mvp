@@ -1,4 +1,4 @@
-defmodule Poutineer.Repo.Migrations.CreateCritiques do
+defmodule Poutineer.Database.Repo.Migrations.CreateCritiques do
   use Ecto.Migration
 
   def change do

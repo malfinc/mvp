@@ -7,7 +7,7 @@ defmodule Poutineer.Plugs.GraphqlSessionContext do
     session_id = Plug.Conn.get_session(connection, :session_id)
 
     account = if session_id do
-      Poutineer.Repo.get(Poutineer.Models.Account, session_id)
+      Poutineer.Database.Repo.get(Poutineer.Models.Account, session_id)
     end
 
     Absinthe.Plug.put_options(

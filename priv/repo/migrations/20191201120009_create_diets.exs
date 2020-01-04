@@ -1,4 +1,4 @@
-defmodule Poutineer.Repo.Migrations.CreateDiets do
+defmodule Poutineer.Database.Repo.Migrations.CreateDiets do
   use Ecto.Migration
 
   def change do

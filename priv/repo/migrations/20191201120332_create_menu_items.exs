@@ -1,4 +1,4 @@
-defmodule Poutineer.Repo.Migrations.CreateMenuItems do
+defmodule Poutineer.Database.Repo.Migrations.CreateMenuItems do
   use Ecto.Migration
 
   def change do

@@ -1,4 +1,4 @@
-defmodule Poutineer.Repo.Migrations.CreateEstablishmentsTags do
+defmodule Poutineer.Database.Repo.Migrations.CreateEstablishmentsTags do
   use Ecto.Migration
 
   def change do

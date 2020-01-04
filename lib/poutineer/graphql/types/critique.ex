@@ -1,6 +1,6 @@
 defmodule Poutineer.Graphql.Types.Critique do
   use Absinthe.Schema.Notation
-  use Absinthe.Ecto, repo: Poutineer.Repo
+  use Absinthe.Ecto, repo: Poutineer.Database.Repo
 
   object :critique do
     field :id, non_null(:id)

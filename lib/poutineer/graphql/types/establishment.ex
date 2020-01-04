@@ -1,6 +1,6 @@
 defmodule Poutineer.Graphql.Types.Establishment do
   use Absinthe.Schema.Notation
-  use Absinthe.Ecto, repo: Poutineer.Repo
+  use Absinthe.Ecto, repo: Poutineer.Database.Repo
 
   object :establishment do
     field :id, non_null(:id)

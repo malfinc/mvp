@@ -1,4 +1,4 @@
-defmodule Poutineer.Repo.Migrations.EnableCitext do
+defmodule Poutineer.Database.Repo.Migrations.EnableCitext do
   use Ecto.Migration
 
   def change do

@@ -1,4 +1,4 @@
-defmodule Poutineer.Repo.Migrations.CreateQuestions do
+defmodule Poutineer.Database.Repo.Migrations.CreateQuestions do
   use Ecto.Migration
 
   def change do

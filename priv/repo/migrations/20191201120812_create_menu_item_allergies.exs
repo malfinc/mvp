@@ -1,4 +1,4 @@
-defmodule Poutineer.Repo.Migrations.CreateMenuItemAllergies do
+defmodule Poutineer.Database.Repo.Migrations.CreateMenuItemAllergies do
   use Ecto.Migration
 
   def change do

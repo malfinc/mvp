@@ -26,10 +26,10 @@ defmodule PoutineerWeb.ChannelCase do
   end
 
   setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Poutineer.Repo)
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Poutineer.Database.Repo)
 
     unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(Poutineer.Repo, {:shared, self()})
+      Ecto.Adapters.SQL.Sandbox.mode(Poutineer.Database.Repo, {:shared, self()})
     end
 
     :ok

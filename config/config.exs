@@ -9,7 +9,7 @@ use Mix.Config
 
 # Configures for ecto
 config :poutineer,
-  ecto_repos: [Poutineer.Repo],
+  ecto_repos: [Poutineer.Database.Repo],
   generators: [binary_id: true]
 
 # Configures the endpoint
@@ -21,7 +21,7 @@ config :poutineer, PoutineerWeb.Endpoint,
 
 # Configure background processor oban
 config :poutineer, Oban,
-  repo: Poutineer.Repo,
+  repo: Poutineer.Database.Repo,
   prune: {:maxlen, 100_000},
   queues: [default: 10, mailers: 10, events: 50, media: 2, google_places: 1]
 
@@ -35,7 +35,7 @@ config :phoenix,
   :json_library, Jason
 
 config :paper_trail,
-  repo: Poutineer.Repo,
+  repo: Poutineer.Database.Repo,
   item_type: Ecto.UUID,
   originator_type: Ecto.UUID,
   originator: [name: :account, model: Poutineer.Models.Account]

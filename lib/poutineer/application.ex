@@ -14,7 +14,7 @@ defmodule Poutineer.Application do
     # for other strategies and supported options
     Supervisor.start_link([
       # Start the Ecto repository
-      Poutineer.Repo,
+      Poutineer.Database.Repo,
       # Start the endpoint when the application starts
       PoutineerWeb.Endpoint,
       # Starts a worker by calling: Poutineer.Worker.start_link(arg)

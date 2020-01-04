@@ -50,7 +50,7 @@ config :logger, level: :info
 #
 # Check `Plug.SSL` for all available options in `force_ssl`.
 
-config :poutineer, Poutineer.Repo,
+config :poutineer, Poutineer.Database.Repo,
   # ssl: true,
   url: System.get_env("DATABASE_URL") ||
     raise """

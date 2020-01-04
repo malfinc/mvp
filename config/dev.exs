@@ -1,7 +1,7 @@
 use Mix.Config
 
 # Configure your database
-config :poutineer, Poutineer.Repo,
+config :poutineer, Poutineer.Database.Repo,
   username: "postgres",
   password: "password",
   database: "poutineer_dev",

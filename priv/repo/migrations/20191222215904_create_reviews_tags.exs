@@ -1,4 +1,4 @@
-defmodule Poutineer.Repo.Migrations.CreateReviewsTags do
+defmodule Poutineer.Database.Repo.Migrations.CreateReviewsTags do
   use Ecto.Migration
 
   def change do

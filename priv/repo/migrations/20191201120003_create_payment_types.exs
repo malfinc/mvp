@@ -1,4 +1,4 @@
-defmodule Poutineer.Repo.Migrations.CreatePaymentTypes do
+defmodule Poutineer.Database.Repo.Migrations.CreatePaymentTypes do
   use Ecto.Migration
 
   def change do

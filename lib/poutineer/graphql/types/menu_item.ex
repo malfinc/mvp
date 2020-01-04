@@ -1,6 +1,6 @@
 defmodule Poutineer.Graphql.Types.MenuItem do
   use Absinthe.Schema.Notation
-  use Absinthe.Ecto, repo: Poutineer.Repo
+  use Absinthe.Ecto, repo: Poutineer.Database.Repo
 
   object :menu_item do
     field :id, non_null(:id)

@@ -1,6 +1,6 @@
 defmodule Poutineer.Graphql.Types.Tag do
   use Absinthe.Schema.Notation
-  use Absinthe.Ecto, repo: Poutineer.Repo
+  use Absinthe.Ecto, repo: Poutineer.Database.Repo
 
   enum :taggable_types do
     value :establishment, description: "Referencing the establishment data type"

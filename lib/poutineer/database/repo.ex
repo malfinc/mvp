@@ -1,4 +1,4 @@
-defmodule Poutineer.Repo do
+defmodule Poutineer.Database.Repo do
   use Ecto.Repo,
     otp_app: :poutineer,
     adapter: Ecto.Adapters.Postgres

@@ -1,10 +1,10 @@
 defmodule Poutineer.Graphql.Resolvers.Accounts do
   def list(_parent, _arguments, _resolution) do
-    {:ok, Poutineer.Repo.all(Poutineer.Models.Account)}
+    {:ok, Poutineer.Database.Repo.all(Poutineer.Models.Account)}
   end
 
   def fetch(_parent, %{id: id}, _resolution) when not is_nil(id) do
-    {:ok, Poutineer.Repo.get(Poutineer.Models.Account, id)}
+    {:ok, Poutineer.Database.Repo.get(Poutineer.Models.Account, id)}
   end
 
   def create(_parent, arguments, _resolution) do
@@ -17,18 +17,18 @@ defmodule Poutineer.Graphql.Resolvers.Accounts do
     %Poutineer.Models.Account{}
       |> Poutineer.Models.Account.changeset(attributes)
       |> case do
-        %Ecto.Changeset{valid?: true} = changeset -> Poutineer.Repo.insert(changeset)
+        %Ecto.Changeset{valid?: true} = changeset -> Poutineer.Database.Repo.insert(changeset)
         %Ecto.Changeset{valid?: false} = changeset -> {:error, changeset}
       end
   end
 
   def grant_moderation_powers(_parent, %{account_id: account_id}, _resolution) when is_bitstring(account_id) do
-    Poutineer.Repo.get(Poutineer.Models.Account, account_id)
+    Poutineer.Database.Repo.get(Poutineer.Models.Account, account_id)
       |> Poutineer.Models.Account.grant_moderation_powers!()
   end
 
   def grant_administration_powers(_parent, %{account_id: account_id}, _resolution) when is_bitstring(account_id) do
-    Poutineer.Repo.get(Poutineer.Models.Account, account_id)
+    Poutineer.Database.Repo.get(Poutineer.Models.Account, account_id)
       |> Poutineer.Models.Account.grant_administrator_powers!()
   end
 end

@@ -54,7 +54,7 @@ defmodule Estate do
                 |> unquote(:"before_#{event_name}_from_#{from}")()
                 |> Ecto.Changeset.cast(%{unquote(column_name) => unquote(to)}, [unquote(column_name)])
                 |> Ecto.Changeset.validate_required(unquote(column_name))
-                |> Poutineer.Repo.update()
+                |> Poutineer.Database.Repo.update()
                 |> unquote(:"after_#{event_name}_from_#{from}")()
             end
 

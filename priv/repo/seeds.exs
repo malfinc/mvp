@@ -5,7 +5,7 @@
 # Inside the script, you can read and write to any of your
 # repositories directly:
 #
-#     Poutineer.Repo.insert!(%Poutineer.SomeSchema{})
+#     Poutineer.Database.Repo.insert!(%Poutineer.SomeSchema{})
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
@@ -22,7 +22,7 @@ Enum.each([
   "Low-Salt",
   "Vegan",
   "Vegetarian"
-], fn name -> %Poutineer.Models.Diet{} |> Poutineer.Models.Diet.changeset(%{name: name}) |> Poutineer.Repo.insert_or_update!() end)
+], fn name -> %Poutineer.Models.Diet{} |> Poutineer.Models.Diet.changeset(%{name: name}) |> Poutineer.Database.Repo.insert_or_update!() end)
 
 Enum.each([
   "Cow's Milk",
@@ -35,7 +35,7 @@ Enum.each([
   "Wheat",
   "Rice",
   "Fruit"
-], fn name -> %Poutineer.Models.Allergy{} |> Poutineer.Models.Allergy.changeset(%{name: name}) |> Poutineer.Repo.insert_or_update!() end)
+], fn name -> %Poutineer.Models.Allergy{} |> Poutineer.Models.Allergy.changeset(%{name: name}) |> Poutineer.Database.Repo.insert_or_update!() end)
 
 Enum.each([
   "Cash",
@@ -47,7 +47,7 @@ Enum.each([
   "Giftcards",
   "Online Payments",
   "Bitcoin/Cryptocurrency"
-], fn name -> %Poutineer.Models.PaymentType{} |> Poutineer.Models.PaymentType.changeset(%{name: name}) |> Poutineer.Repo.insert_or_update!() end)
+], fn name -> %Poutineer.Models.PaymentType{} |> Poutineer.Models.PaymentType.changeset(%{name: name}) |> Poutineer.Database.Repo.insert_or_update!() end)
 
 Enum.each(
   [
@@ -106,7 +106,7 @@ Enum.each(
       ]
     }
   ],
-  fn question -> %Poutineer.Models.Question{} |> Poutineer.Models.Question.changeset(question) |> Poutineer.Repo.insert_or_update!() end
+  fn question -> %Poutineer.Models.Question{} |> Poutineer.Models.Question.changeset(question) |> Poutineer.Database.Repo.insert_or_update!() end
 )
 
 Enum.each(
@@ -122,5 +122,5 @@ Enum.each(
       ]
     }
   ],
-  fn establishment -> %Poutineer.Models.Establishment{} |> Poutineer.Models.Establishment.changeset(establishment) |> Poutineer.Repo.insert_or_update!() end
+  fn establishment -> %Poutineer.Models.Establishment{} |> Poutineer.Models.Establishment.changeset(establishment) |> Poutineer.Database.Repo.insert_or_update!() end
 )
