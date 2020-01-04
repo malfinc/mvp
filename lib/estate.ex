@@ -49,16 +49,18 @@ defmodule Estate do
             # IO.inspect("Defining #{__MODULE__}.#{unquote(event_name)}!(%{:id => id, #{unquote(column_name)} => #{unquote(Atom.to_string(from))}} = record) when not is_nil(id)")
             @desc "An action to change the state, if the transition matches, but does save"
             def unquote(:"#{event_name}!")(%{:id => id, unquote(column_name) => unquote(Atom.to_string(from))} = record) when not is_nil(id) do
-              record
-                |> Ecto.Changeset.change()
-                |> unquote(:"before_#{event_name}_from_#{from}")()
-                |> Ecto.Changeset.cast(%{unquote(column_name) => unquote(to)}, [unquote(column_name)])
-                |> Ecto.Changeset.validate_required(unquote(column_name))
-                |> Poutineer.Database.Repo.update()
-                |> unquote(:"after_#{event_name}_from_#{from}")()
+              Poutineer.Database.Repo.transaction(fn ->
+                record
+                  |> Ecto.Changeset.change()
+                  |> unquote(:"before_#{event_name}_from_#{from}")()
+                  |> Ecto.Changeset.cast(%{unquote(column_name) => unquote(to)}, [unquote(column_name)])
+                  |> Ecto.Changeset.validate_required(unquote(column_name))
+                  |> Poutineer.Database.Repo.update()
+                  |> unquote(:"after_#{event_name}_from_#{from}")()
+              end)
             end
 
-            # If you can't match, then raise transition failure
+            # TODO: If you can't match, then raise transition failure
           end
         end)
       end)
