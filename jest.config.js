@@ -5,6 +5,6 @@ module.exports = {
   collectCoverageFrom: [
     "./client/**/index.js",
     "./@internal/**/index.js",
-    "./server/**/index.js"
-  ]
-}
+    "./server/**/index.js",
+  ],
+};

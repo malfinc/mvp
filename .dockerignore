@@ -14,10 +14,5 @@ gcloud/
 kubernetes/
 log/
 node_modules/
-public/
-spec/
-storage/
-tmp/
-vendor/
 .DS_Store
 .env

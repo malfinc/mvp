@@ -1,2 +1,0 @@
-class ApplicationNull < ApplicationComputed
-end
