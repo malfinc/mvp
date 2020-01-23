@@ -385,7 +385,7 @@ GEM
     ruby_dep (1.5.0)
     rufus-scheduler (3.6.0)
       fugit (~> 1.1, >= 1.1.6)
-    secure_headers (6.1.1)
+    secure_headers (6.3.0)
     sidecloq (0.4.7)
       concurrent-ruby
       redlock (>= 0.2.0, < 2)
@@ -511,7 +511,7 @@ DEPENDENCIES
   rubocop (= 0.63.1)
   rubocop-rspec (= 1.32.0)
   ruby-prof (= 1.0.0)
-  secure_headers (= 6.1.1)
+  secure_headers (= 6.3.0)
   sidecloq (= 0.4.7)
   sidekiq (= 5.2.7)
   sidekiq-unique-jobs (= 6.0.13)
