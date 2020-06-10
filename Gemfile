@@ -60,7 +60,7 @@ gem("flag_shih_tzu", "0.3.23")
 gem("rein", "5.0.0")
 gem("state_machines-activerecord", "0.6.0")
 gem("strong_migrations", "0.4.1")
-gem("geocoder", "1.5.1")
+gem("geocoder", "1.6.1")
 
 gem("paper_trail", "10.0.1")
 gem("paper_trail-background", "1.0.2")
