@@ -89,7 +89,7 @@
     "@rematch/core": "1.2.0",
     "@unction/complete": "20.20.0",
     "acorn": "7.1.0",
-    "axios": "0.19.0",
+    "axios": "0.21.1",
     "bunyan": "1.8.12",
     "compression": "1.7.4",
     "compromise": "11.14.3",
