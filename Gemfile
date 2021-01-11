@@ -27,7 +27,7 @@ gem("draper", "3.1.0")
 
 gem("puma", "4.1.0")
 gem("puma_worker_killer", "0.1.1")
-gem("redcarpet", "3.5.0")
+gem("redcarpet", "3.5.1")
 
 gem("hiredis", "0.6.3")
 gem("redis-rails", "5.0.2")
